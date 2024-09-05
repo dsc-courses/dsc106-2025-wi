@@ -10,8 +10,8 @@ nav_order: 4
 # 🙋‍♂️ Tech Support
 {:.no_toc}
 
-{: .warning }
-We recently updated this page to accommodate the necessity of deploying a gh-pages website from svelte. 
+{: .note }
+**Page under construction!**
 
 ## Table of contents
 {:.no_toc}

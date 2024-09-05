@@ -35,18 +35,16 @@ nav_order: 5
 - https://observablehq.com/@wattenberger/prototyping-in-d3 (D3 Prototyping)
 - https://vallandingham.me/vis/ (other cool blog)
 
-
 ## Storytelling Websites
 
 - [https://pudding.cool](https://pudding.cool/)
 
-- https://github.com/the-pudding 
+- https://github.com/the-pudding
   (Cool storytelling website, they provide open-source code, too)
-  
 
 \--------------------------------------------------------------------------------------------------------
 
-- [https://distill.pub](https://distill.pub/) 
+- [https://distill.pub](https://distill.pub/)
 
 - https://github.com/distillpub
   (Interactive Machine Learning)
@@ -63,17 +61,15 @@ nav_order: 5
 - https://github.com/mrpandey/d3graphTheory
   (Visualizing Graph Theory Concepts)
 
-
 ## Visualization Principles
 
 - [The Visual Display of Quantitative Information by Edward Tufte](https://www.edwardtufte.com/tufte/books_vdqi)
 - [Fundamentals of Data Visualization by Claus Wilke](https://clauswilke.com/dataviz/)
 
-
 ## Visualization Design Ideas
 
 - [https://www.awwwards.com](https://www.awwwards.com/) (**HIGHLY RECOMMEND** for design inspirations!)
-- [https://datavizproject.com](https://datavizproject.com/)  (1 dataset, 100 visualizations)
+- [https://datavizproject.com](https://datavizproject.com/) (1 dataset, 100 visualizations)
 - [https://www.data-to-viz.com](https://www.data-to-viz.com/) (taxonomy of visualizations)
 - https://www.economist.com/graphic-detail?page=1 (Data Viz examples by The Economist)
 - [https://informationisbeautiful.net](https://informationisbeautiful.net/) (cool data viz designs)
@@ -86,4 +82,3 @@ nav_order: 5
 - [https://picular.co](https://picular.co/). (Find the color of anything you want)
 - [https://webgradients.com](https://webgradients.com/) (Different kind of linear gradients)
 - https://www.happyhues.co/palettes/17 (Different color palette preview on same web design)
-

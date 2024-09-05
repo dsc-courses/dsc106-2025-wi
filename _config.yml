@@ -14,7 +14,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: DSC 106
-description: DSC 106, Winter 2024 at UC San Diego
+description: DSC 106, Winter 2025 at UC San Diego
 tagline: Data Visualization
 baseurl: '/' # the subpath of your site, e.g. /blog
 url: 'https://dsc106.com' # the base hostname & protocol for your site, e.g. http://example.com
@@ -29,11 +29,11 @@ heading_anchors: true
 permalink: pretty
 aux_links:
   💻 GitHub:
-    - 'https://github.com/dsc-courses/dsc106-wi24'
+    - ''
   🙋 Ed:
-    - 'https://edstem.org/us/join/6jfeKP'
+    - ''
   💯 Gradescope:
-    - 'https://www.gradescope.com/courses/693205'
+    - ''
 footer_content:
 
 # Collections for website data
