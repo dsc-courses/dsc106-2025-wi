@@ -1,11 +1,12 @@
 ---
-title: "Lab 0: Setup"
+title: 'Lab 0: Setup'
 lab: 0
-parent: Programming Labs
-layout: default
+parent: '👩‍🔬 Programming Labs'
+released: false
 ---
 
 # Lab 0: Setup
+
 {: .no_toc}
 
 {: .summary}
@@ -31,7 +32,6 @@ This is to streamline the process, and avoid spending time on issues that are ou
 If you don’t already have Google Chrome installed, please [install it now](https://www.google.com/chrome/).
 If you have it installed, please make sure you have the latest version by restarting it (it downloads updates automatically).
 
-
 ## Code editor: Visual Studio Code (VS Code)
 
 We will use [Visual Studio Code](https://code.visualstudio.com/) as our code editor.
@@ -46,7 +46,7 @@ code editors provide features that make it easier to write code, such as syntax 
 If you prefer another editor, feel free to use it, but we won't be able to provide support for it.
 
 Visual studio code also provides its own integrated terminal, so if you’re not familiar with running terminal commands on your computer, you can use the one built into VSCode.
-In the rest of this guide, if we say “open the terminal”, you can simply open the directory you want to start from (or any directory if that is not specified) with VS Code and press ```Ctrl + ` ``` to [open the integrated terminal](https://code.visualstudio.com/docs/terminal/basics) (or via the menu: View → Terminal).
+In the rest of this guide, if we say “open the terminal”, you can simply open the directory you want to start from (or any directory if that is not specified) with VS Code and press `` Ctrl + `  `` to [open the integrated terminal](https://code.visualstudio.com/docs/terminal/basics) (or via the menu: View → Terminal).
 
 ### Emmet
 
@@ -59,14 +59,12 @@ If it works, the `!` should be replaced by something like:
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-</head>
-<body>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
 </html>
 ```
 
@@ -81,7 +79,7 @@ and revert back to previous versions of the code if needed.
 
 <figure markdown="1">
 
-[![](images/finaldoc.gif)]((images/finaldoc.gif))
+[![](images/finaldoc.gif)](<(images/finaldoc.gif)>)
 
 <figcaption markdown="1">
 
@@ -93,10 +91,11 @@ Seems familiar? This is what version control frees you from! (Source: [PhD Comic
 ### Setting up Git
 
 The first step is to check if you already have git installed by opening the terminal and typing `git --version`.
-* If you get an error about the command being unknown, you need to [install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) on your computer.
-* If you get a version number, you already have git installed.
-Make sure it's up to date by comparing the version number you got with the one [on the official website](https://git-scm.com/#front-downloads).
-If it’s significantly out of date, it’s a good practice to update it, covered at the end of the [installation guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+
+- If you get an error about the command being unknown, you need to [install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) on your computer.
+- If you get a version number, you already have git installed.
+  Make sure it's up to date by comparing the version number you got with the one [on the official website](https://git-scm.com/#front-downloads).
+  If it’s significantly out of date, it’s a good practice to update it, covered at the end of the [installation guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
 If you’ve never used git before, first you need to set up your name and email.
 Run the following commands to let git know your name and email address. Open a terminal and run:
@@ -108,15 +107,16 @@ git config --global user.email "your_email@mit.edu"
 
 ### Git concepts: repo(sitory), staging area, commit
 
-In Git, code is grouped in *repositories* (or *repos* for short), which are the root directories of a project.
+In Git, code is grouped in _repositories_ (or _repos_ for short), which are the root directories of a project.
 Repositories cannot be nested.
 
-Git tracks changes via the concept of a *commit*, which is a set of changes to the code.
-By combining the commits from the start (the *commit history*) together, it can give us a snapshot of the code at any point in time.
+Git tracks changes via the concept of a _commit_, which is a set of changes to the code.
+By combining the commits from the start (the _commit history_) together, it can give us a snapshot of the code at any point in time.
 
 A commit is performed in two steps:
-1. We tell Git which files we want to commit by adding them to the *staging area* through `git add`.
-We can add multiple files at once, or one by one.
+
+1. We tell Git which files we want to commit by adding them to the _staging area_ through `git add`.
+   We can add multiple files at once, or one by one.
 2. We tell Git to commit the files in the staging area through `git commit`.
 
 Let’s try it out!
@@ -162,6 +162,7 @@ To add all the files in the current folder to the staging area, type:
 ```bash
 git add .
 ```
+
 {: .fyi }
 The `.` means "the current folder" and is used very widely (similarly, `..` means "the parent folder").
 
@@ -207,8 +208,8 @@ We will be using [GitHub Pages](https://pages.github.com/) to publish websites, 
 
 When we work on a project with others, we need a way to share our changes with them.
 
-GitHub introduces the concept of a *remote*: That is, a remote repository that is set up to be a copy of our local repository.
-We can then *push* our commits to the remote, and *pull* commits from the remote to our local repository.
+GitHub introduces the concept of a _remote_: That is, a remote repository that is set up to be a copy of our local repository.
+We can then _push_ our commits to the remote, and _pull_ commits from the remote to our local repository.
 
 <figure markdown="1">
 
@@ -223,7 +224,6 @@ Diagram illustrating the Git & GitHub workflow.
 </figure>
 
 ### Helpful Git Resources
-
 
 - [A grip on git](https://agripongit.vincenttunru.com/) is a beautiful visual explanation of how git works from the inside out.
 - [Missing Semester Git Lecture](https://missing.csail.mit.edu/2020/version-control/) is a great text explanation of how git works from the IAP class on developer tools.
@@ -248,6 +248,7 @@ Why we need a visual client for Git (Source: [xkcd](https://xkcd.com/1597/))
 
 [GitHub Desktop](https://desktop.github.com/) is a graphical user interface (GUI) for Git.
 It does not do everything that Git can do, but it does make many commonly needed tasks much easier, including:
+
 - Reviewing uncommitted changes and only committing a subset of them (down to specific lines)
 - Reverting commits
 - Viewing the commit history
@@ -302,9 +303,11 @@ To get around this, we will use a local server to serve our web pages.
 [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) is a VS Code extension that not only gives us a local server, it even takes care of refreshing the page for us when we make changes to the code!
 
 Installation steps:
+
 1. Launch VS Code
 2. Quick Open (Ctrl+P) or (Command + P - on mac)
 3. Paste the following command, and press enter:
+
 ```bash
 ext install ritwickdey.liveserver
 ```
@@ -312,10 +315,13 @@ ext install ritwickdey.liveserver
 ## Svelte for VS Code
 
 Installation steps:
+
 1. Launch VS Code
 2. Quick Open (Ctrl+P) on Windows or (Cmd + P) on MacOS
 3. Paste the following command, and press enter:
+
 ```
 ext install svelte.svelte-vscode
 ```
+
 4. Confirm that you do want to install the extension

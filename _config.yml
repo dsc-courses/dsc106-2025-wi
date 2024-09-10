@@ -95,3 +95,6 @@ callouts:
   success:
     title: ""
     color: green
+  summary:
+    title: Summary
+    color: grey-dk
