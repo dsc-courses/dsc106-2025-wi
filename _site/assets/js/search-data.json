@@ -53,378 +53,516 @@
     "url": "/projects/final_project/",
     "relUrl": "/projects/final_project/"
   },"9": {
+    "doc": "Lab 5: Svelte II (Loading Data & Reactivity)",
+    "title": "Lab 5: Svelte II (Loading Data &amp; Reactivity)",
+    "content": "Page under construction! . ",
+    "url": "/labs/lab05/#lab-5-svelte-ii-loading-data--reactivity",
+    "relUrl": "/labs/lab05/#lab-5-svelte-ii-loading-data--reactivity"
+  },"10": {
+    "doc": "Lab 5: Svelte II (Loading Data & Reactivity)",
+    "title": "Lab 5: Svelte II (Loading Data & Reactivity)",
+    "content": " ",
+    "url": "/labs/lab05/",
+    "relUrl": "/labs/lab05/"
+  },"11": {
+    "doc": "Lab 2: Styling with CSS",
+    "title": "Lab 2: Styling with CSS",
+    "content": "Page under construction! . ",
+    "url": "/labs/lab02/",
+    "relUrl": "/labs/lab02/"
+  },"12": {
     "doc": "Help Us Help You: Things to try before asking for help",
     "title": "Help Us Help You: Things to try before asking for help",
     "content": " ",
     "url": "/labs/debugging/#help-us-help-you-things-to-try-before-asking-for-help",
     "relUrl": "/labs/debugging/#help-us-help-you-things-to-try-before-asking-for-help"
-  },"10": {
+  },"13": {
     "doc": "Help Us Help You: Things to try before asking for help",
     "title": "Table of contents",
     "content": ". | Help Us Help You: Things to try before asking for help | . ",
     "url": "/labs/debugging/#table-of-contents",
     "relUrl": "/labs/debugging/#table-of-contents"
-  },"11": {
+  },"14": {
     "doc": "Help Us Help You: Things to try before asking for help",
     "title": "Help Us Help You: Things to try before asking for help",
     "content": "Page under construction! . ",
     "url": "/labs/debugging/",
     "relUrl": "/labs/debugging/"
-  },"12": {
+  },"15": {
+    "doc": "Lab 7: Visualizing quantitative data with D3",
+    "title": "Lab 7: Visualizing quantitative data with D3",
+    "content": "Page under construction! . ",
+    "url": "/labs/lab07/",
+    "relUrl": "/labs/lab07/"
+  },"16": {
+    "doc": "Lab 0: Setup",
+    "title": "Lab 0: Setup",
+    "content": "In this lab, we will prepare our local environment for the course labs and assignments. We recommend you follow this guide step by step, but if you are already familiar with some of the tools, feel free to skip ahead. | Browser: Latest Google Chrome | Code editor: Visual Studio Code (VS Code) . | Emmet | . | Git . | Setting up Git | Git concepts: repo(sitory), staging area, commit | . | GitHub . | New Git concepts: Remote, pushing, and pulling | Helpful Git Resources | . | GitHub Desktop | Node.js and npm | Installing a local server | Svelte for VS Code | . ",
+    "url": "/labs/lab00/",
+    "relUrl": "/labs/lab00/"
+  },"17": {
+    "doc": "Lab 0: Setup",
+    "title": "Browser: Latest Google Chrome",
+    "content": "Ideally when making websites and web applications, we want to ensure they work correctly in all browsers, both new and (relatively) old. However, for the purposes of this class, we will only be using the latest version of Google Chrome. This is to streamline the process, and avoid spending time on issues that are out of scope for the learning objectives of the course. If you don’t already have Google Chrome installed, please install it now. If you have it installed, please make sure you have the latest version by restarting it (it downloads updates automatically). ",
+    "url": "/labs/lab00/#browser-latest-google-chrome",
+    "relUrl": "/labs/lab00/#browser-latest-google-chrome"
+  },"18": {
+    "doc": "Lab 0: Setup",
+    "title": "Code editor: Visual Studio Code (VS Code)",
+    "content": "We will use Visual Studio Code as our code editor. A code editor is a program that allows us to write code in a text file and save it. In contrast with plain text editors (like Notepad on Windows or TextEdit on macOS), code editors provide features that make it easier to write code, such as syntax highlighting, code completion, and code formatting. | Installing VSCode | VSCode Basics | VSCode Extensions | . If you prefer another editor, feel free to use it, but we won’t be able to provide support for it. Visual studio code also provides its own integrated terminal, so if you’re not familiar with running terminal commands on your computer, you can use the one built into VSCode. In the rest of this guide, if we say “open the terminal”, you can simply open the directory you want to start from (or any directory if that is not specified) with VS Code and press Ctrl + ` to open the integrated terminal (or via the menu: View → Terminal). Emmet . Emmet is a snippet syntax that allows us to write certain web languages much faster. It is built into VSCode, so we don’t need to install anything. Just verify that it works by creating a new index.html file and typing ! followed by pressing the Tab key. If it works, the ! should be replaced by something like: . &lt;!DOCTYPE html&gt; &lt;html lang=\"en\"&gt; &lt;head&gt; &lt;meta charset=\"UTF-8\"&gt; &lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"&gt; &lt;title&gt;Document&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;/body&gt; &lt;/html&gt; . Don’t worry about what this means right now, that’s what Lab 1 is for! . ",
+    "url": "/labs/lab00/#code-editor-visual-studio-code-vs-code",
+    "relUrl": "/labs/lab00/#code-editor-visual-studio-code-vs-code"
+  },"19": {
+    "doc": "Lab 0: Setup",
+    "title": "Git",
+    "content": "Git is a version control system. It allows us to keep track of changes to our code over time, collaborate with others without having to worry about overwriting each other’s work, and revert back to previous versions of the code if needed. Seems familiar? This is what version control frees you from! (Source: PhD Comics) . Setting up Git . The first step is to check if you already have git installed by opening the terminal and typing git --version. | If you get an error about the command being unknown, you need to install Git on your computer. | If you get a version number, you already have git installed. Make sure it’s up to date by comparing the version number you got with the one on the official website. If it’s significantly out of date, it’s a good practice to update it, covered at the end of the installation guide. | . If you’ve never used git before, first you need to set up your name and email. Run the following commands to let git know your name and email address. Open a terminal and run: . git config --global user.name \"Your Name\" git config --global user.email \"your_email@mit.edu\" . Git concepts: repo(sitory), staging area, commit . In Git, code is grouped in repositories (or repos for short), which are the root directories of a project. Repositories cannot be nested. Git tracks changes via the concept of a commit, which is a set of changes to the code. By combining the commits from the start (the commit history) together, it can give us a snapshot of the code at any point in time. A commit is performed in two steps: . | We tell Git which files we want to commit by adding them to the staging area through git add. We can add multiple files at once, or one by one. | We tell Git to commit the files in the staging area through git commit. | . Let’s try it out! . Create a new folder on your computer (e.g. lab-0) and open it in VSCode. Then create a text file called hello.txt and write something in it. Then, open the built-in terminal in VS Code and type: . git init . Then press Enter. You should see something like: . Initialized empty Git repository in /Users/username/Documents/viz-society/lab-0/.git/ . This means that Git has created a new repository in the current folder, but we have not yet committed anything. To see what the current status of the repository is, type: . git status . Which should give you something like: . On branch main No commits yet Untracked files: (use \"git add &lt;file&gt;...\" to include in what will be committed) hello.txt nothing added to commit but untracked files present (use \"git add\" to track) . To add all the files in the current folder to the staging area, type: . git add . The . means “the current folder” and is used very widely (similarly, .. means “the parent folder”). Now, if we check the status again, we should see: . On branch main No commits yet Changes to be committed: (use \"git rm --cached &lt;file&gt;...\" to unstage) new file: hello.txt . This means that the file hello.txt is now in the staging area, and will be committed when we tell Git to do so. Let’s commit it: . git commit -m \"Add hello.txt\" . The -m flag means that we are providing a message for the commit inline. If we don’t provide it, Git will open a text editor for us to write the message in. That’s it! We have now committed our first change to the repository. You can see recent changes via git log and even go back to a previous commit by using git checkout &lt;commit hash&gt; (the commit hash is the long string of letters and numbers that you see in the output of git log). ",
+    "url": "/labs/lab00/#git",
+    "relUrl": "/labs/lab00/#git"
+  },"20": {
+    "doc": "Lab 0: Setup",
+    "title": "GitHub",
+    "content": "GitHub is a website that allows us to store our code online and collaborate with others. Code is published in repositories, which are like folders that contain all the files of a project. Repositories can be public, which means anyone can see them, or private, which means only people with access can see them. In this class (and many others), we will be using GitHub repositories for your work during lab, as well as your assignments. If you don’t already have a GitHub account, please create one now. Please sign up for the GitHub Student Developer Pack to get access to a GitHub Pro account and many other useful tools for free. We will be using GitHub Pages to publish websites, which requires a paid account for private repos. New Git concepts: Remote, pushing, and pulling . When we work on a project with others, we need a way to share our changes with them. GitHub introduces the concept of a remote: That is, a remote repository that is set up to be a copy of our local repository. We can then push our commits to the remote, and pull commits from the remote to our local repository. Diagram illustrating the Git &amp; GitHub workflow. (Source: Git, GitHub, &amp; Workflow Fundamentals on dev.to) . Helpful Git Resources . | A grip on git is a beautiful visual explanation of how git works from the inside out. | Missing Semester Git Lecture is a great text explanation of how git works from the IAP class on developer tools. | Learn Git Branching is a great online interactive tutorial for learning the git command line. | GitHub Cheat Sheet This cheat sheet features the most important and commonly used Git commands for easy reference. | . ",
+    "url": "/labs/lab00/#github",
+    "relUrl": "/labs/lab00/#github"
+  },"21": {
+    "doc": "Lab 0: Setup",
+    "title": "GitHub Desktop",
+    "content": "Using Git via the command line is fine for the simplest case of committing and pushing all our changes at once and having no conflicts, but when we need more control or something goes wrong, it can be quite challenging to use. Why we need a visual client for Git (Source: xkcd) . GitHub Desktop is a graphical user interface (GUI) for Git. It does not do everything that Git can do, but it does make many commonly needed tasks much easier, including: . | Reviewing uncommitted changes and only committing a subset of them (down to specific lines) | Reverting commits | Viewing the commit history | . We strongly encourage installing GitHub Desktop (or any other visual client), even if you are comfortable with the command line, since it provides better visibility of status which can prevent many mistakes. Once you install GitHub Desktop, you will need to connect it to your GitHub account. You should then go through the tutorial to create a repository. This will also guide you on how to push and pull from a remote repository. You should also go to Settings &gt; Integrations and set Visual Studio Code as your default editor. This is all the setup needed for Lab 1! We will not need the rest of the tools until at least Lab 2 (and Svelte not until Lab 6), but we recommend you install them now so you don’t have to worry about it later. ",
+    "url": "/labs/lab00/#github-desktop",
+    "relUrl": "/labs/lab00/#github-desktop"
+  },"22": {
+    "doc": "Lab 0: Setup",
+    "title": "Node.js and npm",
+    "content": "As we will learn, JS (short for JavaScript) is the web’s programming language. Node.js is a program that allows us to use JS outside of the browser, in the same way as any other programming language, e.g. Python. npm is a package manager for JS, which allows us to install and use libraries (also called packages) written in JS. If you are familiar with Python, npm serves the same purpose as pip. You may already have Node.js installed. To find out, open the terminal and type: . node --version . If you get an error, or if the version is way behind what you see on the official website, you need to install or update Node.js. npm is included with every Node.js installation. You can verify that you have it installed by typing: . npm --version . If you update Node and npm, you may need to restart your terminal for these commands to show the correct version. ",
+    "url": "/labs/lab00/#nodejs-and-npm",
+    "relUrl": "/labs/lab00/#nodejs-and-npm"
+  },"23": {
+    "doc": "Lab 0: Setup",
+    "title": "Installing a local server",
+    "content": "While we can view web pages by simply opening them in a browser, that mode is heavily restricted for security reasons and many newer features will not work in it. To get around this, we will use a local server to serve our web pages. Live Server is a VS Code extension that not only gives us a local server, it even takes care of refreshing the page for us when we make changes to the code! . Installation steps: . | Launch VS Code | Quick Open (Ctrl+P) or (Command + P - on mac) | Paste the following command, and press enter: ext install ritwickdey.liveserver . | . ",
+    "url": "/labs/lab00/#installing-a-local-server",
+    "relUrl": "/labs/lab00/#installing-a-local-server"
+  },"24": {
+    "doc": "Lab 0: Setup",
+    "title": "Svelte for VS Code",
+    "content": "Installation steps: . | Launch VS Code | Quick Open (Ctrl+P) on Windows or (Cmd + P) on MacOS | Paste the following command, and press enter: ext install svelte.svelte-vscode . | Confirm that you do want to install the extension | . ",
+    "url": "/labs/lab00/#svelte-for-vs-code",
+    "relUrl": "/labs/lab00/#svelte-for-vs-code"
+  },"25": {
+    "doc": "Lab 9: Animation and Scrollytelling",
+    "title": "Lab 9: Animation and Scrollytelling",
+    "content": "Page under construction! . ",
+    "url": "/labs/lab09/",
+    "relUrl": "/labs/lab09/"
+  },"26": {
+    "doc": "Lab 8: Geospatial visualizations",
+    "title": "Lab 8: Geospatial visualizations",
+    "content": "Page under construction! . ",
+    "url": "/labs/lab08/",
+    "relUrl": "/labs/lab08/"
+  },"27": {
+    "doc": "Lab 6: Visualizing categorical data with D3",
+    "title": "Lab 6: Visualizing categorical data with D3",
+    "content": "Page under construction! . ",
+    "url": "/labs/lab06/",
+    "relUrl": "/labs/lab06/"
+  },"28": {
     "doc": "👩‍🔬 Programming Labs",
     "title": "👩‍🔬 Programming Labs",
     "content": "The weekly programming labs will help you get up to speed with the fundamentals of front-end web development and then will give you more hands-on practice with the tech stack for developing dynamic web-based visualization. These materials were primarily developed by Lea Verou. ",
     "url": "/labs/",
     "relUrl": "/labs/"
-  },"13": {
-    "doc": "📝 Projects",
-    "title": "Projects",
-    "content": " ",
-    "url": "/projects/#projects",
-    "relUrl": "/projects/#projects"
-  },"14": {
-    "doc": "📝 Projects",
-    "title": "📝 Projects",
-    "content": " ",
-    "url": "/projects/",
-    "relUrl": "/projects/"
-  },"15": {
-    "doc": "🏠 Home",
-    "title": "Data Visualization",
-    "content": "DSC 106, Winter 2024 at UC San Diego . Sam Lau he/him . lau@ucsd.edu . Lecture: TBD . Week 1 . Tue Jan 9 LEC 1 The Value of Visualization . Thu Jan 11 LEC 2 Data &amp; Image Models . Fri Jan 12 LAB 1 Altair . Week 2 . Tue Jan 16 LEC 3 (In)Effective Visual Encoding . Thu Jan 18 LEC 4 Perception . Fri Jan 19 LAB 2 HTML/CSS . PROJ 1 Project 1: Expository Visualization . Week 3 . Tue Jan 23 LEC 5 Color . Thu Jan 25 LEC 6 Interaction . Fri Jan 26 LAB 3 JavaScript, SVG . Week 4 . Tue Jan 30 LEC 7 Lecture Cancelled – Sam was sick . Thu Feb 1 LEC 8 Project 2 Feedback . Fri Feb 2 LAB 4 Svelte . PROJ 2 Project 2: Deceptive Visualization . Week 5 . Tue Feb 6 LEC 9 D3.js . Code . Thu Feb 8 LEC 10 Maps . Fri Feb 9 PROJ 2 Project 2 Peer Review . LAB 5 D3 . Week 6 . Tue Feb 13 LEC 11 Visualization Tools . Thu Feb 15 LEC 12 Project 3 Peer Feedback . Fri Feb 16 PROJ 3 Project 3: Interactive Visualization . LAB 6 Mapbox.js . Week 7 . Tue Feb 20 LEC 13 Narrative Visualization . Thu Feb 22 LEC 14 JavaScript and Svelte . Code . Fri Feb 23 FINAL PROJ Final Project Proposal . LAB 7 Scrollytelling . Week 8 . Tue Feb 27 LEC 15 Animation . Code . Thu Feb 29 LEC 16 Uncertainty . Fri Mar 1 FINAL PROJ Final Project Prototype . Week 9 . Tue Mar 5 LEC 17 Evaluation &amp; Review . Thu Mar 7 LEC 18 Final Project Feedback . Fri Mar 8 FINAL PROJ Final Project Demo Video . Week 10 . Tue Mar 12 LEC 19 Final Project Showcase . Thu Mar 14 LEC 20 Final Project Office Hours . Week 11 . Sat Mar 16 FINAL PROJ Final Project . ",
-    "url": "/#data-visualization",
-    "relUrl": "/#data-visualization"
-  },"16": {
-    "doc": "🏠 Home",
-    "title": "🏠 Home",
-    "content": " ",
-    "url": "/",
-    "relUrl": "/"
-  },"17": {
-    "doc": "Lab 0: Setup",
-    "title": "Lab 0: Setup",
+  },"29": {
+    "doc": "Lab 3: Introduction to JS",
+    "title": "Lab 3: Introduction to JS",
     "content": "Page under construction! . ",
-    "url": "/labs/lab00/",
-    "relUrl": "/labs/lab00/"
-  },"18": {
+    "url": "/labs/lab03/",
+    "relUrl": "/labs/lab03/"
+  },"30": {
     "doc": "Lab 1: Introduction to the Web platform",
     "title": "Lab 1: Introduction to the Web platform",
     "content": "Page under construction! . ",
     "url": "/labs/lab01/",
     "relUrl": "/labs/lab01/"
-  },"19": {
+  },"31": {
+    "doc": "Lab 1: Introduction to the Web platform",
+    "title": "  Lab 1: Introduction to the Web platform ",
+    "content": "In this lab, we will learn: . | How does the Web work? What happens when I enter a URL in my browser and hit Enter? | What languages are used to create webpages, what is each for, and what are their differences? | How to write good HTML? | How do CSS and JS look like, and how do we include them in our HTML? | How can we create our own webpage and publish it on the Web? | . | Prerequisites | Part 1: Web fundamentals | Part 2: Creating our own website from scratch and publishing it on the Web . | Step 1: Setup | Step 2: Create a basic HTML page | Step 3: Publish your site on GitHub Pages | Step 4: Add a photo | Step 5: Add a CSS stylesheet | Step 6: Add more pages and a navigation menu | Step 7: Basic contact form | Step 8: Adding a CV/resume page | . | HTML resources | . ",
+    "url": "/labs/lab01/#lab-1-introduction-to-the-web-platform",
+    "relUrl": "/labs/lab01/#lab-1-introduction-to-the-web-platform"
+  },"32": {
+    "doc": "Lab 1: Introduction to the Web platform",
+    "title": "  Prerequisites ",
+    "content": "This lab assumes you have already gone through the setup instructions in Lab 0 (except those marked for Lab 2 or later), i.e. that you have (latest versions of, where applicable): . | Google Chrome | Visual Studio Code (and you have verified Emmet works) | Git that is set up with your name and email | A GitHub account (upgraded to Pro via the GitHub Student Developer Pack | GitHub Desktop, connected to GitHub and with VS Code set as the default editor | . ",
+    "url": "/labs/lab01/#prerequisites",
+    "relUrl": "/labs/lab01/#prerequisites"
+  },"33": {
+    "doc": "Lab 1: Introduction to the Web platform",
+    "title": "  Part 1: Web fundamentals ",
+    "content": ". | Slides | . Links we’ll need for the hands-on activities: . | hello.html | first.html | errors.html | . ",
+    "url": "/labs/lab01/#part-1-web-fundamentals",
+    "relUrl": "/labs/lab01/#part-1-web-fundamentals"
+  },"34": {
+    "doc": "Lab 1: Introduction to the Web platform",
+    "title": "  Part 2: Creating our own website from scratch and publishing it on the Web ",
+    "content": ". Step 1: Setup . Creating a new repostory with GitHub Desktop and publishing it to GitHub . | Create a new repository with GitHub Desktop called portfolio (or anything else you want, but the rest will assume portfolio) | Publish it on GitHub (verify that it worked by visiting https://github.com/YOUR_USERNAME/portfolio or clicking Repository &gt; View on GitHub in GitHub Desktop’s menu) | Open it on Visual Studio Code (Menu: Repository &gt; Open in Visual Studio Code) | . Step 2: Create a basic HTML page . Our initial HTML page is pretty simple. | Create a new file called index.html in the root of your repository | Type ! and hit Tab to expand the Emmet snippet into a basic HTML page | Change the page title (&lt;title&gt;) to “YOUR_NAME: Personal site and portfolio” | Add a &lt;h1&gt; with your name | Add a &lt;p&gt; with a short description of yourself (if you can’t think of anything, just type lorem and hit Tab to generate placeholder text; just make sure to edit it later!) | Save the file. Open the file in Chrome and verify that it works. | Commit and push your changes to GitHub | . Remember that committing and pushing your changes to GitHub is a two-step process: First, you commit your changes to your local repository: then you push your changes to your remote repository on GitHub. Step 3: Publish your site on GitHub Pages . Our simple page is now live! GitHub provides a free hosting service called GitHub Pages that is perfect for hosting static websites like the one we are creating. It gives you a URL like https://YOUR_USERNAME.github.io/YOUR_REPOSITORY_NAME that you can share with anyone to show them your site, but you can also use your own domain name if you have one. | Open your repository on GitHub (On GitHub Desktop: Repository &gt; View on GitHub) | Click Settings | Scroll down and click the section | Select “main” as the branch and click Save | Check “Enforce HTTPS” | Wait a few seconds for GitHub to publish your site, then refresh. Then click to open your site in a new tab. That’s it — your website is now live! 🎉 | . Selecting main as the branch . In the following steps, it is implied that you first test your changes locally in Chrome, then commit and push them to GitHub, and then refresh your site to verify that the changes are live (after waiting a few seconds). Step 4: Add a photo . | Create an images folder in the root of your repository | Find a photo of yourself (or anything else you want) and save it in the images folder | Add an &lt;img&gt; element to your HTML page, with the src attribute set to the path to your image file (images/your-image-file-name.jpg) | Add an alt attribute to the &lt;img&gt; element with a short description of the image as you would describe it to someone who cannot see it. | . Our page now has a photo! Step 5: Add a CSS stylesheet . | Create a new file called style.css in the root of your repository | Add the following CSS to the file: body { /* Set line height to 1.5 times the font size and use the OS’s UI font as the website font */ font: 100%/1.5 system-ui; } . | Link the stylesheet to your HTML page via a &lt;link&gt; element in the &lt;head&gt;. | . Step 6: Add more pages and a navigation menu . | Create two new files: projects/index.html and contact/index.html. | Set their title and add a &lt;h1&gt; with the page title in each. | Add a navigation menu in each page (using &lt;nav&gt;), with links (using &lt;a&gt;) to every page in your site, including the current one. | Add a link to your GitHub profile to the navigation menu with target=\"_blank\" to make it always open in a new tab. | . The directory structure at this point should look a bit like this: . \" alt=\"\" style=\"--natural-width:404;--natural-height:267;background-blend-mode:normal!important;background-clip:content-box!important;background-position:50% 50%!important;background-color:rgba(0,0,0,0)!important;background-image:var(--sf-img-13)!important;background-size:100% 100%!important;background-origin:content-box!important;background-repeat:no-repeat!important\"> . When linking to other pages in the same site, you should use relative URLs. Why do we use index.html? In most web servers, index.html is a special name that is used as the default file to serve when the user visits a directory. This means that users can type https://YOUR_USERNAME.github.io/YOUR_REPOSITORY_NAME/contact/ instead of https://YOUR_USERNAME.github.io/YOUR_REPOSITORY_NAME/contact/index.html. Step 7: Basic contact form . In this step we will add a functional contact form to the contact page. When the user submits the form, their email client will open with a new email to you, with the subject and body prefilled with the values they entered in the form. Contact forms on the web are not made like this anymore, and for good reasons: . | This method exposes your email address to spammers. One of the primary reasons for a contact form is to not expose your email address publicly. | The message formatting is awkward and not very user-friendly. | . However, making a contact form properly would require server-side code and/or a third-party service, which is way beyond the scope of this first lab. | Create a &lt;form&gt; element in contact/index.html and set: . | Its action attribute to mailto:YOUR_EMAIL_ADDRESS (e.g. mailto:foo@example.com) | Its method attribute to POST | Its enctype attribute to text/plain | Why do we need the last two? Experiment by using the form without them and see what happens! | . | Create our contact form fields. We need at least: . | A single line text field (&lt;input&gt;) for the sender’s email address with name=\"email\" and type=\"email\" | A single line text field (&lt;input&gt;) for for the subject with name=\"subject\" (you don’t need type=\"text\" as that is the default) | A multiline text field (&lt;textarea&gt;) for the actual message with name=\"body\" | . | Wrap each field in a &lt;label&gt; with the field name as its contents | Add a submit button with &lt;button&gt; (you don’t need type=\"submit\" as that is the default) | . The directory structure at this point should look a bit like this: . \" alt=\"\" style=\"--natural-width:404;--natural-height:267;background-blend-mode:normal!important;background-clip:content-box!important;background-position:50% 50%!important;background-color:rgba(0,0,0,0)!important;background-image:var(--sf-img-13)!important;background-size:100% 100%!important;background-origin:content-box!important;background-repeat:no-repeat!important\"> . While developing, you will likely need to try your form multiple times. Add default values to all fields via the HTML (using the value attribute on &lt;input&gt;s and element contents in &lt;textarea&gt;) so you don’t have to type them every time. Our contact form should now be functional albeit not very pretty (but don’t worry about that, that’s CSS’ job). An example contact form for Step 7. Try submitting it and see what happens! . Don’t worry about the appearance of your contact form, we will fix that in Lab 2! While it can be tempting, do not use tables to lay your form out in a grid with the form labels next to the form fields. Remember that HTML describes content, not presentation, and tables are for tabular data, not layout. We will see how to use CSS to lay our form out in a grid in Lab 2. Step 8: Adding a CV/resume page . This is a more freeform step, with the goal of getting you to explore HTML on your own and experiment. Add a new page to your website (and link to it from the navigation menu) that contains your CV or resume. If you do not want to publish your CV on the Web for privacy reasons, you can use fake data for all or part of it. In that case, try to keep the structure as close as possible to your real CV and simply change the actual data (e.g. names, dates, places) so that you are still solving a realistic use case. Structure the different sections of content with &lt;section&gt; elements. Think of &lt;section&gt; as the units of content that you would list in a table of contents for that page (which is exactly how they are exposed to assistive technology users). You may also find &lt;article&gt; useful for structuring independent, self-contained units of content (“article” as in “article of clothing” not “newspaper article” — yes, it is confusing!). Elements you will need (excluding those outside &lt;body&gt;): . | Headings, paragraphs, lists | &lt;a&gt; for links | &lt;section&gt; and &lt;article&gt; (see above) | &lt;time&gt; for dates | . Elements you may need: . | &lt;header&gt; for &lt;section&gt; or &lt;article&gt; headers that are more than just a heading | &lt;img&gt; in case you want to include icons or logos of organizations | . Don’t forget to preview your changes locally first, then when you’re happy with them commit and push to GitHub. ",
+    "url": "/labs/lab01/#part-2-creating-our-own-website-from-scratch-and-publishing-it-on-the-web",
+    "relUrl": "/labs/lab01/#part-2-creating-our-own-website-from-scratch-and-publishing-it-on-the-web"
+  },"35": {
+    "doc": "Lab 1: Introduction to the Web platform",
+    "title": "  HTML resources ",
+    "content": "Tools . | HTML Validator: Catch many HTML mistakes early and short-circuit debugging | CodePen: quickly experiment with HTML, CSS, JS and see the results live | . Cheatsheets . | HTML Cheatsheet from the slides | HTML Cheatsheet by MDN | HTML Cheatsheet by Code Academy: All intro HTML concepts in one place for easy reference | . Tutorials . | Getting started with the Web | MDN: Structuring the web with HTML | Codeacademy: Learn HTML | . --> ",
+    "url": "/labs/lab01/#html-resources",
+    "relUrl": "/labs/lab01/#html-resources"
+  },"36": {
+    "doc": "Lab 4: Svelte (Templating & Control Flow)",
+    "title": "Lab 4: Svelte (Templating &amp; Control Flow)",
+    "content": "Page under construction! . ",
+    "url": "/labs/lab04/#lab-4-svelte-templating--control-flow",
+    "relUrl": "/labs/lab04/#lab-4-svelte-templating--control-flow"
+  },"37": {
+    "doc": "Lab 4: Svelte (Templating & Control Flow)",
+    "title": "Lab 4: Svelte (Templating & Control Flow)",
+    "content": " ",
+    "url": "/labs/lab04/",
+    "relUrl": "/labs/lab04/"
+  },"38": {
+    "doc": "📝 Projects",
+    "title": "Projects",
+    "content": " ",
+    "url": "/projects/#projects",
+    "relUrl": "/projects/#projects"
+  },"39": {
+    "doc": "📝 Projects",
+    "title": "📝 Projects",
+    "content": " ",
+    "url": "/projects/",
+    "relUrl": "/projects/"
+  },"40": {
+    "doc": "🏠 Home",
+    "title": "Data Visualization",
+    "content": "DSC 106, Winter 2025 at UC San Diego . Sam Lau he/him . lau@ucsd.edu . Lecture: TBD . Week 1 . Tue Jan 9 LEC 1 The Value of Visualization . Thu Jan 11 LEC 2 Data &amp; Image Models . Fri Jan 12 LAB 1 Altair . Week 2 . Tue Jan 16 LEC 3 (In)Effective Visual Encoding . Thu Jan 18 LEC 4 Perception . Fri Jan 19 LAB 2 HTML/CSS . PROJ 1 Project 1: Expository Visualization . Week 3 . Tue Jan 23 LEC 5 Color . Thu Jan 25 LEC 6 Interaction . Fri Jan 26 LAB 3 JavaScript, SVG . Week 4 . Tue Jan 30 LEC 7 Lecture Cancelled – Sam was sick . Thu Feb 1 LEC 8 Project 2 Feedback . Fri Feb 2 LAB 4 Svelte . PROJ 2 Project 2: Deceptive Visualization . Week 5 . Tue Feb 6 LEC 9 D3.js . Code . Thu Feb 8 LEC 10 Maps . Fri Feb 9 PROJ 2 Project 2 Peer Review . LAB 5 D3 . Week 6 . Tue Feb 13 LEC 11 Visualization Tools . Thu Feb 15 LEC 12 Project 3 Peer Feedback . Fri Feb 16 PROJ 3 Project 3: Interactive Visualization . LAB 6 Mapbox.js . Week 7 . Tue Feb 20 LEC 13 Narrative Visualization . Thu Feb 22 LEC 14 JavaScript and Svelte . Code . Fri Feb 23 FINAL PROJ Final Project Proposal . LAB 7 Scrollytelling . Week 8 . Tue Feb 27 LEC 15 Animation . Code . Thu Feb 29 LEC 16 Uncertainty . Fri Mar 1 FINAL PROJ Final Project Prototype . Week 9 . Tue Mar 5 LEC 17 Evaluation &amp; Review . Thu Mar 7 LEC 18 Final Project Feedback . Fri Mar 8 FINAL PROJ Final Project Demo Video . Week 10 . Tue Mar 12 LEC 19 Final Project Showcase . Thu Mar 14 LEC 20 Final Project Office Hours . Week 11 . Sat Mar 16 FINAL PROJ Final Project . ",
+    "url": "/#data-visualization",
+    "relUrl": "/#data-visualization"
+  },"41": {
+    "doc": "🏠 Home",
+    "title": "🏠 Home",
+    "content": " ",
+    "url": "/",
+    "relUrl": "/"
+  },"42": {
     "doc": "Project 1: Expository Visualization",
     "title": "Project 1: Expository Visualization",
     "content": "An expository article requires the author to investigate an idea, evaluate evidence, expound on the idea, and set forth an argument concerning that idea in a clear and concise manner. In this assignment, you will design an expository visualization to clearly communicate an idea based on a small data set. In addition, you must provide a rigorous rationale for your design choices. You should in theory be ready to explain the contribution of every pixel in the display towards your expository goals. You are free to use any graphics or charting tool you please - including Altair, Plotly, Tableau, and pen and paper. ",
     "url": "/projects/project1/",
     "relUrl": "/projects/project1/"
-  },"20": {
+  },"43": {
     "doc": "Project 1: Expository Visualization",
     "title": "Data: Climate in Major U.S. Cities",
     "content": "The climate of a place can have a tremendous impact on people’s lived experience, ranging from personal moods to how an entire region defines itself. Here, you will examine a set of average monthly climate measurements for six major U.S. cities, roughly covering the edges of the continental United States. The dataset can be downloaded here. The data has seven columns: . | city: The name of the city. | lon: The longitude of the city. | lat: The latitude of the city. | month: The name of a month (Jan, Feb, etc.). | monthnum: The number of a month (1, 2, etc.). | sunshine: The average hours of sunshine observed during that month. | rain: The average inches of rain observed during that month. | . The climate data were collected from https://www.usclimatedata.com/. ",
     "url": "/projects/project1/#data-climate-in-major-us-cities",
     "relUrl": "/projects/project1/#data-climate-in-major-us-cities"
-  },"21": {
+  },"44": {
     "doc": "Project 1: Expository Visualization",
     "title": "Task",
     "content": "Your task is to design a single static (i.e., single image) visualization that you believe effectively communicates an idea about the data, and provide a short write-up (no more than 4 paragraphs) describing your design. Start by choosing a question you’d like your visualization to answer. Design your visualization to answer that question, and use the question as the title of your graphic. While you must use the data set given, you are free to transform the data as you see fit. Such transforms may include (but are not limited to) log transformation, computing percentages or averages, grouping elements into new categories, or removing unnecessary variables or records. You are also free to incorporate additional external data. Your chart image should be interpretable without needing to reference your write-up. Do not forget to include title, axis labels, or legends as needed! . As different visualizations can emphasize different aspects of a data set, your write-up should document what aspects of the data you are attempting to most effectively communicate. In short, what story are you trying to tell? Just as important, also note which aspects of the data might be obscured due to your visualization design. Your write-up should provide a rigorous rationale for your design decisions. Document the visual encodings you used and why they are appropriate for the data and your specific question. These decisions include the choice of visualization type, size, color, scale, and other visual elements, as well as the use of sorting or other data transformations. How do these decisions facilitate effective communication? . ",
     "url": "/projects/project1/#task",
     "relUrl": "/projects/project1/#task"
-  },"22": {
+  },"45": {
     "doc": "Project 1: Expository Visualization",
     "title": "Grading",
     "content": "The assignment score is out of a maximum of 10 points. The expected median score on this assignment is an 8.5, which corresponds to an A-. We will determine scores by judging both the soundness of your design and the quality of the write-up. We will also look for consideration of audience, message, and intended task. Here are examples of aspects that may lead to point deductions: . | Use of misleading, unnecessary, or unmotivated graphic elements. | Missing chart title, axis labels, or data transformation description. | Missing or incomplete design rationale in write-up. | Ineffective encodings for your stated goal (e.g., distracting colors, improper data transformation). | . Your project will get 9/10 points if you fulfill all the requirements in the project description. You’ll get higher than 9 points if you go above and beyond the project requirements, up to 10 points. We’ll possibly give even higher than 10 points if the work is truly exceptional (e.g. could be published in a popular news article). From our perspective, the project description tells you how to get a passing grade on the project — if you followed the description and published your work as part of a portfolio, it would be considered good quality work by an outside reviewer (e.g. a professional data scientist), but probably wouldn’t be outstanding or memorable. Getting a 9/10 on the project grade reflects that. Projects that go “above and beyond” the assignment requirements to produce effective graphics may include, for example, outstanding visual design, meaningful incorporation of external data to reveal important trends, exceptional creativity, or effective annotations and other narrative devices. ",
     "url": "/projects/project1/#grading",
     "relUrl": "/projects/project1/#grading"
-  },"23": {
+  },"46": {
     "doc": "Project 1: Expository Visualization",
     "title": "Submission Details",
     "content": "This is an individual assignment. You may not work in groups. Your completed assignment is due on Fri 1/19, by 11:59pm. You must submit your assignment using Gradescope. Please upload a single image file (PNG, JPG) of your visualization design using the correct file extension, such as “a1.png” for PNG image files or “a1.jpg” for JPEG image files. Please do not include your name or PID in the filename, and be sure your image is sized for a reasonable viewing experience! Viewers should not have to zoom or scroll in order to effectively view your submission. In addition, submit your write-up to Gradescope as a plain text file, named exactly as “readme.txt”, with content that follows the instructions above. Do not include your name or PID in the filename! . ",
     "url": "/projects/project1/#submission-details",
     "relUrl": "/projects/project1/#submission-details"
-  },"24": {
+  },"47": {
     "doc": "Project 2: Deceptive Visualization",
     "title": "Project 2: Deceptive Visualization",
     "content": "Data visualizations are becoming a key medium for the public to understand news and information. It’s crucial to recognize how the design of a visualization can affect what people understand and remember from the data. In this task, you need to pick a dataset you find interesting and create two static visualizations using the same dataset. The first should be a truthful representation of the data. The second should be a deceptive visualization, designed to deceive the viewer. However, you should avoid clear distortions or leaving out information for this deceptive visualization. ",
     "url": "/projects/project2/",
     "relUrl": "/projects/project2/"
-  },"25": {
+  },"48": {
     "doc": "Project 2: Deceptive Visualization",
     "title": "Assignment",
     "content": "Your objective is to create two static (single image) visualizations of a selected dataset. The first visualization should be designed to clearly and sincerely convey insights from the data. In contrast, the second should be crafted to intentionally mislead the viewer, causing them to make incorrect inferences. Additionally, you are required to write a brief explanation, limited to four paragraphs, outlining your design strategy for both visualizations. In this task, an earnest visualization is defined as one that: . | Is easily understandable and can be interpreted by the general public. | Uses visual encodings that are suitable and effective for the desired purpose. | Clearly and openly describes any transformations made to the data. | Transparently communicates the source of the data and any possible biases involved. | . Conversely, a deceptive visualization typically displays these characteristics: . | The graphical depiction is deliberately unsuitable or deceptive. | Headings are crafted to influence the viewer’s understanding in a biased manner. | There is intentional manipulation or selective filtering of data to deceive. | It’s not transparent about possible bias present in the data. | . For the earnest visualization, your goal is to be as clear and transparent as possible to help viewers answer your intended question. For the deceptive visualization, your goal is to trick the viewer (including the course staff!) into believing that the visualization is legitimate and earnest. It should not be immediately obvious which visualization is trying to be deceptive. Subtle ineffective choices in the design should require close and careful reading to be identified. For the deceptive visualization, misleading strategies are fine but outright lying is not. For example, sketchy, unreliable or untrustworthy input datasets are discouraged, but misleading omission, filtering, or transformation of trustworthy data records is fine. Deliberate lies in the title, axes, labels, or annotations is discouraged, but technically true/relevant but otherwise misleading text in the visualization is fine. For both visualization designs, start by choosing a question you would like to answer. Design your visualization to answer that question either correctly (for the earnest visualization) or incorrectly (for the deceptive visualization). You may choose to address a different question with each visualization. Be sure to document the question as part of the visualization design (e.g., title, subtitle, or caption) and in your assignment write-up. Your write-up should contain the following information: . | The specific question each visualization aims to answer. | A description of your design rationale and important considerations for each visualization. | . ",
     "url": "/projects/project2/#assignment",
     "relUrl": "/projects/project2/#assignment"
-  },"26": {
+  },"49": {
     "doc": "Project 2: Deceptive Visualization",
     "title": "Recommended Data Sources",
     "content": "To help get you started, this assignment, we’ve provided three possible datasets for you to use, although you’re welcome to select any dataset you prefer. You must use the same dataset for both visualizations, but you may transform the data differently, use additional data variables, or choose to address a different question for each design. These datasets are intentionally chosen to cover politically charged topics for the simple reason that these are typically the types of data where deceptive visualizations may proliferate. Data on Energy by Our World in Data, 1900-2022 . Our World in Data, a non-profit that gathers and analyzes data about global issues, has published data about energy usage for countries (e.g. coal consumption, hydropower consumption, etc.) around the world since 1900. You can download the data here. Education Data . Every year, the federal government releases large amounts of data on US schools, districts, and colleges. However, this information is scattered across multiple datasets. Urban Institute’s Education Data Explorer tries to fix this issue by putting together data from various sources such as the National Center for Education Statistics’ Common Core of Data (CCD), the Civil Rights Data Collection (CRDC), the US Department of Education’s EDFacts, and IPUMS’ National Historical Geographic Information System (NHGIS) and makes it available as an API. You can download the data by making an API call using the code available on the website or alternatively clicking on the downloads button on the website. Internet Usage Data . UNdata brings international statistical databases within easy reach of users through a single-entry point. It is maintained by the Development Data Section of the Development Data and Outreach Branch within the Statistics Division of the Department of Economic and Social Affairs (UN DESA) of the UN Secretariat. You can find the internet usage data here. Feel free to take a look at some of the other datasets made available by UNdata here. This data has the following columns: . | Region/country Code: code representing the country or region. | Region or Country Name: Field containing the country name. | Year: Field containing the year at which the data was collected. | Value: Field denoting the Percentage of individuals using the internet. | Source: Field denoting the source of the data. | . Here are some other possible sources to consider. You are also free to use data from a source different from those included here. If you have any questions on whether a dataset is appropriate, please ask the course staff ASAP! . | City of San Diego open data | U.S. Government Open Datasets | U.S. Census Bureau - Census Datasets | IPUMS.org - Integrated Census &amp; Survey Data from around the World | Federal Elections Commission - Campaign Finance &amp; Expenditures | Federal Aviation Administration - FAA Data &amp; Research | NOAA Daily Weather - NOAA Daily Global Historical Climatology Network Data | yelp.com/dataset - Yelp Open Dataset | fivethirtyeight.com - Data and Code behind the Stories and Interactives | Buzzfeed News - Open-source data from BuzzFeed’s newsroom | . ",
     "url": "/projects/project2/#recommended-data-sources",
     "relUrl": "/projects/project2/#recommended-data-sources"
-  },"27": {
+  },"50": {
     "doc": "Project 2: Deceptive Visualization",
     "title": "Grading",
     "content": "The assignment score is out of a maximum of 10 points. We will determine scores by judging the soundness of your visualization designs, the duplicity of your deceptive visualization, and the quality of the write-up. Here are examples of aspects that may lead to point deductions: . | Obvious identification of the earnest and deceptive visualizations. | Ineffective visual encodings for your stated goal. | Missing indication of the main analysis question. | Missing or incomplete design rationale in write-up. | . We will reward entries that go above and beyond the assignment requirements to produce effective (and deceptive) graphics. Examples may include outstanding visual design, effective annotations and other narrative devices, exceptional creativity, or deceptive designs that require the write-up in order to properly identify the misleading design components. ",
     "url": "/projects/project2/#grading",
     "relUrl": "/projects/project2/#grading"
-  },"28": {
+  },"51": {
     "doc": "Project 2: Deceptive Visualization",
     "title": "Submission Details",
     "content": "This is an individual assignment. You may not work in groups. Your completed assignment is due on Fri 2/2, by 11:59 pm. You must submit your assignment using Gradescope. Please upload two image files (PNG, JPG) of your visualization design using the correct file extension, such as “a2_earnest.png” and “a2_deceptive.png” for PNG image files or “a2_earnest.jpg” or “a2_deceptive.jpg” for JPEG image files. Please do not include your name or PID in the filename, and be sure your image is sized for a reasonable viewing experience! Viewers should not have to zoom or scroll in order to effectively view your submission. In addition, submit your write-up to Gradescope as a plain text file, named exactly as “readme.txt”, with content that follows the instructions above. Do not include your name or PID in the filename! . Please use the correct file names for your submissions; typos that require manual correction by the course staff may result in point deductions. Do not worry about resubmissions, feel free to resubmit as needed prior to the deadline (if you are using late days to do a resubmission, please notify the course staff). Remember, the visualization itself should not give away which design is earnest and which is deceptive; the file names will be randomized by the course staff prior to peer review. ",
     "url": "/projects/project2/#submission-details",
     "relUrl": "/projects/project2/#submission-details"
-  },"29": {
+  },"52": {
     "doc": "Project 2: Deceptive Visualization - Peer Grading",
     "title": "Project 2: Deceptive Visualization - Peer Grading",
     "content": "You will review two Project 2 submissions from your classmates and share constructive feedback. This assignment is an opportunity to both (a) develop skills to effectively evaluate and critically analyze visualization designs, and (b) help guide subsequent efforts by your peers to improve project quality and visualization design across the class. An important goal for this assignment is to understand how visualization designs might aim to intentionally (or unintentionally) mislead the viewer, so as to provide you with more confidence and skepticism when interpreting visualizations in the wild. ",
     "url": "/projects/project2peer/",
     "relUrl": "/projects/project2peer/"
-  },"30": {
+  },"53": {
     "doc": "Project 2: Deceptive Visualization - Peer Grading",
     "title": "Assignment",
     "content": "For each peer review, begin by critically reading the visualizations and try to determine which is the earnest design and which is the deceptive design. Note what you discover and learn about the data set, and what properties lead you to a particular conclusion. You must identify which visualization you believe to be intentionally deceptive, along with a rationale indicating which design elements led you to this conclusion. Next, author constructive critiques for each visualization design. Consider the following concerns: . | Are expressive and effective visual encodings applied? | How well does the choice of encodings they reveal the most important features or trends of the underlying data? | Is critical data easily seen, or is it somehow hidden? | Is an audience likely to understand the visualization? | How clear and transparent is the design? | Are elements appropriately titled or labeled? | Is there appropriate spacing, layout, legible type, and other forms of design styling? | Is the overall display confusing or cluttered? | Is there important information missing that is needed to interpret the visualization approapriately? | . To share critique, we will use the “I like / I wish / What if?” format. This involves sharing positive feedback on effective aspects, critical (but respectful!) feedback on what might be improved, and more wild (even half-baked) ideas your fellow students could explore in subsequent design iterations or future work. For each visualization, you must provide at least two statements in each of the I like / I wish / What if? categories. ",
     "url": "/projects/project2peer/#assignment",
     "relUrl": "/projects/project2peer/#assignment"
-  },"31": {
+  },"54": {
     "doc": "Project 2: Deceptive Visualization - Peer Grading",
     "title": "Submission Details",
     "content": "This is an individual assignment. You may not work in groups. Your peer reviews are due Fri 02/09, 11:59pm. The links to the submissions that you are required to evaluate will be emailed to you. You must submit peer reviews for two Project 2 submissions. To submit your review, you must use gradescope. Please carefully respond to each of the questions raised. ",
     "url": "/projects/project2peer/#submission-details",
     "relUrl": "/projects/project2peer/#submission-details"
-  },"32": {
+  },"55": {
     "doc": "Project 3: Interactive Visualization",
     "title": "Project 3: Interactive Visualization",
     "content": "For this assignment, you will explore the issues involved in implementing interactive visualizations. You will build a visualization that enables interactive exploration of a dataset of your choosing (we do have some suggestions as well which you can find below) and deploy it on the web. One goal of this assignment is to gain familiarity with implementing interaction techniques for visualizations. For example, the zipdecode and NameGrapher applications apply the interactive technique of dynamic queries – as explored in the earlier HomeFinder application – to the problem of uncovering patterns in zip codes and baby names. Similarly, treemaps were originally developed to display hierarchical file structures and were later adapted to the problem of interactively depicting a map of the stock market. We have seen many other examples of interactive visualization techniques in class. The goal of this assignment is not only for you to gain hands-on implementation experience, but also for you to think about the effectiveness of the specific techniques for your chosen data domain. One challenge is to scope the assignment so that you can finish it within two weeks. Focus on designing a limited yet compelling visualization that enables interactive exploration along a few critical dimensions. The NameGrapher application is a nice example that uses a simple but elegant interaction design to enable engaging explorations. A tightly focused, well-implemented interactive graphic is much preferred to a sprawling design that attempts too much! . ",
     "url": "/projects/project3/",
     "relUrl": "/projects/project3/"
-  },"33": {
+  },"56": {
     "doc": "Project 3: Interactive Visualization",
     "title": "Team Registration",
     "content": "For this assignment, you should work in teams of 2-3 students. You might want to find project partners that you will continue to work with for the final project. As soon as you have formed a team and chosen a dataset, submit the team registration form. Your form must include the names, UCSD email addresses, and PIDs of each team member, along with a concise title for your interactive visualization. The visualization title need not be exact, just a rough title should be a good start. If you are looking for project partners, please post to Ed to find classmates with similar interests! You should submit your team registration by Mon 02/05, 11:55 pm. You will submit your interactive prototype as a webpage hosted on GitHub Pages. ",
     "url": "/projects/project3/#team-registration",
     "relUrl": "/projects/project3/#team-registration"
-  },"34": {
+  },"57": {
     "doc": "Project 3: Interactive Visualization",
     "title": "Deliverables",
     "content": "Design an interactive graphic aimed at enabling understanding of a compelling question for a dataset of your choosing or you may choose any of the suggested datasets. To determine what subset of the data and which interactive options are most promising, you may want to perform additional exploratory analysis. What aspects of the data reveal the most interesting discoveries or stories? Do not feel obligated to try to convey everything about the data: focus on a compelling subset. Your graphic must include interactions that enable exploration. Possible techniques include panning, zooming, brushing, details-on-demand (e.g., tooltips), dynamic query filters, and selecting different measures to display. You are free to also consider highlights, annotations, or other narrative features intended to draw attention to particular items of interest and provide additional context. Implement your interactive graphic and deploy it to the web. You may only use only D3.js for this project. Vega-lite/Plotly/Altair/any other high-level plotting library or tool are strictly not allowed for this project. You can use other non-plotting related JavaScript libraries, e.g. Lodash, Svelte, Moment, etc. Your graphic should not require customized server-side support; you should simply load data from a static data file or public web API. Please refer to the Tech Support page for instructions on deploying a GitHub Pages website using Svelte. For deploying websites with other libraries, feel free to explore on your own. Using our template to complete this project is not mandatory. You will use GitHub pages to host your visualization from your project repository. Make sure that you make your repository “Public”. We recommend keeping everything (development files and website) in your master branch: either serve your website from the root folder or the “/docs” folder. Your repo must also contain the (unobfuscated) source code for your visualization. Your deployed web page should also include a write-up with the following components: . | A rationale for your design decisions. How did you choose your particular visual encodings and interaction techniques? What alternatives did you consider and how did you arrive at your ultimate choices? . | An overview of your development process. Describe how the work was split among the team members. Include a commentary on the development process, including answers to the following questions: Roughly how much time did you spend developing your application (in people-hours)? What aspects took the most time? . | . You can either include your write-up on the same page as your visualization or link to a separate file. ",
     "url": "/projects/project3/#deliverables",
     "relUrl": "/projects/project3/#deliverables"
-  },"35": {
+  },"58": {
     "doc": "Project 3: Interactive Visualization",
     "title": "Grading Criteria",
     "content": "Projects that squarely meet the requirements for the assignment will receive a score of 9/10. Going beyond the call of duty can net additional points, for example: . | Advanced interaction techniques | Novel visualization elements | Effective multi-view coordination | Thoughtful and elegant graphic design | Insightful &amp; engaging exploration experience | . Point deductions will be made when projects suffer from: . | Errors or broken features | Ineffective visual encodings | Confusing interface design or unhelpful interactions | Lack of exploratory interaction techniques | Incomplete or insufficient write-up | . ",
     "url": "/projects/project3/#grading-criteria",
     "relUrl": "/projects/project3/#grading-criteria"
-  },"36": {
+  },"59": {
     "doc": "Project 3: Interactive Visualization",
     "title": "Submission Details",
     "content": "Submit your team registration form by Mon 02/05, 11:55 PM. You must have a working prototype online by Fri 02/16, 11:59 pm. Your prototype should be accessible on GitHub pages using a publicly viewable URL. In addition, you must submit the URL on Gradescope. One submission per team is sufficient. Submissions will be reviewed as part of a subsequent peer review assignment (due Fri 02/23), so try to avoid a late submission; assignments submitted late may not be included as part of the peer review and thus not receive peer feedback. ",
     "url": "/projects/project3/#submission-details",
     "relUrl": "/projects/project3/#submission-details"
-  },"37": {
+  },"60": {
     "doc": "Project 3: Interactive Visualization",
     "title": "Rubric",
     "content": "The assignment is out of 10 points possible. Submissions that squarely meet the project requirements (Satisfactory column) will get 9/10 points. | Component | Excellent | Satisfactory | Not Satisfactory | . | Visual Encodings | The visualization does not violate the expressiveness criteria and the design choices (marks and encoding channels) are clear, evocative, and effective. (+3 points) | The visualization does not violate the expressiveness criteria, but another set of design choices (marks and encoding channels) could have been more effective (e.g. using the area visual channel instead of position when possible). (+2.5 points) | The visualization violates the expressiveness criteria (e.g. heavy overplotting, encodings that imply incorrect readings, etc.), and these violations are not addressed using the available interactions (e.g. overplotting that cannot be filtered or zoomed into). (+1.5 points) | . | Data Transformations |   | The visualization uses appropriate data transformations (e.g. filtering, aggregating) and clearly describes the transformations to the reader (e.g. in the subtitle of the plot). (+1.5 points) | The visualization used an inappropriate set of data transformations (e.g. filtering out important outliers), or did not clearly describe these transformations to the reader. (+1 point) | . | Interaction | The interactive elements of the plot are polished, mostly bug-free, and enable the reader to discover interesting patterns in the data. (+3.5 points) | The interactive elements of the plot are functional and enable the reader to discover interesting patterns in the data, but a static plot (perhaps with a different encoding) could have conveyed the same information just as effectively. (+3 points) | The plot would have been substantially more effective as a static plot without the interaction; or, the interaction has major bugs that preclude use. (+2 point) | . | Writeup |   | The writeup clearly describes the motivation for the visualization and the rationale for its design decisions (e.g. the visual encodings, data transformations, color palette, etc.). It also contains an overview of the team’s development process. (+2 points) | One or more required elements of the writeup has major issues (e.g. rationale misses important parts of the visualization design) or is missing. (+1 points) | . | Creativity and Originality | The submission exceeds the assignment requirements, with original insights or particularly engaging visualizations. (+1 bonus point) | The submission meets the assignment requirements. (+0 points) |   | . ",
     "url": "/projects/project3/#rubric",
     "relUrl": "/projects/project3/#rubric"
-  },"38": {
+  },"61": {
     "doc": "Project 3: Interactive Visualization",
     "title": "Suggested Data Sources",
     "content": "To help get you started, this assignment, we’ve provided three possible datasets for you to use, although you’re welcome to select any dataset you prefer. Note that these datasets are the same as the ones from Project 2. Feel free to reuse the dataset you used in Project 2 to speed up your development process. Data on Energy by Our World in Data, 1900-2022 . Our World in Data, a non-profit that gathers and analyzes data about global issues, has published data about energy usage for countries (e.g. coal consumption, hydropower consumption, etc.) around the world since 1900. You can download the data here. Education Data . Every year, the federal government releases large amounts of data on US schools, districts, and colleges. However, this information is scattered across multiple datasets. Urban Institute’s Education Data Explorer tries to fix this issue by putting together data from various sources such as the National Center for Education Statistics’ Common Core of Data (CCD), the Civil Rights Data Collection (CRDC), the US Department of Education’s EDFacts, and IPUMS’ National Historical Geographic Information System (NHGIS) and makes it available as an API. You can download the data by making an API call using the code available on the website or alternatively clicking on the downloads button on the website. Internet Usage Data . UNdata brings international statistical databases within easy reach of users through a single-entry point. It is maintained by the Development Data Section of the Development Data and Outreach Branch within the Statistics Division of the Department of Economic and Social Affairs (UN DESA) of the UN Secretariat. You can find the internet usage data here. Feel free to take a look at some of the other datasets made available by UNdata here. This data has the following columns: . | Region/country Code: code representing the country or region. | Region or Country Name: Field containing the country name. | Year: Field containing the year at which the data was collected. | Value: Field denoting the Percentage of individuals using the internet. | Source: Field denoting the source of the data. | . Here are some other possible sources to consider. You are also free to use data from a source different from those included here. If you have any questions on whether a dataset is appropriate, please ask the course staff ASAP! . | City of San Diego open data | U.S. Government Open Datasets | U.S. Census Bureau - Census Datasets | IPUMS.org - Integrated Census &amp; Survey Data from around the World | Federal Elections Commission - Campaign Finance &amp; Expenditures | Federal Aviation Administration - FAA Data &amp; Research | NOAA Daily Weather - NOAA Daily Global Historical Climatology Network Data | yelp.com/dataset - Yelp Open Dataset | fivethirtyeight.com - Data and Code behind the Stories and Interactives | Buzzfeed News - Open-source data from BuzzFeed’s newsroom | . ",
     "url": "/projects/project3/#suggested-data-sources",
     "relUrl": "/projects/project3/#suggested-data-sources"
-  },"39": {
+  },"62": {
     "doc": "Project 3: Interactive Visualization - Peer Grading",
     "title": "Project 3: Interactive Visualization - Peer Grading",
     "content": "You will review two Project 3 submissions from your classmates and share constructive feedback. This assignment is an opportunity to both (a) develop skills to effectively evaluate and critically analyze visualization designs, and (b) help guide subsequent efforts by your peers to improve project quality and visualization design across the class. ",
     "url": "/projects/project3peer/",
     "relUrl": "/projects/project3peer/"
-  },"40": {
+  },"63": {
     "doc": "Project 3: Interactive Visualization - Peer Grading",
     "title": "Assignment",
     "content": "For each peer review, begin by engaging with the prototype. Interact with the visualization and try to exhaustively cover the views and interactions that the prototype supports. Note what you discover and learn about the data set as you do so. Be sure to also read the write-ups to gain more insight into the process and design decisions behind the prototype. Next, author a constructive critique of the visualization covering at least the following concerns: . | Visual Encodings. Are expressive and effective visual encodings applied? How well do they reveal the most important features or trends of the underlying data? Is critical data easily seen, or is it unnecessarily “hidden” and only revealed in response to interaction? Is the target audience likely to understand the visualization? | Interaction Techniques. Do the supported interaction techniques enable more effective discovery of interesting trends, patterns or outliers? Do they engage the viewer in a process of meaningful exploration or learning? Are the interactions well-implemented, without notable performance issues or usability problems? | Design Quality. Assess the overall design quality in terms of organization and presentation. Are elements appropriately titled or labeled? Is there appropriate spacing, layout, legible type, and other forms of design styling? Is it clear where to begin viewing/interacting with the design? Is the overall display confusing or cluttered? How successful is the prototype in meeting the intended goals? | . For each of the concerns listed above – visual encodings, interaction techniques, and overall design quality – we recommend using the “I like / I wish / What if?” format. Be sure to share positive feedback on effective aspects, critical (but respectful!) feedback on what might be improved, and more wild (even half-baked) ideas a team might explore in subsequent design iterations. Each peer review should contain at least a dozen such comments (average of 4 comments for each section (I Like/I wish/What if?)), often much more! . ",
     "url": "/projects/project3peer/#assignment",
     "relUrl": "/projects/project3peer/#assignment"
-  },"41": {
+  },"64": {
     "doc": "Project 3: Interactive Visualization - Peer Grading",
     "title": "Submission Details",
     "content": "This is an individual assignment. You may not work in groups. Your peer reviews are due Tue 02/27, 11:59pm. The links to the submissions that you are required to evaluate will be emailed to you. You must submit peer reviews for two Project 3 submissions. To submit your review, you must use gradescope. Please carefully respond to each of the questions raised. ",
     "url": "/projects/project3peer/#submission-details",
     "relUrl": "/projects/project3peer/#submission-details"
-  },"42": {
+  },"65": {
     "doc": "📚 Resources",
     "title": "📚 Resources",
     "content": " ",
     "url": "/resources/#-resources",
     "relUrl": "/resources/#-resources"
-  },"43": {
+  },"66": {
     "doc": "📚 Resources",
     "title": "Table of contents",
     "content": ". | Altair | Learning D3 | Storytelling Websites | Visualization Principles | Visualization Design Ideas | Color Palettes | . ",
     "url": "/resources/#table-of-contents",
     "relUrl": "/resources/#table-of-contents"
-  },"44": {
+  },"67": {
     "doc": "📚 Resources",
     "title": "Altair",
     "content": ". | Altair Visualization Curriculum | Vega-Altair User Guide | . ",
     "url": "/resources/#altair",
     "relUrl": "/resources/#altair"
-  },"45": {
+  },"68": {
     "doc": "📚 Resources",
     "title": "Learning D3",
     "content": ". | D3 Gallery | D3 in Depth | Intro to D3.js | Interactive Charts with D3 | https://wattenberger.com (Contain useful blog posts by a front-end developer, especially on learning about D3.js) | https://observablehq.com/@wattenberger/prototyping-in-d3 (D3 Prototyping) | https://vallandingham.me/vis/ (other cool blog) | . ",
     "url": "/resources/#learning-d3",
     "relUrl": "/resources/#learning-d3"
-  },"46": {
+  },"69": {
     "doc": "📚 Resources",
     "title": "Storytelling Websites",
     "content": ". | https://pudding.cool . | https://github.com/the-pudding (Cool storytelling website, they provide open-source code, too) . | . -——————————————————————————————————- . | https://distill.pub . | https://github.com/distillpub (Interactive Machine Learning) . | . -——————————————————————————————————- . | https://seeing-theory.brown.edu/#firstPage | https://github.com/seeingtheory/Seeing-Theory (Cool Interactive Visualization on learning probability and statistics) | . -——————————————————————————————————- . | https://d3gt.com/unit.html | https://github.com/mrpandey/d3graphTheory (Visualizing Graph Theory Concepts) | . ",
     "url": "/resources/#storytelling-websites",
     "relUrl": "/resources/#storytelling-websites"
-  },"47": {
+  },"70": {
     "doc": "📚 Resources",
     "title": "Visualization Principles",
     "content": ". | The Visual Display of Quantitative Information by Edward Tufte | Fundamentals of Data Visualization by Claus Wilke | . ",
     "url": "/resources/#visualization-principles",
     "relUrl": "/resources/#visualization-principles"
-  },"48": {
+  },"71": {
     "doc": "📚 Resources",
     "title": "Visualization Design Ideas",
     "content": ". | https://www.awwwards.com (HIGHLY RECOMMEND for design inspirations!) | https://datavizproject.com (1 dataset, 100 visualizations) | https://www.data-to-viz.com (taxonomy of visualizations) | https://www.economist.com/graphic-detail?page=1 (Data Viz examples by The Economist) | https://informationisbeautiful.net (cool data viz designs) | . ",
     "url": "/resources/#visualization-design-ideas",
     "relUrl": "/resources/#visualization-design-ideas"
-  },"49": {
+  },"72": {
     "doc": "📚 Resources",
     "title": "Color Palettes",
     "content": ". | https://color.adobe.com/create/color-wheel (Adobe color palettes) | http://zhongguose.com/#danqianhong (Chinese Traditional Colors) | http://nipponcolors.com (Japanese Traditional Colors) | https://picular.co. (Find the color of anything you want) | https://webgradients.com (Different kind of linear gradients) | https://www.happyhues.co/palettes/17 (Different color palette preview on same web design) | . ",
     "url": "/resources/#color-palettes",
     "relUrl": "/resources/#color-palettes"
-  },"50": {
+  },"73": {
     "doc": "📚 Resources",
     "title": "📚 Resources",
     "content": " ",
     "url": "/resources/",
     "relUrl": "/resources/"
-  },"51": {
+  },"74": {
     "doc": "👩‍🏫 Staff",
     "title": "👩‍🏫 Staff",
     "content": " ",
     "url": "/staff/",
     "relUrl": "/staff/"
-  },"52": {
+  },"75": {
     "doc": "👩‍🏫 Staff",
     "title": "Instructor",
     "content": "Sam Lau he/him . lau@ucsd.edu Lecture: TBD . Sam Lau is an assistant teaching professor in the Halıcıoğlu Data Science Institute at UC San Diego. His research creates novel interfaces for learning and teaching data science, including the popular Pandas Tutor tool (https://pandastutor.com/) which serves over 40,000 people per year. He is the author of an introductory data science textbook called Learning Data Science, published by O’Reilly Media in 2023. ",
     "url": "/staff/#instructor",
     "relUrl": "/staff/#instructor"
-  },"53": {
+  },"76": {
     "doc": "👩‍🏫 Staff",
     "title": "Staff",
     "content": " ",
     "url": "/staff/#staff",
     "relUrl": "/staff/#staff"
-  },"54": {
+  },"77": {
     "doc": "📖 Syllabus",
     "title": "📖 Syllabus",
     "content": " ",
     "url": "/syllabus/#-syllabus",
     "relUrl": "/syllabus/#-syllabus"
-  },"55": {
+  },"78": {
     "doc": "📖 Syllabus",
     "title": "Table of contents",
     "content": ". | About 🧐 | Getting Started 💻 . | Websites | Development Environment | . | Communication 💬 | Course Components 🍎 . | Lectures | Participation | Discussions | Labs | Projects | Office Hours | Weekly Schedule | . | Policies 💯 . | Grading | Late Policy, Slip Days, and Drops | Regrade Requests | Incompletes | A note on letter grades | . | Collaboration Policy and Academic Integrity 🤝 . | Why is academic integrity important? | What counts as cheating? | How can I be sure that my actions are NOT considered cheating? | . | Support 🫂 . | Accommodations | Diversity and Inclusion | Campus Resources | . | Acknowledgements 🙏 | . ",
     "url": "/syllabus/#table-of-contents",
     "relUrl": "/syllabus/#table-of-contents"
-  },"56": {
+  },"79": {
     "doc": "📖 Syllabus",
     "title": "About 🧐",
     "content": "Data visualization is one of our most powerful cognitive tools to make sense of large amounts of data. Well-designed visualizations enable us to use visual processing rather than calculation, allowing to “see” patterns in data. DSC 106 is a project-centered course that covers fundamental principles and techniques in data visualization. By the end of the course, you will: . | Understand and apply key visualization techniques and theory. | Design, evaluate, and critique visualization designs. | Implement interactive data visualizations for the web using D3.js. | Develop a substantial visualization project. | . Prerequisites: DSC 80. ",
     "url": "/syllabus/#about-",
     "relUrl": "/syllabus/#about-"
-  },"57": {
+  },"80": {
     "doc": "📖 Syllabus",
     "title": "Getting Started 💻",
     "content": "The course website, dsc106.com, will contain links to all course content. There are also a few things you’ll need to do to get set up. Websites . You’ll need to make accounts or join the class on the following sites. | Ed: We’ll be using Ed as our course message and discussion board. More details are in the Communication section below. If you didn’t already get an invitation to our Ed course, sign up here. | Gradescope: You’ll submit all projects to Gradescope. This is where all of your grades will live as well. Most of the assignments will be coding assignments. You should have received an email invitation for Gradescope, but if not please join Gradescope using entry code: B2G6ZN. | GitHub: Like in DSC 30 and 80, you’ll access all course content (lecture slides and assignments) by pulling our course GitHub repository. That repo is here: https://github.com/dsc-courses/dsc106-wi24. In most assignments, you won’t need to push anything to GitHub. | Zoom (optional): To access remote office hours, if you’d like. | . Note that we will not be using Canvas for anything this quarter. ⚠️If you enroll in the class later than 1/5, please join edsteam use this link and join Gradescope using entry code: B2G6ZN manually. Development Environment . As soon as you are able to, go follow the steps in the Tech Support page of the course website to set up your development environment for the course. ",
     "url": "/syllabus/#getting-started-",
     "relUrl": "/syllabus/#getting-started-"
-  },"58": {
+  },"81": {
     "doc": "📖 Syllabus",
     "title": "Communication 💬",
     "content": "This quarter, we’ll be using Ed as our course message board. You will be added to Ed automatically; use the invite link in the section above if you weren’t added. If you have a question about anything to do with the course — if you’re stuck on a problem, didn’t understand something from lecture, want clarification on course logistics, or just have a general question about data science — you can make a post on Ed. We only ask that if your question includes some or all of an answer (even if you’re not sure it’s right), please make your post private so that others cannot see it. You can also post anonymously to other students if you prefer. Course staff will regularly check Ed and try to answer any questions that you have. You’re also encouraged to answer questions asked by other students. Explaining something is a great way to solidify your understanding of it! . Please don’t email individual staff members, just make a private or public Ed post instead. ",
     "url": "/syllabus/#communication-",
     "relUrl": "/syllabus/#communication-"
-  },"59": {
+  },"82": {
     "doc": "📖 Syllabus",
     "title": "Course Components 🍎",
     "content": "Lectures . Lectures will be held in-person on Tuesday and Thursday from 3:30-4:50PM in [CENTR 115] and 5:00-6:20PM in [CENTR 119]. Lecture attendance is not strictly required, but is one option for earning your participation grade (detailed below). Lectures will be podcasted, and lecture slides will be posted before class. Participation . Developing expertise in data visualization also means being able to clearly communicate, critique, and explain data visualizations to others. To develop this skill, participation in class will count for 8% of your course grade. Each week of the course will count for 1% of your grade, and the lowest two weeks will be dropped. There are 3 options for fulfilling the participation expectations for a particular week: . | Attend both lectures and participate in the lecture exercises. Participation will be tracked using an online form given during class. | Share and critique at least 1 interesting data visualization on Ed under the Critiques category that hasn’t already been shared during class, labs, or projects. To receive credit, the critique needs to have at least 3 paragraphs of around 3-4 sentences each. The three paragraphs should: . | Summarize the visualization and describe how it connects to a lecture concept from the current week or the previous week. If a dataset for the visualization is publicly available, provide a link. | Describe the strengths of this particular visualization. | Describe the weaknesses of this particular visualization. | . | Respond to 2 different visualization critiques from other students on Ed under the Critiques category. To receive credit, each response needs to have at least 2 paragraphs of around 3-4 sentences each. The paragraphs should: . | Explain what parts of the critique you agree and disagree with. | Suggest an improvement for the visualization. You can sketch out your improved visualization or write a program to generate it. | . | . ⚠️If you choose to fulfill lecture participation through option 2 or 3, you must make a public post on EdStem under the Critiques category. In the title of your post or response, clearly state that it is being used as an opportunity to fulfill lecture participation. The deadline for submitting critiques to count for the corresponding week is Sunday at 11:59 PM. Discussions . We will not be using the scheduled discussion sections for this course. We encourage you to attend office hours instead. Labs . There will be 7 lab assignments due weekly throughout the quarter. Each lab assignment is designed to be a walkthrough of practical material that you will use for your projects. Labs are meant to serve as worked examples: the solution code will be given to you as part of the lab. To receive credit for labs, you will need to complete the lab and then get checked off during office hours by a TA. The check off requirements will be clearly described at the end of each lab assignment. Each lab is worth 2% of your final grade, and the lowest lab grade will be dropped. Labs will be released on Fridays and due on the following Fridays at 11:59PM. You will access labs by pulling the course GitHub repository. Projects . There will be 4 projects due throughout the quarter. The projects are open-ended and are the primary focus of the course. As such, our standards for grading will be similar to the way portfolio pieces are evaluated for internship/research lab/job applications — we expect your best work! The first three projects are solo projects. For the final project, you may work in pairs. Working in Pairs . You may work together on the final project (and only the final project!) with a partner. If you work with a partner, you are both required to actively contribute to all parts of the project. You must both be working on the assignment at the same time together, either physically or virtually on a Zoom call. You are encouraged to follow the pair programming model, in which you work on just a single computer and alternate who writes the code and who thinks about the problems at a high level. In particular, you cannot split up the project and each work on separate parts independently. If you work with a partner: . | Only one partner needs to submit the project on Gradescope; this partner should add the other partner to their submission. | You and your partner will receive the same score on any submissions you make together. | . If you are unhappy with your partnership (e.g., if your partner does not keep in touch, does not come prepared to work on the assignment, or does not seem to be engaged in the process), please first address your concerns to your partner, and try to agree on what should be done to make the partnership work well for both of you. If that approach is not successful, explain the issues to the instructors, who will work with you and your partner to improve the situation. Note that you may not work with partners on lab assignments, however you’re encouraged to discuss all assignments with others at a conceptual level in office hours and study groups. Office Hours . To get help on assignments and concepts, course staff will be hosting several office hours per week. The majority of our office hours are held in-person, though a few are held remotely – if you’re able to, you’re strongly encouraged to attend in-person. See the Calendar tab of the course website for the most up-to-date schedule and instructions. Weekly Schedule . To summarize all of the events and deadlines, refer to this general weekly schedule (which is subject to change in any given week): . | Sunday | Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | . |   |   | Lecture |   | Lecture |   |   | . |   |   |   |   |   | Lab and Project due |   | . ",
     "url": "/syllabus/#course-components-",
     "relUrl": "/syllabus/#course-components-"
-  },"60": {
+  },"83": {
     "doc": "📖 Syllabus",
     "title": "Policies 💯",
     "content": "Grading . Here is how we’ll compute your grade: . | Component | Weight | Notes | . | Participation | 8% | 1% per week, 2 lowest weeks dropped | . | Labs | 12% | 2% per lab, 1 lowest lab dropped | . | Project 1 | 10% |   | . | Project 2 | 15% | 10% for submission, 5% for peer review | . | Project 3 | 15% | 10% for submission, 5% for peer review | . | Final Project | 40% | 3% for proposal, 7% prototype, 15% video, 15% final submission | . Late Policy, Slip Days, and Drops . All assignments must be submitted by 11:59PM San Diego time on the due date to be considered on time. You may turn them in as many times as you like before the deadline, and only the most recent submission will be graded, so it’s a good habit to submit early and often. If you make a submission after the deadline, your assignment will be counted as late. You have 6 “slip days” to use throughout the quarter. A slip day extends the deadline of an assignment by 24 hours. The number of slip days you can use on an assignment depends on the kind of assignment: . | On labs, you may use up to 1 slip day. Since labs are due on Fridays and require a TA to check off, you may get checked off on the following Monday after a lab deadline to use 1 slip day. | On projects, you may use up to 2 slip days. Projects will not be accepted more than 48 hours after the deadline. Note that you will not be able to use slip days on the Final Project Deliverables due on Saturday, March 16, 2024. | . Slip days are designed to be a transparent and predictable source of leniency in deadlines. You can use a slip day if you are too busy to complete an assignment on its original due date (or if you forgot about it). But slip days are also meant for things like the internet going down at 11:58 PM just as you go to submit your assignment. Slip days are meant to be used in exceptional circumstances, so you probably should not need to use all 6, but if you have something going on in your life that is impeding your ability to do your classwork on time, please reach out to us as soon as possible so we can work something out. Slip days are applied automatically at the end of the quarter, and you don’t need to ask in order to use one. It’s your responsibility to keep track of how many you have left. If you’ve run out of slip days and submit an assignment late, that assignment may still be graded, but you will receive a 0 on it when we calculate grades at the end of the quarter. However, in the event that you use all 6 days and submit another assignment late, we will allocate your slip days first to your projects (in chronological order), then to your labs (in chronological order), and then to other assignments. This is done to prevent you from receiving a 0 on, say, Project 4, if you’ve used all of your slip days on labs up until that point; in such a case, you’d instead receive a 0 on an earlier lab that isn’t weighted as much in your grade. Regrade Requests . If you feel that there in an error in grading, you may submit a regrade request within two days of the grades being released. If you do not submit a regrade request within two days, your original grade will be final. To submit a regrade request for a manually graded problem, make the regrade request directly on Gradescope. Note that part of your grade is clarity, so if your answer was mostly right but unclear you may still not be eligible for full credit. Incompletes . In the unfortunate circumstance that you become sick, suffer a loss, or otherwise experience a significant setback that is outside of your control, you may be eligible for an Incomplete grade, which allows you to complete the rest of the work at a later time. If you are experiencing challenges due to circumstances outside your control, please contact me ASAP and we can discuss the best course of action. Note that an Incomplete does not allow you to re-do work that has already been completed, only to do work that hasn’t been completed, so it’s best to reach out right away. A note on letter grades . The following is adapted from CSE 160 at the University of Washington. Grading for this class is not curved in the sense that the average is set at (say) a B+ and half of the class must receive a grade lower than that. If everyone does well and shows mastery of the material, everyone can receive an A (this would be awesome!). If no one does well (this is unlikely), then everyone can receive a C. Grading for this class is curved in the sense that we do not have a pre-defined mapping from project and exam scores to a final GPA. There is no pre-determined score (e.g., 90% of all possible points) that earns an A or a B or a C or any other grade. To determine the final grade, we will ask questions like “Did this student master the material?”. With that said, grades will not be any stricter than the standard grading scale (where an A+ is a 97+, A is 93+, A- is 90+, etc). For instance, the threshold for an “A” will never be higher than 93%. Try your best not to worry about grades, and we’ll reciprocate by being fair. We’re in this together 😎. ",
     "url": "/syllabus/#policies-",
     "relUrl": "/syllabus/#policies-"
-  },"61": {
+  },"84": {
     "doc": "📖 Syllabus",
     "title": "Collaboration Policy and Academic Integrity 🤝",
     "content": "DSC 106 is known for being a rigorous but rewarding course. While you will be challenged this quarter, we will be offering you plenty of support through office hours and Ed. Make good use of these resources, and you will be able to succeed in this course. There is no excuse for cheating in this course. If you do cheat, we will enforce the UCSD Policy on Integrity of Scholarship. This means you will likely fail the course and the Dean of your college will put you on probation or suspend or dismiss you from UCSD. Students agree that by taking this course, their assignments may be submitted to third-party software to help detect plagiarism. Why is academic integrity important? . Academic integrity is an issue that is pertinent to all students on campus. When students act unethically by copying someone’s work, taking an exam for someone else, plagiarizing, etc., these students are misrepresenting their academic abilities. This makes it impossible for instructors to give grades (and for the University to give degrees) that reflect student knowledge. This devalues the worth of a UCSD degree for all students, making it imperative for the the campus as a whole to enforce that all members of this community are honest and ethical. We want your degree to be meaningful and we want you to be proud to call yourself a graduate of UCSD! . The UCSD Policy on Integrity of Scholarship and this syllabus list some of the standards by which you are expected to complete your academic work, but your good ethical judgment (or asking us for advice) is also expected as we cannot list every behavior that is unethical or not in the spirit of academic integrity. Ignorance of the rules will not excuse you from any violations. What counts as cheating? . In DSC 106, you can read books, surf the web, get inspiration from previous work or AI tools like ChatGPT, talk to your friends and the DSC 106 staff to get help understanding the concepts you need to know to complete your assignments. However, all code must be written by you (or, in the instance of projects, together with your partner). The following activities are considered cheating and are not allowed (not an exhaustive list): . | Using or submitting code acquired from other students (except from your pair programming partner during projects), the web, or any other resource not officially sanctioned by this course | Posting your code online, including on Ed, unless privately to instructors only | Having any other person complete any part of your assignment on your behalf | Completing an assignment on behalf of someone else | Providing code to any other student in the course | Splitting up project questions with your pair programming partner and each working on different questions | . The following activities are examples of appropriate collaboration and are allowed in (not an exhaustive list): . | (new) Using AI code generation tools, such as GitHub Copilot and ChatGPT, to help write your code | Discussing the general approach to solving labs or projects | Talking about problem-solving strategies or issues you ran into and how you solved them | Discussing the answers to exams with other students who have already taken the exam after the exam is complete | Using code provided in class, by the textbook or any other assigned reading or video, with attribution | Using Google to search for documentation. | Working together with other students on assignments without copying or sharing answers | Posting a question about your approach to a problem on Ed, without sharing your code | . How can I be sure that my actions are NOT considered cheating? . The best way to avoid problems is by using your best judgement and remembering to act with Honesty, Trust, Fairness, Respect, Responsibility, and Courage. Here are some suggestions for completing your work: . | Don’t look at or discuss the details of another student’s code for an assignment you are working on, and don’t let another student look at your code. | Don’t start with someone else’s code and make changes to it, or in any way share code with other students. | If you are talking to another student about an assignment, don’t take notes, and wait an hour afterward before you write any code. | . ",
     "url": "/syllabus/#collaboration-policy-and-academic-integrity-",
     "relUrl": "/syllabus/#collaboration-policy-and-academic-integrity-"
-  },"62": {
+  },"85": {
     "doc": "📖 Syllabus",
     "title": "Support 🫂",
     "content": "Accommodations . From the Office for Students with Disabilities (OSD): . OSD works with students with documented disabilities to review documentation and determine reasonable accommodations. Disabilities can occur in these areas: psychological, psychiatric, learning, attention, chronic health, physical, vision, hearing, and acquired brain injuries, and may occur at any time during a student’s college career. We encourage you to contact the OSD as soon as you become aware of a condition that is disabling so that we can work with you. If you already have accommodations via OSD, please make sure that we receive your Authorization for Accommodation (AFA) letter by the end of Week 1 so that we can make arrangements for accommodations. Share your AFA letter with the instructor and the Data Science OSD Liaison, who can be reached at dscstudent@ucsd.edu. Diversity and Inclusion . We are committed to an inclusive learning environment that respects our diversity of perspectives, experiences, and identities. Our goal is to create a diverse and inclusive learning environment where all students feel comfortable and can thrive. If you have any suggestions as to how we could create a more inclusive setting, please let us know. We also expect that you, as a student in this course, will honor and respect your classmates, abiding by the UCSD Principles of Community. Please understand that others’ backgrounds, perspectives and experiences may be different than your own, and help us to build an environment where everyone is respected and feels comfortable. Campus Resources . If there is an issue you feel uncomfortable speaking with us or are searching for help on a specific concern, there are several campus resources available to you, including: . | UCSD Counseling and Psychological Services (CAPS) | Hub Basic Needs Center | Office for Students with Disability (OSD) | Office for Prevention of Sexual Harrassment and Discrimination | . ",
     "url": "/syllabus/#support-",
     "relUrl": "/syllabus/#support-"
-  },"63": {
+  },"86": {
     "doc": "📖 Syllabus",
     "title": "Acknowledgements 🙏",
     "content": "Materials for this course have been adapted from classes taught by Soohyun Nam Liao and Jared Wilber at UCSD, Jeffrey Heer and Leilani Battle at UW, Arvind Satyanarayan at MIT, and Maneesh Agrawala and Michael Bernstein at Stanford University. The class draws heavily on materials and examples found online, and we try our best to give credit by linking to the original source. Please contact us if you find materials where credit is missing or that you would rather have removed. ",
     "url": "/syllabus/#acknowledgements-",
     "relUrl": "/syllabus/#acknowledgements-"
-  },"64": {
+  },"87": {
     "doc": "📖 Syllabus",
     "title": "📖 Syllabus",
     "content": " ",
     "url": "/syllabus/",
     "relUrl": "/syllabus/"
-  },"65": {
+  },"88": {
     "doc": "🙋‍♂️ Tech Support",
     "title": "🙋‍♂️ Tech Support",
     "content": "Page under construction! . ",
     "url": "/tech_support/#%EF%B8%8F-tech-support",
     "relUrl": "/tech_support/#️-tech-support"
-  },"66": {
+  },"89": {
     "doc": "🙋‍♂️ Tech Support",
     "title": "Table of contents",
     "content": ". | Introduction . | Git | VS Code | Prettier | Live Preview | Svelte for VS Code | . | Node.js and npm | Generate static site using svelte SSG . | Migrate from your project | . | Any question? | . ",
     "url": "/tech_support/#table-of-contents",
     "relUrl": "/tech_support/#table-of-contents"
-  },"67": {
+  },"90": {
     "doc": "🙋‍♂️ Tech Support",
     "title": "Introduction",
     "content": "Labs and projects in DSC 106 are mostly coding assignments, so it’s important to make sure that your computing environment is set up properly. You will need to use DataHub for the first lab. You will need Git, VSCode, and Node to complete all other labs and projects. Git . All of our course materials, including your assignments, are hosted on GitHub in this Git repository. This means that you’ll need to download and use Git to work with the course materials. Git is a version control system. In short, it is used to keep track of the history of a project. With Git, you can go back in time to any previous version of your project, or even work on two different versions (or \"branches\") in parallel and \"merge\" them together at some point in the future. We'll stick to using the basic features of Git in DSC 106. There are Git GUIs, and you can use them for this class. You can also use the command-line version of Git. To get started, you'll need to \"clone\" the course repository. The command to do this is: . git clone https://github.com/dsc-courses/dsc106-wi24 . This will copy the repository to a directory on your computer. To bring in the latest version of the repository, run git pull in your local repository. This will not overwrite your work. In fact, Git is designed to make it very difficult to lose work (although it's still possible!). Merge Conflicts . You might face issues when using git pull regarding merge issues and branches. This is caused by files being updated on your side while we are also changing the Git repository by pushing new assignments on our side. Here are some steps you can follow to resolve it: . NOTE: Whenever working with GitHub pulls, merges, etc., it’s a good idea to save your important work locally so that if you accidentally overwrite your files you still have the work saved. Save your work locally before following the steps below. | git status shows the current state of your Git working directory and staging area. It’s a good sanity check to start with. You will probably see your project and lab files that you have worked on. | git add . will add all your files to be ready to commit. | git commit -m \"some message of your choice\" will commit the files, with some description in the quotations. This can be whatever you want, it won’t matter. | . At this stage, if you git pull, it should work. You should double-check that you have new files, as well as that your old files are unchanged. If they are changed then you should be able to just copy-paste from your local backup. If this does not work then you may have merge conflicts, follow the next steps: . | git checkout --theirs [FILENAME] will tell git that whenever a conflict occurs in [FILENAME] to keep your version. Run this for each file with a conflict. | git add [FILENAME] to mark each file with a conflict as resolved. | git rebase --continue or git merge, depending on the setup. | . VS Code . To create, write, and edit our code, we are going to use a code editor. For this class, we are going to provide support for VS Code. If you want to use another code editor, feel free to do so, but keep in mind that we may not be able to recreate the problems that you may run into. You may download VS Code from here. In order to make our lives easier when we develop websites, we are going to use some VS Code extensions. Up to lab 6, it is only necessary to install the following two extensions. Come back when you need to work on lab 6; more information (related to Node installation) will be updated. Prettier . This is an extension that will help us keep our code clean and tidy. Click “Install” on the webpage. It will redirect to your VSCode; then, click “Install” again to install the extension. Live Preview . This will host a local server in our workspace for us to preview our web pages on. Click “Install” on the webpage. It will redirect to your VSCode; then, click “Install” again to install the extension. Svelte for VS Code . Starting Lab4, you are going to use Svelte. This will help you with svelte components. Click “Install” on the webpage. It will redirect to your VSCode; then, click “Install” again to install the extension. ",
     "url": "/tech_support/#introduction",
     "relUrl": "/tech_support/#introduction"
-  },"68": {
+  },"91": {
     "doc": "🙋‍♂️ Tech Support",
     "title": "Node.js and npm",
     "content": "Again, for Lab 4, we are going to need node.js and npm. Node.js is an open-source, cross-platform, JavaScript runtime environment that executes JavaScript code outside of a web browser. NPM – or “Node Package Manager” – is the default package manager for JavaScript’s runtime Node.js. You may find detailed instructions to download and install them here. To check the Node version, open a command prompt and type: . node --version . To check the npm version, type in: . npm --version . If everything is installed correctly, you should see the version number information. ",
     "url": "/tech_support/#nodejs-and-npm",
     "relUrl": "/tech_support/#nodejs-and-npm"
-  },"69": {
+  },"92": {
     "doc": "🙋‍♂️ Tech Support",
     "title": "Generate static site using svelte SSG",
     "content": "To assist you in creating a static webpage for GitHub Pages using Svelte, we have developed a template for you: ShaokangJiang/svelte-template (github.com). Please follow the link provided, and initiate the creation of a new repository. After GitHub completes the cloning process, navigate to the settings page. On the left panel, under the “Pages” tab, locate the “Source” section and select “GitHub Actions” as the source. Clone this repository and proceed with your work. Upon completion, commit and push your changes. The corresponding GitHub Actions will then execute, building a static website hosted at https://your-username.github.io/your-repo-name for you. Migrate from your project . If you have started on the project and want to switch to using this template, you can copy your src folder, go to the local clone of your version of this template, then paste it. When it says the file exists, simply click replace, and you can continue working on your version of this template. ",
     "url": "/tech_support/#generate-static-site-using-svelte-ssg",
     "relUrl": "/tech_support/#generate-static-site-using-svelte-ssg"
-  },"70": {
+  },"93": {
     "doc": "🙋‍♂️ Tech Support",
     "title": "Any question?",
     "content": "The easiest and fastest way to reach our support for technical matters is by posting on edstem. You may also go to OHs. ",
     "url": "/tech_support/#any-question",
     "relUrl": "/tech_support/#any-question"
-  },"71": {
+  },"94": {
     "doc": "🙋‍♂️ Tech Support",
     "title": "🙋‍♂️ Tech Support",
     "content": " ",
