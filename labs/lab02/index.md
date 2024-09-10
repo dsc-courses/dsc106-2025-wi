@@ -1,4 +1,5 @@
 ---
+layout: assignment
 title: 'Lab 2: Styling with CSS'
 lab: 2
 parent: '👩‍🔬 Programming Labs'

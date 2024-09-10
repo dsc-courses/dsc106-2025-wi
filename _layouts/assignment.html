@@ -1,0 +1,25 @@
+---
+layout: page
+---
+{%- comment -%}
+Same as the default/page layout with the following new keys:
+
+released:
+  boolean: true if the assignment is released, false otherwise
+{%- endcomment -%}
+
+
+
+{%- unless page.released -%}
+
+<h1>{{ page.title }}</h1>
+
+<p class="note">
+Page under construction!
+</p>
+
+{%- else -%}
+
+{{ content }}
+
+{%- endunless -%}

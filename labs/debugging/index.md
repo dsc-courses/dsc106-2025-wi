@@ -1,16 +1,9 @@
 ---
-layout: page
+layout: assignment
 title: 'Help Us Help You: Things to try before asking for help'
 parent: '👩‍🔬 Programming Labs'
 released: true
 ---
-
-{% unless page.released %}
-
-{: .note }
-**Page under construction!**
-
-{% else %}
 
 <!-- prettier-ignore-start -->
 
@@ -518,5 +511,3 @@ AI may change this in the future, there are a lot of efforts to make programming
 
 **Never feel like making mistakes and having to debug them is a personal failing of yours.**
 It’s a crappy part of programming, but one that we all go though.
-
-{% endunless %}

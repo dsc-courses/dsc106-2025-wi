@@ -1,4 +1,5 @@
 ---
+layout: assignment
 title: 'Lab 8: Geospatial Visualizations'
 lab: 8
 parent: '👩‍🔬 Programming Labs'

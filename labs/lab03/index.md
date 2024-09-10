@@ -1,4 +1,5 @@
 ---
+layout: assignment
 title: 'Lab 3: Introduction to JS'
 lab: 3
 parent: '👩‍🔬 Programming Labs'

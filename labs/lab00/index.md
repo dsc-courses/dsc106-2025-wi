@@ -1,8 +1,9 @@
 ---
+layout: assignment
 title: 'Lab 0: Setup'
 lab: 0
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: true
 ---
 
 # Lab 0: Setup

@@ -1,4 +1,5 @@
 ---
+layout: assignment
 title: 'Lab 9: Animation & Scrollytelling'
 lab: 9
 parent: '👩‍🔬 Programming Labs'

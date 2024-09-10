@@ -1,4 +1,5 @@
 ---
+layout: assignment
 title: 'Lab 7: Visualizing quantitative data with D3'
 lab: 7
 parent: '👩‍🔬 Programming Labs'
