@@ -1,0 +1,82 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800">
+<style>
+:root {
+	--margin: 2px;
+	--bezel: 20px;
+	--panel-bottom-percentage: .17;
+	--panel-bottom-height: calc(var(--panel-bottom-percentage) * var(--frame-height));
+	--frame-width: calc(100% - 2 * var(--margin));
+	--frame-height: calc(100% - var(--base-height));
+	--screen-width: calc(100% - 2 * var(--margin) - 2 * var(--bezel));
+	--screen-height: calc(100% - 2 * var(--margin) - 2 * var(--bezel) - var(--base-height) - var(--panel-bottom-height));
+	--base-bottom-height: 2.2%;
+	--base-bottom-width: 370px;
+	--base-width: 220px;
+	--base-height: 150px;
+}
+
+#frame {
+	x: var(--margin);
+	y: var(--margin);
+	width: var(--frame-width);
+	height: var(--frame-height);
+	rx: 25;
+	fill: url(#frame-gradient);
+}
+
+#screen {
+	x: calc(var(--bezel) + var(--margin));
+	y: calc(var(--bezel) + var(--margin));
+	width: var(--screen-width);
+	height: var(--screen-height);
+	rx: 5;
+	fill:url(#screen-gradient);
+}
+
+#base {
+	x: calc(50% - var(--base-width) / 2);
+	y: var(--frame-height);
+	width: var(--base-width);
+	height: calc(var(--base-height) - var(--base-bottom-height));
+	fill: url(#base-gradient);
+}
+
+#base-bottom {
+	x: calc(50% - var(--base-bottom-width) / 2);
+	y: calc(100% - var(--margin) - var(--base-bottom-height));
+	width: var(--base-bottom-width);
+	height: var(--base-bottom-height);
+	rx: 5px;
+	fill: hsl(220 10% 75%);
+}
+
+#logo {
+	cx: 50%;
+	cy: calc(var(--margin) + var(--bezel) * 2 + var(--screen-height, 0) + var(--panel-bottom-height, 0) / 2);
+	r: 2.2%;
+	fill: hsl(220 10% 65%);
+}
+
+</style>
+<defs>
+	<linearGradient id="frame-gradient" x1="0" y1="0" x2="0" y2="100%">
+		<stop offset=".83" style="stop-color: hsl(220 10% 90%)"/>
+		<stop style="stop-color: hsl(220 10% 80%)"/>
+	</linearGradient>
+	<linearGradient id="screen-gradient" gradientUnits="userSpaceOnUse" x1="-29.5" y1="406.8" x2="684" y2="228.9">
+		<stop offset=".9" style="stop-color: hsl(220 10% 12%)"/>
+		<stop style="stop-color: hsl(220 10% 18%)"/>
+	</linearGradient>
+	<linearGradient id="base-gradient" x1="0" y1="0" x2="0" y2="100%">
+		<stop offset=".4" style="stop-color: hsl(220 10% 70%)"/>
+		<stop style="stop-color: hsl(220 10% 80%)"/>
+	</linearGradient>
+</defs>
+
+<rect id="base" d="M625 760 h -248 l 37 -110 h 174 l 37 110 z"/>
+<rect id="frame" />
+<rect id="screen" />
+<rect id="base-bottom" />
+<circle id="logo" />
+
+</svg>

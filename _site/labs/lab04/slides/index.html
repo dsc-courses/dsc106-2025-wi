@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lab 4: Svelte</title>
+	<link rel="shortcut icon" href="https://svelte.dev/favicon.png" type="image/x-icon">
+	<link href="talk.css" rel="stylesheet" />
+	<script src="./talk.js" type="module"></script>
+</head>
+<body class="language-markup no-media" data-markdown-elements="details.notes, .md, .md-children > *">
+
+<header id="intro" class="slide dont-resize">
+	<h1>
+		<div class="label">Lab 4</div>
+		<img src="images/svelte.svg" alt="Svelte" class="logo">
+	</h1>
+	<small>
+		MIT Interactive Visualization & Society course
+		<!-- &bull; Slides by <a href="http://lea.verou.me">Lea Verou</a> -->
+	</small>
+</header>
+
+<article class="slide columns force-1" id="npm">
+	<header>
+		<h1>What is <img src="images/npm-logo.svg" alt="npm">?</h1>
+		<p class="subtitle">A <em>package manager</em> for JS</p>
+	</header>
+	<video src="videos/npm-install.mp4" loop autoplay muted></video>
+	<details class="notes">
+		A package manager is a tool that automates the process of installing, updating, configuring, and removing software.
+		If you’ve written Python, you have likely used `pip`, its own package manager.
+		You may have used package managers to install software in your operating system,
+		such as`apt-get` or `brew`.
+		They are command-line tools that allow you to install software from a central repository by simply referencing its name (and optionally a specific version).
+
+		NPM stands for "Node Package Manager".
+		It was originally created for Node.js, a JavaScript runtime that allows you to run JavaScript on the server.
+		These days, NPM is used for much more than just Node.js, and is the most popular package manager for JavaScript.
+		Most front-end developers use NPM to manage build tools and dependencies for their projects.
+
+		Most NPM packages correspond to GitHub repos.
+		When you install a package, NPM will download the package from the _NPM registry_ and install it in a directory called `node_modules`.
+	</details>
+</article>
+
+<article class="slide columns force force-1">
+	<h1>Anyone can publish a package!</h1>
+	<img src="images/npm-anyone.png" alt="" class="browser">
+</article>
+
+<article class="slide md" id="npm-101" data-type="Cheatsheet">
+	# npm 101
+
+	- `package.json` A file containing metadata about a project
+	- `node_modules/` A directory containing all the dependencies of a project
+	- `npm install` Installs all dependencies listed in `package.json`
+	- `npm install PACKAGE_NAME` Installs a package and adds it to `package.json`
+	- `npm create PACKAGE_NAME` Create a new prpject, using another package as a template
+	- `npm run SCRIPT_NAME` Runs a script defined in `package.json` (e.g. `build`, `dev`, etc.)
+</article>
+
+<article class="slide">
+	<h1>Why use a JS Framework?</h1>
+	<ol>
+		<li>
+			Developer Experience
+			<ul class="delayed pros">
+				<li>Declarative syntax</li>
+				<li>Reactivity</li>
+				<li>Modularity</li>
+				<li>Convenience</li>
+			</ul>
+		</li>
+	</ol>
+
+	<details class="notes">
+		There are many, *many* JS frameworks out there.
+		The only reason to use a JS framework is development convenience.
+		In theory, you could write everything in vanilla JS (as JS-without-frameworks is often called), but it would be a lot more work.
+		However, development convenience can indirectly benefit end-users as well,
+		because if you can develop faster, you can iterate faster, and deliver more features and bugfixes in the same amount of time.
+
+		But how do JS frameworks provide development convenience?
+		On a high level, in two ways:
+		- **Declarativeness and reactivity**:
+		Remember how we discussed that HTML and CSS are declarative and reactive, but JS is not?
+		In CSS you declare what you want to happen, and it autoamtically takes care of the steps,
+		whereas in JS, you have to specify every step.
+		In CSS when a value changes (e.g. a CSS variable), everything that depends on it is automatically updated.
+		JS frameworks expose a syntax that makes JS *declarative* and *reactive* as well.
+		- **Modularity**:
+		JS frameworks give us easier ways to break up the code of a large website or app into small, independent pieces that can be managed separately.
+		This is achieved in many ways, such as components, data binding, etc.
+	</details>
+</article>
+
+<article class="slide columns force-1" id="templating" data-credits="Wikipedia">
+	<h1>Data binding</h1>
+	<img src="images/templating.png" alt="">
+</article>
+
+<article class="slide columns force-3 code-labels" id="build-process">
+	<h1>What is a build process?</h1>
+	<section>
+		<h2>index.md</h2>
+		<pre class="language-markdown"><code>
+			---
+			title: Build Tools
+			---
+
+			# Build Process
+
+			A build process reads *input files*
+			and coverts them into *output files*.
+		</code></pre>
+	</section>
+	<div class="arrow-right"></div>
+	<section>
+		<h2>index.html</h2>
+		<pre class="language-html"><code>
+			&lt;!DOCTYPE html>
+			&lt;html>
+			&lt;head>
+				&lt;title>Build Tools&lt;/title>
+			&lt;/head>
+			&lt;body>
+				&lt;h1>Build Process&lt;/h1>
+				&lt;p>A build process reads &lt;em>input files&lt;/em>
+				and coverts them into &lt;em>output files&lt;/em>.
+			&lt;/body>
+			&lt;/html>
+		</code></pre>
+	</section>
+	<details class="notes">
+		A build process is basically a compilation step that allows us to write code in a language other than those that the browser supports natively.
+		It can do dramatic things like convert (*transpile*) a language that the browser doesn’t understand at all (e.g. TypeScript or CoffeeScript) to JavaScript,
+		or lighter things like convert a language feature that the browser doesn’t understand yet (e.g. CSS nesting) to a version that it does understand.
+
+		By convention, we run a website’s build process by running `npm run build`,
+		which looks for a `build` key in the `scripts` part of `package.json`.
+	</details>
+</article>
+
+<article class="slide columns" id="modern-web-apps">
+	<h1>Modern web apps</h1>
+	<img src="images/components-1.png" alt="">
+</article>
+
+<article class="slide" id="also-modern-web-apps">
+	<h1>Also modern web apps</h1>
+</article>
+
+<article class="slide">
+	<h1 class="md">HTML: `&lt;h1>` `&lt;ul>` `&lt;p>`</h1>
+</article>
+
+<article class="slide columns force" data-credits="https://www.componentdriven.org/" id="cdd">
+	<h1>Component-driven development</h1>
+	<img src="images/cdd.png" alt="">
+</article>
+
+<article class="slide">
+	<h1>Traditional Architecture</h1>
+	<div class="frame-by-frame">
+		<img src="images/traditional-architecture-1.png" alt="">
+		<img src="images/traditional-architecture-2.png" class="delayed" alt="">
+		<img src="images/traditional-architecture-3.png" class="delayed" alt="">
+	</div>
+</article>
+
+<article class="slide" id="cba">
+	<h1>Component-based Architecture</h1>
+	<div class="frame-by-frame">
+		<img src="images/cb-architecture-1.png" alt="">
+		<img src="images/cb-architecture-2.png" class="delayed" alt="">
+		<img src="images/cb-architecture-3.png" class="delayed" alt="">
+		<img src="images/cb-architecture-4.png" class="delayed" alt="">
+	</div>
+</article>
+
+<article class="slide" id="cba">
+	<h1>Component-based Architecture</h1>
+	<div class="frame-by-frame">
+		<img src="images/cb-architecture-1a.png" alt="">
+		<img src="images/cb-architecture-2a.png" class="delayed" alt="">
+		<img src="images/cb-architecture-3a.png" class="delayed" alt="">
+		<img src="images/cb-architecture-4a.png" class="delayed" alt="">
+		<img src="images/cb-architecture-4.png" class="delayed" alt="">
+	</div>
+</article>
+
+<article class="slide columns force-1">
+	<img src="images/soc-components.png" alt="">
+	<details class="notes">
+		Components give us a *different* separation of concerns than what we have seen so far
+		(and arguably more pragmatic and scalable).
+	</details>
+</article>
+
+<article class="slide columns force dont-resize code-labels delayed-last" id="component-io">
+	<h1>
+		<span class="label">Components</span>
+		Inputs and outputs
+	</h1>
+
+	<div>
+		<pre class="syntax-breakdown language-jsx svelte no-trim"><code>
+			&lt;ColorPicker <span title="Prop">format="oklch"</span>
+				   <span title="Same as allowAlpha={true}">allowAlpha</span>
+				   <span title="Map component data to context data" data-index="2">bind:color={ themeColor }</span>
+				   <span title="Run saveThemeColor() when component fires a close event" data-index="2">on:close={ saveThemeColor }</span>>
+				<span title="Component contents is is also an input" data-index="1">Theme color</span>
+			&lt;/ColorPicker>
+		</code></pre>
+
+		<div class="browser">
+			<color-swatch value="hsl(335 100% 50%)">Theme color</color-swatch>
+		</div>
+	</div>
+	<img src="images/component-io.png" alt="">
+
+	<details class="notes">
+		Components are to UI what functions are to code.
+		They have inputs, called *props*.
+		Props look like HTML attributes, but can actually contain JS objects, arrays, etc.
+		There is also another input: their contents.
+		They are used to provide data and to parameterize the component.
+
+		Often the only output of components is the UI they render.
+		However, they can also have outputs, passed via *events*.
+	</details>
+</article>
+
+
+
+<section>
+	<header class="slide">
+		<h1>Svelte (and SvelteKit)</h1>
+	</header>
+
+	<article class="slide">
+		<h1>Why Svelte?</h1>
+
+		<ul class="pros">
+			<li>Performance</li>
+			<li>Less client-side JS</li>
+			<li>Easier syntax</li>
+		</ul>
+	</article>
+
+	<article class="slide code-labels columns">
+		<h1>Anatomy of a Svelte component</h1>
+		<pre class="language-html svelte" style="--label: 'Component.svelte'"><code>
+			&lt;script>
+				// logic goes here
+			&lt;/script>
+
+			&lt;!-- HTML (zero or more elements) goes here -->
+
+			&lt;style>
+				/* Scoped CSS goes here */
+			&lt;/style>
+		</code></pre>
+	</article>
+
+	<article class="slide code-labels columns">
+		<h1>Example Svelte component</h1>
+		<section>
+			<h2>Definition</h2>
+			<pre class="language-html svelte" style="--label: 'Slider.svelte'"><code>
+				&lt;script>
+					// Define a prop "value"
+					export let value = 50;
+				&lt;/script>
+
+				&lt;input type=range bind:value={value}>
+				&lt;span>{ value }&lt;/span>
+
+				&lt;style>
+					span {
+						display: inline-block;
+						padding: 0 .4em;
+						border-radius: .3em;
+						background: oklch(95% 2% 200);
+					}
+				&lt;/style>
+			</code></pre>
+		</section>
+		<section class="delayed">
+			<h2>Usage</h2>
+			<pre class="language-html svelte"><code>
+				&LT;script>
+					import Slider from './Slider.svelte';
+
+					let myValue = 3;
+				&LT;/script>
+
+				&LT;Slider value={myValue}>&LT;/Slider>
+			</code></pre>
+			<div class="arrow-down"></div>
+			<img src="images/slider.gif" alt="" class="browser" data-url="https://svelte.dev/repl/3ebeaec8826943e3a9deee0a1f0aedd2?version=4.2.12">
+		</section>
+		<details class="notes">
+			[Live demo](https://svelte.dev/repl/3ebeaec8826943e3a9deee0a1f0aedd2?version=4.2.12)
+		</details>
+	</article>
+</section>
+
+<article class="slide">
+
+	<h1>Time to get our hands dirty!</h1>
+
+	<div>
+		<p><em>Today’s menu:</em></p>
+		<ul>
+			<li>Porting our website to Svelte</li>
+			<li>Adding last 3 projects on the homepage</li>
+			<li>Adding count of projects</li>
+		</ul>
+	</div>
+	<div style="font-size: 300%">👩🏽‍💻🧑🏼‍💻👨🏻‍💻</div>
+</article>
+
+<footer class="slide" id="end"></footer>
+
+</body>
+</html>

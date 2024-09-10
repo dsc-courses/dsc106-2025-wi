@@ -1,0 +1,59 @@
+html {
+  --color-accent: oklch(65% 50% 0);
+  accent-color: var(--color-accent);
+}
+
+
+body {
+  /* Set line height to 1.5 times the font size
+         and use the OS’s UI font as the website font
+       */
+  font: 100%/1.5 system-ui;
+  max-width: 100ch;
+  margin-inline: max(1em, (100% - 100ch) / 2);
+  padding: 1ch 10ch;
+}
+
+
+form {
+  font: inherit;
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+label {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1/-1;
+  gap: 1em;
+}
+
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+  grid-gap: 1em;
+
+}
+
+h2 {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+/* select label with color_scheme class */
+label.color_scheme {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+}

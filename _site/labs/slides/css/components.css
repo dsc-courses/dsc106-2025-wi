@@ -1,0 +1,94 @@
+@import url("components/columns.css");
+@import url("components/chips.css");
+@import url("components/legend.css");
+@import url("components/code-labels.css");
+@import url("components/code-error.css");
+@import url("components/arrows.css");
+
+li.pro,
+li.yes,
+.pros > li {
+	list-style: "✅ ";
+}
+
+li.con,
+.cons > li {
+	list-style: "👎 ";
+}
+
+li.no {
+	list-style: "🚫 ";
+}
+
+:is(span, em, strong) {
+	&.yes,
+	&.no {
+		&:where(em, span) {
+			font-weight: 500;
+		}
+	}
+	&.yes {
+		color: var(--color-green);
+	}
+
+	&.no {
+		color: var(--color-red);
+	}
+}
+
+.takeaway h1 {
+	counter-reset: takeaway var(--takeaway);
+	--label: "Takeaway #" counter(takeaway);
+}
+
+.slide:is(.takeaway, .recap) h1,
+h1[data-label],
+h1:has(> .label) {
+	&:not(:has(> .label))::before {
+		content: var(--label);
+	}
+
+	&:not(:has(> .label))::before,
+	> .label {
+		display: block;
+		width: fit-content;
+		padding: .2em .5em;
+		margin: 0 auto;
+		background: var(--label-color, var(--color-accent-1));
+		font-weight: bold;
+		text-transform: uppercase;
+		font-size: 50%;
+		color: white;
+		text-shadow: none;
+	}
+}
+
+[data-credits]::after {
+	letter-spacing: normal;
+}
+
+.side-by-side {
+	display: flex;
+	flex-flow: row;
+	gap: 1em;
+	align-items: start;
+
+	&.centered-x,
+	&.centered {
+		align-items: center;
+	}
+
+	&.centered-y,
+	&.centered {
+		justify-content: center;
+	}
+}
+
+.warning {
+	color: var(--color-red);
+	font-weight: 500;
+
+	&::before {
+		content: "⚠️ ";
+	}
+}

@@ -91,10 +91,54 @@ callouts:
     color: red
   note:
     title: Note
-    color: yellow
+    color: blue
   success:
     title: ""
     color: green
   summary:
     title: Summary
     color: grey-dk
+  fp:
+    color: green
+  tip:
+    title: Tip
+    color: green
+  files:
+    title: File(s) edited in this section
+    color: purple
+  fyi:
+    title: FYI
+    color: blue
+  important:
+    title: Important
+    color: yellow
+  tbd:
+    title: Coming soon
+    color: red
+  caveat:
+    title: Caveat
+    color: red
+  further:
+    title: Going further
+    color: green
+  lecture:
+    title: Lecture
+    color: green
+  lab:
+    title: Lab
+    color: yellow
+  reading:
+    title: Reading Group
+    color: blue
+  break:
+    title: Spring Break
+    color: grey-dk
+  exhibition:
+    title: Exhibition
+    color: red
+  released:
+    title: Assignment Released
+    color: green
+  due:
+    title: Assignment Due
+    color: red

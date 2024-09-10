@@ -1,0 +1,144 @@
+@import url("../../slides/css/talk.css");
+
+:root {
+	--cover-image: repeating-linear-gradient(to bottom right in oklch , var(--color-accent-3) 0%, var(--color-accent-2), var(--color-accent-1), var(--color-accent-2), var(--color-accent-3) 50%);
+}
+
+@keyframes cover {
+	to {
+		background-position-x: var(--bg-width);
+	}
+}
+
+#intro {
+	--factor: 3;
+	--bg-width: calc(var(--factor) * 100vw);
+	background-repeat: repeat;
+	background-position-x: 0;
+	background-size: var(--bg-width) calc(var(--factor) * 100vh);
+	animation: 6s cover 3 linear;
+
+	.label {
+		background: black;
+	}
+}
+
+@keyframes interpolation-demo-color {
+	to { background: var(--color-accent-2); }
+}
+
+@keyframes interpolation-demo-position {
+	from { transform: translateX(-4em); }
+	to { transform: translateX(4em); }
+}
+
+@keyframes interpolation-demo-size {
+	from { transform: scale(.5); }
+	to { transform: scale(1.5); }
+}
+
+@keyframes interpolation-demo-angle {
+	to { transform: rotate(1turn); }
+}
+
+@keyframes interpolation-demo-opacity {
+	to { opacity: 0; }
+}
+
+@keyframes interpolation-demo-shape {
+	to { border-radius: 50%; }
+}
+
+#interpolation {
+	> section {
+		width: 100%;
+	}
+}
+
+.interpolation {
+	width: 3em;
+	aspect-ratio: 1;
+	margin: auto;
+	background: var(--color-accent-1);
+	--dur: 1s;
+	animation: var(--animation-name) var(--dur) infinite alternate;
+
+	&.manual {
+		animation-play-state: paused;
+		animation-delay: calc(-1s * var(--p, 50) / 100);
+	}
+
+	&.color {
+		--animation-name: interpolation-demo-color;
+	}
+
+	&.position {
+		--animation-name: interpolation-demo-position;
+	}
+
+	&.size {
+		--animation-name: interpolation-demo-size;
+	}
+
+	&.angle {
+		--animation-name: interpolation-demo-angle;
+	}
+
+	&.opacity {
+		--animation-name: interpolation-demo-opacity;
+	}
+
+	&.shape {
+		--animation-name: interpolation-demo-shape;
+	}
+}
+
+.cursor {
+	flex: 1;
+	background: radial-gradient(at calc(var(--mouse-x) * 100%) calc(var(--mouse-y) * 100%), white, black);
+}
+
+#technologies {
+	gap: .5em;
+	ul {
+		padding: 0;
+		list-style: none;
+	}
+	li {
+		~ li {
+			margin-top: 1em;
+		}
+
+		> a:first-of-type {
+			display: block;
+		}
+
+		.components,
+		.description {
+			font-size: 50%;
+		}
+
+		.components {
+			color: var(--color-neutral-60);
+			font-weight: 500;
+			code {
+				background: transparent;
+				padding: 0;
+				color: inherit;
+				font-size: 110%;
+
+				.token {
+					color: inherit;
+				}
+			}
+		}
+	}
+
+	.js {
+		transition: 500ms;
+	}
+
+	&[data-step] .js {
+		opacity: 40%;
+	}
+}

@@ -1,0 +1,33 @@
+<svelte:head>
+	<title>CV</title>
+</svelte:head>
+
+<h1>Jie Fan </h1>
+    <article class="resume">
+        <h2>Education</h2>
+        <section>
+            <p>2022-2024</p>
+            <p><b>Massachusetts Institute of Technology</b><br/>Master of Science, Urbanism</p>
+            <p>Cambridge, MA</p>
+        </section>
+        <h2>Experience</h2>
+        <section>
+            <p>2023-2024</p>
+            <p><b>Office of Sustainability & Climate and Sustainability Consortium</b><br/>
+                Data Analyst</p>
+            <p>Cambridge, MA</p>
+            <p></p>
+            <lo><p> Build out MIT Scope 3 data platform by teaming with MIT research scientists, 
+                sustainability data engineering and analysis staff, 
+                and project managers using real data from MIT operations in order to drive MIT GHG emissions reductions.
+            </p> </lo>
+        </section>
+        <h2>Skills</h2>
+        <section>
+            <ul>
+                <li>Balderdash</li>
+                <li>Sleep</li>
+                <li>Photography</li>
+            </ul>
+        </section>
+    </article>

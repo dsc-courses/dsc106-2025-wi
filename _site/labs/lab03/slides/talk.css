@@ -1,0 +1,375 @@
+@import url("../../slides/css/talk.css");
+@import url("https://prismjs.com/plugins/line-numbers/prism-line-numbers.css");
+
+:root {
+	--line-length: 2em;
+}
+
+@keyframes jslogo {
+	from, 10%, 30%, 50%, 70%, 90%, to {
+		transform-origin: bottom right;
+		rotate: 0deg;
+	}
+
+	20%, 40% {
+		rotate: 5deg;
+		transform-origin: bottom right;
+	}
+
+	60% {
+		rotate: -5deg;
+		transform-origin: bottom left;
+	}
+}
+
+#intro {
+	--background-color-overlay: var(--color-neutral-100);
+	background: radial-gradient(transparent, rgb(0 0 0 / .7)), linear-gradient(var(--background-color-overlay) 0 100%) canvas;
+
+	img {
+		width: 4em;
+		rotate: 5deg;
+		transform-origin: bottom right;
+		animation: 3s infinite jslogo;
+		box-shadow: 0.05em .1em .5em rgb(0 0 0 / .5);
+	}
+}
+
+#what {
+	--font-sizing: fixed;
+	align-content: center;
+	text-wrap: balance;
+
+	h1 {
+		grid-column: 1 / -1;
+	}
+
+	em {
+		color: var(--color-neutral-50);
+
+		a {
+			color: inherit;
+			text-decoration-line: underline;
+		}
+	}
+
+	.browser {
+		height: calc(100vh - 13em);
+		object-position: top;
+		object-fit: cover;
+	}
+}
+
+#use-cases {
+	dl {
+		max-width: 70vw;
+		--outdent: 8rem;
+		padding-left: var(--outdent);
+	}
+
+	dt {
+		display: inline-block;
+		font-weight: bold;
+		color: var(--color-green);
+		text-align: right;
+		text-indent: calc(-1 * var(--outdent));
+
+		&::before {
+			content: "✅ ";
+		}
+
+		&::after {
+			content: ":"
+		}
+	}
+
+	dd {
+		display: inline;
+		margin: 0;
+
+		&:not(:last-child)::after {
+			content: "\A";
+			white-space: pre-line;
+		}
+	}
+
+	q {
+		font-style: italic;
+	}
+
+	.warning {
+		white-space: nowrap;
+	}
+}
+
+#console {
+	background: oklch(40% 45% 0);
+	color-scheme: dark;
+}
+
+#alllength {
+	code {
+		display: flex;
+		align-items: baseline;
+		font-size: 300%;
+
+		span[title] {
+			display: inline-flex;
+			--tooltip-orientation: vertical;
+			--tooltip-alignment: end;
+			--tooltip-max-width: 60vw;
+			--line-length: 2.5em;
+
+			span[title] {
+				--line-length: 2em;
+				--tooltip-alignment: start;
+
+				span[title] {
+					--line-length: 1em;
+				}
+			}
+		}
+	}
+}
+
+#primitives {
+	code {
+		display: inline-block;
+		padding: .2em .3em .1em;
+		line-height: 1;
+	}
+
+	> section {
+		flex-flow: row wrap;
+		align-items: baseline;
+		justify-content: center;
+		gap: 0 .4em;
+
+		> h2 {
+			width: 100%;
+		}
+	}
+}
+
+#steps {
+	pre {
+		font-size: 150%;
+	}
+}
+
+#scope {
+	overflow: clip;
+
+	.error {
+		position: absolute;
+		bottom: 20%;
+		transform-origin: center;
+		rotate: -10deg;
+		transition: .5s;
+		white-space: nowrap;
+
+		&.future {
+			scale: 10;
+			opacity: 0;
+		}
+	}
+}
+
+#operators {
+	table {
+		line-height: 1.3;
+	}
+
+	thead th {
+		padding: .1em .4em
+	}
+
+	td {
+		padding: .2em .5em;
+
+		small {
+			display: block;
+			font-size: 50%;
+			color: var(--color-neutral-50);
+			font-weight: 500;
+			font-style: italic;
+		}
+	}
+}
+
+#functions,
+#functions-2 {
+	table {
+		margin: 0;
+	}
+}
+
+#functions-2 {
+	--slide-padding: 4rem;
+
+	td {
+		padding-inline: 0;
+	}
+
+	.side-by-side {
+		gap: 2rem;
+
+		pre {
+			margin-top: 0;
+			font-size: 85%;
+		}
+	}
+
+	td > pre {
+		margin-top: 2rem;
+	}
+}
+
+#objects {
+	--tooltip-orientation: vertical;
+	--tooltip-alignment: start;
+	--tooltip-max-width: 10em;
+	--line-length: 2em;
+
+	pre > code > .delayed {
+		display: inline;
+		padding-block: .35em;
+	}
+
+	> header {
+		margin-bottom: 0;
+	}
+}
+
+#object-keys {
+	> header {
+		margin-bottom: 0;
+	}
+
+	> section.examples {
+		display: grid;
+		grid-template-columns: auto auto auto;
+		gap: .5em;
+		align-items: start;
+		margin-top: 1em;
+
+		p {
+			white-space: nowrap;
+			grid-column: 1 / -1;
+			font-style: italic;
+
+			code {
+				background: inherit;
+				font-style: inherit;
+			}
+		}
+	}
+
+	pre {
+		margin: 0;
+	}
+}
+
+.flowchart {
+	max-height: calc(10lh * .88);
+}
+
+#elements {
+	--tooltip-max-width: 15em;
+}
+
+#methods {
+	--font-sizing: fixed;
+	display: grid;
+	grid-template-columns: 1fr auto;
+	grid-template-rows: auto 1fr;
+	padding-right: 0;
+	height: 100vh;
+	overflow: visible;
+	gap: 4rem 5rem;
+	box-sizing: border-box;
+
+	> pre {
+		grid-row: 1 / span 2;
+		padding: var(--slide-padding);
+		padding-left: 3rem;
+		margin-block: calc(-1 * var(--slide-padding));
+		box-sizing: border-box;
+		overflow: auto;
+		max-height: 100vh;
+		border-radius: 0;
+		font-size: 70%;
+	}
+
+	> :not(pre) {
+		grid-column: 1;
+	}
+
+	> header {
+		grid-row: 1;
+		text-align: left;
+
+		> h1 {
+			text-align: left;
+		}
+	}
+
+	> img {
+		grid-row: 2;
+		width: 100%;
+		object-fit: cover;
+		object-position: left bottom;
+		min-height: 0;
+		margin-bottom: var(--slide-padding);
+	}
+}
+
+#classes {
+	--blueprint-size: 1em;
+
+	background:
+		conic-gradient(at 50% 45%, transparent 20%, white 0 80%, transparent 0),
+		linear-gradient(hsl(0 0 100 / 60%) 2px, transparent 2px) -2px -2px / calc(5 * var(--blueprint-size)) calc(5 * var(--blueprint-size)),
+		linear-gradient(90deg, hsl(0 0 100 / 60%) 2px, transparent 2px) -2px -2px / calc(5 * var(--blueprint-size)) calc(5 * var(--blueprint-size)),
+		linear-gradient(hsl(0 0 100 / 30%) 1px, transparent 1px) -1px -1px / var(--blueprint-size) var(--blueprint-size),
+		linear-gradient(90deg, hsl(0 0 100 / 30%) 1px, transparent 1px) -1px -1px / var(--blueprint-size) var(--blueprint-size)
+		var(--color-blue);
+
+	> header {
+		color-scheme: dark;
+
+		> h1 {
+			color: canvastext;
+		}
+
+		.subtitle {
+			color: canvastext;
+			opacity: .8;
+		}
+	}
+
+	pre {
+		+ pre {
+			margin-top: 0;
+		}
+	}
+}
+
+#caveat {
+	align-items: stretch;
+
+	> section {
+		margin-block: 1em;
+		align-items: center;
+	}
+
+	pre {
+		+ pre {
+			margin-top: .4em;
+		}
+	}
+}
+
+#dom-manipulation {
+
+}

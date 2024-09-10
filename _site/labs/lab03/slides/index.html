@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lab 3: JS</title>
+	<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="gold" /><text x="17" y="85" style="font: 600 60px/1 system-ui">JS</text></svg>' />
+
+	<link href="talk.css" rel="stylesheet" />
+	<script type="importmap">
+		{
+			"imports": {
+				"mermaid/dist/mermaid": "https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js"
+			}
+		}
+	</script>
+	<script src="./talk.js" type="module"></script>
+</head>
+<body class="language-js no-media" data-markdown-elements="details.notes, .md, .md-children > *">
+
+<header id="intro" class="slide dont-resize">
+	<h1>
+		<div class="label">Lab 3</div>
+		<img src="images/js.svg" alt="JS">
+	</h1>
+	<small>
+		MIT Interactive Visualization & Society course &bull;
+		Slides by <a href="http://lea.verou.me">Lea Verou</a>
+	</small>
+</header>
+
+<article class="slide columns" id="what">
+	<h1>What is JS?</h1>
+
+	<section>
+		A fully-fledged programming language that runs in the browser
+		<em class="delayed persistent">(but can also run <a href="https://nodejs.org/en">on the server</a>, in <a href="https://www.electronjs.org/">native applications</a>, etc.)</em>
+	</section>
+	<img class="browser" src="images/js-most-popular.png" alt="" data-url="https://statista.com/statistics/793628/worldwide-developer-survey-most-used-languages/">
+
+	<details class="notes">
+		- The world’s [most popular](https://survey.stackoverflow.co/2023/#technology-most-popular-technologies) programming language!
+		- JS is short for "JavaScript", as its full name is.
+		This was a marketing ploy, as it was created during a time that Java was very popular.
+		Its similarities with Java are entirely superficial.
+	</details>
+</article>
+
+<article class="slide" id="use-cases">
+	<h1>What can JS do?</h1>
+	<dl>
+		<dt>Behavior</dt>
+		<dd>
+			<q>When I click on the close button, close the dialog box</q>
+		</dd>
+
+		<dt>Automation & Templating</dt>
+		<dd>
+			<q>Add a navigation menu on every page, and give a class of ‘current’ to the current page</q>
+			<span class="warning">Not the best way to do templating</span>
+		</dd>
+
+		<dt>APIs</dt>
+		<dd>
+			<q>When a message arrives, display an OS-level notification</q>
+		</dd>
+
+		<dt>Web APIs</dt>
+		<dd>
+			<q>Display my 9 latest Instagram posts in the sidebar</q>
+		</dd>
+	</dl>
+</article>
+
+<article class="slide columns force language-html code-labels" data-type="Recap">
+	<h1>Adding JS to your page</h1>
+	<section>
+		<h2>Linking</h2>
+		<h3>From HTML</h3>
+		<pre class="no-code-label"><code>
+			&lt;script type="module" src="hello.js">&lt;/script>
+		</code></pre>
+
+		<h3>From JS</h3>
+		<pre><code class="language-js">
+			import "./hello.js";
+			import * as util from "./util.js";
+		</code></pre>
+	</section>
+	<section>
+		<h2>Embedding</h2>
+		<pre><code>
+			&lt;script type="module">
+				alert("Hello world!");
+			&lt;/script>
+		</code></pre>
+
+		<h3>
+			Inline event handlers
+			<span class="chip bad">avoid</span>
+		</h3>
+		<pre><code>
+			&lt;button onclick="alert('Hello world!')">
+				Click me
+			&lt;/button>
+		</code></pre>
+	</section>
+</article>
+
+<article class="slide" id="console">
+	<h1>The Console</h1>
+
+	<video src="videos/console.mp4" autoplay muted loop></video>
+
+	<details class="notes">
+		JS gives you superpowers, that you can use not just when developing websites, but also when browsing the Web!
+		The Console in the browser devtools allows you to run JS on *any* website you visit, not just those you develop.
+
+		You can use this to extract data from websites into a convenient format, remove undesirable elements en masse, and many other things.
+		Tip: Press the up arrow to cycle through previous commands.
+
+		The console is also a powerful debugging tool:
+		First, it will show you any errors that occur in your JS code, so it's the first place to look when stuff is not working.
+		Second, you can log to it from your own code by using [`console.log()`](https://developer.mozilla.org/en-US/docs/Web/API/console/log_static),
+		which is the first line of defense for debugging,
+		as you can use it to print out the current values of variables and see if they are what you expect.
+	</details>
+</article>
+
+<article class="slide delayed-last" id="alllength" data-type="activity">
+	<code class="syntax-breakdown">
+		<span title="Function call of a function with the weird name $$(), which gives us a list of elements matching a selector" data-tooltip="bottom">$$(
+			<span title="Function parameter: a string (text) with the content '*'">"*"</span>
+			)</span>
+			<span title="We’re reading the 'length' property of that list of elements (which gives us the number of items)">.length</span></code>
+	<details class="notes">
+		- Identifiers in JS can contain not only letters, numbers, and underscores, but also dollar signs.
+		- This means that `$` and `$$` are valid names for things!
+		- The console has a special function called `$$()` that takes a CSS selector and returns all the elements that match it (there’s also `$()` which returns the first).
+		It is a convenience over the much longer regular JS version that we will see later.
+		- We type the selector in single or double quotes — that is called a _string_ in programming and is how we write text.
+		- If we only type `$$("*")`, we will see a (very long) list of all the elements on the page.
+		To actually get their number we need to get the `length` _property_ of that list.
+		We will learn about properties later, but for now, just know that it’s a way to get some information about a value.
+
+		**Try it now:** visit your favorite website, open the console and type `$$("*").length` to see how many elements it has!
+		Who can find the website with the most and least elements?
+	</details>
+</article>
+
+<article class="slide columns language-html code-labels">
+	<h1>Reactivity</h1>
+	<section>
+		<h2>CSS is reactive</h2>
+		<pre><code>
+			&lt;style>
+				a:hover {
+					background: gold;
+				}
+			&lt;/style>
+			&lt;a href="#">Come here&lt;/a>
+		</code></pre>
+		<div class="arrow-down"></div>
+		<iframe data-result class="browser"></iframe>
+	</section>
+	<section class="delayed collapse">
+		<h2>JS is not reactive</h2>
+		<pre><code>
+			&lt;a href="#"
+			   onmouseover="this.style.background = 'gold';"
+			>Come here&lt;/a>
+		</code></pre>
+		<div class="arrow-down"></div>
+		<iframe data-result class="browser"></iframe>
+	</section>
+	<section class="delayed collapse">
+		<h2>JS is not reactive</h2>
+		<pre><code>
+			&lt;a href="#"
+			   onmouseover="this.style.background = 'gold';"
+			   onmouseout="this.style.background = '';"
+			>Come here&lt;/a>
+		</code></pre>
+		<div class="arrow-down"></div>
+		<iframe data-result class="browser"></iframe>
+	</section>
+	<details class="notes">
+		Data flow in CSS is reactive, just like spreadsheet formulas.
+		When something changes, everything updates to match and you don’t have to lift a finger to make that happen.
+		JS instead operates on a different model, called [_imperative_](https://en.wikipedia.org/wiki/Imperative_programming).
+		Imperative programs are a series of steps.
+		Each step is executed once, unless explicitly revisited.
+
+		Hover over these links to see the difference.
+
+		Remember pseudo-classes? As a part of CSS they are reactive:
+		not only does the background here become `gold` when the link is hovered,
+		but it also returns to its previous state automatically, when the link stops being hovered.
+
+		However, when we use JS to do the same thing, we have to manually set the background back to its original value ourselves.
+	</details>
+</article>
+
+<section>
+	<header class="slide">
+		<h1>Data in JS</h1>
+	</header>
+
+	<article class="slide columns force" id="primitives">
+		<h1>Simple values</h1>
+
+		<section>
+			<h2>🧮 Numbers</h2>
+			<code>2</code> <code>.5</code> <code>-11.8</code>
+			<code>1_000_000_000</code>
+			<code>Infinity</code> <code>-Infinity</code> <code>NaN</code>
+		</section>
+		<section>
+			<h2>🧵 Strings (text)</h2>
+			<code>"Hello"</code>
+			<code>'This is some text'</code>
+			<code>`x is ${ x } <br>and y is ${ y }`
+			</code>
+		</section>
+		<section>
+			<h2>❓Booleans (yes/no)</h2>
+			<code>true</code>
+			<code>false</code>
+		</section>
+		<section>
+			<h2>🫗 Empty</h2>
+			<code>null</code>
+			<code>undefined</code>
+		</section>
+		<details class="notes">
+			- Numbers
+				- Numbers can be integers or floating point numbers, finite or infinite, and can also be `NaN` (Not a Number) which is used for invalid values (e.g. try doing `5 - "yolo"`).
+				- For readability, you can use underscores in numbers, which are ignored by the interpreter.
+			- Strings
+				- Strings can use either single or double quotes
+				- Backticks are used for [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
+				which are more powerful than regular strings: they can have line breaks, and embed variables and expressions.
+			- There are two kinds of empty values, `null` and `undefined`, used in different situations.
+			- These kinds of simple values are called "primitives" to distinguish them from more complex values like objects and functions.
+		</details>
+	</article>
+	<article class="slide columns force dont-resize" id="arrays">
+		<header>
+			<h1>Arrays</h1>
+			<p class="subtitle">Lists of values</p>
+		</header>
+
+		<section>
+			<h2>✅ Defining</h2>
+			<pre><code>
+				let numbers = [1, 2, 3, 4, 5];
+				let names = ["Lea", "David", "Jen"];
+			</code></pre>
+		</section>
+
+		<section class="delayed">
+			<h2>👀 Reading</h2>
+			<pre class="syntax-breakdown"><code>
+				console.log(numbers.length); // 5
+				console.log(names[<span title="First item at 0">0</span>]); // "Lea"
+			</code></pre>
+		</section>
+
+		<section class="delayed">
+			<h2>📝 Modifying</h2>
+			<pre class="syntax-breakdown"><code>
+				names[2] = "Jo";
+				names.splice(<span title="At this position…">1</span>, <span title="Remove 1 item">1</span>);
+				console.log(names); // ["Lea", "Jo"]
+			</code></pre>
+		</section>
+
+		<section class="delayed">
+			<h2>➕ Adding</h2>
+			<pre class="syntax-breakdown"><code>
+				numbers.push(6);
+				numbers.unshift(0);
+				console.log(numbers); // [0, 1, 2, 3, 4, 5, 6]
+			</code></pre>
+		</section>
+
+		<details class="notes">
+			- Arrays are a way to group values together and simplify repetitive code, since we can write code once that operates on all of them in one fell swoop.
+			- [MDN First Steps Tutorial on Arrays](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Arrays)
+		</details>
+	</article>
+
+	<article class="slide delayed-last columns" id="objects">
+		<header>
+			<h1>Objects</h1>
+			<p class="subtitle">Key → value pairs</p>
+		</header>
+
+		<section>
+			<h2>String → String</h2>
+			<pre class="syntax-breakdown"><code>
+				let pages = <span title="Object literal">{
+					<span title="Key">"Home"</span>: <span title="Value">"index.html"</span>,
+					<span title="Quotes in key can be often omitted">About</span>: "about.html",
+					Contact: "contact.html"<span title="Last comma optional (but recommended)" data-tooltip="bottom" style="--tooltip-offset: -2em">,</span>
+				}</span>;
+			</code></pre>
+		</section>
+		<section class="delayed">
+			<h2>String → Object</h2>
+			<pre class="syntax-breakdown"><code>
+				let pages2 = {
+					<span title="Key">home</span>: <span title="Value is another object">{
+						title : "Home",
+						url: "index.html"
+					}</span>,
+					about: {
+						title : "About me",
+						url: "about.html"
+					},
+					contact: {
+						title : "Contact",
+						url: "contact.html"
+					},
+				};
+			</code></pre>
+		</section>
+
+		<details class="notes">
+			- Objects are a more complex type of value, in the sense that they contain other values
+			- Objects are a set of key-value pairs. The keys are always strings (called _properties_), but the values can be anything, including other objects or functions.
+				- If you need to map objects to values,
+				look at [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)).
+			- [Object literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer)
+			are plain objects, called "dictionaries" in other languages (e.g. Python).
+			- One of the hands-on exercises of this lab is to generate the navigation menu of your website automatically, via JS.
+			For that, we need a data structure that holds both the titles and the URLs of our pages.
+			There are many options for that. One would be to map urls to titles or titles to URLs via an object like the first one.
+			Another options would be to use identifiers for the pages and map those to objects that contain the title and the URL, like the second one.
+			- The keys can be written without quotes if they don’t contain characters that would be invalid in variable names (e.g. `home` instead of `"home"`).
+		</details>
+	</article>
+
+	<article class="slide dont-resize" id="object-keys">
+		<header>
+			<h1>Object Properties</h1>
+			<p class="subtitle">Reading & Writing</p>
+		</header>
+
+		<ul>
+			<li><code>object.key</code> for simple static keys, <code>object[keyExpr]</code> for anything else</li>
+			<li class="delayed" data-index="3">Just assign to add/modify: <code>object.property = 5;</code>
+			</li>
+		</ul>
+
+		<section class="examples">
+			<p>All of the following return <code>"contact.html"</code>:</p>
+			<code>pages.Contact</code>
+			<code>pages["Contact"]</code>
+			<code>pages["Con" + "tact"]</code>
+			<code class="delayed">pages2.contact.url</code>
+			<pre class="delayed"><code>
+				let title = "Contact";
+				pages[title];
+			</code></pre>
+			<pre class="delayed"><code>
+				let id = "contact";
+				pages2[id].url;
+			</code></pre>
+		</section>
+
+		<details class="notes">
+			- The dot operator is more convenient, but it only works for properties that are valid variable names (letters, numbers, `_`, `$`).
+			- The brackets can be used for any expression, so can be very useful when the property name is in a variable.
+			- Both can be chained, and combined with each other
+			- Both can be used for writing as well as reading
+			- We can write any property, or even create new ones, but if `obj.foo` does not exist, `obj.foo.bar` will produce an error (you can use
+			[optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) to avoid that when reading values, but you cannot write values this way).
+			- Does the syntax seem familiar? We’ve seen `array.length` and `array[0]` before, haven’t we? That is not a coincidence, these are *also* properties.
+			Arrays are just a special type of object.
+			- Because objects and arrays hold other values, they are called _"data structures"_.
+			- Read more: [MDN: Property accessors](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors)
+		</details>
+	</article>
+
+	<article class="slide">
+		<header>
+			<h1>JSON</h1>
+			<p class="subtitle">A data format based on JS syntax</p>
+		</header>
+
+		<ul>
+			<li><strong>4 simple values:</strong> numbers, strings (only <code>"</code>-quoted), booleans, <code>null</code></li>
+			<li><strong>2 data structures:</strong> arrays, objects</li>
+			<li><strong>Strict:</strong> No trailing commas, all keys must be quoted</li>
+			<li><strong>Static:</strong> No expressions</li>
+		</ul>
+
+		<details class="notes">
+			You may have heard of JSON. It is simply a subset of JS data with stricter syntax.
+		</details>
+	</article>
+</section>
+
+<section>
+	<header class="slide" id="flow">
+		<h1>Execution flow</h1>
+	</header>
+
+	<article class="slide delayed-last" id="steps">
+		<h1>JS programs are a series of steps</h1>
+
+		<div class="side-by-side">
+			<pre class="syntax-breakdown line-numbers"><code>
+				<span title="Define a variable called x and give it the value 1">let x = 1</span><span title="Steps are separated by semicolons">;</span>
+				let y = 2;
+				let <span title="z is now 3">z</span> = x + y;
+				x = 2;
+				<span hidden>.</span><span title="Output z in the console">console.log(<span title="spoiler alert: it’s still 3" data-tooltip="top">z</span>)</span>;
+			</code></pre>
+
+			<img src="images/flowchart-steps.png" alt="" class="flowchart">
+		</div>
+
+		<details class="notes">
+			JS programs are a series of steps, separated by semicolons.
+			Each step is executed once, unless explicitly told to execute again.
+			They can be triggered by user actions, like clicking a button, or by other events, like the page loading or a message arriving.
+		</details>
+	</article>
+
+	<article class="dbpp slide">
+		<h1>What can change that?</h1>
+
+		<ul style="list-style: '✅ ';">
+			<li>Conditionals</li>
+			<li>Loops</li>
+			<li>Function calls</li>
+			<li>Events</li>
+		</ul>
+	</article>
+
+	<article class="slide delayed-last" id="conditionals">
+		<h1>Conditionals</h1>
+
+		<div class="side-by-side">
+			<pre class="syntax-breakdown"><code>
+				let x = 1, y = 2;
+				let min;
+
+				<span title="Is x smaller than y?">if (x < y)</span> {
+					min = x;
+				}
+				else {
+					min = y;
+				}
+				console.log(min);
+			</code></pre>
+
+			<img src="images/flowchart-if.png" alt="" class="flowchart">
+		</div>
+		<details class="notes">
+			Conditionals are a way to execute different code depending on a condition.
+
+			[MDN: Making decisions in your code — conditionals](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)
+		</details>
+	</article>
+
+	<article class="slide delayed-last" id="conditionals-else">
+		<h1>Loops</h1>
+
+		<div class="side-by-side">
+			<pre class="syntax-breakdown"><code>
+				let numbers = [2, -1, 3, 0, 5];
+				let min = Infinity;
+
+				for (let n of numbers) {
+					if (n < min) {
+						min = n;
+					}
+				}
+
+				console.log(min);
+			</code></pre>
+
+			<!-- <wc-mermaid>flowchart TD;
+				let_numbers("let numbers = [2, -1, 3, 0, 5]") -> let_min("let min = Infinity");
+				let_min -> for;
+				for{"for (n of numbers)"} -> if{"if (n < min)"};
+				if -> |true|set("min = n");
+				of -> |false|for;
+				set -> for;
+				for -> |end of array|F("console.log(min)")
+			</wc-mermaid> -->
+			<img src="images/flowchart-for.png" alt="" class="flowchart">
+		</div>
+		<details class="notes">
+			- Programming languages are very useful for rapidly completing repetitive tasks.
+			Loops are a way to execute the same code multiple times, with different data each time.
+			- Here we see a [`for .. of`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) loop
+			which is for running code over each item in an array and other types of lists (_iterating_).
+			There are many other types of loops, such as:
+				- [`for .. in`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in) for iterating over object keys
+				- [`for`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for) for arbitrary conditions
+				- [`while`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/while) for running code for as long as a condition is true
+				(dangerous! if the loop does not take care of making that condition false, it will run forever, or until the browser crashes)
+			- Read more:
+				- [MDN: Looping code](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code)
+				- [MDN: Loops and iteration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration)
+		</details>
+	</article>
+
+	<article class="slide delayed-last">
+		<h1>Functions</h1>
+
+		<div class="side-by-side">
+			<pre class="syntax-breakdown"><code>
+				let min = (numbers) => {
+					let result = Infinity;
+					for (let n of numbers) {
+						if (n < result) {
+							result = n;
+						}
+					}
+					return result;
+				};
+
+				let minimum = min([2, -1, 3, 0, 5]);
+				console.log(minimum);
+			</code></pre>
+
+			<img src="images/flowchart-functions.png" alt="" class="flowchart">
+		</div>
+		<details class="notes">
+			But what if we frequently needed to calculate the minumum of different lists of numbers?
+			We could write a *function* to do that!
+			- Functions help us reuse chunks of logic (or actions).
+			- They take zero or more inputs, called _parameters_ (here `numbers`), and return a single output,
+			called the _return value_ (even if a function does not explictly return anything, the special value `undefined` is returned).
+			- Aside from inputs and outputs, the rest of the code sees the function as a black box.
+			In that sense, it helps us *modularize* our code, and break down complex logic into manageable chunks.
+
+			Notice that we assigned our function to a variable?
+			That’s because in JS, **functions are just another type of value, like numbers or strings**.
+			We can have arrays of them, object properties that are functions,
+			we can pass them to other functions as parameters,
+			we could even have functions that return functions! 🤯
+		</details>
+	</article>
+
+	<article class="slide" id="methods">
+		<header>
+			<h1>Methods</h1>
+			<p class="subtitle">
+				Object properties whose values are functions
+			</p>
+		</header>
+
+		<img src="videos/method-calls.gif" alt="" class="browser" data-url="about:blank">
+
+		<pre class="syntax-breakdown"><code>
+			let pages2 = {
+				home: {
+					title : "Home",
+					url: "index.html",
+					getAbsoluteURL: function (base) {
+						return `${base}/${this.url}`;
+					},
+				}</span>,
+				about: {
+					title : "About me",
+					url: "about.html",
+					getAbsoluteURL: function (base) {
+						return `${base}/${this.url}`;
+					},
+				},
+				contact: {
+					title : "Contact",
+					url: "contact.html",
+					getAbsoluteURL: function (base) {
+						return `${base}/${this.url}`;
+					}
+				},
+			};
+		</code></pre>
+
+		<details class="notes">
+			We’ve seen objects whose values are [primitives](#primitives), other [objects](#objects), or [arrays](#arrays).
+			But they can also be [functions](#functions)!
+
+			These functions are called _methods_ because they typically have an implicit parameter: the object they are called on.
+			We can access that parameter with the special `this` keyword, as long as we’re using a regular function
+			(not an [arrow function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) like in the previous slide).
+
+			Notice that the function here is identical for all three objects.
+			Can we reduce this repetition?
+		</details>
+	</article>
+
+	<article class="slide columns">
+		<header>
+			<h1>Classes</h1>
+			<p class="subtitle">Blueprints for objects</p>
+		</header>
+
+		<section>
+			<header>
+				<h2>Class definition</h2>
+				<p class="subtitle">The blueprint</p>
+			</header>
+			<pre><code>
+				class Page {
+					constructor(title, url) {
+						this.title = title;
+						this.url = url;
+					}
+
+					getAbsoluteURL(base) {
+						return `${base}/${this.url}`;
+					}
+				}
+			</code></pre>
+		</section>
+
+		<section>
+			<header>
+				<h2>
+					Usage
+				</h2>
+				<p class="subtitle">
+					“Creating instances”
+				</p>
+			</header>
+
+			<pre><code>
+				let pages = {
+					home: new Page("Home", "index.html"),
+					about: new Page("About me", "about.html"),
+					contact: new Page("Contact", "contact.html"),
+				};
+			</code></pre>
+		</section>
+
+		<details class="notes">
+			Classes are a way to create objects that share the same structure and behavior.
+			They are a way to create _blueprints_ for objects.
+			- The `constructor` method is called when a new object is created from the class.
+			- The `new` keyword is used to create a new object from a class.
+			- The `this` keyword is used to refer to the object that is being created.
+			- Any methods defined on the class (e.g. the `getAbsoluteURL()` method here) is shared by all objects created from the class (_instances_).
+			- Read more: [MDN: Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
+		</details>
+	</article>
+</section>
+
+<article class="slide columns" id="operators" data-type="Cheatsheet">
+	<h1>Operators</h1>
+
+	<section>
+		<h2>Math</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Math</th>
+					<th>JS</th>
+				</tr>
+			</thead>
+			<tr>
+				<td><math><mi>x</mi> <mo>+</mo> <mi>y</mi></math>
+				<td><code>x + y</code></td>
+			</tr>
+			<tr>
+				<td><math><mi>x</mi> <mo>-</mo> <mi>y</mi></math>
+				<td><code>x - y</code></td>
+			</tr>
+			<tr>
+				<td><math><mi>x</mi> <mo>×</mo> <mi>y</mi></math>
+				<td><code>x * y</code></td>
+			</tr>
+			<tr>
+				<td><math><mfrac><mi>x</mi><mi>y</mi></mfrac></math>
+				<td><code>x / y</code></td>
+			</tr>
+			<tr>
+				<td><math><msup><mi>x</mi><mi>y</mi></msup></math>
+				<td><code>x ** y</code></td>
+			</tr>
+			<tr>
+				<td><math><mi>x</mi> <mo>mod</mo> <mi>y</mi></math>
+				<td><code>x % y</code></td>
+			</tr>
+		</table>
+	</section>
+	<section>
+		<h2>Comparison</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Math</th>
+					<th>JS</th>
+				</tr>
+			</thead>
+			<tr>
+				<td><math><mi>x</mi> <mo>&lt;</mo> <mi>y</mi></math>
+				<td><code>x < y</code></td>
+			</tr>
+			<tr>
+				<td><math><mi>x</mi> <mo>&gt;</mo> <mi>y</mi></math>
+				<td><code>x > y</code></td>
+			</tr>
+			<tr>
+				<td><math><mi>x</mi> <mo>≤</mo> <mi>y</mi></math>
+				<td><code>x <= y</code></td>
+			</tr>
+			<tr>
+				<td><math><mi>x</mi> <mo>≥</mo> <mi>y</mi></math>
+				<td><code>x >= y</code></td>
+			</tr>
+			<tr>
+				<td><math><mi>x</mi> <mo>≠</mo> <mi>y</mi></math>
+				<td><code>x !== y</code></td>
+			</tr>
+			<tr>
+				<td><math><mi>x</mi> <mo>=</mo> <mi>y</mi></math>
+				<td><code>x === y</code></td>
+			</tr>
+		</table>
+	</section>
+	<section>
+		<h2>Logic</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Math</th>
+					<th>JS</th>
+				</tr>
+			</thead>
+			<tr>
+				<td>
+					<math><mi>x</mi> <mo>∧</mo> <mi>y</mi></math>
+					<small>(x AND y)</small>
+				</td>
+				<td><code>x && y</code></td>
+			</tr>
+			<tr>
+				<td>
+					<math><mi>x</mi> <mo>∨</mo> <mi>y</mi></math>
+					<small>(x OR y)</small>
+				</td>
+				<td><code>x || y</code></td>
+			</tr>
+			<tr>
+				<td>
+					<math><mo>¬</mo><mi>x</mi></math>
+					<small>(NOT x)</small>
+				</td>
+				<td><code>!x</code></td>
+			</tr>
+		</table>
+	</section>
+	<details class="notes">
+		- One of the mistakes in the design of JS is that `+` serves a double purpose:
+		number addition and string concatenation.
+		This means that e.g. `"2" + 3` is not the number `5` but the string `"23"`.
+	</details>
+</article>
+
+<!--
+<article class="slide columns force">
+	<header>
+		<h1>Arrays</h1>
+		<p class="subtitle">Lists of values</p>
+	</header>
+
+	<section class="delayed">
+		<h2>Traversing</h2>
+		<pre><code>
+			for (let n of numbers) {
+				console.log(n);
+			}
+		</code></pre>
+	</section>
+
+	<section class="delayed">
+		<h2>Transforming</h2>
+		<pre class="syntax-breakdown" data-tooltip="top"><code>
+			let squares = numbers<span title="Built-in method">.map</span>(<span title="Function as an argument">n => n ** 2</span>);
+			console.log(squares); // [1, 4, 9, 16, 25]
+		</code></pre>
+	</section>
+
+	<details class="notes">
+
+	</details>
+</article> -->
+
+<article class="slide columns force-3">
+	<header>
+		<h1>Elements</h1>
+		<p class="subtitle">Getting them into a JS variable</p>
+	</header>
+
+	<section>
+		<h2>Predefined</h2>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Element</th>
+					<th>JS</th>
+				</tr>
+			</thead>
+			<tr>
+				<td><code class="language-html">&lt;html></code></td>
+				<td><code>document.documentElement</code></td>
+			</tr>
+			<tr>
+				<td><code class="language-html">&lt;body></code></td>
+				<td><code>document.body</code></td>
+			</tr>
+			<tr>
+				<td><code class="language-html">&lt;head></code></td>
+				<td><code>document.head</code></td>
+			</tr>
+		</table>
+	</section>
+
+	<section class="delayed">
+		<h2>Via ids <span class="chip bad">avoid</span></h2>
+		<pre class="language-html"><code>
+			&lt;button id="test_button">
+				Click me
+			&lt;/button>
+		</code></pre>
+		<pre><code>
+			console.log(test_button);
+		</code></pre>
+	</section>
+
+	<section class="delayed">
+		<h2>Via selector</h2>
+
+		<pre><code>
+			// See all links on a page
+			let allLinks = document.querySelectorAll('a');
+			console.log(allLinks);
+		</code></pre>
+		<pre><code>
+			// Get closest ancestor with a class
+			let container = element.closest("select, article");
+		</code></pre>
+	</section>
+
+	<section class="span-all delayed">
+		<h2>Creating 🆕 elements</h2>
+
+		<div class="columns">
+			<pre><code>
+				let p = document.createElement("p");
+				p.textContent = "Hello";
+				document.body.append(p);
+			</code></pre>
+			<pre><code>
+				document.body.insertAdjacentHTML("beforeend", `
+					&lt;p>Hello&lt;/p>
+				`);
+			</code></pre>
+		</div>
+	</section>
+
+	<details class="notes">
+		Every element in our HTML corresponds to an object in JS, which we can manipulate.
+		Before we can do any exciting things with elements, we need to get _a reference_ to them,
+		i.e. to grab this object and put it in a variable that we can use.
+
+		There are multiple ways to do that:
+		- For the three elements that are guaranteed to exist on every page, there are predefined variables for them.
+		- Every time you assign an id to an element, you can also use that in your JS.
+		This can be convenient for experimentation, learning, and prototyping, but it’s not good as a sustained practice
+		as it is quite fragile.
+		- The most flexible way is to use the [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector)
+		and [`document.querySelectorAll()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll) methods, which allow us to select elements using CSS selectors.
+		The console even offers nice shortcuts for them: `$()` and `$$()` respectively.
+			- If we already have a reference to an element, we can use `element.closest(selector)` to get its closest ancestor that matches a selector.
+			and `element.querySelectorAll(selector)` to get its descendants that match a selector.
+		- We can also create new elements from scratch and add them to the page.
+		Note that until we actually use a method like [`element.append()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/append)
+		to add them to the document, **we will not see them on the page**!
+	</details>
+</article>
+
+<article class="slide columns force-3" id="dom-manipulation">
+	<header>
+		<h1>Elements</h1>
+		<p class="subtitle">Manipulating them (the fun part!)</p>
+	</header>
+
+	<section>
+		<h2>Style</h2>
+		<section>
+			<h3>Classes</h3>
+			<pre><code>
+				a.classList.add("current");
+			</code></pre>
+		</section>
+		<section>
+			<h3>CSS</h3>
+			<pre><code>
+				el.style.setProperty("--value", value);
+			</code></pre>
+		</section>
+	</section>
+
+	<section>
+		<h2>Metadata</h2>
+		<section>
+			<h3>Attributes</h3>
+			<pre><code>
+				h1.id = slugify(h1.textContent);
+				a.setAttribute("target", "_blank");
+			</code></pre>
+		</section>
+		<section>
+			<h3>Properties</h3>
+			<pre><code>
+				checkbox.indeterminate = true;
+			</code></pre>
+		</section>
+	</section>
+
+	<section>
+		<h2>DOM Tree</h2>
+		<section>
+			<h3>Position</h3>
+			<pre><code>
+				code.before(a);
+				a.append(code);
+			</code></pre>
+		</section>
+
+		<section>
+			<h3>Content</h3>
+			<pre><code>
+				h1.textContent = "Hi there";
+				p.innerHTML = "Yo &lt;em>sup?&lt;/em>";
+			</code></pre>
+		</section>
+	</section>
+
+	<details class="notes">
+		Now that we have a reference to the element(s) we are interested it, here comes the fun part:
+		manipulating it dynamically!
+
+		We can change almost everything about an element (except its type, but we can replace it with another element of a different type!):
+		its attributes, its content, its style, and even move it to another position in the DOM tree.
+		- Every attribute corresponds to a JS property, though in rare cases the name is different (e.g. `for` is `htmlFor`)
+		and the values can be slightly different (e.g. in an `&lt;a>` element `element.href` is a full absolute link, even if the `href` attribute is a relative URL).
+		You can also use [`element.getAttribute(name)`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute) and
+		[`element.setAttribute(name, value)`](https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute) to access attributes with their original name and format.
+		- For certain attributes that take lists of values, there are more convenient ways to manipulate their individual values:
+			- For class names use `element.classList` to add (`element.classList.add()`) or remove (`element.classList.remove()`) individual classes
+			- For inline styles (`style` attribute), `element.style` allows us to manipulate individual properties (`element.style.getPropertyValue(name)` and `element.style.setProperty(name, value)`).
+
+	</details>
+</article>
+
+<article class="slide columns delayed-last" data-tooltip="bottom">
+	<header>
+		<h1>Events</h1>
+		<p class="subtitle">“When X happens, do Y”</p>
+	</header>
+	<section>
+		<h2>Basic</h2>
+		<pre class="language-html code-labels"><code>
+			&lt;button id="button">Click me&lt;/button>
+		</code></pre>
+		<pre class="syntax-breakdown"><code>
+			<span title="What element are we monitoring? (Event target)">button</span>.addEventListener(<span title="What are waiting for?">"click"</span>, <span title="What should happen?" class="inline" data-tooltip="top right">function () {
+				alert("You clicked me! 🥹 Thank you!");
+			}</span>);
+		</code></pre>
+		<div class="arrow-down"></div>
+		<iframe class="browser" data-result=""></iframe>
+	</section>
+	<section class="delayed">
+		<h2>Event object</h2>
+		<pre class="syntax-breakdown"><code>
+			document.addEventListener("mousemove", (<span title="Metadata about what happened" data-tooltip="top right">event</span>) => {
+				document.body.textContent = `${event.x} ${event.y}`;
+			});
+		</code></pre>
+		<div class="arrow-down"></div>
+		<iframe class="browser" data-result></iframe>
+	</section>
+</article>
+
+<article class="slide" id="caveat">
+	<h1>⚠️ Common caveat</h1>
+	<section class="side-by-side">
+		<div>
+			<pre class="language-html code-labels"><code>
+				&lt;button id="button">Click me&lt;/button>
+			</code></pre>
+			<pre><code>
+				button.addEventListener("click", document.body.style.background = "pink");
+			</code></pre>
+		</div>
+		<div class="arrow-right"></div>
+		<iframe class="browser" data-result></iframe>
+	</section>
+	<section class="side-by-side delayed">
+		<div>
+			<pre class="language-html code-labels"><code>
+				&lt;button id="button">Click me&lt;/button>
+			</code></pre>
+			<pre><code>
+				button.addEventListener("click", () => {
+					document.body.style.background = "pink"
+				});
+			</code></pre>
+		</div>
+		<div class="arrow-right"></div>
+		<iframe class="browser" data-result></iframe>
+	</section>
+</article>
+
+<article class="slide dont-resize" id="local-urls" style="--line-length: 3em; --tooltip-orientation: vertical;">
+	<header>
+		<h1>Local URLs <span class="chip">Part 2</span></h1>
+		<p>Ports and Local servers</p>
+	</header>
+	<!-- <code class="syntax-breakdown language-url target-width-80" style="--char-aspect-ratio: 2.215">
+		<span title="Protocol">file:</span>//
+		<span title="Path to resource">/Users/leaverou/Documents/vis-society/vis-society.github.io/labs/1/hello.html</span>
+	</code> -->
+	<code class="delayed syntax-breakdown language-url target-width-80" data-tooltip="bottom">
+		<span title="Protocol">http:</span>//
+		<span title="Host"><span title="Domain name">localhost</span><span title="Port">:4000</span></span>
+		<span title="Path to resource">/labs/1/hello.html</span>
+	</code>
+	<details class="notes">
+		So far we’ve been working with local URLs that start with the `file:` protocol.
+
+		Since these are absolute paths starting from the root of your filesystem,
+		This means that a malicious website could potentially access any file on your computer,
+		which is why the `file:` protocol is very locked down today as it’s considered unsafe.
+
+		Instead of the `file:` protocol, when developing websites locally, we usually run one or more *local servers*, which we can access via the special domain name `localhost`.
+		To allow the same domain name to be used as the host for multiple websites, we have the concept of *ports*.
+		Every URL has a port, but it’s usually omitted when it’s the default port for the protocol (80 for HTTP and 443 for HTTPS).
+
+		Note that now the path starts from the root of the website, not the root of the filesystem.
+		This is because I’m running the local server at the root of the website.
+		This also means that files outside the root of the website are not accessible, which is a security feature.
+	</details>
+</article>
+
+<footer class="slide" id="end"></footer>
+
+<section>
+	<header class="slide">
+		<h1>Deleted scenes</h1>
+	</header>
+
+	<aticle class="slide side-by-side centered-x" id="scope">
+		<header>
+			<h1>Variable scope</h1>
+			<p class="subtitle">Variables are scoped to closest {}</p>
+		</header>
+
+		<pre><code>
+			let x = 1, y = 2;
+
+			if (x < y) {
+				let min = y;
+			}
+			else {
+				let min = x;
+			}
+
+			console.log(min);
+		</code></pre>
+		<pre class="no-code-label error delayed"><code>Uncaught ReferenceError: min is not defined</code></pre>
+	</aticle>
+
+	<article class="slide no-code-labels dont-resize" id="functions">
+		<header>
+			<h1>Functions</h1>
+			<p class="subtitle">Reuse chunks of logic (and actions)</p>
+		</header>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Math</th>
+					<th>JS</th>
+				</tr>
+			</thead>
+			<tr>
+				<td>
+					<math>
+						<mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo>
+						<mo>=</mo>
+						<msup><mi>x</mi><mn>2</mn></msup>
+						<mo>+</mo>
+						<msup><mi>y</mi><mn>2</mn></msup>
+					</math>
+				</td>
+				<td class="delayed-children">
+					<pre class="syntax-breakdown"><code>
+						let <span title="Yes, this is a variable, and its value is a function 🤯🤯🤯" data-tooltip="top" data-index="2">f</span> = function (<span title="Function parameters">x, y</span>) {
+							<span title="Stop execution; we’ve got the result!" data-tooltip="bottom">return</span> x**2 + y**2;
+						}
+					</code></pre>
+					<pre><code>
+						let f = (x, y) => x**2 + y**2;
+					</code></pre>
+				</td>
+			</tr>
+			<tr class="delayed">
+				<td>
+					<math>
+						<mi>f</mi><mo>(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>)</mo>
+						<mo>=</mo>
+						<mn>5</mn>
+					</math>
+				</td>
+				<td>
+					<pre><code>
+						let result = f(1, 2);
+						console.log(result); // 5
+					</code></pre>
+				</td>
+			</tr>
+		</table>
+
+		<details class="notes">
+			You have certainly used functions in Math.
+			They are a way to encapsulate a calculation you want to reuse.
+			They consist of a name, parameters in parentheses, and a body.
+
+			JS functions are similar, but more powerful.
+			They can take any number of parameters, of any type (not just numbers) and can return any value (not just numbers).
+
+			Math functions are _side effect free_: their purpose is to compute an output from one or more inputs,
+			their output depends entirely on their inputs,
+			and they do not affect anything else when called.
+			On the contrary, JS functions can be used to compute things, do things (e.g. send a notification, change the page), or both.
+
+			There are two main ways to define functions in JS: [function expressions](https://developer.mozilla.org/en-US/docs/web/JavaScript/Reference/Operators/function),
+			and [arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+			which are more compact and more "lightweight".
+
+			Note that we are assigning the function to a variable, which is a bit mind-bending at first.
+			Functions in JS are just another type of value, like numbers or strings.
+			In fact, as we’ll see, it’s common to have functions whose parameters include other functions,
+			and there are even functions that create and return new functions!
+		</details>
+	</article>
+
+	<article class="slide no-code-labels dont-resize" id="functions-2">
+		<h1>Functions</h1>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Math</th>
+					<th>JS</th>
+				</tr>
+			</thead>
+			<tr>
+				<td>
+					<!-- Generated via https://www.mathjax.org/#demo -->
+					<math display="block">
+						<mi>f</mi>
+						<mo stretchy="false">(</mo>
+						<mi>x</mi>
+						<mo stretchy="false">)</mo>
+						<mo>=</mo>
+						<mrow>
+						<mo>{</mo>
+						<mtable columnalign="left left" columnspacing="1em" rowspacing=".2em">
+							<mtr>
+							<mtd>
+								<mfrac>
+								<mn>1</mn>
+								<mi>x</mi>
+								</mfrac>
+							</mtd>
+							<mtd>
+								<mtext>if&#xA0;</mtext>
+								<mi>x</mi>
+								<mo>&#x2209;</mo>
+								<mo stretchy="false">[</mo>
+								<mn>-1</mn>
+								<mo>,</mo>
+								<mn>1</mn>
+								<mo stretchy="false">]</mo>
+							</mtd>
+							</mtr>
+							<mtr>
+							<mtd>
+								<mi>x</mi>
+							</mtd>
+							<mtd>
+								<mtext>if&#xA0;</mtext>
+								<mi>x</mi>
+								<mo>&#x2208;</mo>
+								<mo stretchy="false">[</mo>
+								<mn>-1</mn>
+								<mo>,</mo>
+								<mn>1</mn>
+								<mo stretchy="false">]</mo>
+							</mtd>
+							</mtr>
+						</mtable>
+						<mo fence="true" stretchy="true" symmetric="true"></mo>
+						</mrow>
+					</math>
+				</td>
+				<td>
+					<div class="side-by-side delayed-children">
+						<pre><code>
+							let f = function (x) {
+								if (x < -1 || x > 1) {
+									return 1 / x;
+								}
+								return x;
+							}
+						</code></pre>
+						<pre><code>
+							let f = (x) => {
+								<span style="opacity: .3">if (x < -1 || x > 1) {
+									return 1 / x;
+								}
+								return x;</span>
+							}
+						</code></pre>
+					</div>
+
+					<pre class="delayed"><code>
+						let f = (x) => x < -1 || x > 1 ? 1 / x : x;
+					</code></pre>
+					<span class="delayed">Shorter ≠ better!</span>
+				</td>
+			</tr>
+		</table>
+
+		<details class="notes">
+			Functions are not limited to a single statement, they can include any number of statements.
+			This applies to both types of functions, arrow functions just become a lot less compact.
+
+			But do not fall into the trap of trying to write very compact code at the expense of readability.
+			Take a look at the last example: is that easier to read?
+			Always remember that **code is written once, but read many times**.
+		</details>
+	</article>
+</section>
+
+</body>
+</html>

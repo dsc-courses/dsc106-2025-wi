@@ -1,0 +1,106 @@
+:root {
+	--color-accent: oklch(65% 50% 0);
+	--color-neutral-light: oklch(50% 10% 200 / 40%);
+}
+
+/* Step 4 */
+html {
+	color-scheme: light dark;
+}
+
+body {
+	/* Set line height to 1.5 times the font size
+	   and use the OS’s UI font as the website font
+	 */
+	font: 100%/1.5 system-ui;
+	max-width: 100ch;
+	margin-inline: auto;
+	padding: 1em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	text-wrap: balance;
+	line-height: 1.1;
+}
+
+h1 {
+	font-size: 400%;
+}
+
+/* Step 2 */
+nav {
+	display: flex;
+	border-bottom: 1px solid var(--color-neutral-light);
+	margin-bottom: 1em;
+
+	ul, li {
+		display: contents;
+	}
+
+	a {
+		flex: 1;
+		padding: .5em;
+		text-align: center;
+		text-decoration: none;
+		color: inherit;
+
+		&.current {
+			font-weight: bold;
+			border-bottom: .4em solid var(--color-neutral-light);
+			padding-bottom: .1em;
+		}
+
+		&:hover {
+			background-color: color-mix(in oklch, var(--color-accent), canvas 95%);
+			border-bottom: .4em solid var(--color-accent);
+			padding-bottom: .1em;
+		}
+	}
+}
+
+input, textarea, button, select {
+	font: inherit;
+}
+
+/* Step 4.3 */
+.color-scheme {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 1rem;
+	font-size: 80%;
+}
+
+form {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 1em;
+
+	label {
+		display: grid;
+		grid-template-columns: subgrid;
+	}
+
+	label, button {
+		grid-column: 1 / -1;
+	}
+}
+
+
+.projects {
+	/* Step 4.2 */
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(16em, 1fr));
+	gap: 1em;
+
+	/* Step 4.3 */
+	article {
+		display: grid;
+		grid-template-rows: subgrid;
+		grid-row-end: span 3;
+
+		h2 {
+			margin: 0;
+		}
+	}
+}

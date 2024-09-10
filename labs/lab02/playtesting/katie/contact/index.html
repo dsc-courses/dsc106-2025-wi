@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/project">Projects</a></li>
+            <li><a href="/contact" class="current">Contact</a></li>
+            <li><a href="https://github.com/KatieChen1001" target="_blank" >Github</a></li>
+        </ul>
+    </nav>
+    <h1>Contact page</h1>
+    <!-- Create our contact form fields. We need at least:
+A single line text field for the sender’s email address with name="email" and type="email"
+A single line text field (<input>) for for the subject with name="subject" (you don’t need type="text" as that is the default)
+A multiline text field (<textarea>) for the actual message with name="body"
+Wrap each field in a <label> with the field name as its contents -->
+    <!-- <form action="mailto:mzc219@mit.edu" method="post" enctype="text/plain">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject">
+        <label for="body">Message:</label>
+        <textarea id="body" name="body"></textarea>
+        <input type="submit" value="Send">
+    </form> -->
+    <form action="mailto:00@example.com" method="post" enctype="text/plain">
+        <label>
+            Email:
+            <input name="email" type="email"/>
+        </label>
+        
+        <label>
+            Subject:
+            <input name="subject"/>
+        </label>
+
+        <label>
+            Body:
+            <textarea name="body"></textarea>
+        </label>
+        <button>Submit</button>
+    </form>
+</body>
+</html>

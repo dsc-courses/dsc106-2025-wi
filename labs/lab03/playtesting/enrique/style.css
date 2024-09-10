@@ -1,0 +1,139 @@
+:root {
+  --accent-color: hsl(275, 100%, 38%);
+  accent-color: var(--accent-color);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  /* Set line height to 1.5 times the font size
+     and use the OS’s UI font as the website font
+   */
+  font: 100%/1.5 system-ui;
+  max-width: 100ch;
+  margin: auto;
+  padding: 2rem;
+}
+
+nav {
+  --border-color: oklch(50% 10% 200 / 40%);
+
+  display: flex;
+
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+
+  a {
+    flex: 1;
+
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
+    padding: 0.5em;
+    transition: border 0.1s ease, background-color 0.1s ease;
+  }
+
+  a:hover {
+    border-bottom: 0.4em solid var(--accent-color);
+    padding-bottom: 0.1em;
+    font-weight: bold;
+    background-color: color-mix(in oklch, var(--accent-color), canvas 85%);
+  }
+
+  .current {
+    border-bottom: 0.4em solid var(--border-color);
+    padding-bottom: 0.1em;
+    font-weight: bold;
+  }
+}
+
+form {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1em;
+
+  input,
+  textarea,
+  button,
+  select {
+    font: inherit;
+  }
+
+  span,
+  button {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+  gap: 1em;
+
+  article {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-row: span 3;
+
+    h2 {
+      margin: 0.5em;
+    }
+  }
+}
+
+h1 {
+  font-size: 400%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.resume {
+  header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    span {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    p,
+    h4,
+    h5 {
+      margin: 0;
+    }
+  }
+}
+
+.color-scheme {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  font-size: 80%;
+}
+

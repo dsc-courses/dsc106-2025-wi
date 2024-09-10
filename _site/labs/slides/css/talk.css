@@ -1,0 +1,56 @@
+/**
+ * Styles for all labs (that are not conceptually part of theme)
+ */
+
+/* @import url("http://localhost:8002/inspire.js/inspire.css"); */
+@import url("https://inspirejs.org/inspire.css");
+@import url("https://inspirejs.org/style/components/index.css");
+@import url("theme.css");
+@import url("components.css");
+
+#intro {
+	background: var(--cover-image, var(--color-accent-2)) no-repeat center / cover;
+	color-scheme: dark;
+
+	h1 {
+		width: fit-content;
+		text-shadow: 0 .05em .3em black;
+	}
+
+	.label {
+		position: absolute;
+		top: 0;
+	}
+
+	small {
+		position: absolute;
+		bottom: 0;
+		inset-inline: 0;
+		text-align: center;
+		padding: .5em;
+		padding-top: 3em;
+		background: hsla(0 0% 0% / .2);
+		backdrop-filter: blur(5px);
+		-webkit-mask: linear-gradient(to bottom, transparent, black 3.3em);
+		font-size: 70%;
+	}
+}
+
+.slide > :is(header + *, h1 + *, :first-child):is(.syntax-breakdown, :has(>.syntax-breakdown)):only-of-type:is(:last-child, :has(+details.notes)) {
+	background: none;
+}
+
+#end {
+	background: url("images/thats-all-folks.webp") center / cover no-repeat;
+
+	&::after {
+		content: "Animation by Fabrizio Bergamo";
+		position: absolute;
+		bottom: .5rem;
+		right: .8rem;
+		font-size: 40%;
+		color: white;
+		font-weight: 500;
+		opacity: .8;
+	}
+}

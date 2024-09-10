@@ -1,0 +1,232 @@
+// Custom styles for page content
+// Taken from vis-society
+
+:root {
+	--gray: 220 10%;
+	--color-neutral-20: hsl(var(--gray) 20%);
+	--color-neutral-40: hsl(var(--gray) 40%);
+	--color-neutral-50: hsl(var(--gray) 50%);
+	--color-neutral-60: hsl(var(--gray) 60%);
+	--color-neutral-80: hsl(var(--gray) 80%);
+	--color-neutral-90: hsl(var(--gray) 90%);
+	--color-neutral-95: hsl(var(--gray) 95%);
+
+	--color-neutral-40a: hsl(var(--gray) 50% / 40%);
+	--color-neutral-30a: hsl(var(--gray) 50% / 30%);
+	--color-neutral-20a: hsl(var(--gray) 50% / 20%);
+	--color-neutral-10a: hsl(var(--gray) 50% / 10%);
+	--color-neutral-5a: hsl(var(--gray) 50% / 5%);
+}
+
+
+html {
+	counter-reset: figure;
+	// tab-size: 4;
+}
+
+video {
+	max-width: 100%;
+}
+
+[style*="--natural-width"] {
+	/* unquote() prevents SCSS from trying to parse this min() and error */
+	max-width: unquote('min(100%, var(--natural-width) * 1px / var(--dppx, 2))');
+	max-height: 75vh;
+}
+
+figure {
+	margin: 1em 0;
+
+	&:has(figcaption) {
+		padding: .5rem;
+		margin-inline: -.5em;
+		border: 1px solid var(--color-neutral-80);
+		box-shadow: 0 .1em .2em var(--color-neutral-95);
+		text-align: center;
+		background: white;
+	}
+
+	/* Annoying Markdown artifacts */
+	> p,
+	figcaption > p:only-child {
+		display: contents;
+	}
+
+	> img,
+	> a > img,
+	> p > img,
+	> p > a > img {
+		// unquote() prevents SCSS from trying to parse this min() and error
+		max-height: unquote("min(75svh, 30em)");
+	}
+
+	& figcaption {
+		font: 500 75% var(--font-sans);
+		color: var(--color-neutral-medium);
+		background: var(--color-neutral-95);
+		padding: .5rem;
+		margin: -.5rem;
+		margin-top: .5rem;
+		counter-increment: figure;
+		text-align: left;
+
+		&::before {
+			content: "Figure " counter(figure) ": ";
+			font-weight: bold;
+		}
+
+		& a:not(:hover, :focus, :active) {
+			color: inherit;
+			text-decoration: underline;
+			text-decoration-color: color-mix(in lab, currentColor, transparent 70%);
+		}
+	}
+
+	/* Variations */
+
+	&.center {
+		width: fit-content;
+		margin-inline: auto;
+	}
+
+	/* Floating figures */
+	&.left,
+	&.right {
+		--small-figure-max-width: 200px;
+		--small-figure-min-width: 100px;
+		--small-figure-width: calc(50vw - var(--content-width) / 2 - 2em);
+		--small-figure-clamped-width: clamp(var(--small-figure-min-width), var(--small-figure-width), var(--small-figure-max-width));
+		--small-figure-outset: calc(-1em - var(--small-figure-clamped-width));
+		max-width: var(--small-figure-clamped-width);
+		margin: 0;
+
+		&:where(.left) {
+			float: left;
+			margin-right: 1em;
+			margin-left: var(--small-figure-outset);
+		}
+
+		&:where(.right) {
+			float: right;
+			margin-left: 1em;
+			margin-right: var(--small-figure-outset);
+		}
+
+		@media (min-width: 1200px) {
+			/* Simple floats */
+			--small-figure-width: calc(25vw - 2em);
+			--small-figure-outset: 0;
+			margin-bottom: 1em;
+		}
+
+		@media (min-width: 600px) {
+			float: none;
+			margin: 1em 0;
+			display: grid;
+			gap: 1em;
+			max-width: calc(3 * var(--small-figure-max-width));
+			grid-template-columns: var(--small-figure-max-width) 1fr;
+		}
+	}
+
+	& > a > img {
+		display: block;
+	}
+
+	& > a:has(> img:only-child),
+	& > p > a:has(> img:only-child) {
+		display: contents;
+	}
+
+	/* Has multiple images? */
+	&:has(> :nth-last-child(3), img:nth-of-type(2), a:nth-of-type(2) > img),
+	&.multiple {
+		/* Pointless <p> created from Markdown */
+		& > p {
+			display: contents;
+		}
+
+		&.stretch {
+			align-items: stretch;
+		}
+
+		&:has(> .main) { /* Has main image? */
+			display: grid;
+			grid-template-columns: 3fr 1fr;
+			grid-auto-flow: dense;
+			gap: .3rem;
+
+			> .main {
+				grid-row-end: span 2;
+				height: 100%;
+			}
+
+			> :not(.main, figcaption) {
+				grid-column: 2;
+				xmax-width: 250px;
+			}
+
+			& figcaption {
+				grid-column-end: span 2;
+			}
+		}
+
+		 /* No main image, display all side by side */
+		&:where(:not(:has(> .main))) {
+			display: flex;
+			align-items: start;
+			flex-wrap: wrap;
+			gap: .5rem;
+
+			> :not(figcaption),
+			> p > img,
+			> p > a > img:only-child {
+				object-fit: contain;
+
+				&:where(:not(.flex *)) {
+					width: calc(50% - .25rem);
+				}
+
+				&:where(.flex *) {
+					flex: 1;
+				}
+			}
+
+			> figcaption {
+				flex-basis: 100%;
+				box-sizing: content-box;
+			}
+		}
+	}
+}
+
+pre a,
+code a,
+a:has(> code:only-child) {
+	text-decoration: underline;
+	text-decoration-color: color-mix(in lab, currentColor, transparent 70%);
+
+	&:hover {
+		text-decoration-color: color-mix(in lab, currentColor, transparent 50%);
+	}
+}
+
+// Callouts
+[class]:is(p, blockquote) {
+	a {
+		mix-blend-mode: multiply;
+	}
+	> code:not(pre > *, figure > *) {
+		background: unquote('hsl(0 0 100 / 30%)');
+		border-color: unquote('hsl(0 0 100 / 40%)');
+	}
+}
+
+.side-by-side {
+	display: flex;
+	gap: 1em;
+
+	> * {
+		flex: 1;
+	}
+}

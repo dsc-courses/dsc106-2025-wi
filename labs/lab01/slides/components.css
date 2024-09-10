@@ -1,0 +1,146 @@
+/*
+ * Reusable patterns
+ * (some of these may eventually move to ../../slides/css/components.css if useful for other labs)
+ */
+
+@keyframes scale-grow {
+	from { transform: scale(0); }
+}
+
+.computer {
+	border: solid transparent;
+	border-image: url("images/desktop.svg") 6 6 56 fill / 6px 6px 56px / 0px stretch;
+	padding: .2em;
+	padding-bottom: 1.2em;
+}
+
+.speech {
+	display: flex;
+
+	& .subject {
+		font-size: 400%;
+		line-height: 1;
+		margin-top: auto;
+
+		& figcaption {
+			font-size: 25%;
+			text-align: center;
+			font-weight: 500;
+			margin-top: .5em;
+		}
+	}
+
+	& .text {
+		position: relative;
+		margin-bottom: auto;
+		margin-left: 1em;
+		padding: 1em;
+		border-radius: 1em;
+		background: color-mix(in oklch, var(--color-accent-1) 0%, oklch(.92 .06 none));
+		transform-origin: -.5em calc(100% - 2em);
+		transition: .7s cubic-bezier(.4,.3,.7,1.4);
+		transition-property: transform, opacity;
+		/*--color1: black; --color2: white;*/ /* for syntax breakdown */
+
+		.token {
+			&:not(:has(.token), .syntax-breakdown :is(code, .code) :is(span.current *, :has(.current))) {
+				filter: brightness(.8);
+			}
+
+			&.text-html {
+				mix-blend-mode: normal;
+			}
+		}
+
+		&.delayed {
+			transform: scale(0);
+			transition-delay: 0s;
+
+			&.current {
+				transform: scale(1);
+				transition-delay: 1s;
+			}
+		}
+
+		& pre {
+			--color: var(--color-accent-1);
+
+			&:only-child {
+				background: transparent;
+
+				/* &:is(.code-labels *):not(.no-code-label)::after {
+					top: -1.8em;
+					right: auto;
+					left: 50%;
+					transform: translateX(-50%);
+					border-radius: .15em;
+				} */
+			}
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			width: .5em;
+			height: 1em;
+			right: 100%;
+			bottom: 1.5em;
+			background: inherit;
+			clip-path: polygon(0% 50%, 100% 100%, 100% 0%);
+		}
+	}
+
+	&.subject-bottom,
+	&.subject-bottom-right {
+		flex-direction: column-reverse;
+
+		.text {
+			margin-left: 0;
+			margin-right: 0;
+			margin-bottom: 1em;
+			transform-origin: 2em calc(100% + .5em);
+
+			&::after {
+				inset: auto;
+				top: 100%;
+				width: 1em;
+				height: .5em;
+				clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+			}
+		}
+	}
+
+	&.subject-bottom {
+		align-items: start;
+
+		text::after {
+			left: 1.5em;
+		}
+	}
+
+	&.subject-bottom-right {
+		align-items: end;
+
+		.text::after {
+			right: 1.5em;
+		}
+	}
+
+	&.subject-right {
+		flex-direction: row-reverse;
+		align-items: end;
+
+		& .text {
+			margin-left: 0;
+			margin-right: 1em;
+			transform-origin: calc(100% + .5em) calc(100% - 2em);
+
+			&::after {
+				right: auto;
+				left: 100%;
+				clip-path: polygon(100% 50%, 0% 100%, 0% 0%);
+			}
+		}
+	}
+}
+

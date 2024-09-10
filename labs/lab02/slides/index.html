@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Lab 2: Styling with CSS</title>
+	<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🎨</text></svg>' />
+
+	<link href="talk.css" rel="stylesheet" />
+	<script src="talk.js" type="module"></script>
+</head>
+<body class="language-css no-media code-labels" data-markdown-elements="details.notes, .md, .md-children > *" data-load-plugins="docs">
+
+<header id="intro" class="slide dont-resize">
+	<h1>
+		<div class="label">Lab 2</div>
+		Styling with CSS
+	</h1>
+	<small>
+		MIT Interactive Visualization & Society course <!-- &bull;
+		Slides by <a href="http://lea.verou.me">Lea Verou</a> -->
+	</small>
+</header>
+
+<article class="slide dont-resize language-css" id="css-rule" title="Anatomy of a CSS rule" data-type="Recap">
+	<pre><code class="syntax-breakdown target-width-80" data-tooltip="top">
+		<span title="CSS rule"><span title="Selector">h1</span> {
+			<span title="Declaration" style="--line-length: 2em"><span title="Property" data-tooltip="bottom">color</span>: <span title="Value" data-tooltip="bottom">deeppink</span></span>;
+		}</span>
+	</code></pre>
+	<details class="notes">
+		CSS is largely a collection of *rules*.
+		A CSS rule consists of a *selector* and one or more *declarations*.
+
+		- The _selector_ specifies which elements the rule applies to.
+		The simplest selector is the one shown here that applies to all elements of a certain type, in this case `h1` elements.
+		However, CSS selectors go a lot deeper than that, and can query elements based on attributes, relationships to other elements, user activity, and more.
+		- _Declarations_ are key-value pairs, where the key is the _property_ and the value is the _value_ of that property.
+		Each declaration sets one aspect of the style of the element.
+		- Yes, it is possible for declarations from multiple rules (or even the same rule) to conflict.
+		There is an entire conflict resolution algorithm to determine which one wins in these cases, called The Cascade, which is where CSS gets its name from (Cascading Style Sheets).
+		We will cover this briefly in the next lab.
+	</details>
+</article>
+
+<article class="dont-resize slide columns code-labels language-html"><h1>Adding CSS</h1>
+	<section class="language-html">
+		<h2>Linking</h2>
+		<pre class="no-code-label"><code>
+			&lt;link rel="stylesheet" href="style.css" />
+		</code></pre>
+
+		<h3>CSS @import</h3>
+
+		<pre class="language-css"><code>
+			@import url("colors.css");
+		</code></pre>
+		<div class="arrow-down"></div>
+		<pre><code>
+			&lt;style>
+				@import url("style.css");
+			&lt;/style>
+		</code></pre>
+	</section>
+	<section class="language-html">
+		<h2>Embedding</h2>
+		<pre><code>
+			&lt;style>
+				h1 {
+					color: deeppink;
+				}
+			&lt;/style>
+		</code></pre>
+
+		<section class="delayed">
+			<h3>Inline styles <span class="chip bad">avoid</span></h3>
+			<pre class="language-html"><code>
+				&lt;h1 style="color: deeppink;">
+					Hi there
+				&lt;/h1>
+			</code></pre>
+		</section>
+	</section>
+	<details class="notes">
+		There are several ways to add CSS to an element or a page, each with its own tradeoffs.
+		- Generally, linking to a separate CSS file is preferable because that facilitates reuse across several pages,
+		and allows the browser to cache the CSS file for faster loading on subsequent visits.
+		- Typically, `&lt;link>` is used for that, and then the CSS file can use `@import` to pull together several CSS files.
+		- For prototyping, you can also embed CSS on the page (inside a `&lt;style>` element), or even inline it directly on the elements themselves so you don’t have to figure out a selector.
+		The latter is best avoided for general styling, but it can be useful for e.g.
+		passing data via [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties), debugging, and other one-off uses.
+	</details>
+</article>
+
+<section id="layout">
+	<header class="slide">
+		<h1>Layout</h1>
+	</header>
+
+	<article class="slide" id="box">
+		<h1>Every HTML element produces a box</h1>
+		<a href="javascript:globalThis.page_structure_styles_c61135? page_structure_styles_c61135.remove() : document.head.insertAdjacentHTML('beforeend', `<style id=page_structure_styles_c61135>
+			/* Non-replaced inline elements */
+			a, abbr, acronym, b, bdo, big, br, cite, code, dfn, em, i, kbd, label, mark,
+			output, samp, small, span, strong,  sub, sup, time, tt, var {
+				outline: 1px dashed hsl(220 10% 50% / 50%) !important;
+
+				/* Block & replaced elements */
+				:not(&) {
+					outline: 1px dashed color(display-p3 1 .1 .1 / 80%) !important;
+				}
+			}</style>`)">Toggle boxes</a>
+		<details class="notes">
+			- Every HTML element generates a box. This is the foundation of CSS layout.
+			- Yes, even "special" elements like `&lt;body` or `&lt;html` generate boxes and can be styled like any other box.
+			Yes, even `&lt;head>`, it’s just that its also hidden.
+			- A lot of CSS is about how these boxes are painted, and how they affect other boxes
+			- Explore what boxes the websits you visit are made of by dragging this "Toggle boxes" link to your bookmarks bar and clicking it on any website.
+		</details>
+	</article>
+
+	<article class="slide no-title" data-src="https://css.land/box-model/" data-title="The box model">
+		<details class="notes property">
+			There are many CSS properties that affect the dimensions of an element.
+			The way this happens is called the _box model_.
+			- `margin` and `padding` affect spacing on the outside and inside of the box, respectively.
+			- `border` affects the box dimensions, whereas `outline` is painted on the outside and does not affect the box’s geometry
+			- By default `width` and `height` specify the dimensions of the content area, and padding and border are added to that.
+			You can change this with the `box-sizing` property.
+		</details>
+	</article>
+
+	<article class="slide" id="units">
+		<h1>Units</h1>
+
+		<pre class="language-html"><code>
+			&lt;h1 style="font-size: 32px; padding: 13px; border: 3px solid black">Make me bigger&lt;/h1>
+			&lt;h1 style="font-size: 200%; padding: 0.4em; border: 0.1em solid black">Make me bigger&lt;/h1>
+			&lt;h1 style="font-size: 2.5vw; padding: 1vw; border: 0.2vw solid black">Make me bigger&lt;/h1>
+		</code></pre>
+		<div class="arrow-down"></div>
+		<iframe class="browser" data-result style="resize: horizontal"></iframe>
+
+		<details class="notes">
+			There are many units in CSS, and we will not cover them all.
+			The main distinction to keep in mind is relative vs absolute:
+			- Relative units are relative to something else, such as the font size of an element, or the viewport size.
+			- Absolute units are fixed, such as inches, centimeters, or pixels.
+			- Percentages are also relative, but what they are relative to depends on the property they are used on (and is explained in the property’s documentation).
+
+			Picking a suitable unit can make your CSS code more maintainable and adaptable to different conditions and future changes.
+		</details>
+	</article>
+
+	<article class="slide" id="block-inline" data-title="Block & Inline elements">
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th>
+						Block elements
+						<code>display: block;</code>
+					</th>
+					<th>
+						Inline elements
+						<code>display: inline;</code>
+					</th>
+				</tr>
+			</thead>
+			<tr>
+				<th>Laid out</th>
+				<td>Vertically</td>
+				<td>Horizontally</td>
+			</tr>
+			<tr>
+				<th>Box width</th>
+				<td>Available space</td>
+				<td>Contents</td>
+			</tr>
+			<tr>
+				<th>Box height</th>
+				<td>Contents</td>
+				<td>One line</td>
+			</tr>
+			<tr>
+				<th>Text wrapping</th>
+				<td>Inside box</td>
+				<td>Fragmentation</td>
+			</tr>
+			<tr>
+				<th>Example elements</th>
+				<td>
+					<code>&lt;h1></code>
+					<code>&lt;p></code>
+					<code>&lt;ol></code>
+					<code>&lt;ul></code>
+					<code>&lt;section></code>
+					<br><code>&lt;div></code> <em>(Generic)</em>
+				</td>
+				<td>
+					<code>&lt;strong></code>
+					<code>&lt;em></code>
+					<code>&lt;a></code>
+					<br><code>&lt;span></code> <em>(Generic)</em>
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td>
+					<figure class="layout">
+						<div class="block">Lorem Ipsum <strong>dolor</strong> sit amet</div>
+						<div class="block">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea <mark>commodo</mark> consequat.</div>
+						<div class="block"><strong>Excepteur sint occaecat cupidatat non proident</strong>, sunt in culpa.</div>
+					</figure>
+				</td>
+				<td>
+					<figure class="layout" style="padding-top: 0; padding-bottom: 20px;">
+						Lorem, ipsum.
+						<div class="inline">velit esse cillum dolore</div>
+						<div class="inline">consectetur adipiscing elit</div>
+						Ipsa, velit.
+						<div class="inline">sed do eiusmod tempor incididunt</div>
+						<div class="inline">Excepteur sint occaecat cupidatat non proident</div>
+					</figure>
+				</td>
+			</tr>
+		</table>
+		<details class="notes">
+			- There are two main types of elements: block and inline, with different layout characteristics.
+			- There is also `inline-block`, a hybrid of the two.
+			- While certain elements are block or inline by default, you can change this with the `display` property.
+		</details>
+	</article>
+
+	<article id="grid-flex" class="slide heading-2x1">
+		<h1>Layout modes for UIs</h1>
+
+		<figure>
+			<div class="flex">
+				<div></div>
+				<div></div>
+				<div style="flex: 2">
+					<div class="flex">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				<strong>Flexbox</strong>
+				One dimension
+			</figcaption>
+		</figure>
+		<figure>
+			<div class="grid">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+			<figcaption>
+				<strong>Grid</strong>
+				Two dimensions
+			</figcaption>
+		</figure>
+
+		<details class="notes">
+			- Block, inline, (and inline-block, a hybrid of the two) were the first layout modes,
+			designed primarily for documents.
+			While they play a huge role in today's layouts,
+			these days we also have other layout modes that support UI design much better, namely [Flexbox](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
+			and [Grid Layout](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Basic_concepts_of_grid_layout).
+			- The core idea around Flexbox is that we apply `display: flex` to an element, and then we can control the layout of its children along a single axis (row or column),
+			with easy controls for alignment, distribution, and order.
+			- Grid Layout is a two-dimensional layout system, which means it can handle both rows and columns at the same time.
+			We enable grid on an element with `display: grid`, and define our grid with the `grid-template-*` properties (usually `grid-template-columns`).
+			Elements are then placed on grid cells sequentially, but we can override the automatic placement with `grid-column`, `grid-row`, and `grid-area`.
+			- An element’s children can take part in the same grid, via [subgrid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid).
+			- Grid is more powerful, but also more complex, and it is often used in combination with Flexbox.
+
+			Learn more:
+			- [Flexbox Froggy: A game for learning Flexbox](https://flexboxfroggy.com/)
+			- [Grid Garden: A game for learning Grid](https://cssgridgarden.com/)
+		</details>
+	</article>
+</section>
+
+
+<!--
+<article class="slide dont-resize language-css" id="css-atrule" title="@-rules" data-type="CSS syntax">
+	<pre class="target-width-80"><code class="syntax-breakdown" data-tooltip="top">
+		<span title="CSS @-rule"><span title="@-rule type (predetermined)">@font-face</span> {
+			<span title="Descriptor" style="--line-length: 2em">src</span>: url("fonts/Inter.woff2");
+			font-family: <span title="How do we want to refer to this font?">Inter</span>;
+			font-weight: <span title="What range of weights does it support?">100 900</span>;
+		}</span>
+	</code></pre>
+	<details class="notes">
+		There is also another type of rule, called an [_@-rule_](https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule).
+		@-rules instruct CSS on how to behave.
+		You have already seen one of these, the `@import` rule, for importing other CSS files.
+
+		For example, an [`@font-face`](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face) rule is used to define a custom font that can be used in the document.
+		Note that inside @-rules we have [_desriptors_](https://developer.mozilla.org/en-US/docs/Glossary/CSS_Descriptor) instead of [_properties_](https://developer.mozilla.org/en-US/docs/Glossary/Property/CSS).
+		This is because declaration style a certain aspect for an element, whereas descriptors _describe_ what the @-rule is about.
+		For example, here the `font-weight` descriptor defines the weights the linked font file supports, rather than setting the font weight of a specific element.
+	</details>
+</article>
+-->
+
+<section>
+	<header class="slide">
+		<h1>Selectors</h1>
+	</header>
+
+	<article class="slide code-labels" id="dom-tree">
+		<section>
+			<h1>HTML pages are trees</h1>
+			<h2>What we wrote</h2>
+			<pre class="language-html"><code>
+				&lt;!DOCTYPE html>
+				&lt;title>Hello world&lt;/title>
+				&lt;h1>Hello world!&lt;/h1>
+				&lt;p>This is my &lt;em>first&lt;/em> web page! 🤯
+			</code></pre>
+		</section>
+		<section class="delayed persistent">
+			<h2>What the browser generated</h2>
+			<pre class="language-html"><code>
+				&lt;!DOCTYPE html>
+				&lt;html>
+					&lt;head>
+						&lt;title>Hello world&lt;/title>
+					&lt;/head>
+					&lt;body>
+						&lt;h1>Hello world!&lt;/h1>
+						&lt;p>This is my &lt;em>first&lt;/em> web page! 🤯&lt;/p>
+					&lt;/body>
+				&lt;/html>
+			</code></pre>
+		</section>
+
+		<section class="delayed persistent">
+			<h2>What was displayed</h2>
+
+			<iframe class="browser" srcdoc="<h1>Hello world!</h1>
+				<p>This is my <em>first</em> web page! 🤯</p>" data-index="4"></iframe>
+		</section>
+
+		<section class="delayed persistent">
+			<h2>DOM Tree</h2>
+
+			<ul class="tree no-link">
+				<li class="document-node">
+					document
+					<ul>
+						<li class="element-node">&lt;html>
+							<ul>
+								<li class="element-node">&lt;head>
+									<ul>
+										<li class="element-node">&lt;title>
+											<ul>
+												<li class="text-node">"Hello world"</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li class="element-node">&lt;body>
+									<ul>
+										<li class="element-node">&lt;h1>
+											<ul>
+												<li class="text-node">"Hello world!"</li>
+											</ul>
+										</li>
+										<li class="element-node">&lt;p>
+											<ul>
+												<li class="text-node">"This is my "</li>
+												<li class="element-node">&lt;em>
+													<ul>
+														<li class="text-node">"first"</li>
+													</ul>
+												</li>
+												<li class="text-node">" web page! 🤯 "</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<dl class="horizontal legend">
+				<dt class="document-node"></dt>
+				<dd>Document node</dd>
+
+				<dt class="element-node"></dt>
+				<dd>Element node</dd>
+
+				<dt class="text-node"></dt>
+				<dd>Text node</dd>
+			</dl>
+		</section>
+		<details class="notes">
+			- The nesting of HTML elements forms a tree, called the DOM tree.
+			- This is what you are exploring in the browser dev tools, when you expand and collapse an element.
+			- Trees are a very common data structure in computer science, and they are used to represent hierarchical relationships.
+			- We use concepts from family trees to describe the relationships between tree elements, so we talk about children, parents, siblings, ancestors, and descendants.
+		</details>
+	</article>
+
+	<article class="slide columns dont-resize language-css code-labels" title="CSS rule nesting" id="descendant-styling">
+		<h1>Styling by 🌳 relationship</h1>
+
+		<section>
+			<h2>Rule nesting</h2>
+			<pre><code class="syntax-breakdown" data-tooltip="top">
+				<span title="All &lt;h1> elements">h1</span> {
+					<span title="Distance between lines of text">line-height</span>: <span title="1.1 times the font-size">1.1</span>;
+
+					<span title="&lt;em> elements that are inside &lt;h1> elements">em</span> {
+						<span title="Text color">color</span>: rebeccapurple;
+					}
+				}
+			</code></pre>
+		</section>
+		<section>
+			<h2>Descendant selectors</h2>
+			<pre><code class="syntax-breakdown" data-tooltip="top">
+				<span title="All &lt;h1> elements">h1</span> {
+					line-height: 1.1;
+				}
+
+				<span title="&lt;em> elements that are inside &lt;h1> elements">h1 em</span> {
+					color: rebeccapurple;
+				}
+			</code></pre>
+		</section>
+		<section class="language-html delayed">
+			<pre><code>
+				&lt;h1>
+					Yo &lt;strong>&lt;em><em class="c">hello</em>&lt;/em>&lt;/strong> &lt;em><em class="c">world</em>&lt;/em>!
+				&lt;/h1>
+				&lt;p>This is my &lt;em><em>first</em>&lt;/em> web page! 🤯
+			</code></pre>
+			<iframe srcdoc="
+			<style>
+				h1 em { color: rebeccapurple; }
+			</style>
+			<h1>
+				Yo <strong><em>hello</em></strong> <em>world</em>!
+			</h1>
+			<p>This is my <em>first</em> web page! 🤯
+			" frameborder="0" class="browser"></iframe>
+		</section>
+		<details class="notes">
+			- You can take advantage of these relationships to scope our CSS more narrowly.
+			- For example, instead of styling all `&lt;em>` elements, you can style only those that are inside `&lt;h1>` elements (at any level).
+			This is done with a [descendant selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator),
+			or by simply nesting rules inside each other.
+			- While we are only covering descendants here, there are other types of relationships you can style based on,
+			such as direct children ([`>`](https://developer.mozilla.org/en-US/docs/Web/CSS/Child_combinator)),
+			siblings ([`~`](https://developer.mozilla.org/en-US/docs/Web/CSS/Subsequent-sibling_combinator),
+			[`+`](https://developer.mozilla.org/en-US/docs/Web/CSS/Next-sibling_combinator)), and more.
+		</details>
+	</article>
+
+	<article class="slide" id="ids" data-type="cheatsheet" data-steps="1"><h1>Targeting by identifier</h1>
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th>Example</th>
+					<th>Selector(s)</th>
+				</tr>
+			</thead>
+			<tr>
+				<th>Class</th>
+				<td>
+					<pre class="language-html"><code>
+						&lt;a class="current" href="/">Home&lt;/a>
+					</code></pre>
+				</td>
+				<td class="language-css">
+					<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors"><code>.current</code></a>
+					<code data-step="1"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors">[class~="current"]</a></code>
+				</td>
+			</tr>
+			<tr class="delayed persistent">
+				<th>Id</th>
+				<td>
+					<pre class="language-html"><code>
+						&lt;section id="publications">
+							...
+						&lt;/section>
+					</code></pre>
+				</td>
+				<td class="language-css">
+					<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Id_selectors"><code>#publications</code></a>
+					<code data-step="1"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors">[id="publications"]</a></code>
+				</td>
+			</tr>
+			<tr class="delayed persistent">
+				<th>Name</th>
+				<td>
+					<pre class="language-html"><code>
+						&lt;input name="subject" />
+					</code></pre>
+				</td>
+				<td class="language-css">
+					<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors"><code>[name="subject"]</code></a>
+				</td>
+			</tr>
+		</table>
+
+		<details class="notes">
+			While we *could* target any element by using its element type and position in the tree, there are cases where that would be fragile.
+			We can also assign identifiers to elements, and then target them by those identifiers.
+			- The most common such identifier is the `class` name, which is a many-to-many relationship: each element can have many classes (space-separated)
+			and each class can be assigned to any number of elements, anywhere.
+			- There are also ids, assigned via the `id` attribute.
+			These are supposed to be unique within the document (though this is not enforced).
+			Beyond CSS, you can also link to elements with an id by adding a `#id` at the end of the page URL and they create global variables in JS (as we saw in [this slide](#reactive)).
+			- There are also names, specified via the `name` attribute, mostly used these days to specify the name of form fields that will be submitted.
+			There is no dedicated CSS syntax to target these, but regular [attribute selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) work fine.
+			- You can also use attribute selectors to target any attribute, not just these three and there are different types of attribute selectors,
+			based on whether you’re testing for presence (simply `[attribute]`), equality (`[attribute="value"]`), etc.
+		</details>
+	</article>
+
+	<article class="slide columns" id="and-or">
+		<h1>Basic logical operations</h1>
+
+		<section>
+			<h2>Intersection (AND)</h2>
+			<p>by concatenation</p>
+			<div>
+				<code>a.current</code>
+				<span class="eq">=</span>
+				<p>
+					<small>Match elements that match <em>both</em></small>
+					<code>a</code> AND <code>.current</code>
+				</p>
+			</div>
+		</section>
+		<section>
+			<h2>Union (OR)</h2>
+			<p>via commas</p>
+			<div>
+				<code>h1, h2, h3</code>
+				<div class="eq">=</div>
+				<p>
+					<small>Match elements that match <em>either</em></small>
+					<code>h1</code> OR <code>h2</code> OR <code>h3</code>
+				</p>
+			</div>
+		</section>
+
+		<details class="notes">
+			CSS selectors express sets of HTML elements.
+			So how to perform set operations? (¬, ∪, ∩)?
+
+			[Learn CSS Selectors by playing a game](https://flukeout.github.io/)
+		</details>
+	</article>
+
+	<article class="dont-resize columns slide">
+		<h1>Pseudo-classes</h1>
+		<div class="code-container">
+			<pre class="language-html"><code>
+				&lt;a href="https://github.com/leaverou"
+				   target="_blank">
+					GitHub
+				&lt;/a>
+			</code></pre>
+			<pre><code>
+				a {
+					text-decoration: none;
+
+					&:hover { /* becomes a:hover */
+						text-decoration: underline;
+					}
+				}
+			</code></pre>
+			<pre class="delayed persistent"><code>
+				a:not(:hover) {
+					text-decoration: none;
+				}
+			</code></pre>
+		</div>
+		<div>
+			<div class="browser">
+				<a href="https://github.com/leaverou" target="_blank">GitHub</a>
+			</div>
+
+			<div class="md css delayed">
+				## Types of pseudo-classes
+
+				- **Dynamic:** `:hover`, `:focus`, `:active`, etc.
+				- **Structural:** `:has()`, `:nth-child()`, etc.
+				- **Logical:** `:not()`, `:is()`, `:where()`
+			</div>
+		</div>
+
+		<style data-slide>
+			a {
+				all: revert;
+				text-decoration: none;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		</style>
+
+		<details class="notes css">
+			- We add clases to group elements that have something in common.
+			[Pseudo-classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes) are added and removed automatically by the browser based on the element’s state or context.
+			- For example, `:hover` matches elements that the user is currently hovering over.
+			- Note that while this is effectively a conditional, it works differently than conditionals in most programming languages, which are executed once.
+			In CSS, all logic applies *reactively* and is re-evaluated whenever the state changes.
+			Which brings us to the next slide...
+		</details>
+	</article>
+
+	<article class="minimal demo slide code-labels" id="reactive">
+		<h1>CSS is reactive</h1>
+		<textarea class="language-html">
+			<label>
+				Hue:
+				<input type="range" max="360" id="hue"
+					   oninput="document.body.style.setProperty('--hue', this.value)">
+			</label>
+		</textarea>
+		<textarea class="language-css">
+			body {
+				--hue: 180;
+				background: oklch(97% 5% var(--hue));
+				accent-color: oklch(65% 55% var(--hue));
+				color: oklch(40% 20% var(--hue));
+			}
+		</textarea>
+		<div class="demo-target"></div>
+		<details class="notes">
+			- CSS is _reactive_, meaning that it responds to changes automatically. We never have to think about when to update or re-render things.
+			- Here we are using a little JS to change the value of a `--hue` CSS variable when we move the slider, which is used in the CSS to set the hue of several colors.
+			- Notice how all colors respond automatically as the variable changes ("reactively")
+			- This is also showcasing several CSS features:
+				- [Variables in CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) are [properties starting with `--`](https://developer.mozilla.org/en-US/docs/Web/CSS/--*).
+				Their value can be used in other properties with the [`var()`](https://developer.mozilla.org/en-US/docs/Web/CSS/var) function.
+				They are available not only on the element they are defined on, but also its _descendants_.
+				- So far we had only seen [keywords](https://developer.mozilla.org/en-US/docs/Web/CSS/named-color) being used for colors.
+				While these are nicely readable, they are not very flexible, and the names are often inconsistent (e.g. `darkgray` is lighter than `gray`!!).
+				There are several other ways to define colors in CSS, and here we are using [`oklch()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch) colors,
+				which are defined by a lightness, a chroma (how bright the color is, gray is 0), and a [hue](https://en.wikipedia.org/wiki/Hue) (which defines where the pure color would be on a color wheel).
+				If you're more comfortable with hex colors or RGB don't worry, you can use those too.
+			- The code on this slide is editable, try playing with it!
+		</details>
+	</article>
+
+	<!-- <article class="slide language-css" id="selectors-logical" data-type="cheatsheet"><h1>Logical pseudo-classes</h1>
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th>Selector</th>
+					<th>Meaning</th>
+				</tr>
+			</thead>
+			<tr>
+				<th>Negation (NOT)</th>
+				<td><code>:not([type])</code></td>
+				<td>Match elements that do NOT match <code>[type]</code></td>
+			</tr>
+			<tr>
+				<th>Grouping</th>
+				<td>
+					<code>input:is(:not([type]), [type="text"])</code>
+				</td>
+				<td>
+					Match elements that match both <code>input</code>
+					AND either do NOT match <code>[type]</code> OR match <code>[type="text"]</code>
+				</td>
+			</tr>
+		</table>
+		<details class="notes">
+
+		</details>
+	</article> -->
+</section>
+
+<section>
+	<article class="slide columns dont-resize" data-result-html="<h1>What color am I?</h1>">
+		<header>
+			<h1>Conflicts</h1>
+			<p class="subtitle delayed persistent" data-index="2">All else being equal, the last declaration wins</p>
+		</header>
+
+		<section>
+			<pre><code>
+				h1 {
+					color: <color-swatch>seagreen</color-swatch>;
+					color: <color-swatch>indianred</color-swatch>;
+				}
+			</code></pre>
+			<div class="arrow-down"></div>
+			<iframe class="browser" data-result></iframe>
+		</section>
+		<section class="delayed persistent">
+			<pre><code>
+				h1 {
+					color: <color-swatch>indianred</color-swatch>;
+				}
+				h1 { color: <color-swatch>seagreen</color-swatch>; }
+			</code></pre>
+			<div class="arrow-down"></div>
+			<iframe class="browser" data-result></iframe>
+		</section>
+		<section class="delayed persistent" data-index="3">
+			<pre><code>
+				h1 {
+					color: <color-swatch>darkgoldenrod</color-swatch>;
+					<del class="delayed persistent" data-index="4">color: <color-swatch>lightgoldenrod</color-swatch>;</del>
+				}
+			</code></pre>
+			<div class="arrow-down"></div>
+			<iframe class="browser" data-result></iframe>
+		</section>
+		<details class="notes">
+			What happens if there are multiple conflicting declarations for the same property, on the same element?
+			- There is an entire algorithm about how these conflicts are resolved, called Cascade & Inheritance.
+			The Cascade is where CSS gets its name: Cascading Style Sheets.
+			- At the very bottom of this algorithm is source order: all else being equal, the last declaration wins.
+			What do we mean by all else being equal? We’ll get to that in a bit.
+			- One thing to remember is that CSS ignores things it doesn’t understand, so if the last declaration is invalid, the previous one will still apply.
+				- There is a caveat to this: If you’re using CSS variables, because the browser doesn’t know whether your declaration is valid until it's too late.
+		</details>
+	</article>
+
+	<article class="dont-resize slide columns language-css code-labels" id="shorthands" data-steps="2"><h1>Shorthands & Longhands</h1>
+		<section>
+			<pre class="syntax-breakdown" data-tooltip="bottom"><code>
+				body {
+					font: <span title="100% of parent font-size">100%</span>/<span title="Line height: 1.5 times the font-size">1.5</span> <span title="font-family: default system font">system-ui</span>;
+				}
+			</code></pre>
+
+			<section class="quiz delayed persistent" data-index="6">
+				<h2>Quiz</h2>
+				<p>Are these equivalent?</p>
+				<div>
+					<pre><code>
+						h1 {
+							font-weight: bold;
+							font: 100% system-ui;
+						}
+					</code></pre>
+					<pre><code>
+						h1 {
+							font: 100% system-ui;
+							font-weight: bold;
+						}
+					</code></pre>
+				</div>
+			</section>
+		</section>
+		<div class="arrow-right" data-step="2"></div>
+		<section data-step="2">
+			<pre><code class="syntax-breakdown">
+				body {
+					<span class="de-emphasize">font-style: <span title="Special keyword that resets the property" data-index="5" data-tooltip="top" style="--tooltip-offset: -6em; --line-length: 2em">initial</span>;
+					font-variant-caps: initial;
+					font-variant-ligatures: initial;
+					font-variant-numeric: initial;
+					font-variant-east-asian: initial;
+					font-variant-alternates: initial;
+					font-size-adjust: initial;
+					font-kerning: initial;
+					font-optical-sizing: initial;
+					font-feature-settings: initial;
+					font-variation-settings: initial;
+					font-variant-position: initial;
+					font-weight: initial;
+					font-stretch: initial;</span>
+					font-size: 100%;
+					line-height: 1.5;
+					font-family: system-ui;
+				}
+			</code></pre>
+		</section>
+		<details class="notes">
+			Remember this CSS rule from Lab 1? What does it actually mean?
+			- This is an example of a shorthand property, which is a single property that sets multiple properties at once.
+			- When we set the `font` property, it actually sets 17 (!) properties for us, whether we provide values for them or not.
+			- Properties we don’t set values to are set to their initial value, which is different for every property.
+			- The special keyword `initial` resolves to the initial value of the property at hand.
+		</details>
+	</article>
+
+	<article class="slide" id="origin">
+		<h1>Origin & Inheritance</h1>
+		<video src="videos/orgin.mp4" muted autoplay loop></video>
+		<details class="notes">
+			- Even if you don't apply any CSS to your page, the browser will.
+			That is called the _user agent stylesheet_.
+			That’s what makes headings bigger, links blue, the `&lt;em>` element italic, etc.
+			- CSS applied by the browser has lower precedence than CSS applied by the website.
+
+			- Notice that some properties _inherit_ from their parent, while others don’t.
+			We did not have to specify a `font-family` or `line-height` for every element on our page, applying to the `&lt;body>` was enough.
+			- Which properties inherit? It depends on the property, but generally text-related properties do (`font-family`, `line-height`, `color`, etc.),
+			while layout or box-related properties don’t (e.g. `width`, `height`, backgrounds, borders).
+			- Values applied directly to an element always have higher precedence than inherited values.
+		</details>
+	</article>
+
+	<article class="slide no-title" data-src="https://css.land/specificity/" data-title="Specificity Battle!">
+		<details class="notes">
+			Each selector gets a score based on its structure, that gives it higher precedence.
+			That score is called specificity.
+			It is calculated by counting the different criteria in a selector.
+
+			Learn more:
+			- [MDN page specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity)
+			- Specificity battle
+		</details>
+	</article>
+
+	<article class="slide columns dont-resize" id="specificity">
+		<h1>Specificity in action</h1>
+
+		<section>
+			<pre class="language-html"><code>
+				&lt;nav>
+					&lt;a href="/" class="current">Home&lt;/a>
+					&lt;a href="/contact/">Contact&lt;/a>
+				&lt;/nav>
+			</code></pre>
+			<pre class="language-css"><code>
+				a.current {  /* specificity = 0,1,1 */
+					text-decoration: none;
+				}
+				a { /* specificity = 0,0,1 */
+					text-decoration: underline;
+				}
+			</code></pre>
+			<div class="arrow-down"></div>
+			<iframe class="browser" data-result></iframe>
+		</section>
+		<section>
+			<pre class="language-html"><code>
+				&lt;nav id="nav">
+					&lt;a href="/" class="current">Home&lt;/a>
+					&lt;a href="/contact/">Contact&lt;/a>
+				&lt;/nav>
+			</code></pre>
+			<pre class="language-css"><code>
+				#nav a { /* specificity = 1,0,1 */
+					text-decoration: underline;
+				}
+				a.current {  /* specificity = 0,1,1 */
+					text-decoration: none;
+				}
+			</code></pre>
+			<div class="arrow-down"></div>
+			<iframe class="browser" data-result></iframe>
+		</section>
+		<details class="notes css">
+			- Specificity is essentially a heuristic that tries to infer importance from querying logic.
+			- Sometimes it matches our expectations, other times it does not.
+			- For the cases where the default specificity does not match our intent, there are ways to both *increase* specificity,
+			as well as to *decrease* it (`:where()`).
+		</details>
+	</article>
+
+	<article class="slide" id="conflicts-summary">
+		<h1>Putting it all together</h1>
+
+		<ol>
+			<li><strong>Inheritance</strong>: Direct > Inherited</li>
+			<li><strong>Origin</strong>: Website > Browser</li>
+			<li><strong>Specificity</strong>: Higher > Lower</li>
+			<li><strong>Source order</strong>: Last (valid) declaration wins</li>
+		</ol>
+
+		<details class="notes">
+			While these are the most common factors that infleunce conflict resolution,
+			and the ones you are most likely to run across, there are also others too, such as scoping proximity, `!important`, layers, transitions & animatons.
+			You can read about [the full algorithm on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade).
+		</details>
+	</article>
+</section>
+
+<footer class="slide" id="end"></footer>
+
+</body>
+</html>

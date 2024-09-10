@@ -1,0 +1,431 @@
+@import url("../../slides/css/talk.css");
+@import url("components.css");
+
+:root {
+	--cover-image: url("https://vis-society.github.io/labs/1/slides/images/cover.webp");
+}
+
+#hi,
+#tas {
+	img.avatar,
+	.avatar > img:where(:first-of-type) {
+		border-radius: 50%;
+		aspect-ratio: 1;
+		object-fit: cover;
+	}
+}
+
+@keyframes wave {
+	5% {
+		transform: rotate(10deg);
+	}
+	10% {
+		transform: rotate(-10deg);
+	}
+	15% {
+		transform: rotate(5deg);
+	}
+	20% {
+		transform: rotate(0deg);
+	}
+}
+
+.wave {
+	animation: wave 5s 5;
+	transform-origin: 60% 90%;
+	display: inline-block;
+}
+
+#hi {
+	.avatar {
+		position: absolute;
+		top: 1em;
+		right: 1em;
+		width: 6.5em;
+
+		> img:last-child {
+			position: absolute;
+			top: .3em;
+			left: 1em;
+			width: 3em;
+			rotate: -5deg;
+			transition: .2s opacity;
+		}
+
+		&:not(:has(~ .current)) > img:last-child {
+			opacity: 0;
+		}
+	}
+
+	ul {
+		font-size: 80%;
+	}
+
+	section {
+		display: flex;
+		flex-flow: column;
+		align-items: start;
+		justify-content: start;
+
+		:not(img) {
+			flex-shrink: 0;
+		}
+
+		img {
+			height: 9em;
+			min-height: 0;
+			margin-top: .8em;
+			margin-left: 1em;
+
+			&:not(.browser) {
+				border-radius: .3em;
+			}
+		}
+	}
+}
+
+#tas {
+	flex-wrap: wrap;
+
+	> a {
+		&:nth-of-type(odd) {
+			margin-top: -1em;
+		}
+
+		&:nth-of-type(even) {
+			margin-top: 3em;
+		}
+	}
+
+	article {
+		display: flex;
+		flex-flow: column;
+		align-items: center;
+
+
+
+		h3 {
+			font-size: 100%;
+			margin-top: .6em;
+		}
+
+		p {
+			font-size: 50%;
+		}
+
+		.avatar {
+			width: calc(20vw - 2em);
+			order: -1;
+			box-shadow: 0 .05em .2em var(--color-neutral-40a);
+		}
+	}
+
+}
+
+#dogfood {
+	background: linear-gradient(to bottom right, rgb(0 0 0 / .5) 20%, transparent 60%), url(images/dogfood.jpg) bottom / cover;
+	align-items: start;
+	justify-content: start;
+	padding-right: 48vw;
+	color-scheme: dark;
+
+	& h1 {
+		text-align: left;
+		margin-bottom: .3em;
+	}
+}
+
+#clients-servers {
+	transition: .5s;
+	background:
+		radial-gradient(circle closest-side, white 99%, transparent 100%) center / 0% 0% no-repeat,
+		url('images/server.png') no-repeat center / cover;
+
+	&:not([data-step]) {
+		color-scheme: dark;
+		text-shadow: 0 .1em .3em rgb(0 0 0 / .5);
+
+		ul {
+			opacity: 0;
+		}
+	}
+
+	&[data-step] {
+		background-size: 220% 220%, cover;
+	}
+
+	> :is(p, ol, ul) {
+		font-size: 100%;
+	}
+
+	h1 {
+		white-space: nowrap;
+		font-size: calc(4 * var(--slide-base-font-size, 1rem));
+
+		.amp {
+			display: inline-block;
+			vertical-align: -.1em;
+			margin-inline: -.12em -.08em;
+			font-family: Baskerville, Palatino, var(--font-sans);
+			font-style: italic;
+			font-weight: normal;
+			font-size: 150%;
+			color: var(--color-yellow);
+		}
+	}
+
+	ul {
+		transition: .5s 1s opacity;
+
+		li {
+			text-indent: .3em;
+		}
+
+		li:nth-child(2) {
+			&::marker {
+				font-size: 2em;
+				line-height: .4;
+			}
+		}
+	}
+
+	p {
+		font-weight: 600;
+	}
+
+	mark {
+		background: linear-gradient(black 0 100%) 0 / 100% 100% no-repeat;
+		color: white;
+		transition: 2s background ease-out;
+
+		@starting-style {
+			background-size: 0% 100%;
+		}
+	}
+}
+
+@keyframes mark {
+	to {
+		background-size: 100% 100%;
+	}
+}
+
+#relative-urls {
+	form {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 1em;
+		width: 80vw;
+	}
+
+	label {
+		display: contents;
+	}
+
+	input, output {
+		font-weight: bold;
+	}
+
+	output {
+		padding: 0 .3em;
+		background: var(--color-neutral-95);
+	}
+}
+
+@keyframes press {
+	to {
+		transform: scale(.8) translateY(.1em);
+	}
+}
+
+@keyframes fade {
+	to {
+		opacity: 0;
+	}
+}
+
+#request-response {
+	flex-flow: row;
+	align-items: end;
+	justify-content: space-between;
+	gap: 1em;
+
+	.speech {
+		font-size: 75%;
+	}
+
+	.subject {
+		margin: 0;
+	}
+
+	& figcaption {
+		font-weight: bold;
+		margin-top: .5em;
+	}
+
+	#http-request {
+		.subject {
+
+		}
+	}
+
+	#http-response {
+		--tooltip-orientation: vertical;
+		--tooltip-alignment: start;
+		--line-length: 3em;
+		--line-length-perline: 1em;
+
+		.subject {
+			& img {
+				height: 2em;
+				margin-bottom: -.2em;
+			}
+
+			& figcaption {
+				text-align: left;
+				text-indent: 1em;
+			}
+		}
+	}
+
+	.computer {
+		max-width: 4em;
+	}
+
+	.browser {
+		position: relative;
+		z-index: 1;
+		min-width: 3.65em;
+		min-height: 1.6em;
+		flex: 1;
+		transition: .5s transform;
+		transform-origin: bottom left;
+		opacity: 1;
+
+		&.displayed {
+
+		}
+
+		&:not(.displayed) {
+			transform: scale(3);
+		}
+
+		&.current {
+			&:has(.current) {
+				transition-delay: .5s;
+			}
+
+			&:not(:has(.current))::after {
+				content: "Enter";
+				padding: .2em;
+				padding-top: 1.5em;
+				font-size: 20%;
+				font-weight: 500;
+				background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90" font-family="system-ui" fill="white">↵</text></svg>')
+				            no-repeat rgb(0 0 0 / .5) 50% .1em / 100% 1.5em;
+
+				color: white;
+				position: absolute;
+				right: .2em;
+				top: 50px;
+				border-radius: .2em;
+
+				animation: press .2s 2 alternate,
+				           fade .5s 1s forwards;
+			}
+		}
+
+		& iframe {
+			width: 100%;
+			height: 100%;
+			border: none;
+
+
+			&.current {
+				transition-delay: 1.5s;
+			}
+		}
+	}
+
+	#http-handshake {
+		font-size: 80%;
+	}
+
+	.text {
+		font-size: 90%;
+
+		pre::after {
+			top: -2em;
+			border-radius: .2em;
+			right: auto;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	}
+
+	.text,
+	.text * {
+		line-height: 1.4;
+	}
+}
+
+.slide[data-type="HTML syntax"] {
+	--line-length: 3em;
+	--tooltip-orientation: vertical;
+
+	.syntax-breakdown {
+		span[title] {
+			--tooltip-alignment: start;
+
+			& span[title] {
+				--tooltip-alignment: end;
+			}
+		}
+	}
+}
+
+#html-img {
+	.browser {
+		max-width: 50vw;
+		margin-top: 1em;
+
+		& img {
+			margin: .3em;
+			max-width: 50%;
+		}
+	}
+
+	.syntax-breakdown {
+		white-space: pre;
+	}
+}
+
+.max-size {
+	flex: 1;
+	min-height: 0;
+}
+
+#emmet-html-skeleton {
+	h1 {
+		font-size: calc(2.5 * var(--slide-base-font-size, 1rem))
+	}
+}
+
+#subresources {
+	.arrow-down,
+	.arrow-down + pre {
+		transition: .4s opacity;
+
+		&:not([data-step] *) {
+			opacity: 0;
+		}
+	}
+}
+
+#html-elements {
+	gap: 1em;
+
+	ul {
+		font-size: 90%;
+	}
+}

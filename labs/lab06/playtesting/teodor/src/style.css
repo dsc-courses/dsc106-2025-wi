@@ -1,0 +1,183 @@
+html {
+    --color-accent: #565466;
+    --nav-border: rgba(159, 160, 190, 0.8);
+    --text-secondary: #d5951e;
+    accent-color: var(--accent-color);
+}
+
+body {
+    /* Set line height to 1.5 times the font size
+       and use the OS’s UI font as the website font
+     */
+    max-width: 80vw;
+    margin-inline: auto;
+    padding: 2em;
+    font: 100%/1.5 'Gill Sans', sans-serif;
+}
+
+h1 {
+    font-size: 400%;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.1;
+    text-wrap: balance;
+    font-family: "Josefin Sans", sans-serif;
+
+}
+
+h2 {
+    color: var(--text-secondary);
+}
+
+form {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1em;
+}
+
+label,
+button {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1/ -1;
+}
+
+img {
+    max-width: 100%;
+}
+
+.projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    gap: 1em;
+}
+
+.resume-item {
+    margin-block: 0;
+}
+
+.resume-item ul {
+    margin-block: 0;
+}
+
+.resume-item .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.resume-item .item-header>h5 {
+    color: var(--text-secondary);
+}
+
+.color-scheme {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+}
+
+img {
+    max-width: 100%;
+    /* Ensures images are not wider than their container */
+    height: auto;
+    /* Maintains the aspect ratio of the image */
+}
+
+.image-container {
+    padding: 20px;
+    /* Adds space around the image */
+    margin: 0;
+}
+
+.profile-picture {
+    max-width: 100%;
+    /* Ensures the image is never larger than its container */
+    width: 200px;
+    height: auto;
+    /* Keeps the image's aspect ratio intact */
+    display: block;
+    /* Makes the image block-level to enable centering with margin */
+    margin: 0;
+    /* Centers the image horizontally in its container */
+    border-radius: 50%;
+    /* Optional: Rounds the corners of the image for an elegant, circular appearance */
+}
+
+
+/* GitHub Stats Styling */
+.github-stats {
+    color: #c9d1d9;
+    /* Light text color for contrast */
+    border: 2px solid #30363d;
+    /* Subtle border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Soft shadow for depth */
+    border-radius: 12px;
+    /* Rounded corners */
+    padding: 2rem;
+    /* Spacing inside the card */
+    max-width: 600px;
+    /* Maximum width of the card */
+    margin: 2rem auto;
+    /* Centering the card */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    /* Smooth transitions for hover effects */
+}
+
+.github-stats:hover {
+    transform: translateY(-5px);
+    /* Slight lift effect on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    /* Enhanced shadow on hover */
+}
+
+.github-stats h2 {
+    margin: 0 0 1.5rem 0;
+    /* Spacing below the heading */
+    font-size: 1.75rem;
+    /* Larger font size for the heading */
+}
+
+.github-stats dl {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Two-column layout */
+    gap: 1rem;
+    /* Space between items */
+}
+
+.github-stats dt {
+    font-weight: 600;
+    /* Making the term (dt) bolder */
+}
+
+.github-stats dd {
+    margin: 0;
+    /* Removing default margin */
+    font-weight: 400;
+    /* Standard font weight for the description (dd) */
+}
+
+/* Error Styling */
+.error {
+    color: #f85149;
+    /* Error color */
+    text-align: center;
+    /* Centering error message */
+    font-weight: 500;
+    /* Slightly bolder font for visibility */
+}
+
+.project-year {
+    margin-top: 10px;
+    font-family: Baskerville;
+    font-weight: bold;
+    font-variant-numeric: oldstyle-nums;
+    color: var(--text-secondary);
+}

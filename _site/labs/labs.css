@@ -1,0 +1,71 @@
+@import url('./slides/plugins/browser/plugin.css');
+
+.browser.browser {
+  box-shadow: 2px 5px 20px hsl(0 0 0 / 0.1);
+}
+
+#markdown-toc {
+  .done {
+    text-decoration: line-through;
+    text-decoration-color: color-mix(in oklab, transparent, currentColor);
+    font-style: italic;
+  }
+}
+
+.done:is(section, details) {
+  opacity: 0.7;
+}
+
+#step-progress {
+  width: 100%;
+  position: sticky;
+  top: 0;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  &:is(.done *) {
+    text-decoration: line-through;
+    text-decoration-color: color-mix(in oklab, transparent, currentColor);
+    font-style: italic;
+  }
+
+  &:is(.step-group > *, .step-group > summary > *) {
+    &::after {
+      content: '';
+      display: inline-block;
+      vertical-align: -0.1em;
+      width: 1em;
+      aspect-ratio: 1;
+      margin-left: 0.3em;
+
+      --fraction: calc(var(--done) / var(--steps));
+      --increment: calc(100% / var(--steps));
+      --diameter: 1em;
+      --pi: 3.14159265358979323846;
+      --circumference: calc(var(--pi) * var(--diameter));
+      --stroke-width-arc: 2%;
+      --stroke-width: calc(
+        var(--circumference) * var(--stroke-width-arc) * 0.85
+      );
+      --stroke-color: hsl(0 0 0 / 15%);
+
+      width: var(--diameter);
+      aspect-ratio: 1;
+      background: repeating-conic-gradient(
+          var(--stroke-color) 0 calc(var(--stroke-width-arc) / 2),
+          transparent 0 calc(var(--increment) - var(--stroke-width-arc) / 2),
+          var(--stroke-color) 0 var(--increment)
+        ),
+        conic-gradient(
+          yellowgreen calc(var(--fraction) * 100%),
+          hsl(220 10 90) 0
+        );
+      border-radius: 50%;
+      border-radius: 50%;
+    }
+  }
+}

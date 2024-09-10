@@ -1,0 +1,114 @@
+@import url("../../slides/css/talk.css");
+
+#intro {
+	align-items: start;
+	padding-left: 4em;
+	background: url("images/svelte-machine.avif") no-repeat bottom / 100% auto,
+	radial-gradient(circle at 40% 30%,#ebf3f9,#d6dee4);
+
+	h1 {
+		margin-bottom: 2em;
+
+		.logo {
+			height: 1em;
+		}
+	}
+}
+
+#npm {
+	color-scheme: dark;
+	background: oklch(45% 45% 0);
+
+	img[alt=npm] {
+		display: inline-block;
+		vertical-align: -.15em;
+		height: .75em;
+	}
+}
+
+#npm-101 {
+	ul {
+
+	}
+}
+
+#cdd {
+	align-items: center;
+	color-scheme: dark;
+	background: linear-gradient(156.4deg, rgb(6, 9, 44) 0%, rgb(22, 19, 54) 100%);
+}
+
+#traditional-architecture,
+#cba,
+#cba-2 {
+	flex-flow: row;
+	gap: 1em;
+
+	h1 {
+		text-align: left;
+		font-size: 300%;
+		align-self: end;
+	}
+
+	.frame-by-frame {
+		height: 100%;
+		flex-shrink: 0;
+	}
+}
+
+.frame-by-frame {
+	position: relative;
+	.delayed {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+
+	.current {
+		z-index: 1;
+	}
+}
+
+#modern-web-apps {
+	flex-flow: row;
+	background: #EEF0F4;
+	gap: 0;
+
+	h1 {
+		text-align: left;
+		font-size: calc(2.4 * var(--slide-base-font-size, 1rem));
+		align-self: end;
+	}
+}
+
+#also-modern-web-apps {
+	justify-content: center;
+	color-scheme: dark;
+	background: url(images/components-2.jpg);
+
+	h1 {
+		text-align: left;
+		width: 10em;
+		margin-right: 1em;
+		text-shadow: 0 0 1em black;
+	}
+}
+
+#component-io {
+	place-content: center;
+
+	> img {
+		height: 100%;
+	}
+
+	.browser {
+		--padding-top: 1em;
+		padding-bottom: 1em;
+		padding-inline: 1em;
+		margin-top: 1em;
+	}
+}
+
+#build-process {
+	gap: .5em;
+}

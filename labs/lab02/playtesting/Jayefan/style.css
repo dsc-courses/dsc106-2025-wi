@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+html{
+	--color-accent: oklch(53.24% 0.039 201.18);
+	accent-color: var(--color-accent);
+}
+body {
+    font: 100%/1.5;
+	font-family: "Josefin Sans", sans-serif;
+	max-width: 100ch;
+	margin-inline:auto;
+	padding: 1ch 10ch;
+   }
+nav {
+	display: flex;
+	margin-bottom: 3em;
+	margin-top:2em;
+	border-bottom: 1px solid oklch(80% 3% 200);
+}
+
+nav a{
+	flex:1;
+	text-decoration: none;
+	color: inherit;
+	text-align: center;
+	padding: 0.5em;
+}
+
+nav .current{
+	border-bottom:5px solid oklch(80% 3% 200);
+}
+nav a:hover{
+	border-bottom:5px solid var(--color-accent);
+}
+
+form button,input,textarea{
+	font:inherit;
+}
+
+/* label, input, textarea, button {
+	display: block;
+} */
+
+/* label {
+	margin-block: 2em; 
+} */
+
+/* input, textarea {
+	width: 100%;
+	box-sizing: border-box;
+	font: inherit;
+} */
+
+form{
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap:2em;
+}
+
+label{
+	display:grid;
+	grid-template-columns:subgrid;
+	grid-column: 1/-1;
+	gap: 1em;
+}
+.projects{
+	max-width:100%;
+	display: grid;
+	grid-template-columns:repeat(auto-fill, minmax(15em, 1fr));
+	gap: 1em;
+}
+
+.projects article{
+	display:grid;
+	grid-template-rows:subgrid;
+	grid-row: span 3;
+}
+
+.projects h2{
+	margin:0;
+}
+
+h1{
+	font-size:3em;
+}
+
+h1,h2.h3.h4.h5.h6{
+	line-height:1.1;
+	text-wrap: balance;
+}
+
+.resume section{
+	display:grid;
+	grid-template-columns:10em 1fr auto;
+}
+
+.resume p{
+	margin:0.5em;
+	line-height:1.2;
+}
