@@ -37,15 +37,6 @@ target="_blank" rel="noopener noreferrer">questions doc</a> throughout the lab!*
 
 <script type="module" src="https://colorjs.io/elements/color-swatch/color-swatch.js"></script>
 
-## Check-off
-
-**You need to come to TA Office Hours to get checked off for this lab** (any of them, no appointment needed).
-Please fill in [the check-off form at `labs/2/checkoff`](checkoff) _before_ your check-off
-(right before is fine — even preferred).
-
-{: .warning }
-Filling out the form is _not_ enough to get checked off. **You need to come to office hours.**
-
 ## Prerequisites
 
 This lab assumes you have already completed [Lab 1](../1/), as we will use this as a starting point.
