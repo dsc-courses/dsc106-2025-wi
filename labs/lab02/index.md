@@ -10,10 +10,6 @@ released: true
 
 {: .no_toc}
 
-**Add questions to the <a
-href="https://docs.google.com/document/d/14ACfEiAyZiaZNhJ-0mINWs6txn6VRzRqHQ8bDRWCE4o/edit?usp=sharing"
-target="_blank" rel="noopener noreferrer">questions doc</a> throughout the lab!**
-
 {: .summary}
 
 > In this lab, we will learn:
