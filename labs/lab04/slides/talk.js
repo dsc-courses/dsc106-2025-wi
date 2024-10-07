@@ -1,2 +1,2 @@
 import Inspire from "../../slides/talk.js";
-import "https://colorjs.io/elements/color-swatch/color-swatch.js";
+import "https://elements.colorjs.io/src/color-swatch/color-swatch.js";

@@ -35,7 +35,19 @@ target="_blank" rel="noopener noreferrer">questions doc</a> throughout the lab!*
 
 ---
 
-<script type="module" src="https://colorjs.io/elements/color-swatch/color-swatch.js"></script>
+<script src="https://elements.colorjs.io/src/color-swatch/color-swatch.js" type="module"></script>
+
+## Check-off
+
+To get checked off for the lab, please record a 2 minute video with the following components:
+
+1. Present your final webpage and show how it is customized to display
+   information from your personal resume / CV.
+1. Show how your webpage resizes gracefully.
+1. Share the most interesting thing you learned from this lab.
+
+**Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
+make sure your video is 2 minutes or less.**
 
 ## Prerequisites
 
@@ -44,7 +56,7 @@ This lab assumes you have already completed [Lab 1](../1/), as we will use this 
 {: .note }
 You do not need to create a new repository for Lab 2, simply work on the same repository you created for Lab 1.
 
-## [Slides](./slides/)
+## [Slides](./slides/){:target="\_blank"}
 
 Make sure to read the notes on each slide as well!
 

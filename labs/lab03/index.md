@@ -343,7 +343,7 @@ Try it now! Add it to your stylesheet so that it’s applied on every page.
 
 #### Adjusting the border color
 
-<script type="module" src="https://colorjs.io/elements/color-swatch/color-swatch.js"></script>
+<script src="https://elements.colorjs.io/src/color-swatch/color-swatch.js" type="module"></script>
 
 While it doesn’t look too bad, in light mode we picked a border color that looked very subtle (<color-swatch><code>oklch(80% 3% 200)</code></color-swatch>)
 but in contrast to the almost-black background, it looks very harsh.
