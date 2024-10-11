@@ -37,8 +37,8 @@ released: true
 To get checked off for the lab, please record a 2 minute video with the following components:
 
 1. Present your final webpage.
-1. Show how your webpage resizes gracefully.
-1. Share the most interesting thing you learned from this lab.
+2. Show you interacting with your webpage from your javascript updates.
+3. Share the most interesting thing you learned from this lab.
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
 make sure your video is 2 minutes or less.**
@@ -55,13 +55,8 @@ under the `file:` protocol (i.e. when opening the files directly in the browser)
 If you are using Live Preview, we recommend you switch to [Live Server](../0/#installing-a-local-server)
 as Live Preview seems to have issues with newer CSS features.
 
-## <a href="https://docs.google.com/document/d/1qOWlje-XdzYl7kX16LlTJoP0jC2lPRddLIY9Pm5uWO4/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Questions Doc</a>
 
-Add questions to the questions doc throughout the lecture and lab! After lab,
-come to [office hours](../../logistics/staff.html#office-hours) or ask on
-[Discourse](https://vis-society-forum.csail.mit.edu/) for futher questions!
-
-## [Slides](./slides/)
+## [Slides](./slides/){:target="\_blank"}
 
 Make sure to read the notes on each slide as well!
 
