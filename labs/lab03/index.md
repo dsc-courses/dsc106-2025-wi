@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 3: Introduction to JS'
 lab: 3
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: true
 ---
 
 # Lab 3: Introduction to JS
@@ -34,13 +34,14 @@ released: false
 
 ## Check-off
 
-**You need to come to TA Office Hours to get checked off for this lab** (any of them, no appointment needed).
-Please fill in [the check-off form at `labs/3/checkoff`](checkoff) _before_ your check-off
-(right before is fine — even preferred).
+To get checked off for the lab, please record a 2 minute video with the following components:
 
-{: .warning }
-Filling out the form is a necessary but not sufficient condition to get checked-off.
-**You still need to come to office hours in person for your check-off to be processed.**
+1. Present your final webpage.
+1. Show how your webpage resizes gracefully.
+1. Share the most interesting thing you learned from this lab.
+
+**Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
+make sure your video is 2 minutes or less.**
 
 ## Prerequisites
 
@@ -343,7 +344,7 @@ Try it now! Add it to your stylesheet so that it’s applied on every page.
 
 #### Adjusting the border color
 
-<script src="https://elements.colorjs.io/src/color-swatch/color-swatch.js" type="module"></script>
+<script type="module" src="https://colorjs.io/elements/color-swatch/color-swatch.js"></script>
 
 While it doesn’t look too bad, in light mode we picked a border color that looked very subtle (<color-swatch><code>oklch(80% 3% 200)</code></color-swatch>)
 but in contrast to the almost-black background, it looks very harsh.
