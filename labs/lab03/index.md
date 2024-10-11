@@ -56,7 +56,7 @@ If you are using Live Preview, we recommend you switch to [Live Server](../0/#in
 as Live Preview seems to have issues with newer CSS features.
 
 
-## [Slides](./slides/){:target="\_blank"}
+## [Slides](./slides/)
 
 Make sure to read the notes on each slide as well!
 
