@@ -46,8 +46,6 @@ make sure your video is 2 minutes or less.**
 - You should have completed all the steps in [Lab 0](../0/), i.e. that you have Node.js and npm installed. You will not need the local server from Lab 0, as SvelteKit will provide its own.
 - This lab assumes you have already completed [Lab 1](../1/), [Lab 2](../2/), [Lab 3](../3/) as we will use the same website as a starting point.
 
-## <a href="https://docs.google.com/document/d/1_TYrBYzQwFnKBqjN8JA7w7c-pCZiH877QC0y2hSbJcg/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Questions Doc</a>
-
 ## [Slides](./slides/)
 
 Make sure to read the notes on each slide as well!
