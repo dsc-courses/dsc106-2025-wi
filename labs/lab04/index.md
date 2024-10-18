@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 4: Svelte (Templating & Control Flow)'
 lab: 4
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: 
 ---
 
 # Lab 4: Svelte (Templating & Control Flow)
@@ -32,13 +32,14 @@ released: false
 
 ## Check-off
 
-**You need to come to TA Office Hours to get checked off for this lab** (any of them, no appointment needed).
-Please fill in [the check-off form at `labs/4/checkoff`](checkoff) _before_ your check-off
-(right before is fine — even preferred).
+To get checked off for the lab, please record a 2 minute video with the following components:
 
-{: .warning }
-Filling out the form is a necessary but not sufficient condition to get checked-off.
-**You still need to come to office hours in person for your check-off to be processed.**
+1. Present your webpage.
+2. Show you interacting with your webpage from your svelte modifications.
+3. Share the most interesting thing you learned from this lab.
+
+**Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
+make sure your video is 2 minutes or less.**
 
 ## Prerequisites
 
@@ -46,10 +47,6 @@ Filling out the form is a necessary but not sufficient condition to get checked-
 - This lab assumes you have already completed [Lab 1](../1/), [Lab 2](../2/), [Lab 3](../3/) as we will use the same website as a starting point.
 
 ## <a href="https://docs.google.com/document/d/1_TYrBYzQwFnKBqjN8JA7w7c-pCZiH877QC0y2hSbJcg/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Questions Doc</a>
-
-Add questions to the questions doc throughout the lecture and lab! After lab,
-come to [office hours](../../logistics/staff.html#office-hours) or ask on
-[Discourse](https://vis-society-forum.csail.mit.edu/) for futher questions!
 
 ## [Slides](./slides/)
 
