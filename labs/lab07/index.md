@@ -33,7 +33,7 @@ released: true
 
 To get checked off for the lab, please record a 2 minute video with the following components:
 
-1. Present your D3 visualizations.
+1. Present your quantitative D3 visualizations
 2. Show you interacting with your D3 visualizations.
 3. Share the most interesting thing you learned from this lab.
 
