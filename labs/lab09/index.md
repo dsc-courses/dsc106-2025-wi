@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 9: Animation & Scrollytelling'
 lab: 9
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: true
 ---
 
 # Lab {{ page.lab }}: Animation
@@ -30,24 +30,14 @@ released: false
 
 ## Check-off
 
-**You need to come to TA Office Hours to get checked off for this lab** (any of them, no appointment needed).
-Please fill in [the check-off form at `labs/{{ page.lab }}/checkoff`](checkoff) _before_ your check-off.
-Ideally you should fill in the form _right before_ your check-off, but it’s ok if you fill it out in advance.
+To get checked off for the lab, please record a 2 minute video with the following components:
 
-{: .warning }
-Filling out the form is a necessary but not sufficient condition to get checked-off.
-**You still need to come to office hours in person for your check-off to be processed.**
+1. Present your interactive narrative visualization
+2. Show you interacting with your visualization.
+3. Share the most interesting thing you learned from this lab.
 
-You could even fill it out before you finish the lab, since we won’t look at it until your check-off,
-but the closer to the end of the lab you fill it out, the more meaningful your feedback will be.
-
-<!--
-## <a href="" target="_blank" rel="noopener noreferrer">Questions Doc</a>
-
-Add questions to the questions doc throughout the lecture and lab! After lab,
-come to [office hours](../../logistics/staff.html#office-hours) or ask on
-[Discourse](https://vis-society-forum.csail.mit.edu/) for futher questions!
--->
+**Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
+make sure your video is 2 minutes or less.**
 
 ## [Slides](./slides/)
 
