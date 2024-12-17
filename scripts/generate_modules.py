@@ -24,6 +24,7 @@ def generate_modules(csv_file):
         .pipe(ffill_weeks)
         .pipe(parse_dates)
         .pipe(melt_into_events)
+        .pipe(mark_exams_and_canceled_lectures)
         .pipe(number_events)
     )
     df.pipe(write_into_module_files)
@@ -44,7 +45,7 @@ def melt_into_events(df):
     return (
         df.melt(
             id_vars=["week", "date"],
-            value_vars=["Lecture", "Lab Due", "Project Due"],
+            value_vars=["Lecture", "Discussion", "Lab Due", "Project Due"],
             var_name="event_type",
             value_name="title",
         )
@@ -52,6 +53,19 @@ def melt_into_events(df):
         .assign(week=lambda df: df["week"].astype(int))
         .sort_values("date")
     )
+
+
+def mark_exams_and_canceled_lectures(
+    df, cancelled_prefix="NO ", exam_substring="Exam"
+):
+    canceled = df["title"].str.startswith(cancelled_prefix)
+    exams = (df["event_type"] == "Lecture") & (
+        df["title"].str.contains(exam_substring)
+    )
+    marked_events = (
+        df["event_type"].mask(canceled, "Canceled").mask(exams, "Exam")
+    )
+    return df.assign(event_type=marked_events)
 
 
 def number_events(df):
@@ -62,7 +76,8 @@ def number_events(df):
     # [3] Lectures: Number from 1-N
     # [4] Discussions: Number from 1-N
     # [5] Exams: Don't number
-    # [6] Canceled: Don't number
+    # [6] Final Project: Mark as "FINAL PROJ"
+    # [7] Canceled: Don't number
     df = df.copy()
 
     # [1] Labs
@@ -74,11 +89,12 @@ def number_events(df):
     df.loc[lab_titles.index, "title"] = lab_titles
 
     # [2] Projects
-    project_numbers = "PROJ " + df.query('event_type == "Project Due"')[
-        "title"
-    ].str.extract(r"Project (\d+)")
-    # Special case for final project
-    project_numbers = project_numbers.fillna("FINAL PROJ")
+    regular_projects = (
+        df.query('event_type == "Project Due"')["title"]
+        .str.extract(r"Project (\d+)")[0]
+        .dropna()
+    )
+    project_numbers = "PROJ " + regular_projects
 
     # [3] Lectures
     lecs = df.query('event_type == "Lecture"')
@@ -86,13 +102,30 @@ def number_events(df):
         np.arange(len(lecs)) + 1, lecs.index
     ).astype(str)
 
-    event_numbers = pd.concat([lab_numbers, project_numbers, lec_numbers])
+    # [4] Discussions
+    discs = df.query('event_type == "Discussion"')
+    disc_numbers = "DISC " + pd.Series(
+        np.arange(len(discs)) + 1, discs.index
+    ).astype(str)
+
+    # [6] Final Project
+    final_proj = df[
+        (df["event_type"] == "Project Due")
+        & df["title"].str.contains("Final Project")
+    ].assign(event_number="FINAL PROJ")["event_number"]
+
+    # [6] Canceled
+    # Don't actually need to handle to leave as NaN
+
+    event_numbers = pd.concat(
+        [lab_numbers, project_numbers, lec_numbers, disc_numbers, final_proj]
+    )
     return df.assign(event_number=event_numbers)
 
 
 def write_into_module_files(
     df,
-    event_type_as_css_class={
+    css_class_for_event_type={
         "Lab Due": "lab",
         "Project Due": "proj",
         "Lecture": "lecture",
@@ -103,13 +136,15 @@ def write_into_module_files(
 ):
     def make_days(events):
         return [
-            {
-                "name": e.event_number,
-                "type": event_type_as_css_class[e.event_type],
-                "title": e.title,
-            }
-            if e.event_type != "Canceled"
-            else {"markdown_content": e.title}
+            (
+                {
+                    "name": e.event_number,
+                    "type": css_class_for_event_type[e.event_type],
+                    "title": e.title,
+                }
+                if e.event_type != "Canceled"
+                else {"markdown_content": e.title}
+            )
             for e in events.itertuples(index=False)
         ]
 

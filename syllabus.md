@@ -34,6 +34,12 @@ in data visualization. By the end of the course, you will:
 - Implement interactive data visualizations for the web using D3.js.
 - Develop a substantial visualization project.
 
+**New**{: .label .label-green } In this quarter's (and Spring 2025's) offering
+of DSC 106, the course will be themed around health data with help from
+professor [Benjamin Smarr][ben] from HDSI. TODO: Add a blurb.
+
+[ben]: url
+
 **Prerequisites:** DSC 80.
 
 ---
@@ -50,25 +56,22 @@ You'll need to make accounts or join the class on the following sites.
 - **Ed:** We’ll be using Ed as our course message and discussion board. More
   details are in the [Communication](#communication-) section below. If you
   didn’t already get an invitation to our Ed course, [sign up
-  here](https://edstem.org/us/join/6jfeKP).
+  here]().
 
-- **Gradescope:** You’ll submit all projects to
-  [Gradescope](https://www.gradescope.com/courses/693205). This is where all of
-  your grades will live as well. Most of the assignments will be coding
-  assignments. You should have received an email invitation for
-  Gradescope, but if not please join Gradescope using entry code: **B2G6ZN**.
+- **Gradescope:** You’ll submit all assignments to [Gradescope](). This is where
+  all of your grades will live as well. You should have received an email
+  invitation for Gradescope, but if not please join Gradescope using entry code:
+  \*\*\*\*.
 
 - **GitHub:** Like in DSC 30 and 80, you'll _access_ all course content
   (lecture slides and assignments) by _pulling_ our course GitHub repository.
   That repo is here:
-  [https://github.com/dsc-courses/dsc106-wi24](https://github.com/dsc-courses/dsc106-wi24).
-  In most assignments, you won't need to _push_ anything to GitHub.
+  [https://github.com/dsc-courses/dsc106-wi25](https://github.com/dsc-courses/dsc106-wi25).
+  In Project 3 and the Final Project, you will also _push_ to your personal GitHub.
 
 - **Zoom (optional):** To access remote office hours, if you'd like.
 
 Note that we will not be using Canvas for anything this quarter.
-
-⚠️If you enroll in the class later than 1/5, please join edsteam use [this link](https://edstem.org/us/join/6jfeKP) and join Gradescope using entry code: **B2G6ZN** manually.
 
 ### Development Environment
 
@@ -105,11 +108,10 @@ post instead.**
 
 ### Lectures
 
-Lectures will be held in-person on Tuesday and Thursday from 3:30-4:50PM in
-[CENTR 115] and 5:00-6:20PM in [CENTR 119]. **Lecture attendance is not
-strictly required, but is one option for earning your participation grade
-(detailed below)**. Lectures will be podcasted, and lecture slides will be
-posted before class.
+Lectures will be held in-person on Wednesdays and Fridays from 11:00-11:50AM and
+12:00-12:50PM in TODO. **Lecture attendance is not strictly required, but is one
+option for earning your participation grade (detailed below)**. Lectures will be
+podcasted, and lecture slides will be posted before class.
 
 ### Participation
 
@@ -120,13 +122,13 @@ week of the course will count for 1% of your grade, and the lowest two weeks
 will be dropped. There are **3 options** for fulfilling the participation
 expectations for a particular week:
 
-1. **Attend both lectures and participate in the lecture exercises.**
+1. **Attend both lectures, participate in the lecture exercises, and attend discussion.**
    Participation will be tracked using an online form given during class.
 
-2. **Share and critique at least 1 interesting data visualization on Ed under the [Critiques](https://edstem.org/us/courses/51219/discussion/?category=Critiques) category that
-   hasn't already been shared during class, labs, or projects.** To receive credit, the critique
-   needs to have at least 3 paragraphs of around 3-4 sentences each. The three
-   paragraphs should:
+2. **Share and critique at least 1 interesting data visualization on Ed under
+   the [Critiques][Critiques] category that hasn't already been shared during
+   class, labs, or projects.** To receive credit, the critique needs to have at
+   least 3 paragraphs of around 3-4 sentences each. The three paragraphs should:
 
    1. Summarize the visualization and describe how it connects to a lecture
       concept from the current week or the previous week. If a dataset for the
@@ -134,33 +136,40 @@ expectations for a particular week:
    2. Describe the strengths of this particular visualization.
    3. Describe the weaknesses of this particular visualization.
 
-3. **Respond to 2 different visualization critiques from other students on
-   Ed under the [Critiques](https://edstem.org/us/courses/51219/discussion/?category=Critiques) category.** To receive credit, each response needs to have at least 2 paragraphs
-   of around 3-4 sentences each. The paragraphs should:
+3. **Respond to 2 different visualization critiques from other students on Ed
+   under the [Critiques][Critiques] category.** To receive credit, each response
+   needs to have at least 2 paragraphs of around 3-4 sentences each. The
+   paragraphs should:
    1. Explain what parts of the critique you agree and disagree with.
    2. Suggest an improvement for the visualization. You can sketch out your
       improved visualization or write a program to generate it.
 
-⚠️If you choose to fulfill lecture participation through option 2 or 3, you must make a **public** post on EdStem under the [Critiques](https://edstem.org/us/courses/51219/discussion/?category=Critiques) category. In the title of your post or response, clearly state that it is being used as an opportunity to fulfill lecture participation. The deadline for submitting critiques to count for the corresponding week is **Sunday at 11:59 PM**.
+⚠️If you choose to fulfill lecture participation through option 2 or 3, you must
+make a **public** post on EdStem under the
+[Critiques](https://edstem.org/us/courses/51219/discussion/?category=Critiques)
+category. In the title of your post or response, clearly state that it is being
+used as an opportunity to fulfill lecture participation. The deadline for
+submitting critiques to count for the corresponding week is **Sunday at 11:59
+PM**.
+
+[Critiques]: TODO
 
 ### Discussions
 
-We will not be using the scheduled discussion sections for this course. We
-encourage you to attend office hours instead.
+We will be holding discussions as scheduled at TODO.
 
 ### Labs
 
-There will be **7 lab assignments** due weekly throughout the quarter. Each lab
-assignment is designed to be a walkthrough of practical material that
-you will use for your projects. Labs are meant to serve as [worked
-examples][worked examples]: the solution code will be given to you as part of
-the lab. To receive credit for labs, you will need to complete the lab and then
-get checked off during office hours by a TA. The check off requirements will be
-clearly described at the end of each lab assignment.
+There will be **9 lab assignments** due weekly throughout the quarter. Each lab
+assignment is designed to be a walkthrough of practical material that you will
+use for your projects. Labs are meant to serve as [worked examples][worked examples]: much of the solution code will be given to you as part of the lab. To
+receive credit for labs, you will need to complete the lab and then submit your
+lab to Gradescope. The check off requirements will be clearly described at the
+end of each lab assignment.
 
 [worked examples]: https://tll.mit.edu/teaching-resources/how-people-learn/worked-examples/
 
-Each lab is worth 2% of your final grade, and the lowest lab grade will be
+Each lab is worth 1% of your final grade, and the lowest lab grade will be
 dropped. Labs will be released on Fridays and due on the following **Fridays**
 at 11:59PM.
 
@@ -172,32 +181,27 @@ There will be **4 projects** due throughout the quarter. The projects are
 open-ended and are the primary focus of the course. **As such, our standards for
 grading will be similar to the way portfolio pieces are evaluated for
 internship/research lab/job applications --- we expect your best work!** The
-first three projects are **solo** projects. For the final project, you may work
-in pairs.
+first two projects are **solo** projects. For Project 3 and the Final Project,
+you may work in groups of either 3 or 4 students.
 
-**Working in Pairs**
+**Working in Groups**
 
-You may work together on the final project (and only the final project!) with a
-partner. If you work with a partner, you are both required to actively
-contribute to all parts of the project. You must both be working on the
-assignment at the same time together, either physically or virtually on a Zoom
-call. You are encouraged to follow the pair programming model, in which you
+You will work together on Project 3 and the Final Project in a group of 3-4
+students. You will be required to actively contribute to all parts of the
+project. You are encouraged to follow the pair programming model, in which you
 work on just a single computer and alternate who writes the code and who thinks
 about the problems at a high level.
 
-In particular, you **cannot** split up the project and each work on separate
-parts independently.
-
-If you work with a partner:
-
-- Only one partner needs to submit the project on Gradescope; this partner
+- Only one group member needs to submit the project on Gradescope; this member
   should add the other partner to their submission.
-- You and your partner will receive the same score on any submissions you make
-  together.
+- You and your group members will receive the same score on any submissions you
+  make together.
+- You can stay in the same group for both Project 3 and the Final Project, but
+  you don't have to.
 
-If you are unhappy with your partnership (e.g., if your partner does not keep
+If you are unhappy with your group (e.g., if a group member does not keep
 in touch, does not come prepared to work on the assignment, or does not seem to
-be engaged in the process), please first address your concerns to your partner,
+be engaged in the process), please first address your concerns to your groupmate,
 and try to agree on what should be done to make the partnership work well for
 both of you. If that approach is not successful, explain the issues to the
 instructors, who will work with you and your partner to improve the situation.
@@ -205,6 +209,15 @@ instructors, who will work with you and your partner to improve the situation.
 **Note that you may not work with partners on lab assignments, however you're
 encouraged to discuss all assignments with others at a conceptual level in
 office hours and study groups.**
+
+### Final Project Showcase
+
+At the end of the quarter, we will have a Final Project Showcase where you will
+present your Final Project work to course staff, faculty in HDSI, and our
+industry partners. This showcase will take place during our regularly scheduled
+Final Exam slot on Tuesday, March 18, 2025 at TODO in the HDSI MPR. We will
+announce logistical details of this showcase on Ed. **All DSC 106 students will
+be required to attend the Final Project Showcase.**
 
 ### Office Hours
 
@@ -219,10 +232,10 @@ course website for the most up-to-date schedule and instructions.
 To summarize all of the events and deadlines, refer to this general weekly
 schedule (which is subject to change in any given week):
 
-| Sunday | Monday | Tuesday | Wednesday | Thursday | Friday                                                    | Saturday |
-| ------ | ------ | ------- | --------- | -------- | --------------------------------------------------------- | -------- |
-|        |        | Lecture |           | Lecture  |                                                           |          |
-|        |        |         |           |          | <span style='color:red'><b>Lab and Project due</b></span> |          |
+| Sunday | Monday     | Tuesday | Wednesday | Thursday | Friday                                                    | Saturday |
+| ------ | ---------- | ------- | --------- | -------- | --------------------------------------------------------- | -------- |
+|        | NO LECTURE |         | Lecture   |          | Lecture                                                   |          |
+|        |            |         |           |          | <span style='color:red'><b>Lab and Project due</b></span> |          |
 
 ---
 
@@ -232,14 +245,14 @@ schedule (which is subject to change in any given week):
 
 Here is how we'll compute your grade:
 
-| Component     | Weight | Notes                                                          |
-| ------------- | ------ | -------------------------------------------------------------- |
-| Participation | 8%     | 1% per week, 2 lowest weeks dropped                            |
-| Labs          | 12%    | 2% per lab, 1 lowest lab dropped                               |
-| Project 1     | 10%    |                                                                |
-| Project 2     | 15%    | 10% for submission, 5% for peer review                         |
-| Project 3     | 15%    | 10% for submission, 5% for peer review                         |
-| Final Project | 40%    | 3% for proposal, 7% prototype, 15% video, 15% final submission |
+| Component     | Weight | Notes                                                                        |
+| ------------- | ------ | ---------------------------------------------------------------------------- |
+| Participation | 8%     | 1% per week, 2 lowest weeks dropped                                          |
+| Labs          | 9%     | 1% per lab, 1 lowest lab dropped                                             |
+| Project 1     | 10%    |                                                                              |
+| Project 2     | 15%    | 10% for submission, 5% for peer review                                       |
+| Project 3     | 15%    | 10% for submission, 5% for peer review                                       |
+| Final Project | 40%    | 3% for proposal, 3% prototype, 10% video, 15% final submission, 10% showcase |
 
 ### Late Policy, Slip Days, and Drops
 
@@ -253,13 +266,11 @@ You have **6 "slip days"** to use throughout the quarter. A slip day extends
 the deadline of an assignment by 24 hours. The number of slip days you can use
 on an assignment depends on the kind of assignment:
 
-- On labs, you may use up to 1 slip day. Since labs are due on Fridays and
-  require a TA to check off, you may get checked off on the following Monday
-  after a lab deadline to use 1 slip day.
+- On labs, you may use up to 1 slip day.
 - On projects, you may use up to 2 slip days. Projects will not be
   accepted more than 48 hours after the deadline. Note that you will not be
-  able to use slip days on the Final Project Deliverables due on Saturday,
-  March 16, 2024.
+  able to use slip days on the Final Project Deliverables due on Monday,
+  March 17, 2025.
 
 Slip days are designed to be a transparent and predictable source of leniency
 in deadlines. You can use a slip day if you are too busy to complete an
@@ -279,7 +290,7 @@ we calculate grades at the end of the quarter. However, in the event that you
 use all 6 days and submit another assignment late, we will allocate your slip
 days first to your projects (in chronological order), then to your labs (in
 chronological order), and then to other assignments. This is done to prevent
-you from receiving a 0 on, say, Project 4, if you've used all of your slip days
+you from receiving a 0 on, say, Project 3, if you've used all of your slip days
 on labs up until that point; in such a case, you’d instead receive a 0 on an
 earlier lab that isn’t weighted as much in your grade.
 
@@ -469,10 +480,11 @@ you, including:
 
 ## Acknowledgements 🙏
 
-Materials for this course have been adapted from classes taught by **Soohyun
-Nam Liao** and **Jared Wilber** at UCSD, **Jeffrey Heer** and **Leilani
-Battle** at UW, **Arvind Satyanarayan** at MIT, and **Maneesh Agrawala** and
-**Michael Bernstein** at Stanford University.
+Materials for this course have been adapted from classes taught by **Soohyun Nam
+Liao** and **Jared Wilber** at UCSD, **Jeffrey Heer** and **Leilani Battle** at
+UW, **Arvind Satyanarayan** at MIT, and **Maneesh Agrawala** and **Michael
+Bernstein** at Stanford University. Special thanks to **Lea Verou** at MIT, who
+developed the original material for many of the labs used in this course.
 
 The class draws heavily on materials and examples found online, and we try our
 best to give credit by linking to the original source. Please contact us if you
