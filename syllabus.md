@@ -123,7 +123,7 @@ will be dropped. There are **3 options** for fulfilling the participation
 expectations for a particular week:
 
 1. **Attend both lectures, participate in the lecture exercises, and attend discussion.**
-   Participation will be tracked using an online form given during class.
+   Participation will be tracked using an online form given during class and discussion.
 
 2. **Share and critique at least 1 interesting data visualization on Ed under
    the [Critiques][Critiques] category that hasn't already been shared during
@@ -146,7 +146,7 @@ expectations for a particular week:
 
 ⚠️If you choose to fulfill lecture participation through option 2 or 3, you must
 make a **public** post on EdStem under the
-[Critiques](https://edstem.org/us/courses/51219/discussion/?category=Critiques)
+[Critiques][Critiques]
 category. In the title of your post or response, clearly state that it is being
 used as an opportunity to fulfill lecture participation. The deadline for
 submitting critiques to count for the corresponding week is **Sunday at 11:59
@@ -232,10 +232,10 @@ course website for the most up-to-date schedule and instructions.
 To summarize all of the events and deadlines, refer to this general weekly
 schedule (which is subject to change in any given week):
 
-| Sunday | Monday     | Tuesday | Wednesday | Thursday | Friday                                                    | Saturday |
-| ------ | ---------- | ------- | --------- | -------- | --------------------------------------------------------- | -------- |
-|        | NO LECTURE |         | Lecture   |          | Lecture                                                   |          |
-|        |            |         |           |          | <span style='color:red'><b>Lab and Project due</b></span> |          |
+| Monday     | Tuesday                                           | Wednesday | Thursday | Friday                                        |
+| ---------- | ------------------------------------------------- | --------- | -------- | --------------------------------------------- |
+| NO LECTURE |                                                   | Lecture   |          | Lecture                                       |
+|            | <span style='color:red'><b>Project due</b></span> |           |          | <span style='color:red'><b>Lab due</b></span> |
 
 ---
 
@@ -248,11 +248,11 @@ Here is how we'll compute your grade:
 | Component     | Weight | Notes                                                                        |
 | ------------- | ------ | ---------------------------------------------------------------------------- |
 | Participation | 8%     | 1% per week, 2 lowest weeks dropped                                          |
-| Labs          | 9%     | 1% per lab, 1 lowest lab dropped                                             |
+| Labs          | 8%     | 1% per lab, 1 lowest lab dropped                                             |
 | Project 1     | 10%    |                                                                              |
 | Project 2     | 15%    | 10% for submission, 5% for peer review                                       |
 | Project 3     | 15%    | 10% for submission, 5% for peer review                                       |
-| Final Project | 40%    | 3% for proposal, 3% prototype, 10% video, 15% final submission, 10% showcase |
+| Final Project | 44%    | 3% for proposal, 3% prototype, 10% video, 18% final submission, 10% showcase |
 
 ### Late Policy, Slip Days, and Drops
 

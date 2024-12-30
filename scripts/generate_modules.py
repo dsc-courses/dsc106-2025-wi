@@ -52,6 +52,7 @@ def melt_into_events(df):
         .dropna(subset=["title"])
         .assign(week=lambda df: df["week"].astype(int))
         .sort_values("date")
+        .reset_index(drop=True)
     )
 
 
@@ -71,7 +72,7 @@ def mark_exams_and_canceled_lectures(
 def number_events(df):
     # Number lectures from 1-N, labs from 1-N, projects from 1-N, etc.
     #
-    # [1] Labs: Need to take out Lab 1, Lab 2, etc. from the title
+    # [1] Labs: Number from 1-N
     # [2] Projects: Extract number from "Project 1 checkpoint", "Project 2", etc.
     # [3] Lectures: Number from 1-N
     # [4] Discussions: Number from 1-N
@@ -81,12 +82,10 @@ def number_events(df):
     df = df.copy()
 
     # [1] Labs
-    lab_titles_split = df.query('event_type == "Lab Due"')["title"].str.split(
-        ": "
-    )
-    lab_numbers = lab_titles_split.str[0].str.upper()
-    lab_titles = lab_titles_split.str[1]
-    df.loc[lab_titles.index, "title"] = lab_titles
+    labs = df.query('event_type == "Lab Due"')
+    lab_numbers = "LAB " + pd.Series(
+        np.arange(len(labs)) + 1, labs.index
+    ).astype(str)
 
     # [2] Projects
     regular_projects = (
@@ -114,13 +113,23 @@ def number_events(df):
         & df["title"].str.contains("Final Project")
     ].assign(event_number="FINAL PROJ")["event_number"]
 
-    # [6] Canceled
-    # Don't actually need to handle to leave as NaN
+    # [7] Canceled
+    canceled = df.query('event_type == "Canceled"')
+    canceled_labels = pd.Series(
+        ["CANCELED" for _ in np.arange(len(canceled))], canceled.index
+    )
 
     event_numbers = pd.concat(
-        [lab_numbers, project_numbers, lec_numbers, disc_numbers, final_proj]
-    )
-    return df.assign(event_number=event_numbers)
+        [
+            lab_numbers,
+            project_numbers,
+            lec_numbers,
+            disc_numbers,
+            final_proj,
+            canceled_labels,
+        ]
+    ).rename("event_number")
+    return df.join(event_numbers)
 
 
 def write_into_module_files(
@@ -136,21 +145,19 @@ def write_into_module_files(
 ):
     def make_days(events):
         return [
-            (
-                {
-                    "name": e.event_number,
-                    "type": css_class_for_event_type[e.event_type],
-                    "title": e.title,
-                }
-                if e.event_type != "Canceled"
-                else {"markdown_content": e.title}
-            )
+            {
+                "name": e.event_number,
+                "type": css_class_for_event_type[e.event_type],
+                "title": e.title,
+            }
             for e in events.itertuples(index=False)
         ]
 
     def write_week_module_file(week_df):
         week = int(week_df["week"].iloc[0])
-        date_events = week_df.groupby("date").apply(make_days)
+        date_events = week_df.groupby("date").apply(
+            make_days, include_groups=False
+        )
         days = [
             {"date": date.strftime(r"%Y-%m-%d"), "events": events}
             for date, events in date_events.items()
@@ -168,7 +175,9 @@ def write_into_module_files(
             f.writelines(["---\n", week_data, "---\n"])
         print(f"Wrote: {module_file_path}")
 
-    return df.groupby("week").apply(write_week_module_file)
+    return df.groupby("week")[
+        ["week", "date", "event_type", "title", "event_number"]
+    ].apply(write_week_module_file)
 
 
 if __name__ == "__main__":

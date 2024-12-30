@@ -2,14 +2,22 @@
 title: Week 10
 weekNumber: 10
 days:
-  - date: '2024-03-12'
-    events:
-      - name: LEC 19
-        type: lecture
-        title: Final Project Showcase
-  - date: '2024-03-14'
-    events:
-      - name: LEC 20
-        type: lecture
-        title: Final Project Office Hours
+- date: '2025-03-11'
+  events:
+  - name: FINAL PROJ
+    type: proj
+    title: Final Project Demo Video
+- date: '2025-03-12'
+  events:
+  - name: LEC 17
+    type: lecture
+    title: Video Showcase
+- date: '2025-03-14'
+  events:
+  - name: LEC 18
+    type: lecture
+    title: Mock Showcase
+  - name: DISC 10
+    type: disc
+    title: Disc 10
 ---

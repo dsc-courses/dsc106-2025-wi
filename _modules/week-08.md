@@ -2,24 +2,28 @@
 title: Week 8
 weekNumber: 8
 days:
-  - date: '2024-02-27'
+  - date: '2025-02-25'
     events:
-      - name: LEC 15
-        type: lecture
-        title: Animation
-        url: resources/lectures/14-DSC106-Animation.pdf
-        reading: >
-          [Code](https://github.com/dsc-courses/dsc106-wi24/tree/main/js-lecture/name-grapher)
-  - date: '2024-02-29'
-    events:
-      - name: LEC 16
-        type: lecture
-        title: Uncertainty
-        url: resources/lectures/15-DSC106-Uncertainty.pdf
-  - date: '2024-03-01'
-    events:
+      - name: PROJ 3
+        type: proj
+        title: Project 3 Peer Review
       - name: FINAL PROJ
         type: proj
-        title: Final Project Prototype
-        url: https://dsc106.com/projects/final_project/
+        title: Final Project Proposal
+  - date: '2025-02-26'
+    events:
+      - name: CANCELED
+        type: canceled
+        title: NO Lecture - Sam traveling
+  - date: '2025-02-28'
+    events:
+      - name: LAB 8
+        type: lab
+        title: Lab 8
+      - name: DISC 8
+        type: disc
+        title: Disc 8
+      - name: CANCELED
+        type: canceled
+        title: NO Lecture - Sam traveling
 ---
