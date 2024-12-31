@@ -36,9 +36,9 @@ in data visualization. By the end of the course, you will:
 
 **New**{: .label .label-green } In this quarter's (and Spring 2025's) offering
 of DSC 106, the course will be themed around health data with help from
-professor [Benjamin Smarr][ben] from HDSI. TODO: Add a blurb.
+professor [Benjamin Smarr][ben] from HDSI.
 
-[ben]: url
+[ben]: https://smarr.ucsd.edu/
 
 **Prerequisites:** DSC 80.
 
@@ -109,9 +109,16 @@ post instead.**
 ### Lectures
 
 Lectures will be held in-person on Wednesdays and Fridays from 11:00-11:50AM and
-12:00-12:50PM in TODO. **Lecture attendance is not strictly required, but is one
-option for earning your participation grade (detailed below)**. Lectures will be
-podcasted, and lecture slides will be posted before class.
+12:00-12:50PM in Center Hall 109. **Lecture attendance is not strictly required,
+but is one option for earning your participation grade (detailed below)**.
+Lectures will be podcasted, and lecture slides will be posted before class.
+
+### Discussions
+
+We will be holding discussions as scheduled from 3:00-3:50pm and 4:00-4:50pm in
+CENTR 216. **Discussion attendance is not strictly required,
+but is one option for earning your participation grade (detailed below)**.
+Discussions will be podcasted, and slides will be posted on the course website.
 
 ### Participation
 
@@ -153,10 +160,6 @@ submitting critiques to count for the corresponding week is **Sunday at 11:59
 PM**.
 
 [Critiques]: TODO
-
-### Discussions
-
-We will be holding discussions as scheduled at TODO.
 
 ### Labs
 
@@ -215,9 +218,9 @@ office hours and study groups.**
 At the end of the quarter, we will have a Final Project Showcase where you will
 present your Final Project work to course staff, faculty in HDSI, and our
 industry partners. This showcase will take place during our regularly scheduled
-Final Exam slot on Tuesday, March 18, 2025 at TODO in the HDSI MPR. We will
-announce logistical details of this showcase on Ed. **All DSC 106 students will
-be required to attend the Final Project Showcase.**
+Final Exam slot in the HDSI MPR. We will announce logistical details of this
+showcase on Ed. **All DSC 106 students will be required to attend the Final
+Project Showcase.**
 
 ### Office Hours
 
