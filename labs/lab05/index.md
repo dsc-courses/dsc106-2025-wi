@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 5: Svelte II (Loading Data & Reactivity)'
 lab: 5
 parent: '👩‍🔬 Programming Labs'
-released: true
+released: false
 ---
 
 # Lab 5: Svelte II (Loading Data & Reactivity)

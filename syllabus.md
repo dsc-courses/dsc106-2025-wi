@@ -21,6 +21,10 @@ nav_order: 2
 
 ---
 
+[ed]: https://edstem.org/us/join/ccuxDU
+[github]: https://github.com/dsc-courses/dsc106-2025-wi
+[gradescope]: https://www.gradescope.com/courses/935202
+
 ## About 🧐
 
 Data visualization is one of our most powerful cognitive tools to make sense of
@@ -56,17 +60,14 @@ You'll need to make accounts or join the class on the following sites.
 - **Ed:** We’ll be using Ed as our course message and discussion board. More
   details are in the [Communication](#communication-) section below. If you
   didn’t already get an invitation to our Ed course, [sign up
-  here]().
+  here][ed].
 
-- **Gradescope:** You’ll submit all assignments to [Gradescope](). This is where
+- **Gradescope:** You’ll submit all assignments to [Gradescope][gradescope]. This is where
   all of your grades will live as well. You should have received an email
-  invitation for Gradescope, but if not please join Gradescope using entry code:
-  \*\*\*\*.
+  invitation for Gradescope.
 
 - **GitHub:** Like in DSC 30 and 80, you'll _access_ all course content
-  (lecture slides and assignments) by _pulling_ our course GitHub repository.
-  That repo is here:
-  [https://github.com/dsc-courses/dsc106-wi25](https://github.com/dsc-courses/dsc106-wi25).
+  (lecture slides and assignments) by _pulling_ [our course GitHub repository][github].
   In Project 3 and the Final Project, you will also _push_ to your personal GitHub.
 
 - **Zoom (optional):** To access remote office hours, if you'd like.
@@ -133,7 +134,7 @@ expectations for a particular week:
    Participation will be tracked using an online form given during class and discussion.
 
 2. **Share and critique at least 1 interesting data visualization on Ed under
-   the [Critiques][Critiques] category that hasn't already been shared during
+   the Critiques category that hasn't already been shared during
    class, labs, or projects.** To receive credit, the critique needs to have at
    least 3 paragraphs of around 3-4 sentences each. The three paragraphs should:
 
@@ -144,22 +145,18 @@ expectations for a particular week:
    3. Describe the weaknesses of this particular visualization.
 
 3. **Respond to 2 different visualization critiques from other students on Ed
-   under the [Critiques][Critiques] category.** To receive credit, each response
-   needs to have at least 2 paragraphs of around 3-4 sentences each. The
-   paragraphs should:
+   under the Critiques category.** To receive credit, each response needs to
+   have at least 2 paragraphs of around 3-4 sentences each. The paragraphs
+   should:
    1. Explain what parts of the critique you agree and disagree with.
    2. Suggest an improvement for the visualization. You can sketch out your
       improved visualization or write a program to generate it.
 
 ⚠️If you choose to fulfill lecture participation through option 2 or 3, you must
-make a **public** post on EdStem under the
-[Critiques][Critiques]
-category. In the title of your post or response, clearly state that it is being
-used as an opportunity to fulfill lecture participation. The deadline for
-submitting critiques to count for the corresponding week is **Sunday at 11:59
-PM**.
-
-[Critiques]: TODO
+make a **public** post on EdStem under the Critiques category. In the title of
+your post or response, clearly state that it is being used as an opportunity to
+fulfill lecture participation. The deadline for submitting critiques to count
+for the corresponding week is **Sunday at 11:59 PM**.
 
 ### Labs
 
@@ -390,17 +387,14 @@ exhaustive list):
 
 - Using or submitting code acquired from other students (except from your pair
   programming partner during projects), the web, or any other resource not
-  officially sanctioned by this course
-- Posting your code online, including on Ed, unless privately to instructors
-  only
+  officially sanctioned by this course without substantial contributions of your
+  own
 - Having any other person complete any part of your assignment on your behalf
 - Completing an assignment on behalf of someone else
 - Providing code to any other student in the course
-- Splitting up project questions with your pair programming partner and each
-  working on different questions
 
 The following activities are examples of appropriate collaboration and are
-allowed in (not an exhaustive list):
+allowed (not an exhaustive list):
 
 - **(new) Using AI code generation tools, such as GitHub Copilot and ChatGPT,
   to help write your code**

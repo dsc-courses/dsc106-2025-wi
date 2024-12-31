@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 4: Svelte (Templating & Control Flow)'
 lab: 4
 parent: '👩‍🔬 Programming Labs'
-released: true
+released: false
 ---
 
 # Lab 4: Svelte (Templating & Control Flow)

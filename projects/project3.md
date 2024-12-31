@@ -1,7 +1,9 @@
 ---
-layout: page
+layout: assignment
 title: 'Project 3: Interactive Visualization'
 parent: '📝 Projects'
+released: false
+nav_order: 4
 ---
 
 # Project 3: Interactive Visualization

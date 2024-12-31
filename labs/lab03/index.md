@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 3: Introduction to JS'
 lab: 3
 parent: '👩‍🔬 Programming Labs'
-released: true
+released: false
 ---
 
 # Lab 3: Introduction to JS
@@ -54,7 +54,6 @@ You will need to use a local server for this lab, as some features will not work
 under the `file:` protocol (i.e. when opening the files directly in the browser).
 If you are using Live Preview, we recommend you switch to [Live Server](../0/#installing-a-local-server)
 as Live Preview seems to have issues with newer CSS features.
-
 
 ## [Slides](./slides/)
 

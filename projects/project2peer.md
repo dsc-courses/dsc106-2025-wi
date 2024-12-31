@@ -1,7 +1,9 @@
 ---
-layout: page
+layout: assignment
 title: 'Project 2: Deceptive Visualization - Peer Grading'
 parent: '📝 Projects'
+released: false
+nav_order: 3
 ---
 
 # Project 2: Deceptive Visualization - Peer Grading
