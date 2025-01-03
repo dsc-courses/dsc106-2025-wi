@@ -74,9 +74,8 @@ Note that we will not be using Canvas for anything this quarter.
 
 ### Development Environment
 
-As soon as you are able to, go follow the steps in the [Tech
-Support](../tech_support) page of the course website to set up your development
-environment for the course.
+As soon as you are able to, go follow the steps in [Lab 0](../labs/lab00) to set
+up your development environment for the course.
 
 ---
 
