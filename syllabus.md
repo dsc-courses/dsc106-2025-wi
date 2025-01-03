@@ -64,13 +64,11 @@ You'll need to make accounts or join the class on the following sites.
 
 - **Gradescope:** You’ll submit all assignments to [Gradescope][gradescope]. This is where
   all of your grades will live as well. You should have received an email
-  invitation for Gradescope.
+  invitation for Gradescope. If you did not receive an email, you can register for gradescope with the following entry code: YRW23R.
 
 - **GitHub:** Like in DSC 30 and 80, you'll _access_ all course content
   (lecture slides and assignments) by _pulling_ [our course GitHub repository][github].
   In Project 3 and the Final Project, you will also _push_ to your personal GitHub.
-
-- **Zoom (optional):** To access remote office hours, if you'd like.
 
 Note that we will not be using Canvas for anything this quarter.
 
