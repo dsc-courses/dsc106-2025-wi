@@ -15,7 +15,7 @@
     </h3>
      {% if page.role %}
     <p><b>{{ page.role }}</b></p>
-    {% endif %} 
+    {% endif %}
     {% if page.email %}
     <p>{{ page.email }}</p>
     {% endif %}
@@ -44,7 +44,9 @@
       <span class="badge-ta">{{ page.role }}</span><br>
       {% elsif page.role == 'Tutor' %}
       <span class="badge-tutor">{{ page.role }}</span><br>
-      {% else %} 
+      {% elsif page.role == 'Mascot' %}
+      <span class="badge-mascot">{{ page.role }}</span><br>
+      {% else %}
       {% endif %}
       {% if page.website %}
       <a href="{{ page.website }}">{{ page.name }}</a>
@@ -62,13 +64,24 @@
 
     {% endif %}
     {% if page.lecture %}
-    <p><b>Lecture:</b> {{ page.lecture }}</p>
+    <p><b>Lecture(s)</b>: {{ page.lecture }}</p>
     {% endif %}
+
     </p>
 
+    <p title="Description">🎓 {{ page.description }}</p>
+
+    <p title="Hometown">🏠 {{ page.hometown }}</p>
+
+    <p title="In office hours, ask me about...">🙋 {{ page.askabout }}</p>
+
+    <p title="Favorite food in San Diego">{{ page.foodemoji }} {{ page.food }}</p>
+
     {{ content }}
+
   </div>
 </div>
+
 
 
 <!-- <div class="staffer">
@@ -89,7 +102,7 @@
     <span class="badge-ta">{{ page.role }}</span>
     {% elsif page.role == 'Tutor' %}
     <span class="badge-tutor">{{ page.role }}</span>
-    {% else %} 
+    {% else %}
     <span class="badge-instructor">INST</span>
     {% endif %}
     {% if page.pronouns %}
@@ -109,6 +122,3 @@
     {{ content }}
   </div>
 </div> -->
-
-
-
