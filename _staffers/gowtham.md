@@ -1,5 +1,5 @@
 ---
-name: Smruthi Nicolaou
+name: Smruthi Gowtham
 role: TA
 pronouns: she/her
 email: sgowtham@ucsd.edu

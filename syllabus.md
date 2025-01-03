@@ -21,9 +21,9 @@ nav_order: 2
 
 ---
 
-[ed]: https://edstem.org/us/join/ccuxDU
+[ed]: https://edstem.org/us/join/HzA7pj
 [github]: https://github.com/dsc-courses/dsc106-2025-wi
-[gradescope]: https://www.gradescope.com/courses/935202
+[gradescope]: https://www.gradescope.com/courses/937990
 
 ## About 🧐
 
