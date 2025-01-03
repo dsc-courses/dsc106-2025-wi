@@ -14,7 +14,7 @@ nav_order: 3
 Lectures (<span style="color:#00008B"><b>blue</b></span>) are held in [CENTR 109](https://maps.app.goo.gl/khrN9ekr5LCGdCdM7). 
 Discussions (<span style="color:#00008B"><b>blue</b></span>) are held in [CENTR 216](https://maps.app.goo.gl/khrN9ekr5LCGdCdM7).
 
-<iframe src="https://map.concept3d.com/?id=1005#!m/163044?share" width="100%" height="100%" title="Center Hall" scrolling="no" allow="geolocation" style="border:0px solid #fff; margin:0; padding:0;"></iframe>
+<iframe src="https://map.concept3d.com/?id=1005#!m/163044?share" width="100%" height="500%" title="Center Hall" scrolling="no" allow="geolocation" style="border:0px solid #fff; margin:0; padding:0;"></iframe>
 
 In-person office hours (<span style="color:#00008B"><b>blue</b></span>) are
 held in the HDSI building [Halıcıoğlu Data Science Institute Room 355](https://www.google.com/maps/place/Hal%C4%B1c%C4%B1o%C4%9Flu+Data+Science+Institute/@32.8805676,-117.2363991,17z/data=!3m2!4b1!5s0x80dc06c1dfc237df:0x2baefc1d5cbb43f3!4m6!3m5!1s0x80dc06c1fb192bcb:0x94d4894527b99b21!8m2!3d32.8805631!4d-117.2338242!16s%2Fg%2F11f4_xtk0f?entry=ttu).
