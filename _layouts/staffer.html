@@ -69,13 +69,21 @@
 
     </p>
 
+    {% if page.description %}
     <p title="Description">🎓 {{ page.description }}</p>
-
+    {% endif %}
+    
+    {% if page.hometown %}
     <p title="Hometown">🏠 {{ page.hometown }}</p>
-
+    {% endif %}
+    
+    {% if page.askabout %}
     <p title="In office hours, ask me about...">🙋 {{ page.askabout }}</p>
-
+    {% endif %}
+    
+    {% if page.food %}
     <p title="Favorite food in San Diego">🍝 {{ page.food }}</p>
+    {% endif %}
 
     {{ content }}
 
