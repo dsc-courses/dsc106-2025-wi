@@ -312,17 +312,3 @@ Installation steps:
 ```bash
 ext install ritwickdey.liveserver
 ```
-
-## Svelte for VS Code
-
-Installation steps:
-
-1. Launch VS Code
-2. Quick Open (Ctrl+P) on Windows or (Cmd + P) on MacOS
-3. Paste the following command, and press enter:
-
-```
-ext install svelte.svelte-vscode
-```
-
-4. Confirm that you do want to install the extension
