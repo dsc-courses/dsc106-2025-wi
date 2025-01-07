@@ -242,14 +242,15 @@ schedule (which is subject to change in any given week):
 
 Here is how we'll compute your grade:
 
-| Component     | Weight | Notes                                                                        |
-| ------------- | ------ | ---------------------------------------------------------------------------- |
-| Participation | 8%     | 1% per week, 2 lowest weeks dropped                                          |
-| Labs          | 8%     | 1% per lab, 1 lowest lab dropped                                             |
-| Project 1     | 10%    |                                                                              |
-| Project 2     | 15%    | 10% for submission, 5% for peer review                                       |
-| Project 3     | 15%    | 10% for submission, 5% for peer review                                       |
-| Final Project | 44%    | 3% for proposal, 3% prototype, 10% video, 18% final submission, 10% showcase |
+| Component           | Weight | Notes                                                                        |
+| ------------------- | ------ | ---------------------------------------------------------------------------- |
+| Participation       | 8%     | 1% per week, 2 lowest weeks dropped                                          |
+| Labs                | 8%     | 1% per lab, 1 lowest lab dropped                                             |
+| Project 1           | 10%    |                                                                              |
+| Project 2           | 15%    | 10% for submission, 5% for peer review                                       |
+| Project 3           | 15%    | 10% for submission, 5% for peer review                                       |
+| Project Checkpoints | 4%     | 1% for Project 1 and 2 checkpoints, 2% for Project 3 checkpoint              |
+| Final Project       | 40%    | 2% for proposal, 3% prototype, 10% video, 15% final submission, 10% showcase |
 
 ### Late Policy, Slip Days, and Drops
 
