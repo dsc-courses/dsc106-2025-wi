@@ -38,7 +38,7 @@ The data has seven columns:
 - `sunshine`: The average hours of sunshine observed during that month.
 - `rain`: The average inches of rain observed during that month.
 
-The climate data were collected from [https://www.usclimatedata.com/]().
+The climate data were collected from [https://www.usclimatedata.com/](https://www.usclimatedata.com/).
 
 [dataset]: https://github.com/dsc-courses/dsc106-wi24/raw/gh-pages/resources/data/weather.csv
 
