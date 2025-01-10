@@ -33,7 +33,7 @@ released: true
 
 ## Prerequisites
 
-This lab assumes you have already gone through the setup instructions in [Lab 0](../0/) (except those marked for Lab 2 or later),
+This lab assumes you have already gone through the setup instructions in [Lab 0](../lab00/) (except those marked for Lab 2 or later),
 i.e. that you have (latest versions of, where applicable):
 
 - Google Chrome
