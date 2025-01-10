@@ -72,7 +72,13 @@ It looked a bit like this:
 First, let’s stop the content from getting so wide, by applying a `max-width` to `<body>`.
 Why not simply a `width`? So that the content continues to adapt to smaller viewport sizes.
 We will specify that `max-width` in `em`, `rem`, or `ch` units, so that it scales with the font size.
-Experiment with the browser dev tools to find a good value for `max-width`. I used `100ch`:
+Experiment with the browser dev tools (see below) to find a good value for `max-width`. I used `100ch`:
+
+<figure class="multiple flex">
+<img src="https://lh6.googleusercontent.com/proxy/L2jwfUkKCkOKS52RvNcwa-JoflL1DvNF25z1oGiPXJNqytDq1LFSONOGBW21gdW4Eq9J-MYRrJackTANXs9X78OoJQPc4HdLZSnIWQZBSZn5nnuDtIQHrPfRywhxsgAHBXebSJc7vIU" alt="" class="browser" style="max-width: 42%">
+<img src="https://commandlinefanatic.com/art033f001.png" alt="" class="browser">
+<figcaption>Invoking Developer Tools</figcaption>
+</figure>
 
 <img src="images/step1-1.png" alt="" class="browser">
 
