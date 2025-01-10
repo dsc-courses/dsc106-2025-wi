@@ -33,14 +33,14 @@ released: true
 
 <script src="https://elements.colorjs.io/src/color-swatch/color-swatch.js" type="module"></script>
 
-## Check-off
+## Submission
 
-To get checked off for the lab, please record a 2 minute video with the following components:
+Please submit your github repo link and record a 2 minute video with the following components:
 
 1. Present your final webpage and show how it is customized to display
    information from your personal resume / CV.
-1. Show how your webpage resizes gracefully.
-1. Share the most interesting thing you learned from this lab.
+2. Show how your webpage resizes gracefully.
+3. Share the most interesting thing you learned from this lab.
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
 make sure your video is 2 minutes or less.**
