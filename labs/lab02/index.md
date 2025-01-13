@@ -323,6 +323,7 @@ Tips:
 - We want to declare that each `<article>` should span 3 rows without having to specify the starting row.
   We can do that by using `grid-row: span 3;`.
 - You will likely want to set `margin: 0` on the `<h2>` to avoid excessive spacing.
+- You may want to set `gap: 1em` to space out the `<article>` elements nicely. You are free to play with this parameter a little more, see its effects [here](https://developer.mozilla.org/en-US/docs/Web/CSS/gap).
 
 ### Step 4.4: Finishing touches
 
@@ -332,6 +333,10 @@ Make it significantly larger (e.g. `400%` the body text).
 This is not specific to the projects page, but it’s the only one that currently has `<h2>` elements.
 
 While we’re at it we can also add some good defaults for all headings (`h1, h2, h3, h4, h5, h6`), by applying `line-height: 1.1` (we typically want their leading to be smaller than body text) and `text-wrap: balance` to prevent uneven lines.
+
+Tips:
+
+- You may want to nest certain `CSS` style rules to apply separate effects on the same element tag. See examples [here](https://ishadeed.com/article/css-nesting/).
 
 ## Step 5: Style your CV
 
