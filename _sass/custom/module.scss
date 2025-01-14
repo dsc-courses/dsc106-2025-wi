@@ -78,17 +78,37 @@
   .module-event {
     grid-column-start: 2;
 
+    display: flex;
+    flex-direction: column;
+
+    @include mq(sm) {
+      flex-direction: row;
+    }
+
     +.module-event {
       padding-top: 0;
     }
 
-    .label-lecture { background-color: #ECEBED; text-align: center; border-radius: 6px; width: 60px; }
-    .label-disc { background-color: #779ECC; text-align: center; border-radius: 6px; width: 60px; }
-    .label-canceled { background-color: #000000; text-align: center; border-radius: 6px; width: 80px; }
-    .label-proj { background-color: #E94C4B; text-align: center; border-radius: 6px; width: 60px; }
-    .label-exam { background-color: #000000; text-align: center; border-radius: 6px; width: 60px; }
-    .label-lab { background-color: #F2C76E; text-align: center; border-radius: 6px; width: 60px; }
-    .label-survey { background-color: #15c791; text-align: center; border-radius: 6px; width: 60px; }
+    &-type {
+      flex: 0;
+    }
+
+    &-content {
+      flex: 4;
+    }
+
+    &-readings {
+      flex: 1;
+    }
+
+    .label-lecture { background-color: #ECEBED; text-align: center; border-radius: 6px; width: 65px; }
+    .label-disc { background-color: #779ECC; text-align: center; border-radius: 6px; width: 65px; }
+    // .label-hw { background-color: #E94C4B; text-align: center; border-radius: 6px; width: 60px; }
+    .label-proj { background-color: #E94C4B; text-align: center; border-radius: 6px; width: 65px; }
+    .label-exam { background-color: #000000; text-align: center; border-radius: 6px; width: 65px; }
+    .label-lab { background-color: #F2C76E; text-align: center; border-radius: 6px; width: 65px; }
+    .label-survey { background-color: #15c791; text-align: center; border-radius: 6px; width: 65px; }
+    .label-pre-lec { background-color: #7b40c7; text-align: center; border-radius: 6px; width: 65px; }
 
     // .label-vit { background-color: #c1443c; text-align: center; border-radius: 9px; }
     // .label-live { background-color: #63c082; text-align: center; border-radius: 9px; }

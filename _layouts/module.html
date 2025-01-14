@@ -11,17 +11,39 @@
           </dd>
         {% else %}
           <dd class="module-event{% if forloop.first %} main{% endif %}">
-            <p>
+            <p class="module-event-type">
               <strong class="label label-{{ event.type }}">
                 {{ event.name }}
               </strong>
+            </p>
+            <div class="module-event-content">
+              <p class="module-event-content--title">
               {% if event.url %}
                 <a href="{{ event.url }}">{{ event.title }}</a>
               {% else %}
                 {{ event.title }}
               {% endif %}
-            </p>
-            <p>
+              </p>
+
+              <div class="module-event-content--links">
+                {%- if event.blank -%}
+                <small><a href="{{ event.blank }}"><button type="button" class="btn btn-info">🌗 blank</button></a></small>
+                {%- endif -%}
+
+                {%- if event.filled -%}
+                <small><a href="{{ event.filled }}"><button type="button" class="btn btn-info">📝 filled</button></a></small>
+                {%- endif -%}
+
+                {%- if event.podcast -%}
+                <small><a href="{{ event.podcast }}"><button type="button" class="btn btn-info">🎥 podcast</button></a></small>
+                {%- endif -%}
+              </div>
+            </div>
+            <p class="module-event-readings">
+              <!--
+              {%- if event.filled and event.podcast -%}
+                <span> | </span>
+              {%- endif -%} -->
               {%- if event.podcast -%}
                 <span>
                   <a href="{{ event.podcast }}">🎥</a>
