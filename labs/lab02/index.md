@@ -35,12 +35,15 @@ released: true
 
 ## Submission
 
-Please submit your github repo link and record a 2 minute video with the following components:
+{: .note }
 
-1. Present your final webpage and show how it is customized to display
-   information from your personal resume / CV.
-2. Show how your webpage resizes gracefully.
-3. Share the most interesting thing you learned from this lab.
+Below is your lab submission checklist, please read carefully.
+
+1. Submit a link to your github repo.
+2. Submit maximum 2-minute video to Gradescope in `mp4` format. The video should include:
+   1. Present your final webpage and show how it is customized to display information from your personal resume / CV.
+   2. Show how your webpage resizes gracefully.
+   3. Share the most interesting thing you learned from this lab.
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
 make sure your video is 2 minutes or less.**
