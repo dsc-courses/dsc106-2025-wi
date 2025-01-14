@@ -118,14 +118,14 @@ The assignment is out of 10 points possible. Submissions that squarely meet the 
 
 This is an individual assignment. **You may not work in groups.** There is a checkpoint
 submission due on **Tue 1/14, by 11:59pm**. Your
-completed assignment is due on **Fri 1/19, by 11:59pm**.
+completed assignment is due on **Tue 1/21, by 11:59pm**.
 
 ### Checkpoint Submission
 
 You must submit your assignment using Gradescope. Please upload a single PDF with the following:
 
 <ul>
-    <li>3 ideas (for plots) that you are considering for your project</li>
+    <li>3 plots that you are considering for your project</li>
     <li>1 paragraph describing which plot you prefer the most and why</li>
 </ul>   
    
