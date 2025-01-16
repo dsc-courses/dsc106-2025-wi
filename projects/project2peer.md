@@ -36,4 +36,4 @@ To share critique, we will use the ["I like / I wish / What if?"][link] format. 
 
 This is an individual assignment. You may not work in groups.
 
-Your peer reviews are due Fri 02/09, 11:59pm. The links to the submissions that you are required to evaluate will be emailed to you. You must submit peer reviews for two Project 2 submissions. To submit your review, you must use gradescope. Please carefully respond to each of the questions raised.
+Your peer reviews are due **Tue 02/04, 11:59pm**. The submissions that you are required to evaluate will be emailed to you. You must submit peer reviews for two Project 2 submissions. To submit your review, you must use gradescope. Please carefully respond to each of the questions raised.
