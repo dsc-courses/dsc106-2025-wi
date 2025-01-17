@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 3: Introduction to JS'
 lab: 3
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: true
 ---
 
 # Lab 3: Introduction to JS
@@ -32,9 +32,9 @@ released: false
 
 ---
 
-## Check-off
+## Submission
 
-To get checked off for the lab, please record a 2 minute video with the following components:
+When submitting the lab, please record a 2 minute video with the following components:
 
 1. Present your final webpage.
 2. Show you interacting with your webpage from your javascript updates.
