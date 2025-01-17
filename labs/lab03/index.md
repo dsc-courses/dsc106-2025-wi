@@ -38,7 +38,10 @@ When submitting the lab, please record a 2 minute video with the following compo
 
 1. Present your final webpage.
 2. Show you interacting with your webpage from your javascript updates.
-3. Share the most interesting thing you learned from this lab.
+3. Show you switching between dark mode, light mode, and automatic (light dark) mode, along with a page refresh.
+4. Share the most interesting thing you learned from this lab.
+
+Please note that the video has to be in **mp4 format only.** There may be point deductions for other video formats.
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
 make sure your video is 2 minutes or less.**
@@ -120,7 +123,7 @@ Putting it together, we can get the link to the current page via:
 
 ```js
 let currentLink = navLinks.find(
-  (a) => a.host === location.host && a.pathname === location.pathname,
+  (a) => a.host === location.host && a.pathname === location.pathname
 );
 ```
 
@@ -301,7 +304,7 @@ You can even use `a.className.toggle()` to do the checking and the class adding 
 ```javascript
 a.classList.toggle(
   'current',
-  a.host === location.host && a.pathname === location.pathname,
+  a.host === location.host && a.pathname === location.pathname
 );
 ```
 
@@ -444,7 +447,7 @@ document.body.insertAdjacentHTML(
 		<select>
 			<!-- TODO add <option> elements here -->
 		</select>
-	</label>`,
+	</label>`
 );
 ```
 
