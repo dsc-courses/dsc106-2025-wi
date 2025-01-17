@@ -30,13 +30,13 @@ Conversely, a deceptive visualization typically displays these characteristics:
 
 For the earnest visualization, your goal is to be as clear and transparent as possible to help viewers answer your intended question. For the deceptive visualization, your goal is to trick the viewer (including the course staff!) into believing that the visualization is legitimate and earnest. **It should not be immediately obvious which visualization is trying to be deceptive.** Subtle ineffective choices in the design should require close and careful reading to be identified.
 
-For the deceptive visualization, misleading strategies are fine but outright lying is not. For example, sketchy, unreliable or untrustworthy input datasets are discouraged, but misleading omission, filtering, or transformation of trustworthy data records is fine. Deliberate lies in the title, axes, labels, or annotations is discouraged, but technically true/relevant but otherwise misleading text in the visualization is fine.
+For the deceptive visualization, misleading strategies are fine but outright lying is not. For example, sketchy, unreliable or untrustworthy input datasets are discouraged, but misleading omission, filtering, or transformation of trustworthy data records is fine. **Deliberate lies in the title, axes, labels, or annotations is discouraged**, but technically true/relevant but otherwise misleading text in the visualization is fine.
 
 For both visualization designs, start by choosing a question you would like to answer. Design your visualization to answer that question either correctly (for the earnest visualization) or incorrectly (for the deceptive visualization). You may choose to address a different question with each visualization. Be sure to document the question as part of the visualization design (e.g., title, subtitle, or caption) and in your assignment write-up.
 
 Your write-up should contain the following information:
 
-- The specific question each visualization aims to answer.
+- The specific question(s) each visualization aims to answer.
 - A description of your design rationale and important considerations for each visualization.
 - A clear mention of which of the two visualizations is deceptive and which one is earnest.
 
