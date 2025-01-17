@@ -34,12 +34,16 @@ released: true
 
 ## Submission
 
-When submitting the lab, please record a 2 minute video with the following components:
+{: .note }
 
-1. Present your final webpage.
-2. Show you interacting with your webpage from your javascript updates.
-3. Show you switching between dark mode, light mode, and automatic (light dark) mode, along with a page refresh.
-4. Share the most interesting thing you learned from this lab.
+Below is your lab submission checklist, please read carefully.
+
+1. Submit a link to your github repo (not the page).
+2. Please record a 2 minute `mp4` format video with the following components:
+   1. Present your final webpage.
+   2. Show you interacting with your webpage from your javascript updates.
+   3. Show you switching between dark mode, light mode, and automatic (light dark) mode, along with a page refresh.
+   4. Share the most interesting thing you learned from this lab.
 
 Please note that the video has to be in **mp4 format only.** There may be point deductions for other video formats.
 
