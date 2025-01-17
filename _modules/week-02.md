@@ -20,6 +20,7 @@ days:
       - name: LEC 4
         type: lecture
         title: Perception
+        url: lectures/04-DSC106-Perception.pdf
       - name: DISC 2
         type: disc
         title: Disc 2
