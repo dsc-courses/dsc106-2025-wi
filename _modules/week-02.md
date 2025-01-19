@@ -27,4 +27,5 @@ days:
       - name: LAB 2
         type: lab
         title: Lab 2
+        url: labs/lab02
 ---

@@ -20,6 +20,7 @@ days:
   - name: LAB 3
     type: lab
     title: Lab 3
+    url: labs/lab03
   - name: DISC 3
     type: disc
     title: Disc 3
