@@ -21,4 +21,6 @@ days:
       - name: DISC 1
         type: disc
         title: Disc 1
+        url: labs/lab01/slides/
+        
 ---
