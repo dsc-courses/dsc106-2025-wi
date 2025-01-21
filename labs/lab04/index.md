@@ -218,7 +218,6 @@ article.innerHTML = `
 
 **What to Do:**
 1. Add this block after creating the `<article>` element.
-2. Replace `project.title`, `project.image`, and `project.description` with the actual keys from your project data.
 
 **Think About It:**
 - What happens if one of the properties, like `project.image`, is missing?
@@ -480,7 +479,6 @@ return fetchJSON(`https://api.github.com/users/${username}`);
 
 **What to Do:**
 1. Place this line inside your function.
-2. Use `username` as a dynamic variable passed to the function.
 
 **Check Your Understanding:** 
 - What does `fetchJSON` do?
@@ -570,7 +568,7 @@ Example:
 {
   "title": "Lorem ipsum dolor sit.",
   "year": "2024",
-  "image": "https://dsc106.com/labs/lab04/images/empty.svg",
+  "image": "https://dsc106.com/labs/lab02/images/empty.svg",
   "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam dolor quos, quod assumenda explicabo odio, nobis ipsa laudantium quas eum veritatis ullam sint porro minima modi molestias doloribus cumque odit."
 },
 ```
