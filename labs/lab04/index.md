@@ -1,12 +1,12 @@
 ---
 layout: assignment
-title: 'Lab 4: JavaScript II (Templating, Control Flow, and Reactivity)'
+title: 'Lab 4: JavaScript II'
 lab: 4
 parent: '👩‍🔬 Programming Labs'
 released: false
 ---
 
-# Lab 4: JavaScript II (Templating, Control Flow, and Reactivity)
+# Lab 4: JavaScript II
 
 {: .no_toc}
 
@@ -15,8 +15,8 @@ released: false
 > In this lab, we will learn:
 >
 > - Modular JavaScript for organizing and maintaining complex projects.
-> - Adding interactivity through event-driven programming.
-> - Fetching and displaying API data dynamically.
+> - Manipulating the DOM dynamically and using template literals for dynamic content
+> - Fetching and displaying API data dynamically to improve user experience
 
 <details open markdown="block">
   <summary>
@@ -31,23 +31,19 @@ released: false
 
 ## Submission
 
-In your submission for the lab, please record a 2 minute video *as an mp4 file* with the following components:
+In your submission for the lab, along with the link to your github repo and website, please record a 2 minute video *as an mp4 file* with the following components:
 
 1. Present your webpage.
-2. Show you interacting with your webpage with your new javascript modifications.
+2. Show you interacting with your webpage with ALL of your new javascript modifications.
 3. Share the most interesting thing you learned from this lab.
 
-**Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
+**Videos longer than 2 minutes will cause point deduction, so
 make sure your video is 2 minutes or less.**
 
 ## Prerequisites
 
 - You should have completed all the steps in [Lab 0](../0/), i.e. that you have Node.js and npm installed. You will not need the local server from Lab 0, as SvelteKit will provide its own.
 - This lab assumes you have already completed [Lab 1](../1/), [Lab 2](../2/), [Lab 3](../3/) as we will use the same website as a starting point.
-
-## [Slides](./slides/)
-
-Make sure to read the notes on each slide as well!
 
 ## Step 1: Templating projects from a data file
 
@@ -106,22 +102,25 @@ If you’re having trouble with the above steps, you can use this <a href="downl
 In this step, you’ll create a function in your `global.js` file to load project data from a JSON file and dynamically display it on the Projects page.
 
 #### **1. Setting Up the Function**
-Start by defining an **asynchronous function** that will fetch project data. Use the following snippet to get started:
+Start by defining an **asynchronous function** that will fetch your project data. Use the following snippet to get started:
 
 ```js
-export async function loadProjects() {
+export async function fetchJSON(url) {
     try {
-        // Fetch the JSON file containing project data
-        const response = await fetch('../src/projects.json');
+        // Fetch the JSON file from the given URL
+        const response = await fetch(url);
+
+
     } catch (error) {
-        console.error('Error fetching project data:', error);
+        console.error('Error fetching or parsing JSON data:', error);
     }
 }
+
 ```
 
 **What to Do:**
 1. Copy this snippet into your `global.js` file.
-2. Identify the URL `../src/projects.json` and make sure the file exists in your project structure.
+2. Identify the URL `../lib/projects.json` and make sure the file exists in your project structure.
 
 #### **2. Handling Errors**
 Add a check to ensure the `fetch` request was successful. If it wasn’t, throw an error to handle invalid responses. Here’s the next piece:
@@ -140,80 +139,24 @@ if (!response.ok) {
 Once you’ve verified the response is valid, parse it into a format you can work with. Here’s how to parse the response:
 
 ```js
-const projects = await response.json();
-console.log('Parsed projects:', projects); // only for debugging purposes, can be removed later
+const data = await response.json();
+return data; 
 ```
 
 **What to Do:**
 1. Add this snippet after the `if (!response.ok)` check.
-2. Open the browser console to ensure `projects` contains the data from your JSON file.
+2. Open the browser console to ensure `data` contains the data from your JSON file.
 
-#### **4. Selecting the Projects Container**
-To display the projects, locate the container in your HTML with the class `projects`. Use the following code to select it:
+### Step 1.3: Creating a `renderProjects` Function
 
-```js
-const projectsContainer = document.querySelector('.projects');
-projectsContainer.innerHTML = ''; // Clear existing content
-```
-
-#### **5. Displaying Projects Dynamically**
-Use JavaScript to loop through each project and create the HTML structure dynamically. 
-
-```js
-projects.forEach(project => {
-    const article = document.createElement('article');
-    article.innerHTML = `
-        <h2>${project.title}</h2>
-        <img src="${project.image}" alt="${project.title}">
-        <p>${project.description}</p>
-    `;
-    projectsContainer.appendChild(article);
-});
-```
-
-Place this inside your function, **after clearing the container**.
-
-### Step 1.3: Templating our project data
-
-First, delete or comment out all your `<article>` elements inside the `<div class="projects">`.
-Then, you must **import** your new javascript function from your `script` element like so:
-
-```html
-    <script type="module">
-        import { loadProjects } from '/global.js';
-        document.addEventListener('DOMContentLoaded', loadProjects);
-    </script>
-```
-
-If you view your website at this point, you should see your projects displayed in the same way as before but imported from your json file.
-Try making an edit to your JSON file and see if it reflects on your website.
-
-### Step 1.4: Counting projects
-
-A big bonus of this approach is that we can use code to compute things from the data,
-and have it update automatically when the data changes.
-Try it: add a count of projects at the top of the page by adding `{ projects.length }` in the `<h1>` element.
-
-<img src="images/projects-count.png" alt="" class="browser">
-
-## Step 2: Displaying the First 3 Projects on the Home Page Using JavaScript
-
-We will now display the first 3 projects on the home page. We could do this by copying the project template from the Projects page and pasting it into the home page. However, this means that if we want to change it (e.g., add a date), we’d need to update it in two places.
-
-That’s precisely what reusable functions in JavaScript are for!
-
-Reusable JavaScript functions encapsulate logic for an independent piece of UI and can be reused across your app. 
-
-### Step 2.1: Creating a `renderProject` Function
-
-You’ll build a `renderProject` function to dynamically generate and display project content. This function will allow you to reuse project rendering logic anywhere on your site.
+You’ll build a `renderProjects` function to dynamically generate and display project content. This function will allow you to reuse project rendering logic anywhere on your site.
 
 #### **1. Defining the Basic Function**
 
 Start by creating a function that accepts two parameters: the `project` object and the `containerElement` where the project will be displayed.
 
 ```js
-function renderProject(project, containerElement) {
+export function renderProjects(project, containerElement) {
     // Your code will go here
 }
 ```
@@ -228,26 +171,60 @@ function renderProject(project, containerElement) {
 
 #### **2. Creating the HTML Structure**
 
-Within the function, create an `<article>` element to hold the project details. Then, use `innerHTML` to define its content dynamically.
+To dynamically render project details, you'll create and populate an `<article>` element for each project.
+
+#### **3. Clearing Existing Content**
+
+Before adding new project articles, ensure the container is empty to avoid duplication.
+
+```js
+containerElement.innerHTML = '';
+```
+
+**What to Do:**
+1. Add this line at the start of your function to clear the existing content of the container element.
+
+**Think About It:**
+- Why is it important to clear the container before adding new elements?
+- What would happen if you skipped this step?
+
+#### **4. Creating an `<article>` Element**
+
+For each project, create a new `<article>` element to hold its details.
 
 ```js
 const article = document.createElement('article');
+```
+
+**What to Do:**
+1. Add this line inside the loop to create a new `<article>` for each project.
+2. Ensure you use `createElement` to generate the element dynamically.
+
+**Think About It:**
+- Why do we use `createElement` instead of directly appending HTML?
+- How does using `createElement` make your code more secure or modular?
+
+#### **5. Defining the Content Dynamically**
+
+Use the `innerHTML` property to populate the `<article>` element with dynamic content.
+
+```js
 article.innerHTML = `
     <h3>${project.title}</h3>
-    <img src="${project.image}" alt="${project.title}" />
+    <img src="${project.image}" alt="${project.title}">
     <p>${project.description}</p>
 `;
 ```
 
 **What to Do:**
-1. Place this snippet inside the function.
-2. Replace hardcoded values (e.g., `project.title`, `project.image`, etc.) with dynamic ones from the `project` object.
+1. Add this block after creating the `<article>` element.
+2. Replace `project.title`, `project.image`, and `project.description` with the actual keys from your project data.
 
 **Think About It:**
-- Why do we use `createElement` instead of directly inserting HTML?
-- What happens if the `project` object is missing a property like `title`?
+- What happens if one of the properties, like `project.image`, is missing?
+- How can you handle missing or invalid data gracefully?
 
-#### **3. Appending the Article**
+#### **6. Appending the Article**
 
 Finally, append the `<article>` element to the provided `containerElement`.
 
@@ -263,191 +240,167 @@ containerElement.appendChild(article);
 - What happens if `containerElement` is null?
 - How can you make the function robust against missing or incorrect parameters?
 
-#### **4. Enhancing the Functionality**
+#### **7. Adding Functionality**
 
 Now that the basic function is ready, let’s enhance it to allow dynamic heading levels. This makes the function reusable for different contexts.
 
 ```js
-export function renderProject(project, containerElement, headingLevel = 'h2') {
-    const article = document.createElement('article');
-    article.innerHTML = `
-        <${headingLevel}>${project.title}</${headingLevel}>
-        <img src="${project.image}" alt="${project.title}" />
-        <p>${project.description}</p>
-    `;
-    containerElement.appendChild(article);
+export function renderProjects(project, containerElement, headingLevel = 'h2') {
+    // write javascript that will allow dynamic heading levels based on previous function
 }
 ```
 
 **What to Do:**
-1. Replace your existing function with this enhanced version.
+1. Replace your existing function with this new parameter.
 2. Test it by calling the function with different `headingLevel` values.
 
 **Challenge:**
 - What happens if you pass an invalid `headingLevel` (e.g., a non-heading tag)?
 - How can you validate the `headingLevel` parameter?
 
-### Step 2.2: Creating a `loadLatestProjects` Function
+### Step 1.4: Setting Up the `projects.js` File
 
-This function will fetch project data from a JSON file and use the `renderProject` function to display the latest projects.
+In this step, you'll create a `projects.js` file to dynamically fetch and render project data on your projects page. This file will utilize the `fetchJSON` and `renderProjects` functions you created.
 
-#### **1. Setting Up the Function**
+#### **1. Creating the `projects.js` File**
 
-Start by defining an asynchronous function that takes the JSON file path and container as parameters.
+Navigate to your `projects` folder and create a new file named `projects.js`. Inside this file, you'll import the required functions and use them to fetch and display the projects on your projects page.
 
+#### **2. Importing Functions**
 
-```js
-export async function loadLatestProjects(jsonPath, containerElement) {
-    try {
-        // Your code will go here
-    } catch (error) {
-        console.error('Error loading projects:', error);
-    }
-}
-```
-
-**What to Do:**
-1. Add this snippet to your `global.js` file.
-2. Think about why the function needs both `jsonPath` and `containerElement`.
-
-#### **2. Fetching the Data**
-
-Inside the `try` block, use `fetch` to get data from the JSON file. Check if the response is successful.
+Add the following imports at the top of `projects.js`:
 
 ```js
-const response = await fetch(jsonPath);
-if (!response.ok) {
-    throw new Error(`Failed to fetch projects: ${response.statusText}`);
-}
+import { fetchJSON, renderProjects } from '../global.js';
 ```
 
-**What to Do:**
-1. Place this snippet inside the `try` block.
-2. Test your implementation with a valid JSON path.
+These functions are essential for fetching the project data and rendering it dynamically.
 
-**Challenge:**
-- What happens if the JSON file path is incorrect?
-- How can you handle network errors gracefully?
+#### **3. Fetching Project Data**
 
-#### **3. Parsing the Data**
-
-Once the response is successful, parse it into a JavaScript object.
+Use the `fetchJSON` function to load the project data from a JSON file. Add the following code:
 
 ```js
-const projects = await response.json();
+const projects = await fetchJSON('../src/projects.json');
 ```
 
-**What to Do:**
-1. Add this line after checking the response.
-2. Use `console.log(projects)` to inspect the fetched data.
+This code assumes your `projects.json` file is located in a `lib` folder relative to the current file.
 
-**Think About It:**
-- What structure does the `projects` array need for this function to work correctly?
+#### **4. Selecting the Projects Container**
 
-#### **4. Displaying the Latest Projects**
-
-Filter the first three projects from the array and pass each one to the `renderProject` function.
+Select the container where you want to render the project articles. Use the following snippet:
 
 ```js
-const latestProjects = projects.slice(0, 3);
-latestProjects.forEach((project) => {
-    renderProject(project, containerElement, 'h3');
-});
+const projectsContainer = document.querySelector('.projects');
 ```
 
-**What to Do:**
-1. Add this snippet after parsing the data.
-2. Ensure your JSON file contains at least three projects for testing.
+Ensure your HTML includes a container with the class `projects`.
 
-**Test Your Knowledge:**
-- Why do we use `slice(0, 3)`?
-- What happens if there are fewer than three projects in the JSON file?
+#### **5. Rendering the Projects**
 
-Test your function by calling it with a valid JSON file path and container element and erify that only the first three projects are displayed.
+Call the `renderProjects` function to dynamically display the fetched projects:
 
-### Step 2.3: Importing Projects into `index.html`
+```js
+renderProjects(projects, projectsContainer, 'h2');
+```
 
-You’ll now integrate the script to dynamically load and display projects on the page.
+This code will render each project with an `<h2>` heading level.
 
-#### **1. Adding the `<script>` Tag**
 
-Start by adding a `<script>` tag to your `index.html` file. This tag will load a JavaScript module when the page is loaded.
+#### **Check Your Understanding:**
+
+- What happens if the `projects.json` file is missing or incorrectly formatted?
+- How does the `renderProjects` function handle an empty array of projects? Can you enhance it to display a placeholder message in this case?
+
+
+### Step 1.5: Templating our project data
+
+First, delete or comment out all your `<article>` elements inside the `<div class="projects">`.
+Then, you must **import** your new javascript functions from your `script` element like so:
 
 ```html
-<script type="module">
-    // Your code will go here
-</script>
+    <script src="../global.js" type="module"></script>
+    <script src="projects.js" type="module"></script>
 ```
 
-**What to Do:**
-1. Add this snippet into the `<head>` or before the closing `</body>` tag of your `index.html` file.
-2. Ensure you specify `type="module"`, as this enables ES6 module imports.
+If you view your website at this point, you should see your projects displayed in the same way as before but imported from your json file.
+Try making an edit to your JSON file and see if it reflects on your website.
+
+### Step 1.6: Counting projects
+
+A big bonus of this approach is that we can use code to compute things from the data,
+and have it update automatically when the data changes.
+Try it yourself: add a count of projects at the top of the page by using a JavaScript method to select the element with the class `projects-title` from the DOM and integrate the `projects-title` class in the `<h1>` tag of your html file. 
+
+<img src="images/projects-count.png" alt="" class="browser">
+
+## Step 2: Displaying the First 3 Projects on the Home Page Using JavaScript
+
+We will now display the first 3 projects on the home page. We could do this by copying the project template from the Projects page and pasting it into the home page. However, this means that if we want to change it (e.g., add a date), we’d need to update it in two places.
+
+That’s precisely what reusable functions in JavaScript are for!
+
+Reusable JavaScript functions encapsulate logic for an independent piece of UI and can be reused across your app. 
+
+### Step 2.1: Creating `index.js` to Render Latest Projects
+
+In this step, you’ll create a new `index.js` file to dynamically fetch and display the latest projects on the home page. This file will utilize our reusable `fetchJSON` and `renderProjects` functions you’ve already created.
+
+#### **1. Setting Up the `index.js` File**
+
+Navigate to the root folder of your project and create a new file named `index.js`. This file will handle fetching project data and rendering the latest projects on the home page.
+
+#### **2. Import Required Functions**
+
+At the top of the file, import the `fetchJSON` and `renderProjects` functions from your `global.js` file:
+
+```js
+import { fetchJSON, renderProjects } from './global.js';
+```
+
+#### **3. Fetch and Filter Projects**
+
+Use the `fetchJSON` function to load all project data, then filter the first three projects for display:
+
+```js
+const projects = await fetchJSON('./lib/projects.json');
+const latestProjects = projects.slice(0, 3);
+```
+
+This code assumes your `projects.json` file is located in a `lib` folder relative to the `index.js` file.
+
+#### **4. Select the Projects Container**
+
+Identify the container where the latest projects will be displayed. Use the following code:
+
+```js
+const projectsContainer = document.querySelector('.projects');
+```
+
+Ensure your HTML includes a container with the class `projects`:
+
+```html
+<div class="projects"></div>
+```
+
+#### **5. Render the Latest Projects**
+
+Use the `renderProjects` function to dynamically display the filtered projects:
+
+```js
+renderProjects(latestProjects, projectsContainer, 'h2');
+```
+
+### Step 2.2: Add the Script to Your HTML
+
+To load and execute this script, add a `<script>` tag to your `index.html` file. This tag will load a JavaScript module when the page is loaded.:
+
+```html
+<script src="index.js" type="module" defer></script>
+```
 
 **Think About It:**
 - Why do we need the `type="module"` attribute?
-
-#### **2. Importing the JavaScript Function**
-
-Inside the `<script>` tag, import the `loadLatestProjects` function from your `global.js` file. This function will handle loading and displaying the projects.
-
-```js
-import { loadLatestProjects } from '/global.js'; // Adjust path based on file structure
-```
-
-**What to Do:**
-1. Add this line inside your `<script>` tag.
-2. Confirm the correct file path for `global.js` by checking your project structure.
-
-**Challenge:**
-- What happens if the file path is incorrect? How can you debug it?
-
-#### **3. Listening for the DOM Content Loaded Event**
-
-You’ll need to wait until the DOM (Document Object Model) is fully loaded before running the function. Use `addEventListener` to listen for the `DOMContentLoaded` event.
-
-```js
-document.addEventListener('DOMContentLoaded', () => {
-    // Code to run after DOM is fully loaded
-});
-```
-
-**What to Do:**
-1. Place this inside your `<script>` tag.
-2. Test by adding a simple `console.log('DOM fully loaded!');` inside the event listener to verify it works.
-
-**Think About It:**
-- Why is it important to wait for the DOM to load?
-
-#### **4. Selecting the Target Container**
-
-Identify the container on your page where the projects will be displayed. Use `document.querySelector` to select the container.
-
-```js
-const container = document.querySelector('.projects.highlights');
-```
-
-**What to Do:**
-1. Add this line inside the `DOMContentLoaded` event listener.
-2. Check your HTML to ensure there’s a container with the class `projects highlights`.
-
-**Challenge:**
-- What happens if the selector doesn’t match any element? How can you handle this?
-
-#### **5. Calling the Function**
-
-Finally, call the `loadLatestProjects` function and pass the JSON file path and container as arguments. This will load and display the projects.
-
-```js
-loadLatestProjects('./src/projects.json', container);
-```
-
-**What to Do:**
-1. Add this line after defining the `container`.
-2. Ensure the JSON file exists at the specified path.
-
-**Test Your Knowledge:**
-- What arguments is the `loadLatestProjects` function expecting?
-- Why do we pass the container as an argument?
 
 #### **6. Adding the HTML Container for Projects**
 
@@ -455,17 +408,17 @@ Before your script can dynamically display the projects, you need to provide a p
 
 ```html
 <h2>Latest Projects</h2>
-<div class="projects highlights">
+<div class="projects">
     <!-- Dynamically added content will appear here -->
 </div>
 ```
 
 **What to Do:**
 1. Add this snippet to your `index.html` file
-2. Ensure the `div` element has the class `projects highlights`, as this matches the container selected in your script.
+2. Ensure the `div` element has the class `projects`, as this matches the container selected in your script.
 
 **Think About It:**
-- Why do we include both `projects` and `highlights` as classes?
+- Why do we include `projects` as classes?
 - What happens if this container is missing or the classes don’t match?
 
 Check out the home page of your website to see if everything looks right!
@@ -509,96 +462,80 @@ To make an arbitrary HTTP request in JS, we can use the [`fetch()`](https://deve
 You’ll need an asynchronous function to fetch data from the GitHub API. Start by defining a function that takes a username as an argument.
 
 ```js
-const fetchGitHubData = async (username) => {
-    // Your code will go here
-};
+export async function fetchGitHubData(username) {
+  // return statement here
+}
 ```
 
 **What to Do:**
-1. Create this function in your JavaScript file.
-2. Remember, `async` allows you to use `await` inside the function.
+1. Create this function in your `global.js` file.
 
 #### **2. Fetching the Data**
 
-Inside the function, use the `fetch` method to request data from the GitHub API. The API URL should include the `username` parameter.
+Inside the function, use the `fetchJSON` method to request data from the GitHub API. The API URL should include the `username` parameter.
 
 ```js
-const response = await fetch(`https://api.github.com/users/${username}`);
+return fetchJSON(`https://api.github.com/users/${username}`);
 ```
 
 **What to Do:**
 1. Place this line inside your function.
-2. Replace `username` with a dynamic variable passed to the function.
+2. Use `username` as a dynamic variable passed to the function.
 
 **Check Your Understanding:** 
-- What does `fetch` do?
-- Why do we use `await` with `fetch`?
+- What does `fetchJSON` do?
 
-
-#### **3. Parsing the Response**
+### Step 3: Parsing the Response in `index.js`
 
 Once you’ve fetched the data, parse the response as JSON to make it usable in JavaScript.
 
 ```js
-const data = await response.json();
+const githubData = await fetchGitHubData('giorgianicolaou');
 ```
 
-**What to Do:**
-1. Add this line after your `fetch` call.
-2. Use `console.log(data)` to inspect the structure of the fetched data in the browser’s developer console.
+#### **What to Do:**
+1. Add this line to your `index.js` file to call the `fetchGitHubData` function and retrieve the GitHub data for the specified user.
 
-**Think About It:**
-- What does `response.json()` return?
-- Why do we use `await` here as well?
+#### **Test Your Knowledge:**
+- What type of object does `fetchGitHubData` return?
+- Why do you use `await` with the function call?
 
-#### **4. Targeting the HTML Element**
+### Step 4: Targeting the HTML Element in `index.js`
 
-Identify the container in your HTML where the fetched data will be displayed. Use `document.getElementById` or `querySelector` to select it.
+Identify the container in your HTML where the fetched data will be displayed. Use `document.querySelector` to select it.
 
 ```js
-const statsContainer = document.getElementById('profile-stats');
+const profileStats = document.querySelector('#profile-stats');
 ```
 
-**What to Do:**
-1. Add this line to your function.
-2. Check your HTML file to ensure there’s an element with the ID `profile-stats`.
+#### **What to Do:**
+1. Add this line to your `index.js` file to select the container element where the GitHub profile stats will be displayed.
 
-#### **5. Updating the HTML**
+### Step 5: Updating the HTML in `index.js`
 
-If the container exists, update its content using the fetched data. Use template literals to dynamically insert the data into your HTML. You can include the information that you would like to display on your website, but here is an example: 
+If the container exists, dynamically update its content using the fetched data. Use template literals to populate the data fields in your HTML.
 
 ```js
-if (statsContainer) {
-    statsContainer.innerHTML = `
+if (profileStats) {
+  profileStats.innerHTML = `
         <dl>
-          <dt>Public Repos:</dt><dd>${data.public_repos}</dd>
-          <dt>Public Gists:</dt><dd>${data.public_gists}</dd>
-          <dt>Followers:</dt><dd>${data.followers}</dd>
-          <dt>Following:</dt><dd>${data.following}</dd>
+          <dt>Public Repos:</dt><dd>${githubData.public_repos}</dd>
+          <dt>Public Gists:</dt><dd>${githubData.public_gists}</dd>
+          <dt>Followers:</dt><dd>${githubData.followers}</dd>
+          <dt>Following:</dt><dd>${githubData.following}</dd>
         </dl>
     `;
 }
 ```
 
-**What to Do:**
-1. Add this block inside the function, after checking if `statsContainer` exists.
-2. Add additional placeholders (`${data.public_repos}`, etc.) with data fields from your `data` object if you want.
+#### **What to Do:**
+1. Add this block inside `index.js`, after selecting the `profileStats` container and fetching the data.
+2. Modify the placeholders (e.g., `${githubData.public_repos}`) to include any other fields you want to display from the `githubData` object.
 
-**Test Your Knowledge:**
-- Why do we use template literals here?
-- What does the `<dl>` element represent in HTML?
-
-#### **6. Testing the Function**
-
-Now that the function is complete, call it with a specific GitHub username to see the data displayed.
-
-```js
-fetchGitHubData('giorgianicolaou');
-```
-
-**What to Do:**
-1. Call your function at the end of your script.
-2. Replace `'giorgianicolaou'` with your GitHub username to test with your own data.
+#### **Test Your Knowledge:**
+- Why do we check if `profileStats` exists before updating its `innerHTML`?
+- What are the advantages of using template literals to build HTML content?
+- What does the `<dl>` element represent in this context, and why is it used here?
 
 
 {: .important }
@@ -633,7 +570,7 @@ Example:
 {
   "title": "Lorem ipsum dolor sit.",
   "year": "2024",
-  "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+  "image": "https://dsc106.com/labs/lab04/images/empty.svg",
   "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam dolor quos, quod assumenda explicabo odio, nobis ipsa laudantium quas eum veritatis ullam sint porro minima modi molestias doloribus cumque odit."
 },
 ```
