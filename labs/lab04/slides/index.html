@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Lab 4: Javascript II</title>
-	<link rel="shortcut icon" href="https://svelte.dev/favicon.png" type="image/x-icon">
+	<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="gold" /><text x="17" y="85" style="font: 600 60px/1 system-ui">JS</text></svg>' />
 	<link href="talk.css" rel="stylesheet" />
 	<script src="./talk.js" type="module"></script>
 </head>
@@ -13,7 +13,7 @@
 <header id="intro" class="slide dont-resize">
 	<h1>
 		<div class="label">Lab 4</div>
-		<img src="images/svelte.svg" alt="Svelte" class="logo">
+		Javascript II
 	</h1>
 	<small>
 		DSC 106: Data Visualization
@@ -21,7 +21,7 @@
 	</small>
 </header>
 
-<article class="slide columns force-1" id="npm">
+<!-- <article class="slide columns force-1" id="npm">
 	<header>
 		<h1>What is <img src="images/npm-logo.svg" alt="npm">?</h1>
 		<p class="subtitle">A <em>package manager</em> for JS</p>
@@ -42,9 +42,9 @@
 		Most NPM packages correspond to GitHub repos.
 		When you install a package, NPM will download the package from the _NPM registry_ and install it in a directory called `node_modules`.
 	</details>
-</article>
+</article> -->
 
-<article class="slide columns force force-1">
+<!-- <article class="slide columns force force-1">
 	<h1>Anyone can publish a package!</h1>
 	<img src="images/npm-anyone.png" alt="" class="browser">
 </article>
@@ -58,9 +58,9 @@
 	- `npm install PACKAGE_NAME` Installs a package and adds it to `package.json`
 	- `npm create PACKAGE_NAME` Create a new prpject, using another package as a template
 	- `npm run SCRIPT_NAME` Runs a script defined in `package.json` (e.g. `build`, `dev`, etc.)
-</article>
+</article> -->
 
-<article class="slide">
+<!-- <article class="slide">
 	<h1>Why use a JS Framework?</h1>
 	<ol>
 		<li>
@@ -93,9 +93,9 @@
 		JS frameworks give us easier ways to break up the code of a large website or app into small, independent pieces that can be managed separately.
 		This is achieved in many ways, such as components, data binding, etc.
 	</details>
-</article>
+</article> -->
 
-<article class="slide columns force-1" id="templating" data-credits="Wikipedia">
+<!-- <article class="slide columns force-1" id="templating" data-credits="Wikipedia">
 	<h1>Data binding</h1>
 	<img src="images/templating.png" alt="">
 </article>
@@ -140,7 +140,7 @@
 		By convention, we run a website’s build process by running `npm run build`,
 		which looks for a `build` key in the `scripts` part of `package.json`.
 	</details>
-</article>
+</article> -->
 
 <article class="slide columns" id="modern-web-apps">
 	<h1>Modern web apps</h1>
@@ -233,7 +233,7 @@
 </article>
 
 
-
+<!-- 
 <section>
 	<header class="slide">
 		<h1>Svelte (and SvelteKit)</h1>
@@ -256,7 +256,7 @@
 				// logic goes here
 			&lt;/script>
 
-			&lt;!-- HTML (zero or more elements) goes here -->
+			&lt;!-- HTML (zero or more elements) goes here
 
 			&lt;style>
 				/* Scoped CSS goes here */
@@ -306,6 +306,263 @@
 		</details>
 	</article>
 </section>
+ -->
+<section>
+	<article class="slide columns force-1">
+		<h1>Reactivity</h1>
+		<img src="images/spreadsheet.gif" alt="">
+		<details class="notes">
+			If you’ve used a spreadsheet, you already know what reactivity is.
+			The core idea of reactivity is that when a value changes, all dependent values are updated automatically.
+		</details>
+	</article>
+
+	<article class="minimal demo slide code-labels" id="css-reactive">
+		<h1>CSS is reactive</h1>
+		<textarea class="language-html">
+			<label>
+				Hue:
+				<input type="range" max="360" id="hue"
+					   oninput="document.body.style.setProperty('--hue', this.value)">
+			</label>
+		</textarea>
+		<textarea class="language-css">
+			body {
+				--hue: 180;
+				background: oklch(97% 5% var(--hue));
+				accent-color: oklch(65% 55% var(--hue));
+				color: oklch(40% 20% var(--hue));
+			}
+		</textarea>
+		<div class="demo-target"></div>
+		<details class="notes">
+			As we have already seen, CSS is reactive.
+			For example, if we update a CSS variable via JS, everything that depends on it (including other variables) is updated automatically.
+		</details>
+	</article>
+
+	<article class="slide columns language-html code-labels">
+		<h1>JS is not reactive</h1>
+
+		<section>
+			<pre class="language-css"><code>
+				a:hover {
+					background: gold;
+				}
+			</code></pre>
+			<pre><code>
+				&lt;a href="#">Come here&lt;/a>
+			</code></pre>
+			<div class="arrow-down"></div>
+			<iframe data-result class="browser"></iframe>
+		</section>
+
+		<section>
+			<pre><code>
+				&lt;a href="#"
+				   onmouseover="this.style.background = 'gold';"
+				>Come here&lt;/a>
+			</code></pre>
+			<div class="arrow-down"></div>
+			<iframe data-result class="browser"></iframe>
+		</section>
+
+		<section>
+			<pre><code>
+				&lt;a href="#"
+				   onmouseover="this.style.background = 'gold';"
+				   onmouseout="this.style.background = '';"
+				>Come here&lt;/a>
+			</code></pre>
+			<div class="arrow-down"></div>
+			<iframe data-result class="browser"></iframe>
+		</section>
+		<details class="notes">
+			Remember this? As a part of CSS pseudo-classes are reactive:
+			not only does the background here become `gold` when the link is hovered,
+			but it also returns to its previous state automatically, when the link stops being hovered.
+
+			However, when we use JS to do the same thing, we have to manually set the background back to its original value ourselves.
+		</details>
+	</article>
+
+	<article class="slide" id="reactivity-hard">
+		<h1>Implenting reactivity is <em>hard</em></h1>
+		<form>
+			<input type="number" id="input_a" value="1" oninput="input_c.value = Number(input_a.value) + Number(input_b.value)"> +
+			<input type="number" id="input_b" value="2" oninput="input_c.value = Number(input_a.value) + Number(input_b.value)"> =
+			<input type="number" id="input_c" value="3" disabled>
+		</form>
+		<pre class="delayed"><code>
+			&lt;input type="number" id="input_a"> +
+			&lt;input type="number" id="input_b"> =
+			&lt;input type="number" id="input_c" disabled>
+		</code></pre>
+	</article>
+
+	<article class="slide columns force-2 dont-resize language-js code-labels">
+		<h1>Reactivity with vanilla JS</h1>
+		<pre><code>
+			let a = 1, b = 2, c;
+			<span class="delayed">input_a.value = a;
+			input_b.value = b;</span>
+
+			<span class="delayed">input_a.addEventListener("input", e => {
+				a = Number(input_a.value);
+				<span class="delayed" data-index="3">updateC();</span>
+			});
+			input_b.addEventListener("input", e => {
+				b = Number(input_b.value);
+				<span class="delayed" data-index="3">updateC();</span>
+			});</span>
+
+			<span class="delayed" data-index="2">function updateC() {
+				c = a + b;
+				input_c.value = c;
+			}</span>
+
+			<span class="delayed" data-index="4">updateC();</span>
+		</code></pre>
+		<details class="notes">
+			The naîve approach to implementing reactivity ourselves is to add event listeners to everything that could possibly change,
+			and update everything that may have been affected.
+			This gets very complicated very fast, since we need to keep track of all the dependencies and update them all manually.
+			[Live demo](https://codepen.io/leaverou/pen/OJGMyvQ)
+		</details>
+	</article>
+
+	<article class="slide columns force-2 language-js code-labels dont-resize">
+		<h1>Reactivity with vanilla JS <span class="chip">Part 2</span></h1>
+		<pre><code>
+			let a = 1, b = 2, c;
+			input_a.value = a;
+			input_b.value = b;
+
+			<span class="delayed">function render() {
+				a = Number(input_a.value);
+				b = Number(input_b.value);
+				c = a + b;
+				input_c.value = c;
+			}</span>
+
+			<span class="delayed">render();</span>
+			<span class="delayed collapse">input_a.addEventListener("input", render);
+			input_b.addEventListener("input", render);</span>
+			<span class="delayed">document.body.addEventListener("input", render);</span>
+		</code></pre>
+		<details class="notes">
+			Because this is so tedious, what we end up doing instead is is bunching updates together
+			and updating more things than we need to, often everything at once with a single function.
+			Then, every time anything updates, we call that single function and update *everything*.
+			With that approach, we could even listen to the `input` event on an ancestor, since it [*bubbles*](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling),
+			a practice known as [event delegation](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_delegation).
+
+			However, the more complex the app, the slower this practice becomes, as we are updating more than we need to.
+			Also, this makees it impossible to implement *two-way binding*, i.e. also update the input when the value changes, not just the other way around.
+
+			[Live demo](https://codepen.io/leaverou/pen/OJGMydE)
+		</details>
+	</article>
+
+	<article class="slide columns force-1">
+		<h1>Reactivity boils down to <em>recalculation</em></h1>
+		<img src="images/abc-dependency-graph.png" alt="">
+
+		<details class="notes">
+			There is one clear theme in both previous examples:
+			Implementing reactivity boils down to recalculating things.
+			The tricky bit is knowing *what* to recalculate and *when*.
+
+			The what is typically implemented with a [*dependency graph*](https://en.wikipedia.org/wiki/Dependency_graph).
+			When a value changes, we recalculate everything that depends on it, and everything that depends on those, and so on.
+			The when is typically implemented with *events* when it’s about updating data from user actions,
+			and [accessors](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors) and [proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) when it's about updating the UI from data.
+
+			Thankfully, reactive JS frameworks abstract all this complexity away from us.
+			So how would the little adder be implemented in Svelte?
+		</details>
+	</article>
+</section>
+
+<article class="slide columns code-labels" id="web-apis">
+	<h1>What is a Web API?</h1>
+	<section>
+		<h2>Websites are for humans</h2>
+		<img src="images/yelp-restaurant.jpg" alt="">
+	</section>
+	<section>
+		<h2>APIs are for programs</h2>
+		<pre class="language-json"><code>
+			{
+				"id": "cuisine-of-nepal-san-francisco",
+				"name": "Cuisine of Nepal",
+				"image_url": ...,
+				"is_closed": false,
+				"url": ...,
+				"review_count": 303,
+				"categories": [...],
+				"rating": 4.5,
+				"coordinates": {...},
+				"transactions": [
+					"delivery",
+					"pickup",
+					"restaurant_reservation"
+				],
+				"price": "$$",
+				"location": {...},
+				"phone": "+14156472222",
+				"display_phone": "(415) 647-2222",
+				"distance": 2502.5961202999997,
+				"attributes": {
+					"gender_neutral_restrooms": true
+				},
+				"data": {
+					"reservation_openings": [
+						"13:30",
+						"13:45",
+						"14:00"
+					]
+				}
+			},
+		</code></pre>
+	</section>
+</article>
+
+<article class="slide language-js xcode-labels">
+	<h1>Async values</h1>
+	<pre><code>
+		let response = await fetch("https://api.github.com/users/leaverou");
+		let json = await response.json();
+		// Do stuff with json
+	</code></pre>
+	<pre><code>
+		fetch("https://api.github.com/users/leaverou")
+			.then(response => response.json())
+			.then(json => {
+				// Do stuff with json
+			});
+	</code></pre>
+	<details class="notes">
+		Many functions in JS cannot return a result within a reasonable amount of time.
+		For example, [`fetch()`](https://developer.mozilla.org/en-US/docs/Web/API/fetch) sends an arbitrary HTTP request and reads the response. This can take a long time.
+		To avoid blocking execution, we use *asynchronous* functions, which return a [*promise*](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
+		which will eventually have the value we want.
+		In fact, using `fetch()` involves two promises: one for the response, and one for the JSON data.
+	</details>
+</article>
+
+<article class="slide code-labels">
+	<h1>Svelte <code>{#await}</code></h1>
+	<pre class="svelte"><code>
+		{#await promise}
+			Loading…
+		{:then result}
+			Result was: { JSON.stringify(result) }
+		{:catch error}
+			Error: {error.message}
+		{/await}
+	</code></pre>
+</article>
 
 <footer class="slide" id="end"></footer>
 

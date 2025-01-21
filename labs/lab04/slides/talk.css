@@ -1,9 +1,9 @@
 @import url("../../slides/css/talk.css");
 
-#intro {
+/* #intro {
 	align-items: start;
 	padding-left: 4em;
-	background: url("images/svelte-machine.avif") no-repeat bottom / 100% auto,
+	background: url("/images/javascript.png") no-repeat bottom / 100% auto,
 	radial-gradient(circle at 40% 30%,#ebf3f9,#d6dee4);
 
 	h1 {
@@ -12,7 +12,18 @@
 		.logo {
 			height: 1em;
 		}
-	}
+	} 
+}  */
+
+:root {
+	--cover-image: url("https://vis-society.github.io/labs/2/slides/images/cover.webp");
+	h1 {
+		margin-bottom: 2em;
+
+		.logo {
+			height: 1em;
+		}
+	} 
 }
 
 #npm {
