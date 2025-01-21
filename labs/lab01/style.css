@@ -1,0 +1,72 @@
+:root {
+  --color-accent: oklch(0.62 0.12 138.47);
+}
+
+html {
+  color-scheme: light dark;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+body {
+  accent-color: var(--color-accent);
+  font: 100%/1.5 system-ui;
+  max-width: 100ch;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.color-scheme {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.8rem;
+  font-family: inherit;
+}
+
+nav {
+  display: flex;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--color-accent);
+
+  a {
+    text-align: center;
+    padding: 0.5rem;
+    flex: 1;
+    text-decoration: none;
+    color: inherit;
+
+    &.current {
+      border-bottom: 0.4rem solid var(--color-accent);
+    }
+
+    &:hover {
+      background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
+      border-bottom: 0.4rem solid var(--color-accent);
+    }
+  }
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+
+  article {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 3;
+
+    h2 {
+      margin: 0;
+    }
+  }
+}
