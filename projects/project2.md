@@ -92,7 +92,7 @@ The largest of the data sources on this list, provided for those seeking more op
 
 Mouse data covering 2 weeks of minute level activity and core body temperature in males and females. Light is on a 12-on : 12-off controlled square wave so that daily rhythms are aligned. Every 4 days females display “estrus” which is associated with ovulation, and a longer/hotter active period.
 
-Address: [Mouse Data.xlsx][link3]
+Address: [Mouse Data.xlsx][link3] (Note: Use UCSD email ID to access the link.)
 
 Columns are unique IDs (so, e.g., F1 is the same in all tabs). Rows are minutes, in order, across 14 days (there are 1440 minutes in a day). Lights turn on and off every 12 h (mice are nocturnal, so most active when it is dark). Lights Off is t=0, then every 720 it switches. Estrus (the day of ovulation) for all females starts day 2, repeating every 4 days. Activity and body temperature for each individual in each minute are recorded. Data is available as a .xlsx file.
 
