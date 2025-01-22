@@ -123,10 +123,6 @@ The assignment is out of 10 points possible – 4 points for each visualization,
 
 ## Submission Details
 
-{: .note }
-
-Below is your lab submission checklist, please read carefully.
-
 This is an individual assignment. **You may not work in groups**. There is a checkpoint submission due on **Tue 1/28, by 11:59pm**. Your
 completed assignment is due on **Tue 02/04, by 11:59pm**.
 
@@ -146,7 +142,9 @@ You must submit your assignment using Gradescope. Please upload a PDF containing
 2. A single image of your deceptive visualization
 3. In a **separate** page, a writeup conforming to the aforementioned rules.
 
-Here are a few important things to keep in mind:
+{: .note }
+
+Below are the submission guidelines, please read carefully.
 
 1. Name the file `project2.pdf`. There should be **NO IDENTIFIERS** in the file name (PID, Student name, etc). This is essential for peer grading. Failure to comply will lead to point deductions.
 2. Do **not** label the images as "earnest" or "deceptive". **Remember, the visualization itself should not give away which design is earnest and which is deceptive**. Failure to comply may result in point deductions as it hinders the peer review process!
