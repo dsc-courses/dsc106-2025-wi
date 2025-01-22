@@ -32,16 +32,14 @@ For the earnest visualization, your goal is to be as clear and transparent as po
 
 For the deceptive visualization, misleading strategies are fine but outright lying is not. For example, sketchy, unreliable or untrustworthy input datasets are discouraged, but misleading omission, filtering, or transformation of trustworthy data records is fine. **Deliberate lies in the title, axes, labels, or annotations is discouraged**, but technically true/relevant but otherwise misleading text in the visualization is fine.
 
-For both visualization designs, start by choosing a question you would like to answer. Design your visualization to answer that question either correctly (for the earnest visualization) or incorrectly (for the deceptive visualization). You may choose to address a different question with each visualization. Be sure to document the question as part of the visualization design (e.g., title, subtitle, or caption) and in your assignment write-up.
-
-As a brief example of subtle vs obvious deception, consider the images below:
+Try to go for more subtle deceptions in order to confuse your viewers. As a brief example of subtle vs obvious deception, consider the images below:
 
 <figure markdown="1">
 
 ![](project2_images/obvious.png)
 
 <figcaption>
-An obvious deception that makes use of a truncated axis to exaggerate the result of the data.
+An obvious deception: The "wrong"/deceptive image makes use of a truncated axis to exaggerate the result of the data in comparison to the "right"/earnest image.
 </figcaption>
 
 </figure>
@@ -56,6 +54,8 @@ A subtle deception: The tweet author suggests that since there are more vaccinat
 
 </figure>
 
+For both visualization designs, start by choosing a question you would like to answer. Design your visualization to answer that question either correctly (for the earnest visualization) or incorrectly (for the deceptive visualization). You may choose to address a different question with each visualization. Be sure to document the question as part of the visualization design (e.g., title, subtitle, or caption) and in your assignment write-up.
+
 Your write-up should contain the following information:
 
 - The specific question(s) each visualization aims to answer.
@@ -64,7 +64,7 @@ Your write-up should contain the following information:
 
 ## Recommended Data Sources
 
-To help get you started with this assignment, we’ve provided three possible datasets for you to use, although you're welcome to select any dataset you prefer. **You must use the same dataset for both visualizations**, but you may transform the data differently, use additional data variables, or choose to address a different question for each design.
+To help get you started with this assignment, we’ve provided three possible datasets / dataset collections for you to use. **You must use the same dataset for both visualizations**, but you may transform the data differently, use additional data variables, or choose to address a different question for each design.
 
 All datasets contain time series data relevant to health, but from different cohort (and species), different time scales, and different modalities. Time series analyses in themselves are not critical to exploring the data, but allow for forecasting and windowing of classifier data alongside unsupervised and statistical approaches.
 
