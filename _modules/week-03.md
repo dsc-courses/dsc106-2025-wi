@@ -13,6 +13,7 @@ days:
       - name: LEC 5
         type: lecture
         title: 'Health Data (Guest Lecture: Ben Smarr)'
+        url: lectures/DSC106-Ben-Smarr-Guest-Lecture-Health.pdf
   - date: '2025-01-24'
     events:
       - name: LEC 6
