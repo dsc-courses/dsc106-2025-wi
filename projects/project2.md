@@ -2,7 +2,7 @@
 layout: assignment
 title: 'Project 2: Deceptive Visualization'
 parent: '📝 Projects'
-released: false
+released: true
 nav_order: 2
 ---
 
@@ -127,16 +127,24 @@ The assignment is out of 10 points possible – 4 points for each visualization,
 
 Below is your lab submission checklist, please read carefully.
 
-This is an individual assignment. **You may not work in groups**. Your
-completed assignment is due on **Tue 1/28, by 11:59pm**.
+This is an individual assignment. **You may not work in groups**. There is a checkpoint submission due on **Tue 1/28, by 11:59pm**. Your
+completed assignment is due on **Tue 02/04, by 11:59pm**.
+
+### Checkpoint Submission
+
+You must submit your assignment using Gradescope. Please upload a single PDF with the following:
+
+1. 2 deceptive visualizations
+2. 2 earnest visualizations
+3. A writeup about which deceptive visualization you are leaning towards, and the deception techniques used.
+
+### Final Submission
 
 You must submit your assignment using Gradescope. Please upload a PDF containing the following:
 
-<ul>
-    <li>A single image of your earnest visualization</li>
-    <li>A single image of your deceptive visualization</li>
-    <li>In a <b>separate</b> page, a writeup conforming to the aforementioned rules.</li>
-</ul>
+1. A single image of your earnest visualization
+2. A single image of your deceptive visualization
+3. In a **separate** page, a writeup conforming to the aforementioned rules.
 
 Here are a few important things to keep in mind:
 
