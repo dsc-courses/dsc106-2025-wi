@@ -2,7 +2,7 @@
 layout: assignment
 title: 'Project 2: Deceptive Visualization'
 parent: '📝 Projects'
-released: false
+released: true
 nav_order: 2
 ---
 
@@ -33,6 +33,28 @@ For the earnest visualization, your goal is to be as clear and transparent as po
 For the deceptive visualization, misleading strategies are fine but outright lying is not. For example, sketchy, unreliable or untrustworthy input datasets are discouraged, but misleading omission, filtering, or transformation of trustworthy data records is fine. **Deliberate lies in the title, axes, labels, or annotations is discouraged**, but technically true/relevant but otherwise misleading text in the visualization is fine.
 
 For both visualization designs, start by choosing a question you would like to answer. Design your visualization to answer that question either correctly (for the earnest visualization) or incorrectly (for the deceptive visualization). You may choose to address a different question with each visualization. Be sure to document the question as part of the visualization design (e.g., title, subtitle, or caption) and in your assignment write-up.
+
+As a brief example of subtle vs obvious deception, consider the images below:
+
+<figure markdown="1">
+
+![](project2_images/obvious.png)
+
+<figcaption>
+An obvious deception that makes use of a truncated axis to exaggerate the result of the data.
+</figcaption>
+
+</figure>
+
+<figure markdown="1">
+
+![](project2_images/subtle.png)
+
+<figcaption>
+A subtle deception: The tweet author suggests that since there are more vaccinated cases, the vaccinated are ‘super-spreaders.’ This interpretation, however, fails to account for the high proportion of vaccinated in the general population—likely as high as 95% at the time of data collection. 
+</figcaption>
+
+</figure>
 
 Your write-up should contain the following information:
 
@@ -101,6 +123,10 @@ The assignment is out of 10 points possible – 4 points for each visualization,
 
 ## Submission Details
 
+{: .note }
+
+Below is your lab submission checklist, please read carefully.
+
 This is an individual assignment. **You may not work in groups**. Your
 completed assignment is due on **Tue 1/28, by 11:59pm**.
 
@@ -114,11 +140,10 @@ You must submit your assignment using Gradescope. Please upload a PDF containing
 
 Here are a few important things to keep in mind:
 
-<ul>
-    <li>Do <b>not</b> label the images as "earnest" or "deceptive". <b>Remember, the visualization itself should not give away which design is earnest and which is deceptive</b>. Failure to comply may result in point deductions as it hinders the peer review process!</li>
-    <li>Ensure that the writeup is in a separate page, as the write-up contains information about which image is deceptive. Failure to have the write-up in a separate page may result in point deductions.</li>
-    <li>Do not forget to clearly mention which visualization in deceptive <b>in the write-up</b>.</li>
-    <li>Be sure your image is sized for a reasonable viewing experience! Viewers should not have to zoom in order to effectively view your submission.</li>
-</ul>
+1. Name the file `project2.pdf`. There should be **NO IDENTIFIERS** in the file name (PID, Student name, etc). This is essential for peer grading. Failure to comply will lead to point deductions.
+2. Do **not** label the images as "earnest" or "deceptive". **Remember, the visualization itself should not give away which design is earnest and which is deceptive**. Failure to comply may result in point deductions as it hinders the peer review process!
+3. Ensure that the writeup is in a separate page, as the write-up contains information about which image is deceptive. Failure to have the write-up in a separate page may result in point deductions.
+4. Do not forget to clearly mention which visualization in deceptive **in the write-up**.
+5. Be sure your image is sized for a reasonable viewing experience! Viewers should not have to zoom in order to effectively view your submission.
 
 Do not worry about resubmissions, feel free to resubmit as needed prior to the deadline (if you are using late days to do a resubmission, please notify the course staff).
