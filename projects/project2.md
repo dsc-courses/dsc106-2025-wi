@@ -64,7 +64,7 @@ Your write-up should contain the following information:
 
 ## Recommended Data Sources
 
-To help get you started with this assignment, we’ve provided three possible datasets / dataset collections for you to use. **You must use the same dataset for both visualizations**, but you may transform the data differently, use additional data variables, or choose to address a different question for each design.
+To help get you started with this assignment, we’ve provided four possible datasets / dataset collections for you to use. **You must use the same dataset for both visualizations**, but you may transform the data differently, use additional data variables, or choose to address a different question for each design.
 
 All datasets contain time series data relevant to health, but from different cohort (and species), different time scales, and different modalities. Time series analyses in themselves are not critical to exploring the data, but allow for forecasting and windowing of classifier data alongside unsupervised and statistical approaches.
 
@@ -97,6 +97,14 @@ Address: [Mouse Data.xlsx][link3] (Note: Use UCSD email ID to access the link.)
 Columns are unique IDs (so, e.g., F1 is the same in all tabs). Rows are minutes, in order, across 14 days (there are 1440 minutes in a day). Lights turn on and off every 12 h (mice are nocturnal, so most active when it is dark). Lights Off is t=0, then every 720 it switches. Estrus (the day of ovulation) for all females starts day 2, repeating every 4 days. Activity and body temperature for each individual in each minute are recorded. Data is available as a .xlsx file.
 
 [link3]: https://docs.google.com/spreadsheets/d/1RXL_oUa1IYxnqfCW-9duz3M83wPlki4y/edit?gid=1872476945#gid=1872476945
+
+### Korean Surgery Dataset (Demographics, Clinical, and Waveform of physiology from surgeries): “VitalDB”
+
+Address: [VitalDB][link4]
+
+Korean hospital data (inter-operative, meaning during the operation) from 6,388 individual surgeries. High frequency biosensor data captures biosigns throughout the procedures, and these are paired with outcomes and related medical records. Data are downloadable zipped .csv files.
+
+[link4]: https://vitaldb.net/dataset/
 
 ## Grading
 
@@ -131,15 +139,15 @@ completed assignment is due on **Tue 02/04, by 11:59pm**.
 You must submit your assignment using Gradescope. Please upload a single PDF with the following:
 
 1. 2 deceptive visualizations
-2. 2 earnest visualizations
-3. A writeup about which deceptive visualization you are leaning towards, and the deception techniques used.
+2. In a **separate** page, 2 earnest visualizations
+3. In a **separate** page, a writeup about which deceptive visualization you are leaning towards, and the deception techniques used.
 
 ### Final Submission
 
 You must submit your assignment using Gradescope. Please upload a PDF containing the following:
 
 1. A single image of your earnest visualization
-2. A single image of your deceptive visualization
+2. In a **separate** page, a single image of your deceptive visualization
 3. In a **separate** page, a writeup conforming to the aforementioned rules.
 
 {: .note }
@@ -149,7 +157,8 @@ Below are the submission guidelines, please read carefully.
 1. Name the file `project2.pdf`. There should be **NO IDENTIFIERS** in the file name (PID, Student name, etc). This is essential for peer grading. Failure to comply will lead to point deductions.
 2. Do **not** label the images as "earnest" or "deceptive". **Remember, the visualization itself should not give away which design is earnest and which is deceptive**. Failure to comply may result in point deductions as it hinders the peer review process!
 3. Ensure that the writeup is in a separate page, as the write-up contains information about which image is deceptive. Failure to have the write-up in a separate page may result in point deductions.
-4. Do not forget to clearly mention which visualization in deceptive **in the write-up**.
-5. Be sure your image is sized for a reasonable viewing experience! Viewers should not have to zoom in order to effectively view your submission.
+4. Ensure the earnest visualization and the deceptive visualization are also in **seperate** pages.
+5. Do not forget to clearly mention which visualization in deceptive **in the write-up**.
+6. Be sure your image is sized for a reasonable viewing experience! Viewers should not have to zoom in order to effectively view your submission.
 
 Do not worry about resubmissions, feel free to resubmit as needed prior to the deadline (if you are using late days to do a resubmission, please notify the course staff).
