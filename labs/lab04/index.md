@@ -280,7 +280,7 @@ These functions are essential for fetching the project data and rendering it dyn
 Use the `fetchJSON` function to load the project data from a JSON file. Add the following code:
 
 ```js
-const projects = await fetchJSON('../src/projects.json');
+const projects = await fetchJSON('../lib/projects.json');
 ```
 
 This code assumes your `projects.json` file is located in a `lib` folder relative to the current file.
@@ -354,7 +354,7 @@ Navigate to the root folder of your project and create a new file named `index.j
 At the top of the file, import the `fetchJSON` and `renderProjects` functions from your `global.js` file:
 
 ```js
-import { fetchJSON, renderProjects } from './global.js';
+import { fetchJSON, renderProjects } from '../global.js';
 ```
 
 #### **3. Fetch and Filter Projects**
@@ -362,7 +362,7 @@ import { fetchJSON, renderProjects } from './global.js';
 Use the `fetchJSON` function to load all project data, then filter the first three projects for display:
 
 ```js
-const projects = await fetchJSON('./lib/projects.json');
+const projects = await fetchJSON('../lib/projects.json');
 const latestProjects = projects.slice(0, 3);
 ```
 
@@ -559,7 +559,7 @@ In case you want a similar style, the gist of it is:
 ## Step 4: Update your project data
 
 This is in preparation for the next lab.
-Please update your project data (`src/projects.json`) with your assignments from the class and any other projects you can think of.
+Please update your project data (`/lib/projects.json`) with your assignments from the class and any other projects you can think of.
 Make sure you have at least 12 projects, even if you need to leave some placeholder data in.
 Also add a `"year"` field to each project with a number for the year you worked on it.
 Example:
