@@ -7,6 +7,7 @@ days:
   - name: PROJ 2
     type: proj
     title: Project 2 Checkpoint
+    url: projects/project2.md
 - date: '2025-01-29'
   events:
   - name: LEC 7
@@ -17,6 +18,7 @@ days:
   - name: LAB 4
     type: lab
     title: Lab 4
+    url: labs/lab04
   - name: DISC 4
     type: disc
     title: Disc 4
