@@ -306,7 +306,7 @@ renderProjects(projects, projectsContainer, 'h2');
 This code will render each project with an `<h2>` heading level.
 
 
-#### **Check Your Understanding:**
+**Check Your Understanding:**
 
 - What happens if the `projects.json` file is missing or incorrectly formatted?
 - How does the `renderProjects` function handle an empty array of projects? Can you enhance it to display a placeholder message in this case?
@@ -401,7 +401,7 @@ To load and execute this script, add a `<script>` tag to your `index.html` file.
 **Think About It:**
 - Why do we need the `type="module"` attribute?
 
-#### **6. Adding the HTML Container for Projects**
+#### 6. Adding the HTML Container for Projects
 
 Before your script can dynamically display the projects, you need to provide a placeholder container in your `index.html` file. This container will hold the dynamically added project content.
 
