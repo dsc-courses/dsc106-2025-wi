@@ -169,13 +169,9 @@ export function renderProjects(project, containerElement) {
 - What type of data should the `project` parameter contain?
 - How would you test if the `containerElement` is valid?
 
-#### 2. Creating the HTML Structure
+#### 2. Clearing Existing Content
 
-To dynamically render project details, you'll create and populate an `<article>` element for each project.
-
-#### 3. Clearing Existing Content
-
-Before adding new project articles, ensure the container is empty to avoid duplication.
+To dynamically render project details, you'll create and populate an `<article>` element for each project. Before adding new project articles, ensure the container is empty to avoid duplication.
 
 ```js
 containerElement.innerHTML = '';
@@ -188,7 +184,7 @@ containerElement.innerHTML = '';
 - Why is it important to clear the container before adding new elements?
 - What would happen if you skipped this step?
 
-#### 4. Creating an `<article>` Element
+#### 3. Creating an `<article>` Element
 
 For each project, create a new `<article>` element to hold its details.
 
@@ -204,7 +200,7 @@ const article = document.createElement('article');
 - Why do we use `createElement` instead of directly appending HTML?
 - How does using `createElement` make your code more secure or modular?
 
-#### 5. Defining the Content Dynamically
+#### 4. Defining the Content Dynamically
 
 Use the `innerHTML` property to populate the `<article>` element with dynamic content.
 
@@ -223,7 +219,7 @@ article.innerHTML = `
 - What happens if one of the properties, like `project.image`, is missing?
 - How can you handle missing or invalid data gracefully?
 
-#### 6. Appending the Article
+#### 5. Appending the Article
 
 Finally, append the `<article>` element to the provided `containerElement`.
 
@@ -239,7 +235,7 @@ containerElement.appendChild(article);
 - What happens if `containerElement` is null?
 - How can you make the function robust against missing or incorrect parameters?
 
-#### 7. Adding Functionality
+#### 6. Adding Functionality
 
 Now that the basic function is ready, let’s enhance it to allow dynamic heading levels. This makes the function reusable for different contexts.
 
