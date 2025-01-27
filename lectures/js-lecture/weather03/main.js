@@ -40,10 +40,11 @@ const svg = document.getElementById('weather-plot');
 svg.setAttribute('width', 1000);
 svg.setAttribute('height', 500);
 
+// Our very first "plot"!
 weatherData.hourly.temperature_2m.forEach((temp, index) => {
   const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  text.setAttribute('x', index * 20);
-  text.setAttribute('y', 500 - temp * 8);
+  text.setAttribute('x', index * 5);
+  text.setAttribute('y', 500 - temp * 6);
 
   text.textContent = temp;
   svg.appendChild(text);
