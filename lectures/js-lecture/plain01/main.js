@@ -1,5 +1,5 @@
 // button is null, why??
-const button = document.getElementById('submit');
+const button = document.querySelector('#submit');
 
 button.addEventListener('click', (event) => {
   event.preventDefault();
