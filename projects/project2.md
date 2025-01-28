@@ -62,9 +62,13 @@ Your write-up should contain the following information:
 - A description of your design rationale and important considerations for each visualization.
 - A clear mention of which of the two visualizations is deceptive and which one is earnest.
 
-## Recommended Data Sources
+## Data Sources
 
-To help get you started with this assignment, we’ve provided four possible datasets / dataset collections for you to use. **You must use the same dataset for both visualizations**, but you may transform the data differently, use additional data variables, or choose to address a different question for each design.
+For this assignment, we’ve provided four datasets / dataset collections for you to use. **You must use the same dataset for both visualizations**, but you may transform the data differently, use additional data variables, or choose to address a different question for each design.
+
+{: .note }
+
+You **must** pick a dataset from the list below. No other datasets will be deemed acceptable.
 
 All datasets contain time series data relevant to health, but from different cohort (and species), different time scales, and different modalities. Time series analyses in themselves are not critical to exploring the data, but allow for forecasting and windowing of classifier data alongside unsupervised and statistical approaches.
 
