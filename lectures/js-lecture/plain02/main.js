@@ -1,10 +1,8 @@
-const button = document.querySelector('#submit');
+const celsiusTag = document.querySelector('#celsius');
+const result = document.querySelector('#result');
 
-button.addEventListener('click', (event) => {
-  const celsiusTag = document.querySelector('#celsius');
+celsiusTag.addEventListener('input', (event) => {
   const celsius = celsiusTag.value;
   const fah = (celsius * 9) / 5 + 32;
-
-  const result = document.querySelector('#result');
   result.innerText = `${celsius} degrees Celsius is ${fah} degrees Fahrenheit.`;
 });
