@@ -1,8 +1,8 @@
 // 2.1.2
-import { fetchJSON, renderProjects, fetchGitHubData } from '../global.js';
+import { fetchJSON, renderProjects, fetchGitHubData } from './global.js';
 
 // 2.1.3
-const projects = await fetchJSON('../lib/projects.json');
+const projects = await fetchJSON('./lib/projects.json');
 const latestProjects = projects.slice(0, 3); // get 3 latest proj
 
 // 2.1.4
