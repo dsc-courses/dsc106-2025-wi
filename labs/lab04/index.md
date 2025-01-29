@@ -350,7 +350,7 @@ Navigate to the root folder of your project and create a new file named `index.j
 At the top of the file, import the `fetchJSON` and `renderProjects` functions from your `global.js` file:
 
 ```js
-import { fetchJSON, renderProjects } from '../global.js';
+import { fetchJSON, renderProjects, fetchGithubData } from '../global.js';
 ```
 
 #### 3. Fetch and Filter Projects
