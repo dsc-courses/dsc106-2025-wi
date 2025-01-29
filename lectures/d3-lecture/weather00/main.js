@@ -35,7 +35,7 @@ async function loadWeatherData() {
 const weatherData = await loadWeatherData();
 console.log(weatherData);
 
-const svg = document.getElementById('weather-plot');
+const svg = document.querySelector('#weather-plot');
 
 svg.setAttribute('width', 1000);
 svg.setAttribute('height', 500);
