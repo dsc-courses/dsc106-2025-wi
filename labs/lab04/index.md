@@ -350,7 +350,7 @@ Navigate to the root folder of your project and create a new file named `index.j
 At the top of the file, import the `fetchJSON` and `renderProjects` functions from your `global.js` file:
 
 ```js
-import { fetchJSON, renderProjects, fetchGithubData } from '../global.js';
+import { fetchJSON, renderProjects, fetchGithubData } from './global.js';
 ```
 
 #### 3. Fetch and Filter Projects
@@ -358,7 +358,7 @@ import { fetchJSON, renderProjects, fetchGithubData } from '../global.js';
 Use the `fetchJSON` function to load all project data, then filter the first three projects for display:
 
 ```js
-const projects = await fetchJSON('../lib/projects.json');
+const projects = await fetchJSON('./lib/projects.json');
 const latestProjects = projects.slice(0, 3);
 ```
 
