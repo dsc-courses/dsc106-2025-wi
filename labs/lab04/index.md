@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 4: JavaScript II'
 lab: 4
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: true
 ---
 
 # Lab 4: JavaScript II
@@ -101,7 +101,7 @@ If you’re having trouble with the above steps, you can use this <a href="downl
 
 In this step, you’ll create a function in your `global.js` file to load project data from a JSON file and dynamically display it on the Projects page.
 
-#### **1. Setting Up the Function**
+#### 1. Setting Up the Function
 Start by defining an **asynchronous function** that will fetch your project data. Use the following snippet to get started:
 
 ```js
@@ -122,7 +122,7 @@ export async function fetchJSON(url) {
 1. Copy this snippet into your `global.js` file.
 2. Identify the URL `../lib/projects.json` and make sure the file exists in your project structure.
 
-#### **2. Handling Errors**
+#### 2. Handling Errors
 Add a check to ensure the `fetch` request was successful. If it wasn’t, throw an error to handle invalid responses. Here’s the next piece:
 
 ```js
@@ -135,7 +135,7 @@ if (!response.ok) {
 1. Place this snippet inside the `try` block, **immediately after** the `fetch` function call.
 2. Use `console.log(response)` to inspect the response object in your browser’s developer tools and confirm that it’s working correctly.
 
-#### **3. Parsing the Data**
+#### 3. Parsing the Data
 Once you’ve verified the response is valid, parse it into a format you can work with. Here’s how to parse the response:
 
 ```js
@@ -151,7 +151,7 @@ return data;
 
 You’ll build a `renderProjects` function to dynamically generate and display project content. This function will allow you to reuse project rendering logic anywhere on your site.
 
-#### **1. Defining the Basic Function**
+#### 1. Defining the Basic Function
 
 Start by creating a function that accepts two parameters: the `project` object and the `containerElement` where the project will be displayed.
 
@@ -169,13 +169,9 @@ export function renderProjects(project, containerElement) {
 - What type of data should the `project` parameter contain?
 - How would you test if the `containerElement` is valid?
 
-#### **2. Creating the HTML Structure**
+#### 2. Clearing Existing Content
 
-To dynamically render project details, you'll create and populate an `<article>` element for each project.
-
-#### **3. Clearing Existing Content**
-
-Before adding new project articles, ensure the container is empty to avoid duplication.
+To dynamically render project details, you'll create and populate an `<article>` element for each project. Before adding new project articles, ensure the container is empty to avoid duplication.
 
 ```js
 containerElement.innerHTML = '';
@@ -188,7 +184,7 @@ containerElement.innerHTML = '';
 - Why is it important to clear the container before adding new elements?
 - What would happen if you skipped this step?
 
-#### **4. Creating an `<article>` Element**
+#### 3. Creating an `<article>` Element
 
 For each project, create a new `<article>` element to hold its details.
 
@@ -204,7 +200,7 @@ const article = document.createElement('article');
 - Why do we use `createElement` instead of directly appending HTML?
 - How does using `createElement` make your code more secure or modular?
 
-#### **5. Defining the Content Dynamically**
+#### 4. Defining the Content Dynamically
 
 Use the `innerHTML` property to populate the `<article>` element with dynamic content.
 
@@ -223,7 +219,7 @@ article.innerHTML = `
 - What happens if one of the properties, like `project.image`, is missing?
 - How can you handle missing or invalid data gracefully?
 
-#### **6. Appending the Article**
+#### 5. Appending the Article
 
 Finally, append the `<article>` element to the provided `containerElement`.
 
@@ -239,7 +235,7 @@ containerElement.appendChild(article);
 - What happens if `containerElement` is null?
 - How can you make the function robust against missing or incorrect parameters?
 
-#### **7. Adding Functionality**
+#### 6. Adding Functionality
 
 Now that the basic function is ready, let’s enhance it to allow dynamic heading levels. This makes the function reusable for different contexts.
 
@@ -261,11 +257,11 @@ export function renderProjects(project, containerElement, headingLevel = 'h2') {
 
 In this step, you'll create a `projects.js` file to dynamically fetch and render project data on your projects page. This file will utilize the `fetchJSON` and `renderProjects` functions you created.
 
-#### **1. Creating the `projects.js` File**
+#### 1. Creating the `projects.js` File
 
 Navigate to your `projects` folder and create a new file named `projects.js`. Inside this file, you'll import the required functions and use them to fetch and display the projects on your projects page.
 
-#### **2. Importing Functions**
+#### 2. Importing Functions
 
 Add the following imports at the top of `projects.js`:
 
@@ -275,7 +271,7 @@ import { fetchJSON, renderProjects } from '../global.js';
 
 These functions are essential for fetching the project data and rendering it dynamically.
 
-#### **3. Fetching Project Data**
+#### 3. Fetching Project Data
 
 Use the `fetchJSON` function to load the project data from a JSON file. Add the following code:
 
@@ -285,7 +281,7 @@ const projects = await fetchJSON('../lib/projects.json');
 
 This code assumes your `projects.json` file is located in a `lib` folder relative to the current file.
 
-#### **4. Selecting the Projects Container**
+#### 4. Selecting the Projects Container
 
 Select the container where you want to render the project articles. Use the following snippet:
 
@@ -295,7 +291,7 @@ const projectsContainer = document.querySelector('.projects');
 
 Ensure your HTML includes a container with the class `projects`.
 
-#### **5. Rendering the Projects**
+#### 5. Rendering the Projects
 
 Call the `renderProjects` function to dynamically display the fetched projects:
 
@@ -306,7 +302,7 @@ renderProjects(projects, projectsContainer, 'h2');
 This code will render each project with an `<h2>` heading level.
 
 
-#### **Check Your Understanding:**
+**Check Your Understanding:**
 
 - What happens if the `projects.json` file is missing or incorrectly formatted?
 - How does the `renderProjects` function handle an empty array of projects? Can you enhance it to display a placeholder message in this case?
@@ -345,11 +341,11 @@ Reusable JavaScript functions encapsulate logic for an independent piece of UI a
 
 In this step, you’ll create a new `index.js` file to dynamically fetch and display the latest projects on the home page. This file will utilize our reusable `fetchJSON` and `renderProjects` functions you’ve already created.
 
-#### **1. Setting Up the `index.js` File**
+#### 1. Setting Up the `index.js` File
 
 Navigate to the root folder of your project and create a new file named `index.js`. This file will handle fetching project data and rendering the latest projects on the home page.
 
-#### **2. Import Required Functions**
+#### 2. Import Required Functions
 
 At the top of the file, import the `fetchJSON` and `renderProjects` functions from your `global.js` file:
 
@@ -357,7 +353,7 @@ At the top of the file, import the `fetchJSON` and `renderProjects` functions fr
 import { fetchJSON, renderProjects } from '../global.js';
 ```
 
-#### **3. Fetch and Filter Projects**
+#### 3. Fetch and Filter Projects
 
 Use the `fetchJSON` function to load all project data, then filter the first three projects for display:
 
@@ -368,7 +364,7 @@ const latestProjects = projects.slice(0, 3);
 
 This code assumes your `projects.json` file is located in a `lib` folder relative to the `index.js` file.
 
-#### **4. Select the Projects Container**
+#### 4. Select the Projects Container
 
 Identify the container where the latest projects will be displayed. Use the following code:
 
@@ -382,7 +378,7 @@ Ensure your HTML includes a container with the class `projects`:
 <div class="projects"></div>
 ```
 
-#### **5. Render the Latest Projects**
+#### 5. Render the Latest Projects
 
 Use the `renderProjects` function to dynamically display the filtered projects:
 
@@ -401,7 +397,7 @@ To load and execute this script, add a `<script>` tag to your `index.html` file.
 **Think About It:**
 - Why do we need the `type="module"` attribute?
 
-#### **6. Adding the HTML Container for Projects**
+#### 6. Adding the HTML Container for Projects
 
 Before your script can dynamically display the projects, you need to provide a placeholder container in your `index.html` file. This container will hold the dynamically added project content.
 
@@ -456,7 +452,7 @@ You should see something like this in your browser:
 
 To make an arbitrary HTTP request in JS, we can use the [`fetch()`](https://developer.mozilla.org/en-US/docs/Web/API/fetch) function. In this step, you’ll use JavaScript to fetch data from GitHub’s API and display it dynamically on the page.
 
-#### **1. Writing an Asynchronous Function**
+#### 1. Writing an Asynchronous Function
 
 You’ll need an asynchronous function to fetch data from the GitHub API. Start by defining a function that takes a username as an argument.
 
@@ -469,7 +465,7 @@ export async function fetchGitHubData(username) {
 **What to Do:**
 1. Create this function in your `global.js` file.
 
-#### **2. Fetching the Data**
+#### 2. Fetching the Data
 
 Inside the function, use the `fetchJSON` method to request data from the GitHub API. The API URL should include the `username` parameter.
 
@@ -491,10 +487,10 @@ Once you’ve fetched the data, parse the response as JSON to make it usable in 
 const githubData = await fetchGitHubData('giorgianicolaou');
 ```
 
-#### **What to Do:**
+**What to Do:**
 1. Add this line to your `index.js` file to call the `fetchGitHubData` function and retrieve the GitHub data for the specified user.
 
-#### **Test Your Knowledge:**
+**Test Your Knowledge:**
 - What type of object does `fetchGitHubData` return?
 - Why do you use `await` with the function call?
 
@@ -506,7 +502,7 @@ Identify the container in your HTML where the fetched data will be displayed. Us
 const profileStats = document.querySelector('#profile-stats');
 ```
 
-#### **What to Do:**
+**What to Do:**
 1. Add this line to your `index.js` file to select the container element where the GitHub profile stats will be displayed.
 
 ### Step 5: Updating the HTML in `index.js`
@@ -526,11 +522,11 @@ if (profileStats) {
 }
 ```
 
-#### **What to Do:**
+**What to Do:**
 1. Add this block inside `index.js`, after selecting the `profileStats` container and fetching the data.
 2. Modify the placeholders (e.g., `${githubData.public_repos}`) to include any other fields you want to display from the `githubData` object.
 
-#### **Test Your Knowledge:**
+**Test Your Knowledge:**
 - Why do we check if `profileStats` exists before updating its `innerHTML`?
 - What are the advantages of using template literals to build HTML content?
 - What does the `<dl>` element represent in this context, and why is it used here?

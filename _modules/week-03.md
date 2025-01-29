@@ -27,4 +27,5 @@ days:
       - name: DISC 3
         type: disc
         title: Disc 3
+        url: labs/lab03/slides/
 ---
