@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 6: Visualizing categorical data with D3'
 lab: 6
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: true
 ---
 
 # Lab 6: Visualizing categorical data with D3
@@ -56,14 +56,14 @@ will be time will spent.
 
 ## Step 0: Update project data and add years
 
-If you have not yet done [Step 3 of Lab 5](../../labs/5/#step-3-update-your-project-data), you should do it now.
+If you have not yet done [Step 4 of Lab 4](../lab04/#step-4-update-your-project-data), you should do it now.
 
 ### Step 0.1: Show year in each project
 
 Since we have the year data, we should show it in the project list.
 That way we can also more easily verify whether our code in the rest of the lab works correctly.
 
-Edit the `<Project>` component (in `src/lib/Project.svelte`) to show the year of the project.
+Edit the `<project>` components using JS (should be at `<root repo>/projects/projects.js`) to show the year of the project.
 You can use any HTML you deem suitable and style it however you want.
 I placed it under the project description (you’ll need to wrap both in the ame `<div>` otherwise they will occupy the same grid cell and overlap), and styled it like this:
 
@@ -76,28 +76,14 @@ In case you like the above, the font-family is `Baskerville` (a system font) and
 
 > From this point onwards, there are only two files that we will be editing in this lab:
 >
-> 1. `src/lib/Pie.svelte` (created in Step 1.1)
-> 2. `src/routes/projects/+page.svelte` (our projects page)
+> 1. `<root repo>/projects/index.html`
+> 2. `<root repo>/projects/projects.js` (created in [Step 1.4](../lab04/#step-14-setting-up-the-projectsjs-file) from Lab 4).
 
 ## Step 1: Creating a pie chart with D3
 
-### Step 1.1: Create a `<Pie>` component and use it in your project page
+### Step 1.1: Create a circle with SVG
 
-To keep the code manageable, we will be creating our pie chart in a separate component, called `<Pie>`.
-
-Create a new `Pie.svelte` file in `src/lib` and add some text in it, e.g. "Hello from Pie.svelte".
-Then, in your projects page, import the `<Pie>` component:
-
-```js
-import Pie from '$lib/Pie.svelte';
-```
-
-and then use it like `<Pie />`.
-Save, and make sure the text you wrote in `Pie.svelte` is displayed in your project page to make sure all plumbing is working.
-
-### Step 1.2: Create a circle with SVG
-
-The first step to create a pie chart with D3 is to create an `<svg>` element in the `<Pie>` component.
+The first step to create a pie chart with D3 is to create an `<svg>` element.
 
 {: .fyi }
 D3 is a library that translates high level visualization concepts into low level drawing commands.
@@ -122,7 +108,7 @@ Since we have not given the graphic any explicit dimensions, by default it will 
 
 <img src="images/svg-circle.png" alt="" class="browser" data-url="http://localhost:5173/projects">
 
-We can add some CSS in the component’s `<style>` element to limit its size a bit and also add some spacing around it:
+We can add some CSS in the tag's `<style>` element to limit its size a bit and also add some spacing around it:
 
 ```css
 svg {
@@ -173,7 +159,7 @@ npm install d3
 Ignore any warnings about peer dependencies.
 
 So now that D3 is installed how do we use it?
-In your Pie component, add the following import statement at the top of the `<script>` element:
+In your `projects.js` file, add the following import statement at the top:
 
 ```javascript
 import * as d3 from 'd3';
@@ -460,50 +446,17 @@ If everything worked well, you should now see the pie chart and legend side by s
 So far, we’ve been using meaningcless hardcoded data for our pie chart.
 Let’s change that and plot our actual project data, and namely projects per year.
 
-### Step 3.1: Making `data` a prop
-
-Hardcoding data within the pie component would give us a pie chart component that can only be used for one specific pie chart.
-That’s not very useful!
-Instead, we want to make `data` a [prop](https://svelte.dev/docs/svelte-components#script) of the component, so we can pass it to the component from the page that uses it.
-
-There are two parts to that change:
-First, changing our `data` declaration to an export (and its value to an empty array, which will be its default value):
-
-```js
-export let data = [];
-```
-
-Then, we can pass the same data we’ve used in step 2.1 **from our projects page this time**, by first assigning them to a variable:
-
-```js
-let pieData = [
-  { value: 1, label: 'apples' },
-  { value: 2, label: 'oranges' },
-  { value: 3, label: 'mangos' },
-  { value: 4, label: 'pears' },
-  { value: 5, label: 'limes' },
-  { value: 5, label: 'cherries' },
-];
-```
-
-and then passing it to the `<Pie>` component:
-
-```html
-<Pie data="{pieData}" />
-```
-
-If everything worked well, we should now see the same pie chart (and legend) as before.
-
-### Step 3.2: Passing project data via the `data` prop
+### Step 3.1: Passing project data via the `data` prop
 
 Now that we’re passing the data from the Projects page, let’s calculate the labels and values we’ll pass to the pie chart from our project data.
 We will be displaying a chart of projects per year, so the labels would be the years, and the values the count of projects for that year.
-But how to get from [our project data](../4/#step-42-importing-our-project-data-into-our-projects-page) to that array?
+But how to get from [our project data](../lab04/#step-12-importing-project-data-into-the-projects-page) to that array?
 
 D3 does not only provide functions to generate visual output, but includes powerful helpers for manipulating data.
 In this case, we’ll use the `d3.rollups()` function to group our projects by year and count the number of projects in each bucket:
 
 ```js
+let projects = ...;
 let rolledData = d3.rollups(
   projects,
   (v) => v.length,
@@ -542,41 +495,46 @@ However, it demonstrates how these visualizations don’t have to be static, but
 
 ### Step 4.1: Adding a search field
 
-First, declare a variable that will hold the search query in the `<script>` element of your projects page:
+First, declare a variable that will hold the search query:
 
 ```js
 let query = '';
 ```
 
-Then, add an `<input type="search">` to the HTML, and bind its value to that variable:
+Then, add an `<input type="search">` to the HTML (you may add other element properties as you see fit):
 
 ```html
 <input
   type="search"
-  bind:value="{query}"
   aria-label="Search projects"
   placeholder="🔍 Search projects…"
 />
 ```
 
-{: .tip }
-As usual, you can print out the variable in your HTML via `{query}` to make sure the binding works as expected.
-
 ### Step 4.2: Basic search functionality
 
-This is the same regardless of whether you have implemented [Step 7 of Lab 4](../../4/#step-7-creating-a-project-list-component-optional) or not,
-since we’ll be filtering the projects by changing the data that we are displaying.
-
-However, in Lab 4 we avoided having to change our single project template by doing
+Remember, JavaScript is not designed to function reactively? So what can we do to make up for this functionality? We can use `Events` or `EventListeners`.
+The basic logic should resemble the following:
 
 ```js
-let p = info;
+function setQuery(newQuery) {
+  query = newQuery;
+  updateFilteredProjects({
+    ...
+  });
+}
+
+let searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('change', (event) => {
+  setQuery(event.target.value);
+});
 ```
 
-Since in this step we will be reactively updating the projects displayed,
-it's time to actually **delete that alias** and edit our expressions to use the actual prop name (e.g. use `info.title` instead of `p.title`).
+{: .fyi }
+`change` is only one viable `Event` option here that we can monitor; you may also look into `input` if you want real-time query searches and updates.
 
-To filter the project data, we will use the [`array.filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) function,
+Project data filtering should happen inside the `updateFilteredProjects()` function. To filter the project data, we will use the [`array.filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) function,
 which returns a new array containing only the elements that pass the test implemented by the provided function.
 
 For example, this is how we’d search in project titles:
@@ -596,35 +554,13 @@ let filteredProjects = projects.filter((project) => {
 since if the query is `""`, then every project title contains it anyway.
 However, there is no reason to do extra work if we don’t have to.
 
-For this to work, we’d need to use `filteredProjects` instead of `projects` in our template that displays the projects.
-
-If you try this out, you’ll notice that no filtering is actually happening.
-This is because we are only executing the filtering once, when our search query is empty
-
-For the filtering to re-run whenever the query changes, we need to make it a [_reactive statement_](https://svelte.dev/tutorial/reactive-statements) by using the [`$:` prefix](https://svelte.dev/tutorial/reactive-statements):
-
-```js
-let filteredProjects;
-$: filteredProjects = projects.filter((project) => {
-  if (query) {
-    return project.title.includes(query);
-  }
-
-  return true;
-});
-```
-
-If you try it now, filtering should work!
-
-<video src="videos/search-titles.mp4" autoplay muted loop></video>
-
 <!-- TODO: Mention debounce -->
 
 ### Step 4.3: Improving the search
 
 Finding projects by title is a good first step,
 but it could make it hard to find a project.
-Also, it’s case-sensitive, so e.g. searching for “svelte” won’t find “Svelte”.
+Also, it’s case-sensitive, so e.g. searching for “JavaScript” won’t find “Javascript”.
 
 Let’s fix both of these!
 
@@ -668,32 +604,13 @@ There are two components to this:
 2. Make it update reactively.
 
 The former is a simple matter of replacing the variable name used in your projects page \*\*from `projects` to `filteredProjects`.
-The second does involve something we have not yet done:
-how do we turn something that consists of several lines into a reactive statement?
-So far we’ve only been prepending single commands with `$:`!
+To accomplish the latter, the rolled-up data and pie chart both need to be re-calculated based on `filteredProjects`.
 
-The answer is that we can use a block statement (`{}`) to contain multiple commands, and then prepend _that_ with `$:`:
+<!-- However, if you try the search out at this point, you will see that the legend is updating, but the pie chart is not. -->
 
-```js
-// Make sure the variable definition is *outside* the block
-let pieData;
+<!-- <video src="videos/legend-reactive.mp4" autoplay muted loop></video> -->
 
-$: {
-  // Initialize to an empty object every time this runs
-  pieData = {};
-
-  // Calculate rolledData and pieData based on filteredProjects here
-}
-```
-
-If you try the search out at this point, you will see that the legend is updating, but the pie chart is not.
-
-<video src="videos/legend-reactive.mp4" autoplay muted loop></video>
-
-This is because none of the calculations in the `<Pie>` component are actually reactive.
-We need to make them reactive by separating the variable declarations from the value calculations and using the `$:` prefix on the latter.
-
-This only applies to `arcData` and `arcs`, since none of the rest needs to actually change.
+Also, don't forget about `arcData` and `arcs`.
 
 Once we do that, our pie chart becomes beautifully reactive as well:
 
