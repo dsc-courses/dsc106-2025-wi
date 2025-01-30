@@ -89,7 +89,7 @@ The assignment is out of 10 points possible. Submissions that squarely meet the 
 
 ### Team Registration
 
-Submit your [team registration form][link5] by **Mon 02/05, 11:55 PM**.
+Submit your [team registration form][link5] by **Mon 02/10, 11:59 PM**.
 
 ### Checkpoint Submission
 
