@@ -198,77 +198,370 @@
 	</details>
 </article>
 
-<article class="slide" id="counter-component">
-    <h1>Component-Driven Development in JS</h1>
-    <div id="counter-container"></div>
+<article class="slide columns force-2 dont-resize language-js code-labels">
+    <h1>Basic Example Structure in JavaScript Modules</h1>
+    
+    <pre><code>
+        <span class="delayed">📂 File Structure:
+        index.html
+        main.js
+        modules/
+            canvas.js
+            square.js</span>
 
-    <script>
-        class Counter {
-            constructor(containerId) {
-                this.count = 0;
-                this.container = document.getElementById(containerId);
-
-                // Create button
-                this.button = document.createElement("button");
-                this.button.textContent = `Count: ${this.count}`;
-                
-                // Add click event listener
-                this.button.addEventListener("click", () => this.increment());
-
-                // Append button to container
-                this.container.appendChild(this.button);
-            }
-
-            // Increment counter and update button text
-            increment() {
-                this.count++;
-                this.button.textContent = `Count: ${this.count}`;
-            }
+        <span class="delayed" data-index="2">📌 canvas.js — Handles Canvas Setup
+        function create(parent, width, height, id) {
+            let wrapper = document.createElement("div");
+            wrapper.id = id;
+            let canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            wrapper.appendChild(canvas);
+            parent.appendChild(wrapper);
+            return { context: canvas.getContext("2d"), id };
         }
-        // Initialize the Counter component
-        new Counter("counter-container");
-    </script>
-	<section>
-		<pre class="delayed"><code>
-			&lt;class Counter {
-				constructor(containerId) {
-					this.count = 0;
-					this.container = document.getElementById(containerId);
 
-					// Create button
-					this.button = document.createElement("button");
-					this.button.textContent = `Count: ${this.count}`;
+        function createReportList(wrapperId) {
+            let list = document.createElement("ul");
+            document.getElementById(wrapperId).appendChild(list);
+            return list.id;
+        }</span>
 
-					// Add click event listener
-					this.button.addEventListener("click", () => this.increment());
+        <span class="delayed" data-index="3">📌 square.js — Handles Square Operations
+        const name = "square";
 
-					// Append button to container
-					this.container.appendChild(this.button);
-				}
+        function draw(context, x, y, size, color) {
+            context.fillStyle = color;
+            context.fillRect(x, y, size, size);
+            return { size, x, y, color };
+        }
 
-				// Increment counter and update button text
-				increment() {
-					this.count++;
-					this.button.textContent = `Count: ${this.count}`;
-				}
-			}
+        function reportArea(listId, length) {
+            let list = document.getElementById(listId);
+            let item = document.createElement("li");
+            item.textContent = `Square area: ${length * length}`;
+            list.appendChild(item);
+        }
 
-			// Initialize the Counter component
-			new Counter("counter-container");
-		</code></pre>
-	</section>
+        function reportPerimeter(listId, length) {
+            let list = document.getElementById(listId);
+            let item = document.createElement("li");
+            item.textContent = `Square perimeter: ${length * 4}`;
+            list.appendChild(item);
+        }</span>
 
-	<pre class="delayed"><code>
-        &lt;div id="counter-container">&lt;/div>
+        <span class="delayed" data-index="4">📌 main.js — Bringing It All Together
+        import { create, createReportList } from "./modules/canvas.js";
+        import { draw, reportArea, reportPerimeter } from "./modules/square.js";
+
+        const parent = document.body;
+        const { context, id } = create(parent, 400, 400, "canvas-wrapper");
+        const listId = createReportList(id);
+
+        let square = draw(context, 50, 50, 100, "blue");
+        reportArea(listId, square.size);
+        reportPerimeter(listId, square.size);</span>
     </code></pre>
 
-	<details class="notes">
-        This example follows the **Component-Driven Development** pattern in Vanilla JavaScript.
-        - The **Counter** class encapsulates both the UI and logic.
-        - When the button is clicked, the count updates dynamically.
-        - The component is **reusable**, meaning we can create multiple counters on the page.
+    <details class="notes">
+        This slide explains the basic modular file structure of a JavaScript project. 
+        - `canvas.js` handles canvas setup and creates report lists.
+        - `square.js` handles drawing squares and calculating their area/perimeter.
+        - `main.js` brings it all together by importing functions and executing them.
+        This modular approach improves maintainability, readability, and reusability.
     </details>
 </article>
+
+<article class="slide columns force-2 dont-resize language-js code-labels">
+    <h1>Exporting Module Features in JavaScript</h1>
+    
+    <pre><code>
+        <span class="delayed">📌 Exporting Individual Features
+        export const name = "square";
+
+        export function draw(ctx, length, x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, length, length);
+            return { length, x, y, color };
+        }</span>
+
+        <span class="delayed" data-index="2">✅ You can export:
+        - Functions
+        - Variables (var, let, const)
+        - Classes (not inside a function)</span>
+
+        <span class="delayed" data-index="3">❌ Exporting inside a function is not allowed
+        function example() {
+            export const invalid = "Can't export here"; ❌ This would throw an error
+        }</span>
+
+        <span class="delayed" data-index="4">📌 Exporting Multiple Features at Once
+        function reportArea(length) {
+            return `Square area: ${length * length}`;
+        }
+
+        function reportPerimeter(length) {
+            return `Square perimeter: ${length * 4}`;
+        }
+
+        export { name, draw, reportArea, reportPerimeter };</span>
+    </code></pre>
+
+    <details class="notes">
+        To use JavaScript modules, we **export** features from a module file using the `export` statement.
+        - You can **export each feature individually** (`export function draw(...)`).
+        - You can **export multiple features at once** using `{}` at the end of a file.
+        - Exports must be **top-level** (not inside functions).
+    </details>
+</article>
+
+<article class="slide columns force-2 dont-resize language-js code-labels">
+    <h1>Renaming Imports and Exports in JavaScript</h1>
+
+    <pre><code>
+        <span class="delayed">                   📌 Renaming Exports in a Module
+                           inside module.js
+                           export { function1 as newFunctionName, function2 as anotherNewFunctionName };</span>
+
+        <span class="delayed" data-index="2">                   📌 Renaming Imports in main.js
+                           import { newFunctionName, anotherNewFunctionName } from "./modules/module.js";</span>
+
+        <span class="delayed" data-index="3">                   ✅ Alternative Way: Renaming During Import
+                           inside module.js
+                           export { function1, function2 };
+
+                           inside main.js
+                           import { function1 as newFunctionName, function2 as anotherNewFunctionName } from "./modules/module.js";</span>
+
+        <span class="delayed" data-index="4">                   📌 Handling Name Collisions Across Multiple Modules
+                           Importing without renaming would cause a conflict
+                           import { name, draw, reportArea, reportPerimeter } from "./modules/square.js";
+                           import { name, draw, reportArea, reportPerimeter } from "./modules/circle.js"; ❌ Error: Redeclaration
+                           import { name, draw, reportArea, reportPerimeter } from "./modules/triangle.js"; ❌ Error: Redeclaration</span>
+
+        <span class="delayed" data-index="5">                   ✅ Correct Approach: Rename Imports to Avoid Conflicts
+                           import { 
+                               name as squareName, draw as drawSquare, 
+                               reportArea as reportSquareArea, reportPerimeter as reportSquarePerimeter 
+                           } from "./modules/square.js";
+  
+                           import { 
+                               name as circleName, draw as drawCircle, 
+                               reportArea as reportCircleArea, reportPerimeter as reportCirclePerimeter 
+                           } from "./modules/circle.js";
+
+                           import { 
+                               name as triangleName, draw as drawTriangle, 
+                               reportArea as reportTriangleArea, reportPerimeter as reportTrianglePerimeter 
+                           } from "./modules/triangle.js";</span>
+
+        <span class="delayed" data-index="6">                   📌 Alternative: Renaming at the Export Level
+                           in square.js
+                           export { 
+                               name as squareName, draw as drawSquare, 
+                               reportArea as reportSquareArea, reportPerimeter as reportSquarePerimeter 
+                           };
+
+                           in main.js (No need for renaming now)
+                           import { squareName, drawSquare, reportSquareArea, 
+			                   reportSquarePerimeter } from "./modules/square.js";</span>
+    </code></pre>
+
+    <details class="notes">
+        Renaming imports and exports is useful to **avoid naming conflicts** when working with multiple modules.
+        - You can rename exports **inside the module** (`export { function1 as newFunctionName }`).
+        - You can rename **during import** (`import { function1 as newFunctionName }`).
+        - The best approach is usually to **rename during import**, as it avoids modifying the module code, which is useful when importing third-party modules.
+    </details>
+</article>
+
+
+<article class="slide columns force-2 dont-resize language-js code-labels">
+    <h1>Creating a Module Object in JavaScript</h1>
+
+    <pre><code>
+        <span class="delayed">📌 Importing Everything as a Module Object
+        import * as Module from "./modules/module.js";</span>
+
+        <span class="delayed" data-index="2">✅ Now, you can access functions as object properties
+        Module.function1();
+        Module.function2();</span>
+
+        <span class="delayed" data-index="3">📌 Applying This to a Real Example
+        Exports in each module remain simple
+        export { name, draw, reportArea, reportPerimeter };</span>
+
+        <span class="delayed" data-index="4">📌 Importing Multiple Modules as Objects
+        import * as Canvas from "./modules/canvas.js";
+        import * as Square from "./modules/square.js";
+        import * as Circle from "./modules/circle.js";
+        import * as Triangle from "./modules/triangle.js";</span>
+
+        <span class="delayed" data-index="5">✅ Now, use the module's functions under its namespace
+        const square1 = Square.draw(myCanvas.ctx, 50, 50, 100, "blue");
+        Square.reportArea(square1.length, reportList);
+        Square.reportPerimeter(square1.length, reportList);</span>
+    </code></pre>
+
+    <details class="notes">
+        Instead of importing multiple functions individually, we can **import an entire module as an object**.
+        - This keeps our imports **cleaner** and **more structured**.
+        - Instead of calling `draw()`, we now use `Square.draw()`—this **prevents name conflicts**.
+        - This approach is useful when handling **multiple related modules** in a project.
+    </details>
+</article>
+
+<article class="slide columns force-2 dont-resize language-js code-labels">
+    <h1>Modules and Classes in JavaScript</h1>
+
+    <pre><code>
+        <span class="delayed">📌 Defining a Class in a Module (square.js)
+        class Square {
+            constructor(ctx, listId, length, x, y, color) {
+                this.ctx = ctx;
+                this.listId = listId;
+                this.length = length;
+                this.x = x;
+                this.y = y;
+                this.color = color;
+            }
+
+            draw() {
+                this.ctx.fillStyle = this.color;
+                this.ctx.fillRect(this.x, this.y, this.length, this.length);
+            }
+
+            reportArea() {
+                console.log(`Square area: ${this.length * this.length}`);
+            }
+
+            reportPerimeter() {
+                console.log(`Square perimeter: ${this.length * 4}`);
+            }
+        }</span>
+
+        <span class="delayed" data-index="2">📌 Exporting the Class
+        export { Square };</span>
+
+        <span class="delayed" data-index="3">📌 Importing the Class in main.js
+        import { Square } from "./modules/square.js";</span>
+
+        <span class="delayed" data-index="4">✅ Using the Class to Create and Draw a Square
+        const square1 = new Square(myCanvas.ctx, myCanvas.listId, 50, 50, 100, "blue");
+        square1.draw();
+        square1.reportArea();
+        square1.reportPerimeter();</span>
+    </code></pre>
+
+    <details class="notes">
+        Instead of exporting individual functions, we can **use ES6 classes** inside modules.
+        - This approach is useful when working in an **object-oriented** style.
+        - The `Square` class encapsulates **both state and behavior** related to a square.
+        - By importing `Square`, we can create multiple instances, making our code **more reusable**.
+    </details>
+</article>
+
+
+<article class="slide columns force-2 dont-resize language-js code-labels">
+    <h1>Aggregating Modules in JavaScript</h1>
+
+    <pre><code>
+        <span class="delayed">📌 Aggregating Modules Using Export
+        export * from "x.js";
+        export { name } from "x.js";</span>
+
+        <span class="delayed" data-index="2">📌 Example: Module Structure
+        modules/
+            canvas.js
+            shapes.js
+            shapes/
+                circle.js
+                square.js
+                triangle.js</span>
+
+        <span class="delayed" data-index="3">📌 Exporting from Individual Submodules
+        In square.js, circle.js, and triangle.js:
+        export { Square };
+        export { Circle };
+        export { Triangle };</span>
+
+        <span class="delayed" data-index="4">📌 Aggregating Modules in shapes.js
+        export { Square } from "./shapes/square.js";
+        export { Triangle } from "./shapes/triangle.js";
+        export { Circle } from "./shapes/circle.js";</span>
+
+        <span class="delayed" data-index="5">✅ Using the Aggregated Module in main.js
+        Before (multiple imports)
+        import { Square } from "./modules/square.js";
+        import { Circle } from "./modules/circle.js";
+        import { Triangle } from "./modules/triangle.js";
+
+        After (single import)
+        import { Square, Circle, Triangle } from "./modules/shapes.js";</span>
+    </code></pre>
+
+    <details class="notes">
+        Instead of importing multiple submodules separately, we can **aggregate them** into a single parent module.
+        - `shapes.js` acts as a **wrapper** that re-exports everything from `square.js`, `circle.js`, and `triangle.js`.
+        - This keeps our **imports cleaner** and **reduces complexity**.
+        - The exports in `shapes.js` are **redirects** and cannot contain additional logic.
+    </details>
+</article>
+
+<article class="slide columns force-2 dont-resize language-js code-labels">
+    <h1>Dynamic Module Loading in JavaScript</h1>
+
+    <pre><code>
+        <span class="delayed">📌 Dynamically Importing a Module
+        import("./modules/myModule.js").then((module) => {
+            Do something with the module.
+        });</span>
+
+        <span class="delayed" data-index="2">✅ Dynamic Imports are Useful for:
+        - Loading modules only when needed (performance boost)
+        - Keeping initial script lightweight
+        - Importing in non-module scripts
+        - Avoiding unnecessary network requests</span>
+
+        <span class="delayed" data-index="3">📌 Example: Loading Modules on Button Click
+        Get reference to button
+        const squareBtn = document.querySelector(".square");
+
+        Attach event listener for dynamic import
+        squareBtn.addEventListener("click", () => {
+            import("./modules/square.js").then((Module) => {
+                const square1 = new Module.Square(
+                    myCanvas.ctx, myCanvas.listId, 50, 50, 100, "blue"
+                );
+                square1.draw();
+                square1.reportArea();
+                square1.reportPerimeter();
+            });
+        });</span>
+
+        <span class="delayed" data-index="4">✅ Why Use Dynamic Imports?
+        - Modules are only loaded when needed (e.g., button click)
+        - Reduces initial load time of the webpage
+        - Prevents loading unused code</span>
+
+        <span class="delayed" data-index="5">📌 Dynamic Import Inside a Script Tag
+        <script>
+            import("./modules/square.js").then((module) => {
+                //Do something with the module.
+            });
+            //Other non-module global code
+            var btn = document.querySelector(".square");
+        </script></span>
+    </code></pre>
+
+    <details class="notes">
+        Dynamic module loading allows JavaScript to **import modules on demand**, improving performance by **loading only what is needed**.
+        - The `import()` function **returns a Promise** that resolves with a module object.
+        - Dynamic imports **work even in non-module scripts**, unlike static `import` statements.
+        - This technique is useful for **lazy loading features**, **reducing network requests**, and **keeping code modular**.
+    </details>
+</article>
+
 
 <!-- <article class="slide columns force dont-resize code-labels delayed-last" id="component-io">
 	<h1>
