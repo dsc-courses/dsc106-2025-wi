@@ -151,9 +151,9 @@
 	<h1>Also modern web apps</h1>
 </article>
 -->
-<article class="slide">
+<!-- <article class="slide">
 	<h1 class="md">HTML: `&lt;h1>` `&lt;ul>` `&lt;p>`</h1>
-</article>
+</article> -->
 
 <article class="slide columns force" data-credits="https://www.componentdriven.org/" id="cdd">
 	<h1>Component-driven development</h1>
@@ -169,7 +169,7 @@
 	</div>
 </article>
 
-<article class="slide" id="cba">
+<!-- <article class="slide" id="cba">
 	<h1>Component-based Architecture</h1>
 	<div class="frame-by-frame">
 		<img src="images/cb-architecture-1.png" alt="">
@@ -187,7 +187,7 @@
 		<img src="images/cb-architecture-3a.png" class="delayed" alt="">
 		<img src="images/cb-architecture-4a.png" class="delayed" alt="">
 		<img src="images/cb-architecture-4.png" class="delayed" alt="">
-	</div>
+	</div> -->
 </article>
 
 <article class="slide columns force-1">
@@ -198,7 +198,79 @@
 	</details>
 </article>
 
-<article class="slide columns force dont-resize code-labels delayed-last" id="component-io">
+<article class="slide" id="counter-component">
+    <h1>Example of Component-Driven Development in JS</h1>
+    <div id="counter-container"></div>
+
+    <script>
+        class Counter {
+            constructor(containerId) {
+                this.count = 0;
+                this.container = document.getElementById(containerId);
+
+                // Create button
+                this.button = document.createElement("button");
+                this.button.textContent = `Count: ${this.count}`;
+                
+                // Add click event listener
+                this.button.addEventListener("click", () => this.increment());
+
+                // Append button to container
+                this.container.appendChild(this.button);
+            }
+
+            // Increment counter and update button text
+            increment() {
+                this.count++;
+                this.button.textContent = `Count: ${this.count}`;
+            }
+        }
+        // Initialize the Counter component
+        new Counter("counter-container");
+    </script>
+	<section>
+		<pre class="delayed"><code>
+			&lt;class Counter {
+				constructor(containerId) {
+					this.count = 0;
+					this.container = document.getElementById(containerId);
+
+					// Create button
+					this.button = document.createElement("button");
+					this.button.textContent = `Count: ${this.count}`;
+
+					// Add click event listener
+					this.button.addEventListener("click", () => this.increment());
+
+					// Append button to container
+					this.container.appendChild(this.button);
+				}
+
+				// Increment counter and update button text
+				increment() {
+					this.count++;
+					this.button.textContent = `Count: ${this.count}`;
+				}
+			}
+
+			// Initialize the Counter component
+			new Counter("counter-container");
+		</code></pre>
+	</section>
+
+	<pre class="delayed"><code>
+        &lt;div id="counter-container">&lt;/div>
+    </code></pre>
+
+	<details class="notes">
+        This example follows the **Component-Driven Development** pattern in Vanilla JavaScript.
+        - The **Counter** class encapsulates both the UI and logic.
+        - When the button is clicked, the count updates dynamically.
+        - The component is **reusable**, meaning we can create multiple counters on the page.
+    </details>
+</article>
+
+<!-- <article class="slide columns force dont-resize code-labels delayed-last" id="component-io">
 	<h1>
 		<span class="label">Components</span>
 		Inputs and outputs
@@ -230,7 +302,7 @@
 		Often the only output of components is the UI they render.
 		However, they can also have outputs, passed via *events*.
 	</details>
-</article>
+</article> -->
 
 
 <!-- 
