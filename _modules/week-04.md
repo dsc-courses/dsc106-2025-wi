@@ -25,5 +25,6 @@ days:
         title: Disc 4
       - name: LEC 8
         type: lecture
-        title: D3.js
+        title: JS (Part 2) and D3.js
+        url: lectures/07-DSC106-D3.pdf
 ---
