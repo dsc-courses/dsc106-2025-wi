@@ -32,9 +32,9 @@ released: false
 
 ---
 
-## Check-off
+## Submission
 
-To get checked off for the lab, please record a 2 minute video with the following components:
+In your submission for the lab, along with the link to your github repo and website, please record a 2 minute video with the following components:
 
 1. Present your visualizations.
 2. Show you interacting with your visualizations.
@@ -42,6 +42,11 @@ To get checked off for the lab, please record a 2 minute video with the followin
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
 make sure your video is 2 minutes or less.**
+
+## Prerequisites
+
+- You should have completed all the steps in [Lab 0](../lab00/), i.e. that you have Node.js and npm installed.
+- This lab assumes you have already completed [Lab 1](../lab01/), [Lab 2](../lab02/), [Lab 3](../lab03/), and [Lab 4](../lab04/), as we will use the same website as a starting point.
 
 ## Slides (or lack thereof)
 
@@ -63,7 +68,7 @@ If you have not yet done [Step 4 of Lab 4](../lab04/#step-4-update-your-project-
 Since we have the year data, we should show it in the project list.
 That way we can also more easily verify whether our code in the rest of the lab works correctly.
 
-Edit the `<project>` components using JS (should be at `<root repo>/projects/projects.js`) to show the year of the project.
+Edit the projects' display using JS (should be at `<root repo>/projects/projects.js`) to show the year of the project.
 You can use any HTML you deem suitable and style it however you want.
 I placed it under the project description (you’ll need to wrap both in the ame `<div>` otherwise they will occupy the same grid cell and overlap), and styled it like this:
 
@@ -74,16 +79,17 @@ In case you like the above, the font-family is `Baskerville` (a system font) and
 
 {: .note }
 
-> From this point onwards, there are only two files that we will be editing in this lab:
+> From this point onwards, there are only three files that we will be editing in this lab:
 >
 > 1. `<root repo>/projects/index.html`
 > 2. `<root repo>/projects/projects.js` (created in [Step 1.4](../lab04/#step-14-setting-up-the-projectsjs-file) from Lab 4).
+> 3. `style.css`.
 
 ## Step 1: Creating a pie chart with D3
 
 ### Step 1.1: Create a circle with SVG
 
-The first step to create a pie chart with D3 is to create an `<svg>` element.
+The first step to create a pie chart with D3 is to create an `<svg>` element in your `projects` repo's `index.html`.
 
 {: .fyi }
 D3 is a library that translates high level visualization concepts into low level drawing commands.
@@ -108,7 +114,7 @@ Since we have not given the graphic any explicit dimensions, by default it will 
 
 <img src="images/svg-circle.png" alt="" class="browser" data-url="http://localhost:5173/projects">
 
-We can add some CSS in the tag's `<style>` element to limit its size a bit and also add some spacing around it:
+We can add some CSS in the `<svg>` tag element to limit its size a bit and also add some spacing around it:
 
 ```css
 svg {
@@ -165,6 +171,12 @@ In your `projects.js` file, add the following import statement at the top:
 import * as d3 from 'd3';
 ```
 
+If you are having trouble with `npm` and importing from installed modules, you can instead import D3 directly like follows:
+
+```javascript
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+```
+
 Now let’s use the [`d3.arc()`](https://d3js.org/d3-shape/arc#arc) function from the [D3 Shape](https://d3js.org/d3-shape) module to create the path for our circle.
 This works with two parts: first, we create an _arc generator_ which is a function that takes data and returns a path string.
 We’ll configure it to produce arcs based on a radius of `50`
@@ -196,12 +208,10 @@ let arc = arcGenerator({
 > });
 > ```
 
-Now that we have our path, we can add it to our SVG:
+Now that we have our path, we can add it to our SVG (you are now free to remove the `<path>` tag that we placed down initially):
 
-```html
-<svg viewBox="-50 -50 100 100">
-  <path d="{arc}" fill="red" />
-</svg>
+```javascript
+d3.select('svg').append('path').attr('d', arc).attr('fill', 'red');
 ```
 
 ### Step 1.4: Drawing a static pie chart with D3
@@ -243,12 +253,12 @@ And now we can finally calculate the actual paths for each of these slices:
 let arcs = arcData.map((d) => arcGenerator(d));
 ```
 
-Now let’s wrap our `<path>` element with an `{#each}` block since we are now generating multiple paths:
+Now let’s translate the arcs array into `<path>` element since we are now generating multiple paths:
 
-```html
-{#each arcs as arc}
-<path d="{arc}" fill="red" />
-{/each}
+```javascript
+arcs.forEach(arc => {
+  // TODO, fill in step for appending path to svg using D3
+})
 ```
 
 If we reload at this point, all we see is …the same red circle.
@@ -265,15 +275,18 @@ Let’s assign different colors to our slices, by adding a `colors` array and us
 let colors = ['gold', 'purple'];
 ```
 
-Then we convert our code to use it:
+Then we just modify our code from the previous step slightly to use it:
 
-```html
-{#each arcs as arc, i}
-<path d="{" arc } fill="{" colors[i] } />
-{/each}
+```javascript
+arcs.forEach((arc, idx) => {
+    d3.select('svg')
+      .append('path')
+      .attr('d', arc)
+      .attr(...) // Fill in the attribute for fill color via indexing the colors variable
+})
 ```
 
-The result should look like this:
+The result should look like this (you may also see the two color fills inverted):
 
 <img src="images/pie-colors-hardcoded.png" alt="" class="browser" data-url="http://localhost:5173/projects">
 

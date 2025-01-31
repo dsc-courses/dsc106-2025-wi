@@ -52,7 +52,7 @@ make sure your video is 2 minutes or less.**
 
 ## Prerequisites
 
-This lab assumes you have already completed [Lab 1](../1/) and [Lab 2](../2/), as we will use the same website as a starting point.
+This lab assumes you have already completed [Lab 1](../lab01/) and [Lab 2](../lab02/), as we will use the same website as a starting point.
 
 <!-- * You should have completed the [additional steps in Lab 0 to set up a local server](../0/#installing-a-local-server). -->
 
