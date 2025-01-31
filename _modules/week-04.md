@@ -23,6 +23,7 @@ days:
       - name: DISC 4
         type: disc
         title: Disc 4
+        url: labs/lab04/slides/
       - name: LEC 8
         type: lecture
         title: JS (Part 2) and D3.js
