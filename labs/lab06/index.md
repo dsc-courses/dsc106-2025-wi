@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 6: Visualizing categorical data with D3'
 lab: 6
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: true
 ---
 
 # Lab 6: Visualizing categorical data with D3
@@ -375,21 +375,32 @@ If everything is set up correctly, you should now see the same pie chart as befo
 ### Step 2.2: Adding a legend
 
 The colors D3 scales return are just regular CSS colors.
-We can actually create a legend with plain HTML and CSS.
+We can do even more. We can actually create a legend with plain HTML, CSS, and D3.
 
-We can use a `<ul>` element, but a `<dl>` would have been fine too.
-
-We use the same `{#each}` block to create a list item for each slice, and use a CSS variable (e.g. `--color`) to pass the color to CSS for styling.
+We first create a `<ul>` element, but a `<dl>` would have been fine too, and place it under need our `<svg>` tag. We want it to look like the following:
 
 ```html
 <ul class="legend">
-  {#each data as d, index}
   <li style="--color: { colors(index) }">
     <span class="swatch"></span>
-    {d.label} <em>({d.value})</em>
+    {data[i].label} <em>({data[i].value})</em>
   </li>
-  {/each}
+  <li>
+    ...
+  </li>
+  ...
 </ul>
+```
+
+But of course, we do not want to manually create all the `<li></li>` tags, especially our data can grow to much greater sizes. Instead, we use D3:
+
+```javascript
+let legend = d3.select('.legend');
+data.forEach((d, idx) => {
+    legend.append('li')
+          .attr('style', `--color:${colors(idx)}`) // set the style attribute while passing in parameters
+          .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`); // set the inner html of <li>
+})
 ```
 
 At this point, it doesn’t look like a legend very much:
@@ -403,7 +414,7 @@ You can experiment with the styles to make it look the way you want, but we’re
 
 You could probably want to make the swatch look like a swatch by:
 
-1. Making it a square by e.g. giving it the same width and height, or one the two plus `aspect-ratio: 1 / 1`
+1. Making it a square by e.g. giving it the same width and height, or declaring one of the two properties (e.g. width or height) plus `aspect-ratio: 1 / 1`.
 2. Giving it a background color of `var(--color)`
 3. You may find [`border-radius`](https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius) useful to add slight rounding to the corners or even make it into a full circle by setting it to `50%`.
 
@@ -435,7 +446,7 @@ You probably also want to specify a border around the legend, as well as spacing
 
 Right now, our pie chart and legend are occupying _a ton_ of space on our page. It’s more common to place the legend to the right of the pie chart, so let’s do that.
 
-We can do that by wrapping both the pie chart and the legend with a shared container, and using a flex layout on it.
+We can do that by wrapping both the pie chart and the legend with a shared container, and using a flex layout (`display: flex`) on it.
 
 ```html
 <div class="container">
@@ -448,7 +459,7 @@ We can do that by wrapping both the pie chart and the legend with a shared conta
 </div>
 ```
 
-You can experiment with the horizontal alignment (`align-items`) and spacing (`gap`) of the pie chart and legend, but I would recommend applying `flex: 1` to the legend, so that it occupies all available width.
+You can experiment with the container's horizontal alignment (`align-items`) and the spacing (`gap`) of the pie chart and legend, but I would recommend applying `flex: 1` to the legend, so that it occupies all available width.
 
 If everything worked well, you should now see the pie chart and legend side by side and it should be _responsive_, i.e. adapt well to changes in the viewport width.
 
