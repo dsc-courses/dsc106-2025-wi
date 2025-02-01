@@ -651,15 +651,30 @@ searchInput.addEventListener('change', (event) => {
     (d) => d.year,
   );
   // re-calculate data
-  ...
+  let newData = newRolledData.map(([year, count]) => {
+    return { ... }; // TODO
+  });
   // re-calculate slice generator, arc data, arc, etc.
+  let newSliceGenerator = ...;
+  let newArcData = newSliceGenerator(...);
+  let newArcs = newArcData.map(...);
+  // TODO: clear up paths and legends
+  ...
+  // update paths and legends, refer to steps 1.4 and 2.2
   ...
 });
 ```
 
 {: .tip }
 
-Remember to reset/clean-up your `<svg>` and legend as you filter your projects and render new pie chart and legends. Here's one way you can do this: `let newSVG = d3.select('svg'); newSVG.selectAll('path').remove();`. Then you are free to reactively attach new paths to `newSVG`!
+> Remember to reset/clean-up your `<svg>` and legend as you filter your projects and render new pie chart and legends. Here's one way you can do this:
+>
+> ```js
+> let newSVG = d3.select('svg'); 
+> newSVG.selectAll('path').remove();
+> ```
+>
+> Then you are free to reactively attach new paths to `newSVG`!
 
 Once we do that, our pie chart becomes beautifully reactive as well:
 
@@ -737,33 +752,46 @@ Clicking on a selected wedge should deselect it.
 First, create a `selectedIndex` prop and initialize it to `-1` (a convention to mean "no index"):
 
 ```js
-export let selectedIndex = -1;
+let selectedIndex = -1;
 ```
 
-Then, add an `on:click` event on your `<path>` to set it to the index of the wedge that was clicked:
+Then, add an event listener to the event click on your `<path>` to set it to the index of the wedge that was clicked. The skeleton logic should look like the following:
 
-```html
-{#each arcs as arc, index} <path d={arc} fill={ colors(index) } on:click={e =>
-selectedIndex = index} /> {/each}
+```js
+for (let i = 0; i < arcs.length; i++) {
+  const svgNS = "http://www.w3.org/2000/svg"; // to create <path> tag in memory
+  let path = document.createElementNS(svgNS, "path");
+  
+  path.setAttribute("d", arcs[i]);
+  path.setAttribute("fill", colors(i));
+
+  path.addEventListener('click', (event) => {
+    // What should we do?
+    ...
+  })
+
+  let li = document.createElement('li');
+  li.style.setProperty('--color', colors(i));
+
+  // Create the swatch span
+  let swatch = document.createElement('span');
+  swatch.className = 'swatch';
+  swatch.style.backgroundColor = colors(i);
+  
+  // Append the swatch to the list item
+  li.appendChild(swatch);
+
+  // Set the label and value
+  li.innerHTML += `${data[i].label} <em>(${data[i].value})</em>`;
+
+  legendNew.appendChild(li);
+  svg.appendChild(path);
+}
 ```
 
-Ignore the accessibility warnings for now, we will address them at the end.
+As shown above, we would like to highlight the selected wedge using a different color than its own and every other wedge. Let’s apply CSS to change the color of the selected wedge and legend item:
 
-Right now, there is no observable difference when we click on a wedge,
-since we’re not doing anything with the `selectedIndex`.
-Let’s use it to conditionally apply a `selected` class, that we can then use in our CSS to style selected wedges differently:
-
-```html
-{#each arcs as arc, index} <path d={arc} fill={ colors(index) }
-class:selected={selectedIndex === index} on:click={e => selectedIndex = index}
-/> {/each}
-```
-
-You can apply the exact same `class:selected` directive to conditionally apply a `selected` class to the legend items as well.
-
-Then let’s apply CSS to change the color of the selected wedge and legend item:
-
-```scss
+```css
 .selected {
   --color: oklch(60% 45% 0) !important;
 
@@ -778,18 +806,38 @@ Feel free to use any color you want, as long as it’s disctinct from the actual
 {: .fyi }
 Why the `!important`? Because we are trying to override the `--color` variable set via the `style` attribute, which has higher precedence than any selector.
 
-<!--
-It should look like this:
-
-![](images/selected-wedge.png) -->
-
-Lastly, we want to be able to deselect a wedge by clicking on it again.
-
-This is as simple as setting `selectedIndex` to `-1` if it’s already the index of the selected wedge,
-i.e. changing the assignment to
+Then, we also want to be able to deselect a wedge (removing the highlight) by clicking on it again, or select some other wedge while carrying the highlight over.
+We can do so via the following ternary operation:
 
 ```js
 selectedIndex = selectedIndex === index ? -1 : index;
+```
+
+Essentially, it does the following purpose:
+
+- If selectedIndex is the same as an given index when the event is triggered, that means we are deselecting, so reset it to -1.
+- Else, we’ve selected a new wedge, reassign the selectedIndex accordingly.
+
+Putting it together, we should now be able to expand our event monitoring logic to something like this:
+
+```js
+for (let i = 0; i < arcs.length; i++) {
+  /* Same code as before, omitted to save space */
+  path.addEventListener('click', (event) => {
+    // What should we do?
+    selectedIndex = selectedIndex === i ? -1 : i;
+    // this block helps us update or remove the `selected` class tag from
+    // the wedge
+    document.querySelectorAll('path').forEach((p, i) => { // path, index
+        if (i === selectedIndex) {
+            p.classList.add('selected');
+        } else {
+            // TODO, remove `selected` from the class list
+        }
+    })
+  })
+  /* Same code as before, omitted to save space */
+}
 ```
 
 {: .tip }
@@ -805,242 +853,163 @@ selectedIndex = selectedIndex === index ? -1 : index;
 
 ### Step 5.3: Filtering the projects by the selected year
 
-Selecting a wedge doesn’t really do that much right now.
-However, the ability to select a wedge becomes truly powerful when handled by the parent page.
+Selecting a wedge doesn’t really do that much right now and our job is far from finished! Most notably, we have not implemented how we would like handle the legend as we select and deselect wedges.
+Again, we can break it into two cases:
 
-In `src/routes/projects/+page.svelte`, add a variable to hold the selected index:
+1. When selectedIndex is not -1, we’ve selected a wedge that represents a given year, and we should filter out projects data based on the year value, recalculating projects, arc, legend, etc.
+2. When selectedIndex is -1, we simply go ahead and render projects, arc, legend, etc. with the existing projects data.
 
-```js
-let selectedYearIndex = -1;
-```
-
-Then bind it to the `<Pie>` component’s `selectedIndex` prop:
-
-```html
-<Pie data="{pieData}" bind:selectedIndex="{selectedYearIndex}" />
-```
-
-Make sure that it works by printing out the selected index in an expression (`{selectedYearIndex}`) somewhere on the page.
-
-<video src="videos/selected-year-index.mp4" autoplay loop muted></video>
-
-Now define a reactive variable to hold the selected _year_:
+As you can already sense from the description, one commonality between the two cases is the recalculation step. So why don’t we implement that first (as a matter of fact, we did the same thing in [step 4.4](#step-44-visualizing-only-visible-projects), so it’s probably nice that we can extract this piece of code and refactor it into a function).
+This is what the recalculation should look like, given one parameter–a (potentially) new set of projects:
 
 ```js
-let selectedYear;
-$: selectedYear =
-  selectedYearIndex > -1 ? pieData[selectedYearIndex].label : null;
+function recalculate(projectsGiven) {
+  let newRolledData = d3.rollups(
+      projectsGiven,
+      (v) => v.length,
+      (d) => d.year,
+  );
+  let newData = newRolledData.map(([year, count]) => {
+      return { value: count, label: year };
+  });
+  return newData;
+}
 ```
 
-Similarly, print it out somewhere on the page to make sure it works before proceeding.
-
-Now that we have the selected year, we can filter the projects by it!
-
-Our first thought might be to do this filtering by adding another conditional in our `array.filter()` call from Step 4:
+Now time to implement how the logic about updating everything else based on `selectedIndex`:
 
 ```js
-$: filteredProjects = projects.filter((project) => {
-  if (query) {
-    // ...
-  }
+for (let i = 0; i < arcs.length; i++) {
+  /* Same code as before, omitted to save space */
+  path.addEventListener('click', (event) => {
+      selectedIndex = selectedIndex === i ? -1 : i;
+      document.querySelectorAll('path').forEach((p, i) => {
+        /* Same code as before, omitted to save space */
+      })
+      if (selectedIndex !== -1) {
+        // retrieve the selected year
+        let selectedYear = data[selectedIndex].label
+        // filter projects based on the year
+        let filteredProjects = projects.filter(project => project.year === selectedYear);
+        // TODO: render filtered projects
 
-  if (selectedYear) {
-    return project.year === selectedYear;
-  }
-
-  return true;
-});
+        // TODO: call the recalculate function with filtered projects
+        let newData = ...
+        // TODO: Clear out the legend first, refer to step 4.4 Tip
+        let newLegend = ...
+        newLegend ...
+        // update new legend using the highlight color
+        newData.forEach((d) => {
+            newLegend.append('li').attr('style', "--color:#d0457c").html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`);
+        });
+      } else {
+        // TODO: render projects directly
+        
+        // TODO: call the recalculate function with projects
+        let newData = ...
+        // Clear out the legend first, refer to step 4.4 Tip
+        let newLegend ...
+        newLegend ...
+        // update new legend using our normal color scheme
+        newData.forEach((d, idx) => {
+            newLegend.append('li').attr('style', `--color:${colors(idx)}`).html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`);
+        });
+      }
+  });
+  /* Same code as before, omitted to save space */
+}
 ```
 
-However, this will produce an error:
+{: .fyi }
+The `--color` variable we set in the if-branch is exactly the HTML hex code for `oklch(60% 45% 0)`. You may also do your own conversion of Oklab color space colors. You may find this [website](https://oklch.com/) helpful.
 
-![](images/cyclical-dependency-error.png)
-
-But even if it worked, it would make for some pretty jarring user experience:
-because we are using the same `filteredProjects` variable for the pie chart as well,
-it would make all other years disappear from the pie chart when a year is selected.
-The only way to select another year would be to deselect the current one.
-
-Instead, we should use _another_ variable to hold the result of that filtering, e.g. `filteredByYear`.
-
-Then, use `filteredByYear` in your template where you are displaying the actual projects,
-but leave `filteredProjects` as it is for the pie chart.
-
-That’s it! It should work now.
+Once you finish your projects page should achieve the following, finally!
 
 <video src="videos/year-filter-final.mp4" autoplay loop muted class="browser"></video>
 
-### Step 5.4: Fixing accessibility issues (Optional, but strongly recommended)
+### Step 5.4: Finishing touch
 
-Now that we got the basic functionality working, let’s address the accessibility warnings.
+However, we face **one final pitfall**. While everything looks clean when we interact with the pie chart directly, you will notice that when you enter some search query to produce a new pie chart, our interaction is non-responsive! It should not be like this.
 
-It's important to understand why these warnings are there.
-The `path` elements are not focusable by default, so they cannot be interacted with using the keyboard.
-This means that as it currently stands, people who cannot use a mouse or other pointing device cannot select a wedge.
-Even users who _can_ use a mouse, often find keyboard interactions more convenient (e.g. imagine filling out a form by clicking on each field with the mouse instead of pressing <kbd>Tab</kbd>!).
+<video src="videos/year-filter-final-buggy.mp4" autoplay loop muted class="browser"></video>
 
-So how do we fix this?
-The first step is making it possible to interact with these wedges with the keyboard at all.
-Right now, you cannot even select a wedge by pressing the <kbd>Tab</kbd> key on your keyboard, because they are not _focusable_.
+Thankfully, we are not that away from a complete fix! As a matter of fact, we simply just need to incorporate the functionality about selecting/deselecting wedges we just implemented with the searching functionality from step 4.
+It requires the following three procedures:
 
-We can fix this by adding a few attributes to the `<path>` elements:
+- Refactor the wedge selection functionality as a stand-alone function in order for us to better re-use it.
+- Make calls to the refactored wedge selection function from searching, deferring the procedures of updating arcs and legends that were previously handled by search to wedge selection.
+- Make a default wedge selection function call with start-up project data and paths to preserve normal application flow.
 
-- Make it focusable, by adding [`tabindex="0"`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex)
-- Expose it as a button to assistive technology, by adding [`role="button"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles)
-- Adding a label via [`aria-label`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label)
-
-We’re not done yet.
-All that these do is to make sure users of assistive technology can actually interact with the wedge.
-However, because it's not a native button or link, the `click` event will not be triggered when the user focuses on the wedge with the keyboard and presses `Enter` or `Space`.
-Instead, we need to enable that, via a separate event listener (`keyup` is a good candidate).
-
-To avoid duplicating code, let’s move the code that selects a wedge into a separate function:
+Let’s see how it’s done. First, do the refactoring:
 
 ```js
-function toggleWedge(index, event) {
-  selectedIndex = index;
+function embedArcClick(arcsGiven, projectsGiven, dataGiven) {
+  for (let i = 0; i < arcsGiven.length; i++) {
+    const svgNS = "http://www.w3.org/2000/svg";
+    let path = document.createElementNS(svgNS, "path");
+    path.setAttribute("d", arcsGiven[i]);
+    path.setAttribute("fill", colors(i));
+    path.addEventListener('click', (event) => {
+      selectedIndex = selectedIndex === i ? -1 : i;
+      document.querySelectorAll('path').forEach((p, i) => {
+        /* Same code as before, omitted to save space */
+      })
+      if (selectedIndex !== -1) {
+          let selectedYear = dataGiven[selectedIndex].label
+          let filteredProjects = projectsGiven.filter(project => project.year === selectedYear);
+          /* Same code as before, omitted to save space */
+      } else {
+          renderProjects(projectsGiven, projectsContainer, 'h2');
+          let newData = recalculate(projectsGiven);
+          /* Same code as before, omitted to save space */
+        }
+    });
+    /* Same code as before, omitted to save space */
+    // Set the label and value
+    li.innerHTML += `${dataGiven[i].label} <em>(${dataGiven[i].value})</em>`;
+    /* Same code as before, omitted to save space */
+  }
 }
 ```
 
-Then replace `on:click={e => selectedIndex = index}` with `on:click={e => toggleWedge(index, e)}`.
-Now add a keyboard event listener: `on:keyup={e => toggleWedge(index, e)}`.
+{: .note }
+Notice that the lines present indicate how the input parameters `arcsGiven`, `projectsGiven`, and `dataGiven` are used. Everything else remains the same as the [step 5.3](#step-53-filtering-the-projects-by-the-selected-year).
 
-In the `toggleWedge` function, we can wrap the code that selects the wedge with a conditional that checks that either `event.key` doesn't exist, or if it does, that it is `Enter`:
+Next, let’s make calls to our function `embedArcClick()` from the searching components (feel free to refer back to [step 4.4](#step-44-visualizing-only-visible-projects) to refresh your memory):
 
 ```js
-function toggleWedge(index, event) {
-  if (!event.key || event.key === 'Enter') {
-    selectedIndex = index;
-  }
-}
+searchInput.addEventListener('change', (event) => {
+  let filteredProjects = setQuery(event.target.value);
+  renderProjects(filteredProjects, projectsContainer, 'h2');
+  // re-calculate rolled data
+  let newRolledData = d3.rollups(
+    filteredProjects,
+    (v) => v.length,
+    (d) => d.year,
+  );
+  // re-calculate data
+  let newData = newRolledData.map(([year, count]) => {
+    return { ... }; // TODO
+  });
+  // re-calculate slice generator, arc data, arc, etc.
+  let newSliceGenerator = ...;
+  let newArcData = newSliceGenerator(...);
+  let newArcs = newArcData.map(...);
+  // TODO: clear up paths and legends
+  ...
+  // make our call to embedArcClick()!
+  embedArcClick(newArcs, filteredProjects, newData);
+});
 ```
 
-If you try the keyboard interaction out you will notice that it works, but even when we are interacting with it via the mouse, we get an unwieldy focus ring around the wedge
-which looks awful since it’s actually covered by the other wedges:
+Lastly, we just need to make a function call `embedArcClick()` in our `projects.js` file to ensure default behavior. Do the following:
 
-![](images/wedge-outline.png)
-
-We can hide that with `outline: none`:
-
-```css
-path {
-  transition: 300ms;
-  outline: none;
-}
+```js
+embedArcClick(arcs, projects, data);
 ```
 
-However, now keyboard users have no way to know which wedge they have currently focused,
-which is a terrible user experience.
-**Never, ever remove the browser’s default focus styles without providing alternative focus styles**.
-Often extending `:hover` styles to cover [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) as well is a good start.
-So let’s extend our previous `:hover` effect to keyboard users as well:
+All three parameters come from the ones you declared in steps 1 and 2 before all the fancy stuff start to emerge. And we are DONE!
 
-```scss
-svg:has(path:hover, path:focus-visible) {
-  path:not(:hover, :focus-visible) {
-    opacity: 50%;
-  }
-}
-```
+What you should be able to see now:
 
-If you try out the keyboard interaction now, you will notice that we are getting a visible indication of focus, and that the unwieldy default focus ring is no longer visible.
-Yay! 🎉
-
-### Step 5.5: Better selected wedge styling (Optional)
-
-We are currently only indicating which wedge is selected by its _color_,
-which is a little confusing (not to mention problematic for colorblind users),
-since that could be just another color in the pie chart.
-
-The reason we went with that is that it’s easier than pretty much any alternative,
-but if you want to go further, we can do it in a better way.
-
-First, it’s important to understand something about SVG:
-
-{: .important }
-Shapes are painted in the order they appear in the source code,
-and unlike in HTML, there is no way to change this order with CSS.
-
-This means that decorations like [strokes](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke) or [shadows](https://developer.mozilla.org/en-US/docs/Web/CSS/filter) will work nicely for one of the wedges and fail miserably for the others:
-
-<video src="videos/stroke-yikes.mp4" autoplay loop muted></video>
-
-Yikes on bikes!
-So what can we do?
-
-A common technique is to _move_ the selected wedge to the very end with JS or make a copy, then style that.
-But we’ll try something different: we’ll move the selected slice outwards a bit, and make it a bit bigger,
-like taking a pizza slice from a large colorful pizza.
-It will look like this:
-
-<video src="videos/pizza-slice-final.mp4" autoplay loop muted></video>
-
-We will need the start and end angles in our CSS, so the first step is to pass them in as CSS variables:
-
-```html
-<path d={arc} style="
-	--start-angle: { arcData[index]?.startAngle }rad;
-	--end-angle: { arcData[index]?.endAngle }rad;"
-```
-
-{: .important }
-Note the `rad` at the end: CSS angles need a unit too.
-
-Then, in the CSS we can calculate the difference, and the angle to get to the midpoint of the arc:
-
-```scss
-path {
-  --angle: calc(var(--end-angle) - var(--start-angle));
-  --mid-angle: calc(var(--start-angle) + var(--angle) / 2);
-}
-```
-
-Now comes the fun part:
-We will use the `transform` property to rotate to the midpoint of the arc (so that we move along that angle),
-move by 6, then rotate back to restore the original orientation:
-
-```scss
-path {
-  --angle: calc(var(--end-angle) - var(--start-angle));
-  --mid-angle: calc(var(--start-angle) + var(--angle) / 2);
-
-  &.selected {
-    transform: rotate(var(--mid-angle)) translateY(-6px) rotate(calc(-1 * var(--mid-angle)));
-  }
-}
-```
-
-If you try it, it should work, even if a little rough around the edges:
-
-<video src="videos/pizza-slice-1.mp4" autoplay loop muted></video>
-
-<figure>
-<video src="videos/transforms-explained.mp4" autoplay loop muted></video>
-<figcaption>
-To better understand what this is doing, let’s break it down, by showing the rotate, move, and rotate back one after the other
-</figcaption>
-</figure>
-
-The reason it’s a little janky when we click on it, is that it’s transitioning all three transforms at once.
-If we apply a transform on its non-selected state as well, we can fix that:
-
-```scss
-path {
-  transform: rotate(var(--mid-angle)) translateY(0) rotate(calc(-1 * var(--mid-angle)));
-  /* ... */
-}
-```
-
-And let’s also make it a little bigger, by adding a `scale(1.1)` transform as well:
-
-```css
-&.selected {
-  transform: rotate(var(--mid-angle)) translateY(-6px) scale(1.1) rotate(
-      calc(-1 * var(--mid-angle))
-    );
-}
-```
-
-This is the final result:
-
-<video src="videos/pizza-slice-final.mp4" autoplay loop muted></video>
+<video src="videos/year-filter-final-good.mp4" autoplay loop muted class="browser"></video>
