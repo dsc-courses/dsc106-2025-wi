@@ -1,12 +1,12 @@
 ---
 layout: assignment
-title: 'Lab 6: Visualizing categorical data with D3'
-lab: 6
+title: 'Lab 5: Visualizing categorical data with D3'
+lab: 5
 parent: '👩‍🔬 Programming Labs'
 released: true
 ---
 
-# Lab 6: Visualizing categorical data with D3
+# Lab 5: Visualizing categorical data with D3
 
 {: .no_toc}
 
