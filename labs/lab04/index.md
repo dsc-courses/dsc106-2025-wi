@@ -149,7 +149,63 @@ return data;
 1. Add this snippet after the `if (!response.ok)` check.
 2. Open the browser console to ensure `data` contains the data from your JSON file.
 
-### Step 1.3: Creating a `renderProjects` Function
+### Step 1.3: Setting Up the `projects.js` File
+
+In this step, you'll create a `projects.js` file to dynamically fetch and render project data on your projects page. This file will utilize the `fetchJSON` and `renderProjects` functions you created.
+
+#### 1. Creating the `projects.js` File
+
+Navigate to your `projects` folder and create a new file named `projects.js`. Inside this file, you'll import the required functions and use them to fetch and display the projects on your projects page.
+
+#### 2. Importing Functions
+
+Add the following imports at the top of `projects.js`:
+
+```js
+import { fetchJSON, renderProjects } from '../global.js';
+```
+
+These functions are essential for fetching the project data and rendering it dynamically.
+
+#### 3. Fetching Project Data
+
+Use the `fetchJSON` function to load the project data from a JSON file. Add the following code:
+
+```js
+const projects = await fetchJSON('../lib/projects.json');
+```
+
+This code assumes your `projects.json` file is located in a `lib` folder relative to the current file.
+
+#### 4. Selecting the Projects Container
+
+Select the container where you want to render the project articles. Use the following snippet:
+
+```js
+const projectsContainer = document.querySelector('.projects');
+```
+
+Ensure your HTML includes a container with the class `projects`.
+
+#### 5. Rendering the Projects
+
+Call the `renderProjects` function to dynamically display the fetched projects:
+
+```js
+renderProjects(projects, projectsContainer, 'h2');
+```
+
+This code will render each project with an `<h2>` heading level.
+
+
+**Check Your Understanding:**
+
+- What happens if the `projects.json` file is missing or incorrectly formatted?
+- How does the `renderProjects` function handle an empty array of projects? Can you enhance it to display a placeholder message in this case?
+
+
+
+### Step 1.4: Creating a `renderProjects` Function
 
 You’ll build a `renderProjects` function to dynamically generate and display project content. This function will allow you to reuse project rendering logic anywhere on your site.
 
@@ -254,60 +310,6 @@ export function renderProjects(project, containerElement, headingLevel = 'h2') {
 **Challenge:**
 - What happens if you pass an invalid `headingLevel` (e.g., a non-heading tag)?
 - How can you validate the `headingLevel` parameter?
-
-### Step 1.4: Setting Up the `projects.js` File
-
-In this step, you'll create a `projects.js` file to dynamically fetch and render project data on your projects page. This file will utilize the `fetchJSON` and `renderProjects` functions you created.
-
-#### 1. Creating the `projects.js` File
-
-Navigate to your `projects` folder and create a new file named `projects.js`. Inside this file, you'll import the required functions and use them to fetch and display the projects on your projects page.
-
-#### 2. Importing Functions
-
-Add the following imports at the top of `projects.js`:
-
-```js
-import { fetchJSON, renderProjects } from '../global.js';
-```
-
-These functions are essential for fetching the project data and rendering it dynamically.
-
-#### 3. Fetching Project Data
-
-Use the `fetchJSON` function to load the project data from a JSON file. Add the following code:
-
-```js
-const projects = await fetchJSON('../lib/projects.json');
-```
-
-This code assumes your `projects.json` file is located in a `lib` folder relative to the current file.
-
-#### 4. Selecting the Projects Container
-
-Select the container where you want to render the project articles. Use the following snippet:
-
-```js
-const projectsContainer = document.querySelector('.projects');
-```
-
-Ensure your HTML includes a container with the class `projects`.
-
-#### 5. Rendering the Projects
-
-Call the `renderProjects` function to dynamically display the fetched projects:
-
-```js
-renderProjects(projects, projectsContainer, 'h2');
-```
-
-This code will render each project with an `<h2>` heading level.
-
-
-**Check Your Understanding:**
-
-- What happens if the `projects.json` file is missing or incorrectly formatted?
-- How does the `renderProjects` function handle an empty array of projects? Can you enhance it to display a placeholder message in this case?
 
 
 ### Step 1.5: Templating our project data
