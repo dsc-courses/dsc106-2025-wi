@@ -1,12 +1,12 @@
 ---
 layout: assignment
-title: 'Lab 5: Svelte II (Loading Data & Reactivity)'
-lab: 5
+title: 'Lab 6: Svelte II (Loading Data & Reactivity)'
+lab: 6
 parent: '👩‍🔬 Programming Labs'
 released: false
 ---
 
-# Lab 5: Svelte II (Loading Data & Reactivity)
+# Lab 6: Svelte II (Loading Data & Reactivity)
 
 {: .no_toc}
 
