@@ -173,11 +173,3 @@ img {
     font-weight: 500;
     /* Slightly bolder font for visibility */
 }
-
-.project-year {
-    margin-top: 10px;
-    font-family: Baskerville;
-    font-weight: bold;
-    font-variant-numeric: oldstyle-nums;
-    color: var(--text-secondary);
-}

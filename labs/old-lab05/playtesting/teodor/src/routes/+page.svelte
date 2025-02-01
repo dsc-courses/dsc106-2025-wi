@@ -57,6 +57,7 @@
 		</dl>
 	</section>
 {/if}
+
 <h2>Featured Projects</h2>
 <div class="projects">
 	{#each projects.slice(0, 3) as projectData (projectData.title)}
