@@ -45,6 +45,8 @@ make sure your video is 2 minutes or less.**
 - You should have completed all the steps in [Lab 0](../lab00/), i.e. that you have Node.js and npm installed. You will not need the local server from Lab 0, as SvelteKit will provide its own.
 - This lab assumes you have already completed [Lab 1](../lab01/), [Lab 2](../lab02/), [Lab 3](../lab03/) as we will use the same website as a starting point.
 
+## [Slides](./slides/)
+
 ## Step 1: Templating projects from a data file
 
 In the previous labs, we were using a hardcoded blob of HTML to display our projects.
