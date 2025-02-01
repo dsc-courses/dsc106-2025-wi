@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 6: Visualizing categorical data with D3'
 lab: 6
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: true
 ---
 
 # Lab 6: Visualizing categorical data with D3
@@ -480,7 +480,7 @@ D3 does not only provide functions to generate visual output, but includes power
 In this case, we’ll use the `d3.rollups()` function to group our projects by year and count the number of projects in each bucket:
 
 ```js
-let projects = ...;
+let projects = ...; // fetch your project data
 let rolledData = d3.rollups(
   projects,
   (v) => v.length,
@@ -500,15 +500,15 @@ This will give us an array of arrays that looks like this:
 ```
 
 We will then convert this array to the type of array we need by using [`array.map()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map).
-Replace your previous `pieData` declaration with:
+Replace your previous `data` declaration with:
 
 ```js
-let pieData = rolledData.map(([year, count]) => {
+let data = rolledData.map(([year, count]) => {
   return { value: count, label: year };
 });
 ```
 
-That’s it! The result should look like this:
+That’s it! The result should look like this (it's okay if your color scheme looks different based on your project-specific data):
 
 <img src="images/pie-project-year.png" alt="" class="browser" data-url="http://localhost:5173/projects">
 
@@ -525,10 +525,11 @@ First, declare a variable that will hold the search query:
 let query = '';
 ```
 
-Then, add an `<input type="search">` to the HTML (you may add other element properties as you see fit):
+Then, add an `<input type="search">` to the HTML (you may add other element properties as you see fit) underneath the `<div>` container from [step 2](#step-23-laying-out-our-pie-chart-and-legend-side-by-side):
 
 ```html
 <input
+  class="searchBar"
   type="search"
   aria-label="Search projects"
   placeholder="🔍 Search projects…"
@@ -543,22 +544,24 @@ The basic logic should resemble the following:
 ```js
 function setQuery(newQuery) {
   query = newQuery;
-  updateFilteredProjects({
-    ...
-  });
+  // Two thing should happen for this function:
+  // 1) filter projects based on <query>, how can we do this?
+  // 2) return filtered projects
 }
 
-let searchInput = document.getElementById('searchInput');
+let searchInput = document.getElementsByClassName('searchBar')[0];
 
 searchInput.addEventListener('change', (event) => {
-  setQuery(event.target.value);
+  let updatedProjects = setQuery(event.target.value);
+  // TODO: render updated projects!
+  ...
 });
 ```
 
 {: .fyi }
 `change` is only one viable `Event` option here that we can monitor; you may also look into `input` if you want real-time query searches and updates.
 
-Project data filtering should happen inside the `updateFilteredProjects()` function. To filter the project data, we will use the [`array.filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) function,
+To filter the project data, we will use the [`array.filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) function,
 which returns a new array containing only the elements that pass the test implemented by the provided function.
 
 For example, this is how we’d search in project titles:
@@ -593,7 +596,7 @@ Let’s fix both of these!
 To do this, we can simply convert _both_ the query and the title to lowercase before comparing them by using the [`string.toLowerCase()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toLowerCase) function:
 
 ```js
-$: filteredProjects = projects.filter((project) => {
+let filteredProjects = projects.filter((project) => {
   if (query) {
     return project.title.toLowerCase().includes(query.toLowerCase());
   }
@@ -607,7 +610,7 @@ $: filteredProjects = projects.filter((project) => {
 For the second, we can use the [`Object.values()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Object/values) function to get an array of all the values of a project, and then join them into a single string, which we can then search in the same way:
 
 ```js
-$: filteredProjects = projects.filter((project) => {
+let filteredProjects = projects.filter((project) => {
   let values = Object.values(project).join('\n').toLowerCase();
   return values.includes(query.toLowerCase());
 });
@@ -624,7 +627,7 @@ Wouldn’t it be cool if we could see stats _only_ about the projects we are cur
 
 There are two components to this:
 
-1. Calculate `pieData` based on `filteredProjects` instead of `projects`
+1. Calculate `data` based on `filteredProjects` instead of `projects`
 2. Make it update reactively.
 
 The former is a simple matter of replacing the variable name used in your projects page \*\*from `projects` to `filteredProjects`.
@@ -635,6 +638,28 @@ To accomplish the latter, the rolled-up data and pie chart both need to be re-ca
 <!-- <video src="videos/legend-reactive.mp4" autoplay muted loop></video> -->
 
 Also, don't forget about `arcData` and `arcs`.
+
+```js
+// Suppose your searching functionality is completed in event handling
+searchInput.addEventListener('change', (event) => {
+  let filteredProjects = setQuery(event.target.value);
+  renderProjects(filteredProjects, projectsContainer, 'h2');
+  // re-calculate rolled data
+  let newRolledData = d3.rollups(
+    filteredProjects,
+    (v) => v.length,
+    (d) => d.year,
+  );
+  // re-calculate data
+  ...
+  // re-calculate slice generator, arc data, arc, etc.
+  ...
+});
+```
+
+{: .tip }
+
+Remember to reset/clean-up your `<svg>` and legend as you filter your projects and render new pie chart and legends. Here's one way you can do this: `let newSVG = d3.select('svg'); newSVG.selectAll('path').remove();`. Then you are free to reactively attach new paths to `newSVG`!
 
 Once we do that, our pie chart becomes beautifully reactive as well:
 
