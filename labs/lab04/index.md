@@ -122,7 +122,6 @@ export async function fetchJSON(url) {
 
 **What to Do:**
 1. Copy this snippet into your `global.js` file.
-2. Identify the URL `../lib/projects.json` and make sure the file exists in your project structure.
 
 #### 2. Handling Errors
 Add a check to ensure the `fetch` request was successful. If it wasn’t, throw an error to handle invalid responses. Here’s the next piece:
@@ -147,11 +146,10 @@ return data;
 
 **What to Do:**
 1. Add this snippet after the `if (!response.ok)` check.
-2. Open the browser console to ensure `data` contains the data from your JSON file.
 
 ### Step 1.3: Setting Up the `projects.js` File
 
-In this step, you'll create a `projects.js` file to dynamically fetch and render project data on your projects page. This file will utilize the `fetchJSON` and `renderProjects` functions you created.
+In this step, you'll create a `projects.js` file to dynamically fetch and render project data on your projects page. This file will utilize the `fetchJSON` and `renderProjects` functions you will create in Step 1.4 in `global.js`. 
 
 #### 1. Creating the `projects.js` File
 
@@ -200,9 +198,9 @@ This code will render each project with an `<h2>` heading level.
 
 **Check Your Understanding:**
 
+- Identify a URL pointing to your `projects.json` file (ie: `../lib/projects.json`) and make sure the file exists in your project structure.
 - What happens if the `projects.json` file is missing or incorrectly formatted?
 - How does the `renderProjects` function handle an empty array of projects? Can you enhance it to display a placeholder message in this case?
-
 
 
 ### Step 1.4: Creating a `renderProjects` Function
@@ -305,7 +303,9 @@ export function renderProjects(project, containerElement, headingLevel = 'h2') {
 
 **What to Do:**
 1. Replace your existing function with this new parameter.
-2. Test it by calling the function with different `headingLevel` values.
+2. Open the browser console to ensure `data` contains the data from your JSON file.
+3. Test it by calling the function with different `headingLevel` values.
+
 
 **Challenge:**
 - What happens if you pass an invalid `headingLevel` (e.g., a non-heading tag)?
