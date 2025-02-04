@@ -68,7 +68,7 @@ If you have not yet done [Step 4 of Lab 4](../lab04/#step-4-update-your-project-
 Since we have the year data, we should show it in the project list.
 That way we can also more easily verify whether our code in the rest of the lab works correctly.
 
-Edit the projects' display using JS (should be at `<root repo>/projects/projects.js`) to show the year of the project.
+Edit the projects' display using JS (your `renderProject()` method in `global.js`) to show the year of the project.
 You can use any HTML you deem suitable and style it however you want.
 I placed it under the project description (you’ll need to wrap both in the ame `<div>` otherwise they will occupy the same grid cell and overlap), and styled it like this:
 
@@ -114,10 +114,10 @@ Since we have not given the graphic any explicit dimensions, by default it will 
 
 <img src="images/svg-circle.png" alt="" class="browser" data-url="http://localhost:5173/projects">
 
-We can add some CSS in the `<svg>` tag element to limit its size a bit and also add some spacing around it:
+We can add some CSS in the `<svg>` tag element to limit its size a bit and also add some spacing around it. However, to better scope the CSS rule, we recommend you give your `<svg>` tag an id, say `projects-pie-plot`, and apply the CSS rules by the id selector:
 
 ```css
-svg {
+#projects-pie-plot {
   max-width: 20em;
   margin-block: 2em;
 
@@ -130,7 +130,7 @@ This will make it look like this:
 
 <img src="images/svg-circle-width.png" alt="" class="browser" data-url="http://localhost:5173/projects">
 
-### Step 1.3: Using a `<path>` instead of a `<circle>`
+### Step 1.2: Using a `<path>` instead of a `<circle>`
 
 A [`<circle>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/circle) element is an easy way to draw a circle, but we can’t really go anywhere from there: it can _only_ draw circles.
 If we were drawing pie charts directly in SVG, we’d need to switch to another element, that is more complicated, but also more powerful: the [`<path>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path) element.
@@ -155,26 +155,10 @@ Let’s use it then!
 
 Now let's use D3 to create the same path, as a first step towards our pie chart.
 
-First, we need to add D3 to our project so we can use it in our JS code.
-Open the VS Code terminal and run:
-
-```bash
-npm install d3
-```
-
-Ignore any warnings about peer dependencies.
-
-So now that D3 is installed how do we use it?
-In your `projects.js` file, add the following import statement at the top:
+You can import D3 directly in your `projects.js` like follows:
 
 ```javascript
-import * as d3 from 'd3';
-```
-
-If you are having trouble with `npm` and importing from installed modules, you can instead import D3 directly like follows:
-
-```javascript
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
 ```
 
 Now let’s use the [`d3.arc()`](https://d3js.org/d3-shape/arc#arc) function from the [D3 Shape](https://d3js.org/d3-shape) module to create the path for our circle.
@@ -299,8 +283,8 @@ Now let’s clean up the code a bit.
 D3 actually provides a higher level primitive for what we just did: the [`d3.pie()`](https://d3js.org/d3-shape/pie) function.
 Just like `d3.arc()`, `d3.pie()` is a function that returns another function, which we can use to generate the start and end angles for each slice in our pie chart instead of having to do it ourselves.
 
-This …_slice generator_ function takes an array of data values and returns an array of objects, each of whom represents a slice of the pie and contains the start and end angles for it.
-We still feed these objects to our `arcGenerator` to create the paths for the slices,
+This `sliceGenerator()` function takes an array of data values and returns an array of objects, each of whom represents a slice of the pie and contains the start and end angles for it.
+We still feed these objects to our `arcGenerator()` to create the paths for the slices,
 but we don’t have to create them manually.
 It looks like this:
 
@@ -392,7 +376,17 @@ We first create a `<ul>` element, but a `<dl>` would have been fine too, and pla
 </ul>
 ```
 
-But of course, we do not want to manually create all the `<li></li>` tags, especially our data can grow to much greater sizes. Instead, we use D3:
+{: .note}
+DO NOT copy and paste the above code snippet into your `index.html`. It only serves as a blueprint. You will learn how to accomplish this same structure using `D3.js`.
+
+Instead, only create the `<ul>` tag with class name `legend` in your project's `index.html`, directly underneath the `<svg>` tag you created from [step 1.2](#step-12-using-a-path-instead-of-a-circle).
+
+```html
+<svg viewBox="-50 -50 100 100"></svg>
+<ul class="legend"></ul>
+```
+
+Next, we use D3 to help us create all the `<li></li>` tags (this happens in your `projects.js`):
 
 ```javascript
 let legend = d3.select('.legend');
@@ -408,7 +402,7 @@ At this point, it doesn’t look like a legend very much:
 ![alt text](images/legend-unstyled.png)
 
 We need to add some CSS to make it look like an actual legend.
-You can experiment with the styles to make it look the way you want, but we’re including some tips below.
+You can experiment with the styles to make it look the way you want, but we’re including some tips below. Also note that the trick here is we added a `<span>` with a “swatch” class to each `<li>` so we can style them.
 
 #### Making the swatch look like a swatch
 
@@ -423,7 +417,7 @@ Note that because `<span>` is an inline element by default, to get widths and he
 
 #### Applying layout on the list to make it look like a legend
 
-I applied `display: grid` to the `<ul>` (via suitable CSS rules). To make the grid make best use of available space, I used an `auto-fill` grid template, and set the `min-width` of the list items to a reasonable value.
+I applied `display: grid` to the `<ul>` (**avoid using the `<ul>` tag selector**, use selector by class instead). To make the grid make best use of available space, I used an `auto-fill` grid template, and set the `min-width` of the list items to a reasonable value.
 
 ```css
 grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
@@ -431,7 +425,18 @@ grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
 
 This lays them all out on one line if there’s space, or multiple columns if not.
 
-I also applied `display: flex` on each `<li>` (via suitable CSS rules) to vertically center align the text and the swatch (`align-items: center`) and give it spacing via `gap`
+I also applied `display: flex` on each `<li>` (also give it a class name and apply CSS rule on the class) to vertically center align the text and the swatch (`align-items: center`) and give it spacing via `gap`.
+
+```js
+// how you add class name as attributes using D3
+let legend = d3.select('.legend');
+data.forEach((d, idx) => {
+    legend.append('li')
+          .attr('style', `--color:${colors(idx)}`)
+          .attr('class', ...)
+          ...
+})
+```
 
 {: .tip }
 Make sure the `gap` you specify for the `<li>`s is smaller than the `gap` you specify for the whole legend’s grid, to honor the [design principle of _Proximity_](https://www.nngroup.com/articles/gestalt-proximity/).
@@ -538,23 +543,21 @@ Then, add an `<input type="search">` to the HTML (you may add other element prop
 
 ### Step 4.2: Basic search functionality
 
-Remember, JavaScript is not designed to function reactively? So what can we do to make up for this functionality? We can use `Events` or `EventListeners`.
+To make the search bar react to user input, we should use `Events` or `EventListeners`.
 The basic logic should resemble the following:
 
 ```js
-function setQuery(newQuery) {
-  query = newQuery;
-  // Two thing should happen for this function:
-  // 1) filter projects based on <query>, how can we do this?
-  // 2) return filtered projects
-}
+let query = '';
 
-let searchInput = document.getElementsByClassName('searchBar')[0];
+let searchInput = document.querySelector('.searchBar');
 
 searchInput.addEventListener('change', (event) => {
-  let updatedProjects = setQuery(event.target.value);
+  // update query value
+  query = event.target.value;
+  // TODO: filter the projects
+
   // TODO: render updated projects!
-  ...
+
 });
 ```
 
@@ -567,19 +570,13 @@ which returns a new array containing only the elements that pass the test implem
 For example, this is how we’d search in project titles:
 
 ```js
-let filteredProjects = projects.filter((project) => {
-  if (query) {
-    return project.title.includes(query);
-  }
-
-  return true;
-});
+let filteredProjects = projects.filter((project) => project.title.includes(query));
 ```
 
-{: .fyi }
+<!-- {: .fyi }
 `return project.title.includes(query);` by itself would have actually worked fine,
 since if the query is `""`, then every project title contains it anyway.
-However, there is no reason to do extra work if we don’t have to.
+However, there is no reason to do extra work if we don’t have to. -->
 
 <!-- TODO: Mention debounce -->
 
@@ -589,6 +586,8 @@ Finding projects by title is a good first step,
 but it could make it hard to find a project.
 Also, it’s case-sensitive, so e.g. searching for “JavaScript” won’t find “Javascript”.
 
+<video src="videos/search-titles.mp4" autoplay muted loop></video>
+
 Let’s fix both of these!
 
 #### Make the search case-insensitive
@@ -596,13 +595,7 @@ Let’s fix both of these!
 To do this, we can simply convert _both_ the query and the title to lowercase before comparing them by using the [`string.toLowerCase()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toLowerCase) function:
 
 ```js
-let filteredProjects = projects.filter((project) => {
-  if (query) {
-    return project.title.toLowerCase().includes(query.toLowerCase());
-  }
-
-  return true;
-});
+let filteredProjects = projects.filter((project) => project.title.toLowerCase().includes(query));
 ```
 
 #### Search across all project metadata, not just titles
@@ -616,37 +609,53 @@ let filteredProjects = projects.filter((project) => {
 });
 ```
 
-Try it again. Both issues should be fixed at this point.
+Putting it together, here is how we make the search bar react to user input:
 
-<video src="videos/search-titles.mp4" autoplay muted loop></video>
+```js
+let query = '';
+let searchInput = document.querySelector('.searchBar');
+searchInput.addEventListener('change', (event) => {
+  // update query value
+  query = event.target.value;
+  // filter projects
+  let filteredProjects = projects.filter((project) => {
+    let values = Object.values(project).join('\n').toLowerCase();
+    return values.includes(query.toLowerCase());
+  });
+  // render filtered projects
+  renderProjects(filteredProjects, projectsContainer, 'h2');
+});
+```
+
+Note that we **need** a call to `renderProjects()` in order for the filtered changes to apply!
+
+Try it again. Both issues should be fixed at this point.
 
 ### Step 4.4: Visualizing only visible projects
 
 As it currently stands, our pie chart and legend are not aware of the filtering we are doing.
 Wouldn’t it be cool if we could see stats _only_ about the projects we are currently seeing?
 
-There are two components to this:
+Here is how we can clean this up:
 
-1. Calculate `data` based on `filteredProjects` instead of `projects`
-2. Make it update reactively.
-
-The former is a simple matter of replacing the variable name used in your projects page \*\*from `projects` to `filteredProjects`.
-To accomplish the latter, the rolled-up data and pie chart both need to be re-calculated based on `filteredProjects`.
+1. Move all the d3 code into the event listener for the search bar, change `projects` to `filteredProjects`
+   1. You should notice that the pie chart doesn’t render when the page loads, but a pie chart appears when the user types something into the search box, think about why that is.
+   2. Also, typing multiple queries in the search box renders the pie chart and legend multiple times since we aren’t clearing the svg and legend before re-rendering
+2. Fix the legend issue by clearing the svg and legend
+3. Fix the first render issue by refactoring plot code into a separate function, then calling the function on page load AND within the event handler.
 
 <!-- However, if you try the search out at this point, you will see that the legend is updating, but the pie chart is not. -->
 
 <!-- <video src="videos/legend-reactive.mp4" autoplay muted loop></video> -->
 
-Also, don't forget about `arcData` and `arcs`.
+Below is this workflow implemented in skeleton code:
 
 ```js
-// Suppose your searching functionality is completed in event handling
-searchInput.addEventListener('change', (event) => {
-  let filteredProjects = setQuery(event.target.value);
-  renderProjects(filteredProjects, projectsContainer, 'h2');
+// Refactor all plotting into one function
+function renderPieChart(projectsGiven) {
   // re-calculate rolled data
   let newRolledData = d3.rollups(
-    filteredProjects,
+    projectsGiven,
     (v) => v.length,
     (d) => d.year,
   );
@@ -662,6 +671,16 @@ searchInput.addEventListener('change', (event) => {
   ...
   // update paths and legends, refer to steps 1.4 and 2.2
   ...
+}
+
+// Call this function on page load
+renderPieChart(projects);
+
+searchInput.addEventListener('change', (event) => {
+  let filteredProjects = setQuery(event.target.value);
+  // re-render legends and pie chart when event triggers
+  renderProjects(filteredProjects, projectsContainer, 'h2');
+  renderPieChart(filteredProjects);
 });
 ```
 
