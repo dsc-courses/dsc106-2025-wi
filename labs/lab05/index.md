@@ -39,7 +39,7 @@ In your submission for the lab, along with the link to your github repo and webs
 1. Present your visualizations.
 2. Show you interacting with your visualizations.
 3. Explain why you can't search in the bar and then click a pie slice at the same time, and which lines of code you would need to change to solve this.
-  a. If you fix the bug and show the fixed interaction in your video, you will get 10% extra credit on this lab.
+  - If you fix the bug and show the fixed interaction in your video, you will get 10% extra credit on this lab.
 4. Share the most interesting thing you learned from this lab.
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
