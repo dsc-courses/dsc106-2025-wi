@@ -2,7 +2,7 @@
 layout: assignment
 title: 'Project 3: Interactive Visualization'
 parent: '📝 Projects'
-released: false
+released: true
 nav_order: 4
 ---
 
@@ -24,7 +24,7 @@ One challenge is to **scope the assignment so that you can finish it within two 
 
 ## Team Registration
 
-For this assignment, you should work in teams of 2-3 students. You might want to find project partners that you will continue to work with for the final project.
+For this assignment, you should work in teams of **3-4 students**. You might want to find project partners that you will continue to work with for the final project.
 
 As soon as you have formed a team and chosen a dataset, submit the [team registration form][link5]. Your form must include **the names, UCSD email addresses, and PIDs** of each team member, along with a **concise title for your interactive visualization**. The visualization title need not be exact, **just a rough title should be a good start**. If you are looking for project partners, please post to Ed to find classmates with similar interests! **You should submit your team registration by Mon 02/10, 11:55 pm.** Please ensure that the team has been finalized before filling the form, and that the details are correct.
 
@@ -113,11 +113,11 @@ You must have a working prototype online by **Tue 02/18, 11:59 pm**. Your protot
 
 In addition, **you must submit the URL on Gradescope**. **One submission per team is sufficient**.
 
-Submissions will be reviewed as part of a subsequent peer review assignment (due Tue 02/25), so try to avoid a late submission; assignments submitted late may not be included as part of the peer review and thus not receive peer feedback.
+Submissions will be reviewed as part of a subsequent peer review assignment, so try to avoid a late submission; assignments submitted late may not be included as part of the peer review and thus not receive peer feedback.
 
 ## Suggested Data Sources
 
-To help get you started, this assignment, we’ve provided four possible datasets for you to use, although you're welcome to select any health dataset you prefer. Note that these datasets are the same as the ones from Project 2. Feel free to reuse the dataset you used in Project 2 to speed up your development process.
+We’ve provided four datasets for you to use. **You must only pick a dataset from the list below**. Note that these datasets are the same as the ones from Project 2. Feel free to reuse the dataset you used in Project 2 to speed up your development process.
 
 All datasets contain time series data relevant to health, but from different cohort (and species), different time scales, and different modalities. Time series analyses in themselves are not critical to exploring the data, but allow for forecasting and windowing of classifier data alongside unsupervised and statistical approaches.
 
