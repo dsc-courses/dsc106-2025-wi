@@ -52,7 +52,11 @@ function renderPieChart(filteredProjects) {
 
         legend
           .selectAll('li')
-          .attr('class', (_, idx) => (idx === selectedIndex ? 'selected' : ''));
+          .attr(
+            'class',
+            (_, idx) =>
+              `legend-item ${idx === selectedIndex ? 'selected' : ''}`,
+          );
 
         if (selectedIndex === -1) {
           renderProjects(projects, projectsContainer, 'h2');
