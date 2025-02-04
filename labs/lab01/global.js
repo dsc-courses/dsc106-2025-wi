@@ -1,9 +1,3 @@
-import 'https://unpkg.com/d3@7.9.0/dist/d3.min.js';
-
-console.log(d3.csv);
-
-console.log('Hello, world!');
-
 export function $$(selector, context = document) {
   return Array.from(context.querySelectorAll(selector));
 }
@@ -86,7 +80,7 @@ export function renderProjects(projects, containerEl, headingLevel = 'h2') {
     article.innerHTML = `
         <${headingLevel}>${project.title}</${headingLevel}>
         <img src="${project.image}" alt="${project.title}">
-        <p>${project.description}</p>
+        <p>${project.description} <br><small>Year: ${project.year}</small></p>
     `;
     containerEl.appendChild(article);
   }
