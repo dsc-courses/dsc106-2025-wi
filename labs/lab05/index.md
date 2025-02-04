@@ -879,7 +879,7 @@ Once you finish your projects page should achieve the following, finally!
 
 <video src="videos/year-filter-final.mp4" autoplay loop muted class="browser"></video>
 
-### Step 5.4: One Final Pitfall (Extra Credit Opportunity)
+### Step 5.4: One Final Pitfall
 
 However, we face **one final pitfall**. While everything looks clean when we interact with the pie chart directly, you may notice that there is still a semi-subtle bug: you can filter projects by pie clicks and by the search bar, but not by both at the same time (if you search in the bar and then click a pie slice, the projects will only be filtered by year, not by the search query). It should not be like this!
 
