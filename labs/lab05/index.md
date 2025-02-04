@@ -39,6 +39,7 @@ In your submission for the lab, along with the link to your github repo and webs
 1. Present your visualizations.
 2. Show you interacting with your visualizations.
 3. Explain why you can't search in the bar and then click a pie slice at the same time, and which lines of code you would need to change to solve this.
+  a. If you fix the bug and show the fixed interaction in your video, you will get 10% extra credit on this lab.
 4. Share the most interesting thing you learned from this lab.
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
@@ -106,7 +107,7 @@ In this case, it will have a width and height of 100, and the (0, 0) point will 
 We can use these coordinates to e.g. draw a red circle within it with a center at (0, 0) and a radius of 50 via the SVG [`<circle>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/circle) element:
 
 ```html
-<svg viewBox="-50 -50 100 100">
+<svg id="projects-plot" viewBox="-50 -50 100 100">
   <circle cx="0" cy="0" r="50" fill="red" />
 </svg>
 ```
@@ -142,7 +143,7 @@ All of this is stuffed into a single [`d`](https://developer.mozilla.org/en-US/d
 Here is our circle as a `<path>` element:
 
 ```html
-<svg viewBox="-50 -50 100 100">
+<svg id="projects-plot" viewBox="-50 -50 100 100">
   <path d="M -50 0 A 50 50 0 0 1 50 0 A 50 50 0 0 1 -50 0" fill="red" />
 </svg>
 ```
