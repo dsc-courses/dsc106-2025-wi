@@ -701,7 +701,7 @@ Once we do that, our pie chart becomes beautifully reactive as well:
 ## Step 5: Turning the pie into filtering UI for our projects
 
 **Visualizations are not just output.**
-Interactive visualizations allow you to _interact_ with the data as well and explore it more effective ways.
+Interactive visualizations allow you to _interact_ with the data as well and explore it in more effective ways.
 
 In this step, we will turn our pie chart into a filtering UI for our projects,
 so we can click on the wedge or legend entry for a given year and only see projects from that year.
@@ -773,7 +773,7 @@ First, create a `selectedIndex` variable and initialize it to `-1` (a convention
 let selectedIndex = -1;
 ```
 
-Then, add a click event to the your `<path>` which sets `selectedIndex` to the index of the wedge that was clicked. 
+Then, add a click event to your `<path>` which will set `selectedIndex` to the index of the wedge that was clicked. 
 The skeleton logic should look like the following:
 
 ```js
@@ -834,7 +834,7 @@ Putting it together, we should now be able to expand our event monitoring logic 
 });
 ```
 
- We have not implemented how we would like to handle the legend as we select and deselect wedges. For consistency and clarity, lets implement the same feature and logic used for the wedges to the legend! One important point to keep in mind. We shouldn’t set the color attribute on the `<li>` elements directly, we just need to add the `.selected` class to apply the appropriate style to the right pie slice.
+ We have not implemented how we would like to handle the legend as we select and deselect wedges. For consistency and clarity, lets implement the same feature and logic used for the wedges to the legend! One important point to keep in mind though. We shouldn’t set the color attribute on the `<li>` elements directly, we just need to add the `.selected` class to apply the appropriate style to the right pie slice.
 
 ```js
 legend
@@ -861,13 +861,14 @@ Selecting a wedge doesn’t really do that much right now and our job is far fro
 1. When selectedIndex is not -1, we’ve selected a wedge that represents a given year, and we should filter out projects data based on the year value, recalculating projects, arc, legend, etc.
 2. When selectedIndex is -1, we simply go ahead and render projects, arc, legend, etc. with the existing projects data.
 
-As you may already sense from the description, one particular function from above might come in handy to render the filtered projects onto the webpage. Hint: `.label` might be useful.
+As you may already sense from the description, one particular function from earlier might come in handy to render the filtered projects onto the webpage.
 
 ```js
 if (selectedIndex === -1) {
   renderProjects(projects, projectsContainer, 'h2');
 } else {
   // TODO: filter projects and project them onto webpage
+  // Hint: `.label` might be useful
 }
 ```
 
@@ -884,4 +885,4 @@ However, we face **one final pitfall**. While everything looks clean when we in
 
 You are **not required** to fix this bug. However, we want you to understand why this is happening. So in your video, please **explain why the issue is happening** and **which lines of code you would need to change** to solve this issue.
 
-**With that being said, for students who do fix this issue, we would be happy to give them 10% extra credit on this lab!** 🙂
+**With that being said, if you do fix this issue, we would be happy to give you 10% extra credit on this lab!** 🙂
