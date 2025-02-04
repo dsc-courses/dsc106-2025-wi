@@ -121,7 +121,6 @@ We can add some CSS in the `<svg>` tag element to limit its size a bit and also 
   max-width: 20em;
   margin-block: 2em;
 
-  /* Do not clip shapes outside the viewBox */
   overflow: visible;
 }
 ```
@@ -723,12 +722,12 @@ What about fading out all _other_ wedges when a wedge is hovered?
 We can target the `<svg>` element when it contains a hovered `<path>`
 by using the `:has()` pseudo-class:
 
-```scss
-svg:has(path:hover) {
-  path:not(:hover) {
-    opacity: 50%;
-  }
-}
+```css
+&:has(path:hover) {
+   path:not(:hover) {
+     opacity: 0.5;
+   }
+ }
 ```
 
 This gives us something like this:
@@ -736,7 +735,7 @@ This gives us something like this:
 ![](images/wedge-hover-1.gif)
 
 {: .fyi }
-Why not just use `svg:hover` instead of `svg:has(path:hover)`?
+Why not just use `:hover` instead of `:has(path:hover)`?
 Because the `<svg>` can be covered _without_ any of the wedges being hovered, and then _all_ wedges would be faded out.
 
 We can even make it smooth by adding a `transition` property to the `<path>` elements:
@@ -768,47 +767,31 @@ Clicking on a selected wedge should deselect it.
 
 <video src="videos/wedge-select.mp4" loop autoplay muted></video>
 
-First, create a `selectedIndex` prop and initialize it to `-1` (a convention to mean "no index"):
+First, create a `selectedIndex` variable and initialize it to `-1` (a convention to mean "no index"):
 
 ```js
 let selectedIndex = -1;
 ```
 
-Then, add an event listener to the event click on your `<path>` to set it to the index of the wedge that was clicked. The skeleton logic should look like the following:
+Then, add a click event to the your `<path>` which sets `selectedIndex` to the index of the wedge that was clicked. 
+The skeleton logic should look like the following:
 
 ```js
-for (let i = 0; i < arcs.length; i++) {
-  const svgNS = "http://www.w3.org/2000/svg"; // to create <path> tag in memory
-  let path = document.createElementNS(svgNS, "path");
-  
-  path.setAttribute("d", arcs[i]);
-  path.setAttribute("fill", colors(i));
-
-  path.addEventListener('click', (event) => {
-    // What should we do?
-    ...
-  })
-
-  let li = document.createElement('li');
-  li.style.setProperty('--color', colors(i));
-
-  // Create the swatch span
-  let swatch = document.createElement('span');
-  swatch.className = 'swatch';
-  swatch.style.backgroundColor = colors(i);
-  
-  // Append the swatch to the list item
-  li.appendChild(swatch);
-
-  // Set the label and value
-  li.innerHTML += `${data[i].label} <em>(${data[i].value})</em>`;
-
-  legendNew.appendChild(li);
-  svg.appendChild(path);
-}
+let svg = d3.select('svg');
+  svg.selectAll('path').remove();
+  arcs.forEach((arc, i) => {
+    svg
+      .append('path')
+      .attr('d', arc)
+      .attr('fill', colors(i))
+      .on('click', () => {
+        // What should we do? (Keep scrolling to find out!)
+      });
+  });
 ```
 
-As shown above, we would like to highlight the selected wedge using a different color than its own and every other wedge. Let’s apply CSS to change the color of the selected wedge and legend item:
+As shown above, we would like to highlight the selected wedge using a different color than its own and every other wedge. 
+Let’s apply CSS to change the color of the selected wedge and legend item:
 
 ```css
 .selected {
@@ -829,7 +812,7 @@ Then, we also want to be able to deselect a wedge (removing the highlight) by cl
 We can do so via the following ternary operation:
 
 ```js
-selectedIndex = selectedIndex === index ? -1 : index;
+selectedIndex = selectedIndex === i ? -1 : i;
 ```
 
 Essentially, it does the following purpose:
@@ -840,23 +823,25 @@ Essentially, it does the following purpose:
 Putting it together, we should now be able to expand our event monitoring logic to something like this:
 
 ```js
-for (let i = 0; i < arcs.length; i++) {
-  /* Same code as before, omitted to save space */
-  path.addEventListener('click', (event) => {
-    // What should we do?
-    selectedIndex = selectedIndex === i ? -1 : i;
-    // this block helps us update or remove the `selected` class tag from
-    // the wedge
-    document.querySelectorAll('path').forEach((p, i) => { // path, index
-        if (i === selectedIndex) {
-            p.classList.add('selected');
-        } else {
-            // TODO, remove `selected` from the class list
-        }
-    })
-  })
-  /* Same code as before, omitted to save space */
-}
+.on('click', () => {
+  selectedIndex = selectedIndex === i ? -1 : i;
+  
+  svg
+    .selectAll('path')
+    .attr('class', (_, idx) => (
+      // TODO: filter idx to find correct pie slice and apply CSS from above
+    ));
+});
+```
+
+ We have not implemented how we would like to handle the legend as we select and deselect wedges. For consistency and clarity, lets implement the same feature and logic used for the wedges to the legend! One important point to keep in mind. We shouldn’t set the color attribute on the `<li>` elements directly, we just need to add the `.selected` class to apply the appropriate style to the right pie slice.
+
+```js
+legend
+    .selectAll('li')
+    .attr('class', (_, idx) => (
+      // TODO: filter idx to find correct legend and apply CSS from above
+    ));
 ```
 
 {: .tip }
@@ -865,170 +850,38 @@ for (let i = 0; i < arcs.length; i++) {
 >
 > ```css
 > path {
->   /* ... */
 >   cursor: pointer;
 > }
 > ```
 
 ### Step 5.3: Filtering the projects by the selected year
 
-Selecting a wedge doesn’t really do that much right now and our job is far from finished! Most notably, we have not implemented how we would like handle the legend as we select and deselect wedges.
-Again, we can break it into two cases:
+Selecting a wedge doesn’t really do that much right now and our job is far from finished! Most notably, we have not implemented how we would filter the projects as we select and deselect the wedges. This may seem complex at first but we can break it down into two smaller, more manageable cases! 
 
 1. When selectedIndex is not -1, we’ve selected a wedge that represents a given year, and we should filter out projects data based on the year value, recalculating projects, arc, legend, etc.
 2. When selectedIndex is -1, we simply go ahead and render projects, arc, legend, etc. with the existing projects data.
 
-As you can already sense from the description, one commonality between the two cases is the recalculation step. So why don’t we implement that first (as a matter of fact, we did the same thing in [step 4.4](#step-44-visualizing-only-visible-projects), so it’s probably nice that we can extract this piece of code and refactor it into a function).
-This is what the recalculation should look like, given one parameter–a (potentially) new set of projects:
+As you may already sense from the description, one particular function from above might come in handy to render the filtered projects onto the webpage. Hint: `.label` might be useful.
 
 ```js
-function recalculate(projectsGiven) {
-  let newRolledData = d3.rollups(
-      projectsGiven,
-      (v) => v.length,
-      (d) => d.year,
-  );
-  let newData = newRolledData.map(([year, count]) => {
-      return { value: count, label: year };
-  });
-  return newData;
-}
-```
-
-Now time to implement how the logic about updating everything else based on `selectedIndex`:
-
-```js
-for (let i = 0; i < arcs.length; i++) {
-  /* Same code as before, omitted to save space */
-  path.addEventListener('click', (event) => {
-      selectedIndex = selectedIndex === i ? -1 : i;
-      document.querySelectorAll('path').forEach((p, i) => {
-        /* Same code as before, omitted to save space */
-      })
-      if (selectedIndex !== -1) {
-        // retrieve the selected year
-        let selectedYear = data[selectedIndex].label
-        // filter projects based on the year
-        let filteredProjects = projects.filter(project => project.year === selectedYear);
-        // TODO: render filtered projects
-
-        // TODO: call the recalculate function with filtered projects
-        let newData = ...
-        // TODO: Clear out the legend first, refer to step 4.4 Tip
-        let newLegend = ...
-        newLegend ...
-        // update new legend using the highlight color
-        newData.forEach((d) => {
-            newLegend.append('li').attr('style', "--color:#d0457c").html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`);
-        });
-      } else {
-        // TODO: render projects directly
-        
-        // TODO: call the recalculate function with projects
-        let newData = ...
-        // Clear out the legend first, refer to step 4.4 Tip
-        let newLegend ...
-        newLegend ...
-        // update new legend using our normal color scheme
-        newData.forEach((d, idx) => {
-            newLegend.append('li').attr('style', `--color:${colors(idx)}`).html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`);
-        });
-      }
-  });
-  /* Same code as before, omitted to save space */
+if (selectedIndex === -1) {
+  renderProjects(projects, projectsContainer, 'h2');
+} else {
+  // TODO: filter projects and project them onto webpage
 }
 ```
 
 {: .fyi }
-The `--color` variable we set in the if-branch is exactly the HTML hex code for `oklch(60% 45% 0)`. You may also do your own conversion of Oklab color space colors. You may find this [website](https://oklch.com/) helpful.
+The `--color` variable we set in the if-branch is exactly the HTML hex code for `oklch(60% 45% 0)`. You may also do your own conversion of Oklab color space colors. You may find this [website](https://oklch.com/) helpful. 
 
 Once you finish your projects page should achieve the following, finally!
 
 <video src="videos/year-filter-final.mp4" autoplay loop muted class="browser"></video>
 
-### Step 5.4: Finishing touch
+### Step 5.4: One Final Pitfall (Extra Credit Opportunity)
 
-However, we face **one final pitfall**. While everything looks clean when we interact with the pie chart directly, you will notice that when you enter some search query to produce a new pie chart, our interaction is non-responsive! It should not be like this.
+However, we face **one final pitfall**. While everything looks clean when we interact with the pie chart directly, you may notice that there is still a semi-subtle bug: you can filter projects by pie clicks and by the search bar, but not by both at the same time (if you search in the bar and then click a pie slice, the projects will only be filtered by year, not by the search query). It should not be like this!
 
-<video src="videos/year-filter-final-buggy.mp4" autoplay loop muted class="browser"></video>
+You are **not required** to fix this bug. However, we want you to understand why this is happening. So in your video, please **explain why the issue is happening** and **which lines of code you would need to change** to solve this issue.
 
-Thankfully, we are not that away from a complete fix! As a matter of fact, we simply just need to incorporate the functionality about selecting/deselecting wedges we just implemented with the searching functionality from step 4.
-It requires the following three procedures:
-
-- Refactor the wedge selection functionality as a stand-alone function in order for us to better re-use it.
-- Make calls to the refactored wedge selection function from searching, deferring the procedures of updating arcs and legends that were previously handled by search to wedge selection.
-- Make a default wedge selection function call with start-up project data and paths to preserve normal application flow.
-
-Let’s see how it’s done. First, do the refactoring:
-
-```js
-function embedArcClick(arcsGiven, projectsGiven, dataGiven) {
-  for (let i = 0; i < arcsGiven.length; i++) {
-    const svgNS = "http://www.w3.org/2000/svg";
-    let path = document.createElementNS(svgNS, "path");
-    path.setAttribute("d", arcsGiven[i]);
-    path.setAttribute("fill", colors(i));
-    path.addEventListener('click', (event) => {
-      selectedIndex = selectedIndex === i ? -1 : i;
-      document.querySelectorAll('path').forEach((p, i) => {
-        /* Same code as before, omitted to save space */
-      })
-      if (selectedIndex !== -1) {
-          let selectedYear = dataGiven[selectedIndex].label
-          let filteredProjects = projectsGiven.filter(project => project.year === selectedYear);
-          /* Same code as before, omitted to save space */
-      } else {
-          renderProjects(projectsGiven, projectsContainer, 'h2');
-          let newData = recalculate(projectsGiven);
-          /* Same code as before, omitted to save space */
-        }
-    });
-    /* Same code as before, omitted to save space */
-    // Set the label and value
-    li.innerHTML += `${dataGiven[i].label} <em>(${dataGiven[i].value})</em>`;
-    /* Same code as before, omitted to save space */
-  }
-}
-```
-
-{: .note }
-Notice that the lines present indicate how the input parameters `arcsGiven`, `projectsGiven`, and `dataGiven` are used. Everything else remains the same as the [step 5.3](#step-53-filtering-the-projects-by-the-selected-year).
-
-Next, let’s make calls to our function `embedArcClick()` from the searching components (feel free to refer back to [step 4.4](#step-44-visualizing-only-visible-projects) to refresh your memory):
-
-```js
-searchInput.addEventListener('change', (event) => {
-  let filteredProjects = setQuery(event.target.value);
-  renderProjects(filteredProjects, projectsContainer, 'h2');
-  // re-calculate rolled data
-  let newRolledData = d3.rollups(
-    filteredProjects,
-    (v) => v.length,
-    (d) => d.year,
-  );
-  // re-calculate data
-  let newData = newRolledData.map(([year, count]) => {
-    return { ... }; // TODO
-  });
-  // re-calculate slice generator, arc data, arc, etc.
-  let newSliceGenerator = ...;
-  let newArcData = newSliceGenerator(...);
-  let newArcs = newArcData.map(...);
-  // TODO: clear up paths and legends
-  ...
-  // make our call to embedArcClick()!
-  embedArcClick(newArcs, filteredProjects, newData);
-});
-```
-
-Lastly, we just need to make a function call `embedArcClick()` in our `projects.js` file to ensure default behavior. Do the following:
-
-```js
-embedArcClick(arcs, projects, data);
-```
-
-All three parameters come from the ones you declared in steps 1 and 2 before all the fancy stuff start to emerge. And we are DONE!
-
-What you should be able to see now:
-
-<video src="videos/year-filter-final-good.mp4" autoplay loop muted class="browser"></video>
+**With that being said, for students who do fix this issue, we would be happy to give them 10% extra credit on this lab!** 🙂
