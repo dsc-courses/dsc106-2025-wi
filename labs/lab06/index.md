@@ -662,7 +662,7 @@ If we view our scatterplot now, we'll see something like this:
 
 ![](images/axes-basic.png)
 
-<h1>IF YOU SEE SOMETHING LIKE IMG1, YOU SHOULD EVALUATE THE ORDER IN WHICH YOUR DOTS ARE BEING RENDERED AND THE CURRENT CHANGES YOU MADE</h1>
+{: .Note} If you see the dots lie out of the axes, you should evaluate the order in which you are rendering the dots and the axes.
 
 Much better, right?
 
@@ -714,8 +714,6 @@ Add some CSS to make the gridlines less prominent.
 ``` -->
 
 Much better now!
-
-<H1>INSERT IMG2</H1>
 
 <figure markdown="1">
 
@@ -973,6 +971,15 @@ If any of these aspects need adjustment, try tweaking:
 - The `fill-opacity` value
 - The sorting function for overlapping dots
 
+<figure markdown="1">
+
+![](images/Step-4.png)
+
+<figcaption>
+Your graph should like like this right about now.
+</figcaption>
+</figure>
+
 ## Step 5: Brushing
 
 In the previous lab, we selected single pie segments by clicking. As discussed in the "A Tour through the Interaction Zoo" lecture, brushing can be an effective interaction technique for selecting _multiple_ data points in a visualization.
@@ -1225,5 +1232,16 @@ function brushed(event) {
   updateVisualization(breakdown);
 }
 ``` -->
+
+At this point, your graph should look like this:
+
+<figure markdown="1">
+
+![](images/final.png)
+
+<figcaption>
+The final output!
+</figcaption>
+</figure>
 
 > If you want to go further, think about how to make the scatterplot we made in this lab reusable as a separate function.
