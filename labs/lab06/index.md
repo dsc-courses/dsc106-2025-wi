@@ -49,7 +49,7 @@ This lab is a little more involved than most of the previous labs,
 because it’s introducing the core technical material around data visualization.
 A robust understanding of these concepts will be invaluable
 as you work on your final projects, so spending time practicing them for the lab
-will be time will spent.
+will be time well spent.
 
 ## Step 0: Setting up
 
@@ -795,7 +795,7 @@ The `transform-origin` and `transform-box` properties are crucial here - without
 Now, in our D3 selection, we add mouseenter and mouseleave event listeners on each dot:
 
 ```javascript
-dot
+dots
   .on('mouseenter', (event, commit) => {
     updateTooltipContent(commit);
   })
