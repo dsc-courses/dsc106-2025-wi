@@ -644,7 +644,7 @@ If we preview at this point, you'd expect to see an image with the dots. But oh 
 
 {: .To Answer in Submission } Try to print `commits` in your console. Is the data populated? Why is this happening?
 
-**Put all the code from step 2 into a function, say `createScatterplot`. Now call this function after `loadData()`.**
+**Put all the code from step 2 into a function, say `createScatterplot`.** Now call this function after `loadData()`, inside the DOMContentLoaded event listener.
 
 If we preview at this point, we'll get something like this:
 
@@ -869,7 +869,7 @@ Experiment with these properties to achieve a polished look.
 
 ### Step 3.3: Making it only appear when hovering over a dot
 
-Instead of using Svelte's conditional rendering, we'll use the HTML `hidden` attribute and CSS to control visibility:
+We'll use the HTML `hidden` attribute and CSS to control visibility:
 
 ```js
 function updateTooltipVisibility(isVisible) {
@@ -893,7 +893,7 @@ dl.info[hidden]:not(:hover, :focus-within) {
 }
 ```
 
-Update your event listeners:
+Update your event listeners from `createScatterplot` function:
 
 ```js
 dots
@@ -919,10 +919,10 @@ function updateTooltipPosition(event) {
 }
 ```
 
-Update your mouseenter event listener:
+Update your mouseenter event listener in the `createScatterplot` function:
 
 ```js
-circles.on('mouseenter', (event, d, i) => {
+dots.on('mouseenter', (event, commit) => {
   updateTooltipContent(commit);
   updateTooltipVisibility(true);
   updateTooltipPosition(event);
@@ -939,7 +939,7 @@ First, let's implement a scale to map the number of edited lines to dot sizes:
 
 1. Experiment with different dot sizes by modifying the circle `r` attribute. Try values between 2 and 30 pixels to find appropriate minimum and maximum radii.
 
-2. Calculate the range of edited lines across all commits:
+2. Calculate the range of edited lines across all commits. This needs to be done inside the `createScatterPlots` function, before adding the `r` attribute to dots:
 
 ```javascript
 const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
@@ -955,6 +955,7 @@ const rScale = d3.scaleLinear().domain([minLines, maxLines]).range([2, 30]); // 
 
 ```javascript
 dots
+  // ... existing properties
   .attr('r', (d) => rScale(d.totalLines))
   .style('fill-opacity', 0.7) // Add transparency for overlapping dots
   .on('mouseenter', function (event, d, i) {
@@ -1025,7 +1026,7 @@ Your graph should like like this right about now.
 
 ## Step 5: Brushing
 
-In the previous lab, we selected single pie segments by clicking. As discussed in the "A Tour through the Interaction Zoo" lecture, brushing can be an effective interaction technique for selecting _multiple_ data points in a visualization.
+In the previous lab, we selected single pie segments by clicking. As we know from the lectures, brushing can be an effective interaction technique for selecting _multiple_ data points in a visualization.
 
 Once points are selected, we can further explore the dataset by displaying more data.
 
@@ -1160,7 +1161,7 @@ Uh oh! `xscale` and `yscale` are undefined, as their scope was limited to the `c
 
 <details markdown="1">
 <summary>Show solution</summary>
-To change this, declare global variables <i>let xScale</i> and <i>let yScale</i> and update these values inside <i>createScatterplot</i>.
+To change this, declare global variables <i>let xScale</i> and <i>let yScale</i> and update these values inside <i>createScatterplot</i>,instead of initializing const xScale and const yScale inside <i>createScatterplot</i>.
 </details>
 
 Add some CSS to make selected dots stand out:
@@ -1196,26 +1197,34 @@ function updateSelectionCount() {
 }
 ```
 
-Be sure to call the function! Test it out. You should be able to see the number of commits selected.
+Be sure to call the function inside `brushed`! Test it out. You should be able to see the number of commits selected.
 
 ### Step 5.6: Showing language breakdown
 
 Let's display stats about languages in the selected commits:
 
 ```js
-function updateLanguageBreakdown(selectedCommits) {
-  const commits = selectedCommits.length ? selectedCommits : window.commits;
-  const lines = commits.flatMap((d) => d.lines);
+function updateLanguageBreakdown() {
+  const selectedCommits = brushSelection
+    ? commits.filter(isCommitSelected)
+    : [];
+  const container = document.getElementById('language-breakdown');
+
+  if (selectedCommits.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+  const requiredCommits = selectedCommits.length ? selectedCommits : commits;
+  const lines = requiredCommits.flatMap((d) => d.lines);
 
   // Use d3.rollup to count lines per language
   const breakdown = d3.rollup(
     lines,
     (v) => v.length,
-    (d) => d
+    (d) => d.type
   );
 
   // Update DOM with breakdown
-  const container = document.getElementById('language-breakdown');
   container.innerHTML = '';
 
   for (const [language, count] of breakdown) {
@@ -1238,43 +1247,7 @@ Add this to your HTML:
 <dl id="language-breakdown" class="stats"></dl>
 ```
 
-<!-- ### Step 5.7: Drawing a pie chart of the language breakdown
-
-Finally, let's visualize this breakdown as a pie chart. Since we're using vanilla JS, we'll need to create a reusable pie chart function. You can use the pie chart code from the previous lab, but modify it to be a reusable function:
-
-```js
-function createPieChart(data, container) {
-  // Your pie chart code here
-  // Remember to clear the container first
-  // Use the data format: [{label: language, value: lines}, ...]
-}
-```
-
-Then call it with our language breakdown data:
-
-```js
-function updateVisualization(breakdown) {
-  const data = Array.from(breakdown, ([language, lines]) => ({
-    label: language,
-    value: lines,
-  }));
-
-  const container = document.getElementById('pie-container');
-  createPieChart(data, container);
-}
-```
-
-Update your brushed function to tie it all together:
-
-```js
-function brushed(event) {
-  brushSelection = event.selection;
-  updateSelection();
-  const selectedCommits = updateSelectionCount();
-  const breakdown = updateLanguageBreakdown(selectedCommits);
-  updateVisualization(breakdown);
-}
-``` -->
+Remember to call this function inside `brushed`!
 
 At this point, your graph should look like this:
 
