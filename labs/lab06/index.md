@@ -181,8 +181,11 @@ Now, every time we run `npm run build`, `elocuent` will be run first.
 
 ### Step 0.4: Exclude CSV from committed files.
 
-Since we are now generating the script on the server as well, there is no reason to include it in our commits.
-Add `meta/loc.csv` to your `.gitignore` file.
+You may have noticed that a lot of new files got generated when you installed elocuent using npm install. We do not need to commit all these files to our repository! Since we are now generating the script on the server as well, there is no reason to include meta/loc.csv in our commits as well.
+
+There's a really neat way to ensure that these files are not committed to your repository. It's called a .gitignore. Create a file named `.gitignore` in the root folder. Add `meta/loc.csv` and `node_modules/` to your `.gitignore` file.
+
+Check out [this resource](https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files) to get an in-depth understanding of a `.gitignore` file.
 
 If you have already committed it, you will need to first delete the file,
 commit & push the deletion and the addition to `.gitignore`,
@@ -230,14 +233,16 @@ To see the structure of these objects, check your console. You should be seeing 
 Note that everything is a string, including the numbers and dates. That can be quite a footgun when handling data. To fix it, we add a [row conversion function](https://d3js.org/d3-dsv#dsv_parse):
 
 ```javascript
-data = await d3.csv('loc.csv', (row) => ({
-  ...row,
-  line: Number(row.line), // or just +row.line
-  depth: Number(row.depth),
-  length: Number(row.length),
-  date: new Date(row.date + 'T00:00' + row.timezone),
-  datetime: new Date(row.datetime),
-}));
+async function loadData() {
+  data = await d3.csv('loc.csv', (row) => ({
+    ...row,
+    line: Number(row.line), // or just +row.line
+    depth: Number(row.depth),
+    length: Number(row.length),
+    date: new Date(row.date + 'T00:00' + row.timezone),
+    datetime: new Date(row.datetime),
+  }));
+}
 ```
 
 Don't forget to delete the console.log now that we're done — we don't want to clutter our page with debug info!
@@ -288,6 +293,8 @@ function processCommits() {
     });
 }
 ```
+
+{: .tip } We will be using `commits` extensively throughout the lab, so it would be helpful to declare it as a global variable (`let commits = [];`)
 
 2. Look at the first line object (`first`). What properties does it contain that are relevant to the commit as a whole? (Hint: author, timestamps, etc.)
 
@@ -357,11 +364,33 @@ JavaScript provides a way to add properties that don't show up when you print an
 Here's the structure:
 
 ```javascript
-Object.defineProperty(ret, 'lines', {
-  value: lines,
-  // What other options do we need to set?
-  // Hint: look up configurable, writable, and enumerable
-});
+function processCommits() {
+  commits = d3
+    .groups(data, (d) => d.commit)
+    .map(([commit, lines]) => {
+      let first = lines[0];
+      let { author, date, time, timezone, datetime } = first;
+      let ret = {
+        id: commit,
+        url: 'https://github.com/vis-society/lab-7/commit/' + commit,
+        author,
+        date,
+        time,
+        timezone,
+        datetime,
+        hourFrac: datetime.getHours() + datetime.getMinutes() / 60,
+        totalLines: lines.length,
+      };
+
+      Object.defineProperty(ret, 'lines', {
+        value: lines,
+        // What other options do we need to set?
+        // Hint: look up configurable, writable, and enumerable
+      });
+
+      return ret;
+    });
+}
 ```
 
 Put it all together, and you should have a commits array where each object contains:
@@ -370,7 +399,19 @@ Put it all together, and you should have a commits array where each object conta
 - Derived information (URL, hour fraction, total lines)
 - Hidden access to the original line data
 
-Try printing out your commits array. Does it have all the information you need? Is there anything else you'd like to add?
+Now, we need to call this function to test it out.
+
+```js
+async function loadData() {
+  // original function as before
+
+  processCommits();
+  console.log(commits);
+}
+```
+
+Try printing out your commits array.
+Does it have all the information you need? Is there anything else you'd like to add?
 
 Check it out by adding `console.log(commits)` after setting it.
 In my case it looks like this:
@@ -384,7 +425,7 @@ Let's get our feet wet with this data by displaying a few stats using D3's DOM m
 {: .note }
 Add the CSS for the stats display to your style.css file. You can create a class `.stats` and style the `dl`, `dt`, and `dd` elements appropriately.
 
-First, let's display the total lines of code and commits:
+First, remove the `processCommits` function call from the function `loadData`. Let's display the total lines of code and commits:
 
 ```javascript
 function displayStats() {
@@ -603,7 +644,7 @@ If we preview at this point, you'd expect to see an image with the dots. But oh 
 
 {: .To Answer in Submission } Try to print `commits` in your console. Is the data populated? Why is this happening?
 
-Put all the code from step 2 into a function, say `createScatterplot`. Now call this function after `loadData()`.
+**Put all the code from step 2 into a function, say `createScatterplot`. Now call this function after `loadData()`.**
 
 If we preview at this point, we'll get something like this:
 
@@ -614,6 +655,8 @@ That was a bit anti-climactic! We did all this work and all we got was a bunch o
 Indeed, without axes, a scatterplot does not even look like a chart. Let's add them!
 
 ### Step 2.2: Adding axes
+
+{: .note } For the rest of the instructions in step 2, note that the code goes inside `createScatterplot`.
 
 The first step to add axes is to create space for them. Define margins in your JavaScript:
 
@@ -792,7 +835,7 @@ circle:hover {
 
 The `transform-origin` and `transform-box` properties are crucial here - without them, the dots would scale from their top-left corner rather than their center.
 
-Now, in our D3 selection, we add mouseenter and mouseleave event listeners on each dot:
+Now, in our D3 selection (from `createScatterplot` function), we add mouseenter and mouseleave event listeners on each dot:
 
 ```javascript
 dots
