@@ -36,6 +36,7 @@ To get checked off for the lab, please record a 2 minute mp4 video with the foll
 1. Present your quantitative D3 visualizations
 2. Show you interacting with your D3 visualizations.
 3. Share the most interesting thing you learned from this lab.
+4. Answer the question labeled Question1 in step 2.1.
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
 make sure your video is 2 minutes or less.**
@@ -153,17 +154,8 @@ Do periodically re-run the script as you work through the lab to see the data up
 ### Step 0.3: Setting it up so that the CSV file is generated on every build
 
 We want the CSV file to be generated every time we build our app, so that it’s always up-to-date.
-We can do that by adding a `prebuild` script to our `package.json` that runs `npx elocuent`.
-In `package.json`, add the following in the beginning (after `{`):
 
-```json
-"scripts": {
-    "prebuild": "npx elocuent -d . -o meta/loc.csv",
-    "build": "vite build"
-  }
-```
-
-We also need make sure that our build environment (which we specify in `deploy.yml`) has access to all of our Git history.
+We need make sure that our build environment (which we specify in `deploy.yml`) has access to all of our Git history.
 To do this, open `.github/workflows/deploy.yml` and modify the `Checkout` step so that it looks like this:
 
 ```yaml
@@ -171,13 +163,36 @@ To do this, open `.github/workflows/deploy.yml` and modify the `Checkout` step s
   uses: actions/checkout@v4
   with:
     fetch-depth: '0'
+
+- name: Run Elocuent
+  run: |
+    npx elocuent -d . -o meta/loc.csv
+
+- name: Commit and Push
+  run: |
+    git config --local user.email "action@github.com"
+    git config --local user.name "GitHub Action"
+    mkdir -p meta
+    git pull
+    git add -f meta/loc.csv
+    git commit -m "Update code statistics" || echo "No changes to commit"
+    git push
+```
+
+Ensure that GITHUB_TOKEN has write permissions:
+
+```yaml
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 ```
 
 {: .fyi}
 `fetch-depth: '0'` tells GitHub actions to [fetch _all_ history for all branches and tags](https://github.com/actions/checkout?tab=readme-ov-file#fetch-all-history-for-all-tags-and-branches).
 By default, the action will only fetch the latest commit, so your deployed scatterplot will only have one dot!
 
-Now, every time we run `npm run build`, `elocuent` will be run first.
+Now, on each deployment, `elocuent` will be run first.
 
 ### Step 0.4: Exclude CSV from committed files.
 
@@ -642,7 +657,7 @@ dots
 
 If we preview at this point, you'd expect to see an image with the dots. But oh wait! Something is missing.
 
-{: .To Answer in Submission } Try to print `commits` in your console. Is the data populated? Why is this happening?
+{: .Question1} Try to print `commits` in your console. Is the data populated? Why is this happening?
 
 **Put all the code from step 2 into a function, say `createScatterplot`.** Now call this function after `loadData()`, inside the DOMContentLoaded event listener.
 
