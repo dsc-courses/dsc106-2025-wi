@@ -8,7 +8,7 @@ nav_order: 3
 
 # Project 2: Deceptive Visualization - Peer Grading
 
-You will review two Project 2 submissions from your classmates and share constructive feedback. This assignment is an opportunity to both (a) develop skills to effectively evaluate and critically analyze visualization designs, and (b) help guide subsequent efforts by your peers to improve project quality and visualization design across the class.
+You will review three Project 2 submissions from your classmates and share constructive feedback. This assignment is an opportunity to both (a) develop skills to effectively evaluate and critically analyze visualization designs, and (b) help guide subsequent efforts by your peers to improve project quality and visualization design across the class.
 
 An important goal for this assignment is to understand how visualization designs might aim to intentionally (or unintentionally) mislead the viewer, so as to provide you with more confidence and skepticism when interpreting visualizations in the wild.
 
@@ -36,4 +36,4 @@ To share critique, we will use the ["I like / I wish / What if?"][link] format. 
 
 This is an individual assignment. You may not work in groups.
 
-Your peer reviews are due **Tue 02/11, 11:59pm**. The submissions that you are required to evaluate will be communicated to you via email or gradescope (yet to be finalized). You must submit peer reviews for two Project 2 submissions. To submit your review, you must use gradescope. Please carefully respond to each of the questions raised.
+Your peer reviews are due **Fri 02/14, 11:59pm**. The submissions that you are required to evaluate will be communicated to you via email. You must submit peer reviews for three Project 2 submissions. To submit your review, you must use gradescope. Please carefully respond to each of the questions raised.
