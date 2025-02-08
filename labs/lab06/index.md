@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 6: Visualizing quantitative data with D3'
 lab: 6
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: true
 ---
 
 # Lab 6: Visualizing quantitative data with D3
