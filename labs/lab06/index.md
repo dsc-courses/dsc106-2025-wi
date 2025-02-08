@@ -36,7 +36,6 @@ To get checked off for the lab, please record a 2 minute mp4 video with the foll
 1. Present your quantitative D3 visualizations
 2. Show you interacting with your D3 visualizations.
 3. Share the most interesting thing you learned from this lab.
-4. Answer the question labeled Question1 in step 2.1.
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
 make sure your video is 2 minutes or less.**
@@ -658,7 +657,6 @@ dots
 
 If we preview at this point, you'd expect to see an image with the dots. But oh wait! Something is missing.
 
-{: .Question1}
 Try to print `commits` in your console. Is the data populated? Why is this happening?
 
 **Put all the code from step 2 into a function, say `createScatterplot`.** Now call this function after `loadData()`, inside the DOMContentLoaded event listener.
