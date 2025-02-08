@@ -309,7 +309,8 @@ function processCommits() {
 }
 ```
 
-{: .tip } We will be using `commits` extensively throughout the lab, so it would be helpful to declare it as a global variable (`let commits = [];`)
+{: .tip }
+We will be using `commits` extensively throughout the lab, so it would be helpful to declare it as a global variable (`let commits = [];`)
 
 2. Look at the first line object (`first`). What properties does it contain that are relevant to the commit as a whole? (Hint: author, timestamps, etc.)
 
@@ -657,7 +658,8 @@ dots
 
 If we preview at this point, you'd expect to see an image with the dots. But oh wait! Something is missing.
 
-{: .Question1} Try to print `commits` in your console. Is the data populated? Why is this happening?
+{: .Question1}
+Try to print `commits` in your console. Is the data populated? Why is this happening?
 
 **Put all the code from step 2 into a function, say `createScatterplot`.** Now call this function after `loadData()`, inside the DOMContentLoaded event listener.
 
@@ -671,7 +673,8 @@ Indeed, without axes, a scatterplot does not even look like a chart. Let's add t
 
 ### Step 2.2: Adding axes
 
-{: .note } For the rest of the instructions in step 2, note that the code goes inside `createScatterplot`.
+{: .note }
+For the rest of the instructions in step 2, note that the code goes inside `createScatterplot`.
 
 The first step to add axes is to create space for them. Define margins in your JavaScript:
 
@@ -720,7 +723,8 @@ If we view our scatterplot now, we'll see something like this:
 
 ![](images/axes-basic.png)
 
-{: .Note} If you see the dots lie out of the axes, you should evaluate the order in which you are rendering the dots and the axes.
+{: .note }
+If you see the dots lie out of the axes, you should evaluate the order in which you are rendering the dots and the axes.
 
 Much better, right?
 
@@ -1058,7 +1062,8 @@ function brushSelector() {
 }
 ```
 
-{: .Think } Where should this function be called?
+{: .Think }
+Where should this function be called?
 
 Try it! You should already be able to drag a rectangle around the chart, even though it doesn't _do_ anything yet.
 
