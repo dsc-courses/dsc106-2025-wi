@@ -1,12 +1,12 @@
 ---
 layout: assignment
-title: 'Lab 9: Animation & Scrollytelling'
-lab: 9
+title: 'Lab 7: Visualizing quantitative data with D3'
+lab: 7
 parent: '👩‍🔬 Programming Labs'
 released: false
 ---
 
-# Lab {{ page.lab }}: Animation
+# Lab 7: Visualizing quantitative data with D3
 
 {: .no_toc}
 
@@ -14,8 +14,9 @@ released: false
 
 > In this lab, we will learn:
 >
-> - What different methods do we have to transition and animate elements and when to use each?
-> - What considerations should we take into account for using animations effectively?
+> - How do we draw visualizations for quantitative data, such as bar charts and scatter plots, using D3
+> - How to show tooltips on hover as a way to provide more information about the data
+> - How to compute summary statistics about our data in a structured a way
 
 <details open markdown="block">
   <summary>
@@ -32,1232 +33,1459 @@ released: false
 
 To get checked off for the lab, please record a 2 minute video with the following components:
 
-1. Present your interactive narrative visualization
-2. Show you interacting with your visualization.
+1. Present your quantitative D3 visualizations
+2. Show you interacting with your D3 visualizations.
 3. Share the most interesting thing you learned from this lab.
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
 make sure your video is 2 minutes or less.**
 
-## [Slides](./slides/)
+## Slides (or lack thereof)
 
-- [Relevant technologies (summary slide)](./slides/#technologies)
+Just like the previous lab, there are no slides for this lab!
+Since the topic was covered in last Monday’s lecture,
+it can be helpful for you to review the [material from it](../../lectures/intro-svelte-d3.html).
 
-{% raw %}
+{: .note }
+This lab is a little more involved than most of the previous labs,
+because it’s introducing the core technical material around data visualization.
+A robust understanding of these concepts will be invaluable
+as you work on your final projects, so spending time practicing them for the lab
+will be time will spent.
 
-## What will we make?
+## Step 0: Setting up
 
-In this lab, we will go back to the Meta page of our portfolio,
-and convert it to an interactive narrative visualization that shows the progress of our codebase over time.
+This step takes you through several prepratory steps before we can work on the main part of the lab.
 
-<video src="videos/final.mp4" loading=lazy muted autoplay loop class="browser"></video>
+### Step 0.1: Adding a new page with meta-analysis of the code in our project
 
-## Step 0: Preparation
+In this lab, we will be computing and visualizing different stats about our codebase.
+We will display these in a new page on our website.
+Create a `routes/meta/+page.svelte` file and add some content in it (e.g. a heading, a description).
 
-To make this lab a little easier, we will follow a few prepratory steps in this section.
+Add it to your navigation menu.
 
-### Step 0.1: Making commits clickable
+<img src="images/meta-page.png" alt="" class="browser" data-url="http://localhost:5173/meta">
 
-{: .files }
-`src/meta/+page.svelte`
+### Step 0.2: Adding code analysis script
 
-Currently, the only way to select commits is by brushing the pie chart.
-While this is great for selecting multiple commits and seeing stats about the whole group,
-it is not very user-friendly for selecting individual commits.
+In this step you will install [our code analysis script](https://www.npmjs.com/package/elocuent) which will analyze the code of our app and display some statistics about it.
 
-Furthermore, you will need to alternate between selections a lot to debug your work in Step 1,
-so it pays off to make this easier.
+{: .fyi }
+If you’re interested in the details of how this script works, you can [examine its code in its repo](https://github.com/LeaVerou/elocuent/tree/main/src).
+It’s just some JS code that runs in Node.js :) (and it’s not that long either!)
 
-Before we can add the right event handling to make click selections possible,
-we need to make a few changes to our code.
-Our `selectedCommits` variable is currently reactive, and depends on `brushSelection`:
+First, open the terminal and run this, to install [the package](https://www.npmjs.com/package/elocuent) that will do the analysis:
 
-```js
-$: selectedCommits = brushSelection ? commits.filter(isCommitSelected) : [];
+```bash
+npm install elocuent -D
 ```
 
-We also have an `isCommitSelected()` function, which checks of a commit is within the `brushSelection` and looks like this:
+Now in your terminal, run this command:
+
+```bash
+npx elocuent -d static,src -o static/loc.csv
+```
+
+Or this, if you’ve used spaces for indentation (replace `2` with the number of spaces):
+
+```bash
+npx elocuent -d static,src -o static/loc.csv --spaces 2
+```
+
+Make sure your indentation is consistent across your code!
+
+{: .tip }
+Two very popular tools to ensure a consistent code style are [ESLint](https://eslint.org/) (JS only)
+and [Prettier](https://prettier.io/) (JS, CSS, HTML)
+They have different philosophies: ESLint is a _linting tool_: you define what rules you want to follow, and it warns you when you don’t follow them (often it can fix them too, but you need to explicitly ask it to).
+Prettier is a _code formatter_: when you hit Save it auto-formats your code based on its predefined rules.
+Linters give you more control, whereas code formatters are more hands-off but also less flexible.
+
+If everything went well, you should now have a file called `loc.csv` in the `static` directory.
+Its content should look like this (showing first 30 lines):
+
+<details markdown="1">
+<summary>First 30 lines of <code>loc.csv</code></summary>
+
+```csv
+file,line,type,commit,author,date,time,timezone,datetime,depth,length
+src/app.html,1,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,0,15
+src/app.html,2,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,0,16
+src/app.html,3,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,5
+src/app.html,4,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,2,22
+src/app.html,5,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,2,26
+src/app.html,6,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,2,55
+src/app.html,7,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,2,68
+src/app.html,8,html,3c2ea132,Lea Verou,2024-03-02,15:26:34,-05:00,2024-03-02T15:26:34-05:00,2,59
+src/app.html,9,html,04217ac3,Lea Verou,2024-02-27,14:46:20,-05:00,2024-02-27T14:46:20-05:00,2,64
+src/app.html,10,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,2,14
+src/app.html,11,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,6
+src/app.html,12,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,41
+src/app.html,13,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,2,51
+src/app.html,14,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,6
+src/app.html,15,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,0,7
+src/routes/+page.svelte,1,svelte,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,0,21
+src/routes/+page.svelte,2,svelte,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,0,43
+src/routes/+page.svelte,3,svelte,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,0,40
+src/routes/+page.svelte,4,svelte,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,102
+src/routes/+page.svelte,5,svelte,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,76
+src/routes/+page.svelte,6,svelte,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,39
+src/routes/+page.svelte,7,svelte,bdb6236e,Lea Verou,2024-02-26,03:26:16,-05:00,2024-02-26T03:26:16-05:00,0,4
+src/routes/+page.svelte,8,svelte,bdb6236e,Lea Verou,2024-02-26,03:26:16,-05:00,2024-02-26T03:26:16-05:00,0,0
+src/routes/+page.svelte,9,svelte,bdb6236e,Lea Verou,2024-02-26,03:26:16,-05:00,2024-02-26T03:26:16-05:00,0,8
+src/routes/+page.svelte,10,js,04217ac3,Lea Verou,2024-02-27,14:46:20,-05:00,2024-02-27T14:46:20-05:00,0,42
+src/routes/+page.svelte,11,js,5c703cf0,Lea Verou,2024-02-27,19:56:10,-05:00,2024-02-27T19:56:10-05:00,0,44
+src/routes/+page.svelte,12,js,50612a03,Lea Verou,2024-03-05,11:11:52,-05:00,2024-03-05T11:11:52-05:00,0,68
+src/routes/+page.svelte,13,js,50612a03,Lea Verou,2024-03-05,11:11:52,-05:00,2024-03-05T11:11:52-05:00,0,19
+src/routes/+page.svelte,14,js,50612a03,Lea Verou,2024-03-05,11:11:52,-05:00,2024-03-05T11:11:52-05:00,1,8
+```
+
+</details>
+
+You can find a description of the metadata stored [here](https://www.npmjs.com/package/elocuent).
+
+{: .fyi }
+Why are we using CSV instead of e.g. JSON?
+CSV is more efficient for data that has many rows, since we don’t need to repeat the names of the properties for every row.
+
+Do periodically re-run the script as you work through the lab to see the data update!
+
+### Step 0.3: Setting it up so that the CSV file is generated on every build
+
+We want the CSV file to be generated every time we build our app, so that it’s always up-to-date.
+We can do that by adding a `prebuild` script to our `package.json` that runs `npx elocuent`.
+Right above this line in `package.json`:
+
+```json
+"build": "vite build",
+```
+
+add:
+
+```json
+"prebuild": "npx elocuent -d static,src -o static/loc.csv",
+```
+
+We also need make sure that our build environment (which we specify in `deploy.yml`) has access to all of our Git history.
+To do this, open `.github/workflows/deploy.yml` and modify the `Checkout` step so that it looks like this:
+
+```yaml
+- name: Checkout
+  uses: actions/checkout@v4
+  with:
+    fetch-depth: '0'
+```
+
+{: .fyi}
+`fetch-depth: '0'` tells GitHub actions to [fetch _all_ history for all branches and tags](https://github.com/actions/checkout?tab=readme-ov-file#fetch-all-history-for-all-tags-and-branches).
+By default, the action will only fetch the latest commit, so your deployed scatterplot will only have one dot!
+
+Now, every time we run `npm run build`, `elocuent` will be run first.
+
+### Step 0.4: Exclude CSV from committed files.
+
+Since we are now generating the script on the server as well, there is no reason to include it in our commits.
+Add `static/loc.csv` to your `.gitignore` file.
+
+If you have already committed it, you will need to first delete the file,
+commit & push the deletion and the addition to `.gitignore`,
+and only after that re-run the script to re-generate it.
+
+## Step 1: Displaying summary stats
+
+### Step 1.1: Reading the CSV file in D3
+
+In our `routes/meta/+page.svelte` file, we will now read the CSV file.
+Thankfully, we don’t have to reinvent the wheel and parse CSV files ourselves, D3 has a built-in function for that.
+
+Add a `<script>` element to the Meta page, and import D3, like you did in the previous lab:
+
+```javascript
+import * as d3 from 'd3';
+```
+
+We will be using the `d3.csv()` function from the [`d3-fetch`](https://d3js.org/d3-fetch) module, which provides helper functions for fetching data.
+
+Now let’s read the CSV file:
+
+```javascript
+import { onMount } from 'svelte';
+
+let data = [];
+
+onMount(async () => {
+  data = await d3.csv('loc.csv');
+});
+```
+
+and let’s print out the total lines of code in our repo in the HTML to make sure it worked:
+
+```html
+<p>Total lines of code: {data.length}</p>
+```
+
+If everything went well, you’ll be seeing something like this:
+
+<img src="images/total-loc.png" alt="" class="browser" data-url="http://localhost:5173/meta">
+
+To see the structure of these objects, add a `console.log(data)` right after the statement that sets the variable,
+then check your console.
+
+You should be seeing something like this(I’ve expanded the first row):
+
+<img src="images/data-console-string.png" alt="Screenshot of the output" class="outline">
+
+Note that everything is a string, including the numbers and dates.
+That can be quite a footgun when handling data \*(as an anecdote, I spent about an hour debugging an issue caused by using `+` to add two numbers together, which instead concatenated them as strings **while developing this very lab!\***).
+To fix it, we add a [row conversion function](<https://d3js.org/d3-dsv#dsv_parse):
+
+```javascript
+data = await d3.csv('loc.csv', (row) => ({
+  ...row,
+  line: Number(row.line), // or just +row.line
+  depth: Number(row.depth),
+  length: Number(row.length),
+  date: new Date(row.date + 'T00:00' + row.timezone),
+  datetime: new Date(row.datetime),
+}));
+```
+
+It should now look like this:
+<img src="images/data-console.png" alt="Screenshot of the output" class="outline">
+
+Don’t forget to delete this line now that we’re done — we don’t want to clutter our page with debug info!
+
+### Step 1.2: Computing commit data
+
+Notice that while this data includes information about each commit[^eachcommit] (that still has an effect on the codebase),
+it's not in a format we can easily access, but mixed in with the data about each line (this is called _denormalized_ data).
+
+[^eachcommit]: Actually, it will only include commits that still have an effect on the codebase, since it’s based on lines of code that are currently present in the codebase. Therefore if all a commit did was change lines that have since been edited by other commits, that commit will not show up here. If we wanted to include _all_ commits, we'd need to process the output of [`git log`](https://git-scm.com/docs/git-log) instead, but that is outside the scope of this lab.
+
+Let’s extract this data about commits in a separate object for easy access.
+We will compute this inside `onMount` after reading the CSV file.
+
+First, define a `commits` variable outside `onMount`:
 
 ```js
-function isCommitSelected(commit) {
-  if (!brushSelection) {
-    if (manualSelection) {
-      return manualSelection.has(commit);
-    }
+let commits = [];
+```
 
-    return false;
+Then, inside `onMount`, we will use the [`d3.groups()`](https://d3js.org/d3-array/group#groups) method to group the data by the `commit` property.
+
+```javascript
+commits = d3.groups(data, (d) => d.commit);
+```
+
+This will give us an array where each element is an array with two values:
+
+- The first value is the unique commit identifier
+- The second value is an array of objects for lines that have been modified by that commit.
+
+{: .tip }
+Print it out with `{JSON.stringify(commits, null, "\t")}` to see what it looks like!
+
+To transform this into an array of objects about each commit,
+with a `lines` property that contains the number of lines that were modified by that commit:
+
+```js
+commits = d3
+  .groups(data, (d) => d.commit)
+  .map(([commit, lines]) => {
+    let first = lines[0];
+    let { author, date, time, timezone, datetime } = first;
+    let ret = {
+      id: commit,
+      url: 'https://github.com/vis-society/lab-7/commit/' + commit,
+      author,
+      date,
+      time,
+      timezone,
+      datetime,
+      hourFrac: datetime.getHours() + datetime.getMinutes() / 60,
+      totalLines: lines.length,
+    };
+
+    // Like ret.lines = lines
+    // but non-enumerable so it doesn’t show up in JSON.stringify
+    Object.defineProperty(ret, 'lines', {
+      value: lines,
+      configurable: true,
+      writable: true,
+      enumerable: false,
+    });
+
+    return ret;
+  });
+```
+
+Check it out by adding `console.log(commits)` **after** setting it.
+In my case it looks like this:
+
+![](images/commits-log.png)
+
+### Step 1.3: Displaying the stats
+
+Let’s get our feet wet with this data by displaying a few more stats.
+Use a `<dl>` list that reuses the same formatting as in [the stats on your homepage](../5/#step-23-displaying-the-data-in-a-more-useful-way).
+
+{: .note }
+Avoid copy-pasting the CSS. You can either create a class and define the styling for `dl.stats` and its children in your `style.css` file,
+or create a `<Stats>` Svelte component that wraps it (I went with the former for simplicity, but the "proper" way is the latter).
+
+Delete the paragraph we added in the previous step and display that as the first stat:
+
+```html
+<dl class="stats">
+  <dt>Total <abbr title="Lines of code">LOC</abbr></dt>
+  <dd>{data.length}</dd>
+</dl>
+```
+
+You can display the total number of commits as the second statistic.
+
+What other aggregate stats can you calculate about the whole codebase?
+Here are a few ideas (pick 3-4 from the list below, or come up with your own):
+
+- Number of files in the codebase
+- Maximum file length (in lines)
+- Longest file
+- Average file length (in lines)
+- Average line length (in characters)
+- Longest line length
+- Longest line
+- Maximum depth
+- Deepest line
+- Average depth
+- Average file depth
+- Time of day (morning, afternoon, evening, night) that most work is done
+- Day of the week that most work is done
+
+<figure markdown="1">
+
+![](images/summary.png)
+
+<figcaption>
+Example of a summary stats section
+</figcaption>
+</figure>
+
+You will find the [`d3-array`](https://d3js.org/d3-array) module very helpful for these kinds of computations,
+and especially:
+
+- [Summarizing data](https://d3js.org/d3-array/summarize)
+- [Grouping data](https://d3js.org/d3-array/group)
+
+Following is some advice on how to calculate these stats depending on their category.
+
+#### Aggregates over the whole dataset
+
+These compute an aggregate (e.g. sum, mean, min, max) over a property across the whole dataset.
+
+Examples:
+
+- Average line length
+- Longest line
+- Maximum depth
+- Average depth
+
+These involve using one of the [data summarization methods](https://d3js.org/d3-array/summarize) over the whole dataset,
+mapping to the property you want to summarize, and then applying the method.
+For example, to calculate the maximum depth, you’d use `d3.max(data, d => d.depth)`.
+To calculate the average depth, you’d use `d3.mean(data, d => d.depth)`.
+
+#### Number of distinct values
+
+These compute the number of distinct values of a property across the whole dataset.
+
+Examples:
+
+- Number of files
+- Number of authors
+- Number of days worked on site
+
+To calculate these, you’d use [`d3.group()`](https://d3js.org/d3-array/group#group) / [`d3.groups()`](https://d3js.org/d3-array/group#groups) to group the data by the property you want to count the distinct values of,
+and then use `result.size` / `result.length` respectively to get the number of groups.
+
+For example, the number of files would be `d3.group(data, d => d.file).size`,
+(or `d3.groups(data, d => d.file).length`).
+
+#### Grouped aggregates
+
+These are very interesting stats, but also the most involved of the bunch.
+These compute an aggregate within a group, and then a _different_ aggregate across all groups.
+
+Examples:
+
+- Average file length (in lines)
+- Average file depth (average of max depth per file)
+
+First, we use `d3.rollup()` / `d3.rollups()` to compute the aggregate within each group.
+If it seems familiar, it’s because [we used it in the previous lab to calculate projects per year](../6/#step-32-passing-project-data-via-the-data-prop).
+For example, to calculate the average file length, we’d use `d3.rollups()` to callculate lengths for all files via
+
+```js
+$: fileLengths = d3.rollups(
+  data,
+  (v) => d3.max(v, (v) => v.line),
+  (d) => d.file,
+);
+```
+
+Then, to find the average of those, we’d use `d3.mean()` on the result:
+
+```js
+$: averageFileLength = d3.mean(fileLengths, (d) => d[1]);
+```
+
+#### Min/max value
+
+These involve finding not the min/max of a property itself,
+but another property of the row with the min/max value.
+This can apply both to the whole dataset and to groups.
+
+Examples:
+
+- Longest file
+- Longest line
+- Deepest line
+- Time of day (morning, afternoon, evening, night) that most work is done
+- Day of the week that most work is done
+
+For example, let’s try to calculate the time of day that the most work is done.
+We’d use [`date.toLocaleString()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) to get the time of day and use that as the grouping value:
+
+```js
+$: workByPeriod = d3.rollups(
+  data,
+  (v) => v.length,
+  (d) => d.datetime.toLocaleString('en', { dayPeriod: 'short' }),
+);
+```
+
+Then, to find the period with the most work, we’d use [`d3.greatest()`](https://d3js.org/d3-array/summarize#greatest) instead of `d3.max()` to get the entire element, then access the name of the period with `.[0]`:
+
+```js
+$: maxPeriod = d3.greatest(workByPeriod, (d) => d[1])?.[0];
+```
+
+## Step 2: Visualizing time and day of commits in a scatterplot
+
+Now let’s visualize our edits in a scatterplot
+with the time of day as the Y axis and the date as the X axis.
+
+### Step 2.1: Drawing the dots
+
+First, let’s define a width and height for our coordinate space in our `<script>` block:
+
+```js
+let width = 1000,
+  height = 600;
+```
+
+Then, in the HTML we add an `<svg>` element to hold our chart, and a suitable heading (e.g. "Commits by time of day"):
+
+```html
+<svg viewBox="0 0 {width} {height}">
+  <!-- scatterplot will go here -->
+</svg>
+```
+
+And a `<style>` element to hold styles:
+
+```html
+<style>
+  svg {
+    overflow: visible;
   }
-
-  let min = { x: brushSelection[0][0], y: brushSelection[0][1] };
-  let max = { x: brushSelection[1][0], y: brushSelection[1][1] };
-  let x = xScale(commit.date);
-  let y = yScale(commit.hourFrac);
-
-  return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
-}
+</style>
 ```
 
-However, `brushSelection` is actually only updated in one place: the `brushed()` function.
-We don’t really need to keep it around once we’ve converted it to selected commits.
-Let’s update the `brushed()` function to update `selectedCommits` directly:
+Now, as shown in the [Web-based visualization lecture](https://vis-society.github.io/lectures/intro-svelte-d3.html),
+we create scales to map our data to the coordinate space using the [d3-scale](https://d3js.org/d3-scale/linear) module.
 
+We will need two scales: a Y scale for the times of day, and an X scale for the dates.
+
+The Y scale (`yScale` variable) is a standard [linear scale](https://d3js.org/d3-scale/linear#scaleLinear) that maps the hour of day (`0` to `24`) to the Y axis (0 to `height`).
+
+<!--
 ```js
-function brushed(evt) {
-  let brushSelection = evt.selection;
-  selectedCommits = !brushSelection
-    ? []
-    : commits.filter((commit) => {
-        let min = { x: brushSelection[0][0], y: brushSelection[0][1] };
-        let max = { x: brushSelection[1][0], y: brushSelection[1][1] };
-        let x = xScale(commit.date);
-        let y = yScale(commit.hourFrac);
+$: xScale = d3.scaleTime()
+              .domain(d3.extent(commits.map(d => d.date)))
+              .range([0, width])
+              .nice();
 
-        return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
-      });
-}
+$: yScale = d3.scaleLinear()
+              .domain([0, 24])
+              .range([height, 0]);
 ```
+-->
 
-Then `isCommitSelected()` can be much simpler:
+But for the X scale (`xScale` variable), there’s a few things to unpack:
 
-```js
-function isCommitSelected(commit) {
-  return selectedCommits.includes(commit);
-}
-```
+- Instead of a linear scale, which is meant for any type of quantitative data, We use a [_time scale_](https://d3js.org/d3-scale/time) which handles dates and times automagically.
+  It works with JS [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) objects, which we already have in the `datetime` property of each commit.
+- We can use [`d3.extent()`](https://d3js.org/d3-array#extent) to find the minimum and maximum date in our data in one fell swoop instead of computing it separately via `d3.min()` and `d3.max()`.
+- We can use [`scale.nice()`](https://d3js.org/d3-scale#continuous_nice) to extend the domain to the nearest “nice” values (e.g. multiples of 5, 10, 15, etc. for numbers, or round dates to the nearest day, month, year, etc. for dates).
 
-And `selectedCommits` no longer needs to be reactive, it can become a plain variable:
-
-```js
-let selectedCommits = [];
-```
-
-We can also remove the reference to `brushSelection` in the `hasSelection` function, as `selectedCommits` is updated in `brushed`.
-
-{: .tip}
-You can now remove the top-level `brushSelection` variable, as it's not used anywhere.
-
-Now, let’s add some event listeners to allow for clicking on commits.
-If you have not done the optional [Step 3.5 of Lab 7](https://vis-society.github.io/labs/7/#step-35-bulletproof-positioning-optional), do the part about creating a `dotInteraction()` function now.
-
-Then, we just add two more listeners that call `dotInteraction()` on the dots: `on:click` and `on:keyup`,
-and pass the same parameters as the other listeners (`evt` and `index`).
-
-Then, in the `dotInteraction()` function, add a new `else if` branch case that checks if either `evt.type` is `"click"` OR `evt.type` is `keyup` AND `evt.key` is `"Enter"`.
-All this branch should do is overwrite `selectedCommits` with an array containing only the commit at `index` (`commits[index]`).
-
-If you try it out now, clicking should work!
-
-<video src="videos/clickable.mp4" loading=lazy muted autoplay loop></video>
-
-### Step 0.2: Iterating over data, not arcs
-
-{: .files }
-`lib/Pie.svelte`
-
-Play a little bit with selecting different colors in the pie chart.
-What do you notice?
-**The same technologies are drawn with different colors across selections!**
-You can see this in the video above as well.
-
-This is because the technologies can appear in any order in the data we are passing,
-and we are using the index of the data to get the color (`color(index)`).
-However, ordinal scales are much more useful when we pass in the actual data value (in this case, the technology name) instead of an index, as they give us a consistent color.
-
-However, if we look at our current code in `lib/Pie.svelte`, we are currently iterating over `arcs` to draw the pie wedges:
+Once we have both scales,
+we can draw the scatter plot by drawing circles with the appropriate coordinates inside our `<svg>` element:
 
 ```html
-{#each arcs as arc, index}
-<!-- Other attributes omitted for brevity -->
-<path d="{arc}" fill="{" colors(index) }> {/each}</path>
+<g class="dots">
+  {#each commits as commit, index }
+  <circle
+    cx="{"
+    xScale(commit.datetime)
+    }
+    cy="{"
+    yScale(commit.hourFrac)
+    }
+    r="5"
+    fill="steelblue"
+  />
+  {/each}
+</g>
 ```
 
-This makes it awkward to get any data associated with the pie wedge, such as the label.
-We _could_ use `data[index]`, but it’s better to just iterate over the data itself:
+{: .note }
+The group (`<g>`) element is not necessary, but it helps keep the SVG structure
+a bit more organized once we start adding other visual elements.
 
-```html
-{#each data as d, index}
-<path d="{arcs[index]}" fill="{" colors(index) }> {/each}</path>
-```
+If we preview at this point, we’ll get something like this:
 
-We can now pass `d.label` to the color scale instead of just the index:
+![](images/dots.png)
 
-```html
-{#each data as d, index}
-<path d="{arcs[index]}" fill="{" colors(d.label) }> {/each}</path>
-```
+That was a bit anti-climactic!
+We did all this work and all we got was a bunch of dots?
 
-Try it again: now the colors should be consistent across selections!
+Indeed, without axes, a scatterplot does not even look like a chart.
+Let’s add them!
 
-### Step 0.3: Moving all info to the same data structure
+### Step 2.2: Adding axes
 
-{: .files }
-`lib/Pie.svelte`
-
-It _is_ a little awkward that we need to read several different variables to get all the information we need about a pie chart wedge.
-However, as a design principle, we don't want to be adding internal data like `startAngle` on a data structure we were passed as input, it’s not good form.
-Let’s create a copy of the data and add everything we need to it.
-We will use a reactive block instead of a reactive statement, since we want to run multiple lines of code.
-First, to copy the data:
+As shown in lecture, the first step to add axes is to create space for them.
+We define margins in our JS:
 
 ```js
-let pieData;
+let margin = { top: 10, right: 10, bottom: 30, left: 20 };
+```
+
+Then we adjust our scales to account for these margins by changing:
+
+- The range of the X scale from `[0, width]` to `[margin.left, width - margin.right]`
+- The range of the Y scale from `[height, 0]` to `[height - margin.bottom, margin.top]`
+
+For readability and convenience,
+you can also define a `usableArea` variable to hold these bounds,
+since we’ll later need them for other things too:
+
+```js
+let usableArea = {
+  top: margin.top,
+  right: width - margin.right,
+  bottom: height - margin.bottom,
+  left: margin.left,
+};
+usableArea.width = usableArea.right - usableArea.left;
+usableArea.height = usableArea.bottom - usableArea.top;
+```
+
+Now the ranges become much more readable:
+
+- `[usableArea.left, usableArea.right]` for the X scale
+- `[usableArea.bottom, usableArea.top]` for the Y scale
+
+Then we create `xAxis` and `yAxis` variables in our JS to hold our axes:
+
+```js
+let xAxis, yAxis;
+```
+
+and `<g>` elements that we bind to them:
+
+```jsx
+<g transform="translate(0, {usableArea.bottom})" bind:this={xAxis} />
+<g transform="translate({usableArea.left}, 0)" bind:this={yAxis} />
+```
+
+{: .caveat }
+Make sure these elements come _before_ your dots, since SVG paints elements in the order they appear in the document,
+and you want your dots to be painted over anything else.
+
+Then we use `d3.select()` to select these elements and apply the axes to them via [`d3-axis`](https://d3js.org/d3-axis) functions:
+
+```js
+let xAxis, yAxis;
+
 $: {
-  pieData = data.map((d) => ({ ...d }));
+  d3.select(xAxis).call(d3.axisBottom(xScale));
+  d3.select(yAxis).call(d3.axisLeft(yScale));
 }
+```
+
+If we view our scatterplot now, we’ll see something like this:
+
+![](images/axes-basic.png)
+
+Much better, right?
+
+But how does it work?
+Right click one of the points in the axes and select "Inspect Element".
+You will notice that the ticks are actually `<g>` elements with `<text>` elements inside them.
+
+<img src="images/ticks.png" alt="Dev tools screenshot" class="browser" data-url="http://localhost:5173/meta">
+
+Only thing that remains is to actually format the Y axis to look like actual times.
+We can do that using the [`axis.tickFormat()`](https://d3js.org/d3-axis#axis_tickFormat) method:
+
+```js
+d3.select(yAxis).call(
+  d3
+    .axisLeft(yScale)
+    .tickFormat((d) => String(d % 24).padStart(2, '0') + ':00'),
+);
 ```
 
 {: .fyi }
-The `{...d}` syntax is a shorthand for creating a new object with all the properties of `d`.
 
-You can now replace all other mentions of `data` in the component with `pieData` (except for the `data` prop itself).
+> What is this function actually doing? Let’s break it down:
+>
+> - `d % 24` uses the remainder operator ([`%`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)) to get `0` instead of `24` for midnight (we could have done `d === 24? 0 : d` instead)
+> - `String(d % 24)` converts the number to a string
+> - [`string.padStart()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart) formats it as a two digit number
+>   Finally, we append `":00"` to it to make it look like a time.
 
-Then, move the `arcData` and `arcs` definitions into local variables within the reactive block,
-and combine them with `pieData` like this:
+{: .note }
+D3 provides a host of date/time formatting helpers in the [`d3-time-format`](https://d3js.org/d3-time-format) module,
+however for this case, simple string manipulation is actually easier.
 
+The result looks like this:
+
+![Screenshot of the scatter plot with formatted Y axis](images/y-axis-formatted.png)
+
+### Step 2.3: Adding horizontal grid lines
+
+Axes already improved our plot tenfold (it now looks like an actual scatterplot for one!)
+but it’s still hard to see what X and Y values each dot corresponds to.
+
+Let’s add grid lines to make it easier to read the plot at a glance.
+
+{: .caveat }
+When adding grid lines, there are a few tradeoffs to consider.
+You want to make them prominent enough to assist in reading the chart,
+but not so prominent that they add clutter and distract from the data itself.
+Err on the side of fewer, fainter grid lines rather than dense and darker ones.
+
+We will only create horizontal grid lines for simplicity, but you can easily add vertical ones too
+if you want (but be extra mindful of visual clutter).
+
+Conceptually, there is no D3 primitive specifically for grid lines.
+Grid lines are basically just axes with no labels and _freakishly_ long ticks. 😁
+
+So we add grid lines in a very similar way to how we added axes,
+but we use the `tickSize` method to make the lines extend across the whole chart.
+
+Just like with the axes, we create a JS variable to hold the axis (I called it `yAxisGridlines`),
+and use a reactive statement that starts off identical to the one for our `yScale`.
+However, instead of a proper `tickFormat()` that actually formats axis labels, we use `tickFormat("")` to _remove_ the labels.
+Thenm we use the [`axis.tickSize()`](https://d3js.org/d3-axis#axis_tickSize) method
+with a tick size of `-usableArea.width` to make the lines extend across the whole chart
+(the `-` is to flip them).
+
+<!--
 ```js
-pieData = pieData.map((d, i) => ({ ...d, ...arcData[i], arc: arcs[i] }));
-```
+let yAxisGridlines;
 
-This will give us objects with `startAngle`, `endAngle`, and `arc` properties,
-in addition to `value` and `label`.
-Replace all references to `arcData` and `arcs` to just read from `pieData` (e.g. `arcs[index]` would become `d.arc`).
-
-## Step 1: Evolution visualization
-
-{: .files }
-`src/meta/+page.svelte`
-
-In this step, we will create an interactive timeline visualization that shows the evolution of our repo by allowing us to move a slider to change the date range of the commits we are looking at.
-
-### Step 1.1: Creating the filtering UI
-
-In this step we will create a slider, bind its value to a variable, and display the date and time it corresponds to.
-It’s very familiar to what we did in [the previous lab](../8/), except we don’t need to worry about a "no filter" state.
-
-First, let’s create a new variable, `commitProgress`, that will represent the maximum time we want to show
-as a percentage of the total time:
-
-```js
-let commitProgress = 100;
-```
-
-To map this percentage to a date, we will need a new [time scale](https://d3js.org/d3-scale/time),
-just like we did in [Lab 7](../7/#step-21-drawing-the-dots) that will map `commit.datetime` values to the `[0, 100]` range.
-
-Once we have our scale, we can easily get from the 0-100 number to a date:
-
-```js
-$: commitMaxTime = timeScale.invert(commitProgress);
-```
-
-We are now ready to add our filtering UI.
-
-1. Create a new `<label>` element with a slider input and a `<time>` element that will display the date and time corresponding to the slider value.
-2. Add some CSS to make the slider maximum width (`flex: 1` in Flexbox, `1fr` column width in Grid) and to place the time element underneath the slider (otherwise differences in output value length will move the slider, which is very jarring).
-3. Bind the slider value to `commitProgress`
-4. Output the selected time in the `<time>` element using `commitMaxTime.toLocaleString()` similarly to how we did in [Lab 7](../7/) and [Lab 8](../8/). This time we need to display _both_ the date and the time.
-
-{: .tip }
-Feel free to use any settings you like.
-In the screencasts below, I use `dateStyle: "long"` and `timeStyle: "short"`.
-
-If everything went well, your slider should now be working!
-
-![](videos/slider.gif)
-
-### Step 1.2: Filtering by `commitMaxTime`
-
-Let’s now ceate a new `filteredCommits` variable that will reactively [filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) `commits` by comparing `commit.datetime` with `commitMaxTime`.
-
-Similarly, create a `filteredLines` variable that filters `data` in the same way.
-
-We can now replace `commits` with `filteredCommits` and `data` with `filteredLines` in several places:
-
-- The `xScale` domain
-- The `brushed()` function that updates the `selectedCommits` variable
-- The `{#each}` block that draws the circles
-- The `hoveredCommit` variable
-- Your summary stats
-
-Try moving the slider and see what happens!
-
-<video src="videos/filtering-unstable.mp4" loading=lazy muted autoplay loop class="outline"></video>
-
-### Step 1.3: Making the circles stable
-
-CSS transitions are already applied to our circles since Lab 7.
-However, notice that when we move the slider, the circles are jumping around a lot.
-
-<!-- This is because Svelte is generating new circles, even for the commits that are already there. -->
-
-This is because Svelte doesn't know which data items correspond to which previous data items,
-so it does not necessarily reuse the right `<circle>` element for the same commit.
-To tell Svelte which data items correspond to which previous data items, we can use [a _keyed `each` block_](https://svelte.dev/docs/logic-blocks#each), with a value that uniquely identifies the data item.
-A good candidate for that in this case would be the commit id:
-
-```html
-{#each commits as commit, index (commit.id) }
-```
-
-Just this small addition fixes the issue completely!
-
-<!-- Just like Step 1.2, the solution is to use a keyed `{#each}` block.
-The key can be `commit.id`, since that is a primitive value that uniquely identifies each commit. -->
-
-<!-- The result should already look *a lot* better: -->
-
-<video src="videos/filtering-stable.mp4" loading=lazy muted autoplay loop class="browser"></video>
-
-### Step 1.4: Entry transitions with CSS
-
-Notice that even though we are now getting a nice transition when an existing commit changes radius,
-there is no transition when a new commit appears.
-
-<video src="videos/filtering-no-intro.mp4" loading=lazy muted autoplay loop class="browser"></video>
-
-<!-- We *could* fix that with Svelte transitions, but let’s try a different way,
-since this is something that we can do _better_ with CSS transitions alone. -->
-
-This is because CSS transitions fire for state changes where both the start and end changes are described by CSS.
-A new element being added does not have a start state, so it doesn’t transition.
-We _could_ use [Svelte transitions](https://svelte.dev/docs/element-directives#transition-fn) for this, but we don’t need to.
-We can actually use CSS transitions,
-we just need to explicitly tell the browser what the start state should be.
-That’s what the [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) rule is for!
-
-Inside the `circle` CSS rule, add a [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) rule (and ignore Svelte’s "Unknown at rule" warning):
-
-```css
-@starting-style {
-  r: 0;
+$: {
+	d3.select(yAxisGridlines).call(d3.axisLeft(yScale));
 }
 ```
+-->
 
-If you preview again, you should notice that that’s all it took, new circles are now being animated as well!
+We also need to create a `<g>` element to hold the grid lines.
+Let’s give it a class of `gridlines` so we can style it later:
 
-<video src="videos/filtering-intro.mp4" loading=lazy muted autoplay loop class="browser"></video>
-
-{: .further}
-
-> You might notice that the largest circles and the smallest circles are _both_ transitioning with the same _duration_, which means dramatically different _speeds_.
-> We may decide that this is desirable: it means all circles are appearing at once.
-> However, if you want to instead keep speed constant, you can set an `--r` CSS variable on each `circle` element with its radius, and then set the transition duration to e.g. `calc(var(--r) / 100ms)`.
-> You can do that only for `r` transitions like so:
->
-> ```css
-> transition: all 200ms, r calc(var(--r) * 100ms);
-> ```
-
-### Step 1.5: Moving the scatterplot into a separate component _(optional, but recommended)_
-
-{: .files }
-`src/routes/meta/+page.svelte`,
-`src/routes/meta/Scatterplot.svelte`
-
-`src/routes/meta/+page.svelte` has begun to grow quite a lot, and it’s only about to get bigger.
-It will really help make your code more manageable to start moving reusable functionality to components.
-One good candidate is the commit scatterplot.
-
-Create a new file, `src/routes/meta/Scatterplot.svelte`, and move the scatterplot code there.
-This includes:
-
-- The `<svg>` element
-- The commit tooltip
-- Any CSS styling elements in those
-- The JS dealing with dimensions, margins, scales, axes, brushing, user interaction with dots, commit selection, etc.
-
-It should have two props:
-
-- `commits` (an array of commits)
-- `selectedCommits` (mostly used as output, but could be used as input as well)
-
-We name the variable `commits` in order to make the scatterplot a bit more generalizable.
-As such, make sure to change any mentions of `filteredCommits` in your new file back to `commits`.
-VS Code allows you to do that safely in one go, by placing the text caret on the variable name, then pressing F2 (or right clicking and selecting "Rename Symbol")
-
-The final result should allow us to replace our entire `<svg>` and commit tooltip in `src/routes/meta/+page.svelte` with just:
-
-```jsx
-<CommitScatterplot
-  commits={filteredCommits}
-  bind:selectedCommits={selectedCommits}
+```html
+<g
+  class="gridlines"
+  transform="translate({usableArea.left}, 0)"
+  bind:this="{yAxisGridlines}"
 />
 ```
 
 {: .caveat }
-Don’t forget to also move the necessary imports!
-I find it helpful to just copy all of them, then remove the ones VS Code highlights as unused.
+Make sure that your `<g>` element for the grid lines comes _before_ the `<g>` element for the Y axis,
+as you want the grid lines to be painted _under_ the axis, not _over_ it.
 
-## Step 2: The race for the biggest file!
-
-In this step we will create a unit visualization that shows the relative size of each file in the codebase in lines of code, as well as the type and age of each line.
-
-### Step 2.1: Creating a component for the unit visualization
-
-{: .files }
-`src/routes/meta/FileLines.svelte`,
-`src/routes/meta/+page.svelte`
-
-To avoid bloating `src/routes/meta/+page.svelte` even more, let’s create a new component,
-`src/routes/meta/FileLines.svelte`, that will contain the unit visualization.
-
-The component should take a `lines` prop, and will group lines of code into files internally.
-This means that from the outside, we’d just use it like this:
-
-```jsx
-<FileLines lines={filteredLines} />
-```
-
-Eventually we want this to go after the scatterplot & pie chart,
-but for now let’s add it right after our filtering UI as that makes development faster.
-
-Then, within the component we will group the lines by file and convert the groups to an array of `{name, lines}` objects like this:
+So far, we’ve only recreated our Y axis but without the formatting.
+How do we turn that into grid lines?
+First, we will use [`axis.tickFormat()`](https://d3js.org/d3-axis#axis_tickFormat) again, but this time to _remove_ the text:
 
 ```js
-let files = [];
 $: {
-  files = d3
-    .groups(lines, (d) => d.file)
-    .map(([name, lines]) => {
-      return { name, lines };
-    });
+  d3.select(yAxisGridlines).call(d3.axisLeft(yScale).tickFormat(''));
 }
 ```
 
-Now that we have our files, let’s output them.
-While we _can_ use D3 and generate an SVG for this,
-unit visualizations are one of the few cases where it can actually be easier to just use HTML and CSS,
-as we need to do a lot less work to manage the position of each element.
-
-We will use a `<dl>` element (but feel free to make different choices, there are many structures that would be appropriate here)
-Let’s start simple, by just outputting filenames and number of lines:
-
-```html
-<dl class="files">
-  {#each files as file (file.name) }
-  <div>
-    <dt>
-      <code>{file.name}</code>
-    </dt>
-    <dd>{file.lines.length} lines</dd>
-  </div>
-  {/each}
-</dl>
-```
-
-Note that we used a _keyed `each` block_ from the get go here.
-It’s generally a good practice to do this by default,
-especially when iterating over data that we expect to change,
-as it avoids a lot of the issues we saw earlier.
-
-We should style the `<dl>` as a grid so that the filenames and line counts are aligned.
-The only thing that is a bit different now is that we have a `<div>` around each `<dt>` and `<dd>`.
-To prevent that from interfering with the grid we should use [Subgrid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid):
-
-```css
-& > div {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: subgrid;
-}
-```
-
-Then we can just apply `grid-column: 1` to the `<dt>`s and `grid-column: 2` to the `<dd>` as usual.
-
-At this point, our "visualization" is rather spartan,
-but if you move the slider, you should already see the number of lines changing!
-
-<video src="videos/file-lines-basic.mp4" loading=lazy muted autoplay loop class="outline"></video>
-
-### Step 2.2: Making it look like an actual unit visualization
-
-For a unit visualization, we want to draw an element per data point (in this case, per line), so let’s do that.
-All we need to do is replace the contents of the `<dd>` element with another `{#each}` block that outputs a `<div>` for each line:
-
-```html
-{#each file.lines as line (line.line) }
-<div class="line"></div>
-{/each}
-```
-
-{: .tip }
-Seeing the total number of lines per file is still useful, so you may want to add it in the `<dt>`.
-I used a `<small>` element, gave it `display: block` so that it's on its own line, and styled it smaller and less opaque.
-
-And then add some CSS to make it look like a unit visualization:
-
-```css
-.line {
-  display: flex;
-  width: 0.5em;
-  aspect-ratio: 1;
-  background: steelblue;
-  border-radius: 50%;
-}
-```
-
-Last, we want to make sure these dots wrap and are tightly packed, so we need to add some CSS for the `<dd>` elements to allow this:
-
-```css
-dd {
-  grid-column: 2;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: start;
-  align-content: start;
-  gap: 0.15em;
-  padding-top: 0.6em;
-  margin-left: 0;
-}
-```
-
-At this point, we should have an actual unit visualization!
-
-It should look something like this:
-
-<video src="videos/file-lines-unit.mp4" loading=lazy muted autoplay loop class="outline"></video>
-
-### Step 2.3: Sorting files by number of lines
-
-Our visualization is not really much of a race right now, since the order of files seems random.
-We need to sort the files by the number of lines they contain in descending order.
-We can do that in the same reactive block where we calculate `files`:
+Then, we use the [`axis.tickSize()`](https://d3js.org/d3-axis#axis_tickSize) method to make the lines extend across the whole chart:
 
 ```js
-files = d3.sort(files, (d) => -d.lines.length);
+$: {
+  d3.select(yAxisGridlines).call(
+    d3.axisLeft(yScale).tickFormat('').tickSize(-usableArea.width),
+  );
+}
 ```
 
-### Step 2.4: Varying the color of the dots by technology
+<!-- We can also add `.tickValues(d3.ticks(0, 24, 25))` to have gridlines every hour, rather than every two hours. -->
 
-Our visualization shows us the size of the files, but not all files are created equal.
-We can use color to differentiate the lines withn each file by technology.
+If we look now, we already have grid lines, but they look a bit too prominent.
 
-Let’s create an ordinal scale that maps technology ids to colors:
+Let’s add some CSS to fix this:
 
-```js
-let colors = d3.scaleOrdinal(d3.schemeTableau10);
+```css
+.gridlines {
+  stroke-opacity: 0.2;
+}
 ```
-
-Then, we can use this scale to color the dots:
-
-```html
-<div class="line" style="--color: { colors(line.type) }"></div>
-```
-
-<!--
-If you preview at this point, you will notice that the colors seem somewhat random.
-This is because the lines within each file are not actually in the order they appear.
-To do that, we need to sort them by their `line` property.
-Back in the reactive block where we calculate `files`:
-
-```js
-files = files.map(file => {
-	file.lines = d3.sort(file.lines, d => d.line);
-	return file;
-});
-```
--->
 
 Much better now!
 
-<video src="videos/file-lines-colored.mp4" loading=lazy muted autoplay loop class="outline"></video>
+<figure markdown="1">
 
-### Step 2.5: Dot transitions
+![](images/gridlines-black.png)
+![](images/gridlines.png)
 
-Notice that it's a little hard to compare which lines of each file have been added as we move the slider.
-If we make new elements appear with a transition, it will be much easier to see what is happening.
-We can use one of the [Svelte predefined transitions](https://svelte.dev/docs/svelte-transition) for this.
-I picked `scale` as that makes dots appear to grow from a single point.
+<figcaption>
+The grid lines before and after `stroke-opacity`.
+</figcaption>
+</figure>
 
-If you don’t need to customize the duration etc, all it takes is adding `in:scale` to the `<div>` element!
+{: .caveat }
+Do not use `.gridlines line`, `.gridlines .tick line` or any other descendant selector to style the lines:
+Svelte [thinks it’s unused CSS and removes it](https://github.com/sveltejs/svelte/issues/10844)!
 
-<video src="videos/file-lines-dottransitions.mp4" loading=lazy muted autoplay loop class="outline"></video>
+{: .further }
+Coloring each line based on the time of day, with bluer colors for night times and orangish ones for daytime? 😁
 
-### Step 2.6: Consistent colors across visualizations
+## Step 3: Adding a tooltip
 
-Notice that we have two visualizations that use colors to represent technologies,
-but they use different colors for the same technologies!
+Even with the gridlines, it’s still hard to see what each dot corresponds to.
+Let’s add a tooltip that shows information about the commit when you hover over a dot.
 
-To fix this, we need to allow our components (`Pie.svelte` and `FileLines.svelte`) to accept a color scale as a prop, by prepending their `colors` declarations with `export`:
+### Step 3.1: Static element
 
-```js
-export let colors = d3.scaleOrdinal(d3.schemeTableau10);
-```
+First, we’ll render the data in an HTML element, and once we’re sure eveyrthing works well, we’ll make it look like a tooltip.
 
-Then we create the color scale on the parent page and pass it to each of them.
-For example, `<FileLines />` would become `<FileLines colors={colors} />`.
-
-That by itself is not enough.
-To get consistent colors each component needs to be looking up the color for a technology in the same way.
-Currently, `<Pie>` uses technology labels, while `<FileLines>` uses the raw ids from the data.
-We can make sure the data we pass to `<Pie>` include an `id` property with the raw id and then use that to look up the color.
-To make the component more flexible, we could even use both:
-
-```jsx
-<!-- Rest of attributes omitted -->
-<path fill={ colors(d.id ?? d.label) }>
-```
-
-Our visualization is now _way_ more informative!
-
-<img src="images/consistent-colors-pie-unit.png" class="outline" alt="" />
-
-### Step 2.7: Animated race
-
-We can now use the [`animate:fn` directive](https://svelte.dev/docs/element-directives#animate-fn) to animate the files when they move to a new position.
-Svelte provides a built-in animation called `flip`, which sounds perfect for this use case.
-
-We import it at the top of our component:
+Similarly to [Step 5.2](../6/#step-52-highlighting-selected-wedge) of the previous lab, when we were selecting a pie wedge, we will now use with a `hoveredIndex` variable to hold the index of the hovered commit,
+and a `hoveredCommit` variable that is reactively updated every time a commit is hovered
+and holds the data we want to display in the tooltip:
 
 ```js
-import { flip } from 'svelte/animate';
+let hoveredIndex = -1;
+$: hoveredCommit = commits[hoveredIndex] ?? hoveredCommit ?? {};
 ```
 
-And then we apply it to the `<div>` that contains each file.
-If we are happy with its defaults, it can be as simple as this:
+Then, in our SVG, we add `mouseenter` and `mouseleave` event listeners on each circle:
 
 ```html
-<div animate:flip></div>
+<!-- Other attributes/directives not shown for brevity -->
+<circle on:mouseenter={evt => hoveredIndex = index} on:mouseleave={evt =>
+hoveredIndex = -1} />
 ```
 
-However, if we preview the animation we get the result is …less than great:
+{: .note }
+Ignore the accessibility warnings for now, we will get to them once we get the base functionality working.
 
-<video src="videos/flip-wrong.mp4" loading=lazy muted autoplay loop class="outline"></video>
+Now add an element to display data about the hovered commit:
 
-We can add a long duration (3000) and a delay (1000) (`animate:flip={{delay: 1000, duration: 3000}}) to more clearly see what is happening:
+```html
+<dl id="commit-tooltip" class="info tooltip">
+  <dt>Commit</dt>
+  <dd>
+    <a href="{ hoveredCommit.url }" target="_blank">{ hoveredCommit.id }</a>
+  </dd>
 
-<video src="videos/flip-wrong-slow.mp4" loading=lazy muted autoplay loop class="outline"></video>
+  <dt>Date</dt>
+  <dd>{ hoveredCommit.datetime?.toLocaleString("en", {dateStyle: "full"}) }</dd>
 
-From some further investigation, it appears that Svelte is prematurely caching the geometry of the elements (before and after), which is causing the animation to be incorrect.
-
-But we can use a workaround!
-The part after the `animate:` is just referring to a function.
-There is nothing special about `flip`, it’s just a function we import.
-In fact, if we alt + click on it in the import statement, VS Code will take us to the Svelte module that defines it.
-Instead of using it wholesale, we can import with a different name:
-
-```js
-import { flip as originalFlip } from 'svelte/animate';
+  <!-- Add: Time, author, lines edited -->
+</dl>
 ```
 
-We can use a reactive statement to _force_ `flip` to update whenever we need it to,
-e.g. whenever `files` changes:
+In the CSS, we add two rules:
 
-```js
-function getFlip() {
-  return originalFlip;
+- `dl.info` with grid layout so that the `<dt>`s are on the 1st column and the `<dd>`s on the 2nd, remove their default margins, and apply some styling to make the labels less prominent than the values.
+- `.tooltip` with `position: fixed` to it and `top: 1em;` and `left: 1em;` to place it at the top left of the viewport so we can see it regardless of scroll status.
+
+{: .note }
+Why not just add everything on a single CSS rule? Because this way we can reuse the `.info` class for other `<dl>`s that are not tooltips and the `.tooltip` class for other tooltips that are not `<dl>`s.
+
+{: .fyi }
+What’s the difference between `fixed` and `absolute` [positioning](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Positioning)?
+`position: fixed` positions the element relative to the [_viewport_](https://developer.mozilla.org/en-US/docs/Glossary/Viewport), while `position: absolute` positions it relative to the nearest positioned ancestor (or the root element if there is none).
+The position offsets are specified via [`top`](https://developer.mozilla.org/en-US/docs/Web/CSS/top), [`right`](https://developer.mozilla.org/en-US/docs/Web/CSS/right), [`bottom`](https://developer.mozilla.org/en-US/docs/Web/CSS/bottom), and [`left`](https://developer.mozilla.org/en-US/docs/Web/CSS/left) properties (or their shorthand, [`inset`](https://developer.mozilla.org/en-US/docs/Web/CSS/inset))
+In practice, it means that `position: fixed` elements stay in the same place even when you scroll, while `position: absolute` elements scroll with the rest of the page.
+
+We should also apply some hover styles on the dots, e.g to smoothly make them bigger when hovered we can do something like this:
+
+```scss
+circle {
+  transition: 200ms;
+
+  &:hover {
+    transform: scale(1.5);
+  }
 }
-$: flip = getFlip(files);
 ```
 
-This tricks Svelte into thinking `flip` depends on `files`, so it will re-run whenever `files` changes.
+If you preview now, you will see some weirdness (slowed down by 10x):
 
-If you try it now (with a reasonable duration and no delay), you will see that the animation is now correct!
+![](images/hover-weirdness.gif)
 
-<video src="videos/flip-correct.mp4" loading=lazy muted autoplay loop class="outline"></video>
+This is because in SVG by default the origin of transforms is the top left corner of the coordinate system.
+To fix that and set the origin to the center of the dot itself, we need two properties:
 
-For the final result, you’d likely want to either specify a duration as a function (which depends on the distance travelled) or remove the parameters (since that is the default).
+```css
+transform-origin: center;
+transform-box: fill-box;
+```
 
-{: .tip }
+The hover effect now looks far more reasonable:
 
-> Don’t like the appearance of the items when they overlap? You can apply a semi-transparent white background and a glow with the same color to the `<div>` via something like:
->
-> ```css
-> & > div {
->   background: hsl(0 0% 100% / 90%);
->   box-shadow: 0 0 0.2em 0.2em hsl(0 0% 100% / 90%);
-> }
-> ```
+![](images/hover-fixed.gif)
 
-## Step 3: Pie chart transition
+Overall, at the end of this step, we should have something like this:
 
-{: .files }
-`lib/Pie.svelte`
+<video src="videos/hover-info.mp4" muted loop autoplay class="browser" data-url="http://localhost:5173/meta"></video>
 
-In lab 6, we created a pie chart that shows the distribution of edited lines per technology,
-and responds to filtering.
-We even [added a `transition: 300ms`](https://vis-society.github.io/labs/6/#step-51-highlighting-hovered-wedge) to our pie chart wedges,
-which interpolates any property the browser can interpolate.
-This is useful when we select a wedge, but produces rather strange results when the pie data changes
-as you have no doubt noticed by now.
+### Step 3.2: Making it look like a tooltip
 
-Let’s fix it!
+Seeing this info is already useful, but it’s not really a tooltip yet.
+There are three components to making our `<dl>` an actual tooltip:
 
-{: .tip }
-It will help debugging to apply `fill-opacity` to the pie wedges, so you can see when they overlap.
-Ideally, we don't want to have gaps or overlapping wedges during the transition.
-In the screenshots/screencasts below, I have applied `fill-opacity: 75%;` to the `<path>` elements.
-You may also want to use a more distinctive color palette at this point, like `schemeCategory10` or `schemeTableau10`.
-The screenshots in this lab will use `schemeTableau10`.
+1. Styling it like a tooltip (e.g. giving it a shadow that makes it look raised from the page)
+2. Making it only appear when we are hovering over a dot (Step 3.3)
+3. Positioning it near the mouse cursor (Step 3.4)
 
-### Step 3.1: Use consistent ordering
+I will do them in that order, but these are largely independent tasks that can be done in either order.
+If anything, doing 3 before 1 and 2 might help motivate them better.
 
-The first step is to make sure that the pie chart uses a consistent ordering of technologies, which also makes it easier to compare results across different sets of commits.
-By default, `d3.pie()` sorts the wedges by descending value, which in dynamic pie charts, is almost always undesirable.
-Instead, let’s sort by the data labels.
-This way, as long as the data labels remain consistent, the order of the pie wedges will also remain consistent.
+In terms of styling,
+you should definitely give it a [`background-color`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-color)
+as otherwise the text will be hard to read.
+You can either go for a solid color (e.g. `white`) or a semi-transparent color (e.g. `oklch(100% 0% 0 / 80%)`) that will show some of the chart behind it.
 
-You may notice that there is a [`pie.sort()`](https://d3js.org/d3-shape/pie#pie_sort) function.
-Can’t we just use that to sort by labels?
-No! If we do that, the arcs would be out of sync with our data!
-Instead, we will _disable_ sorting in the pie by adding `.sort(null)` after the call to `d3.pie()`:
+A few other useful CSS properties are:
+
+- [`box-shadow`](https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow) for shadows.
+  **Avoid overly prominent shadows**: you are trying to make it look elevated, not to decorate it.
+  The shadow should not be distracting, but just enough to make it look like it’s floating above the page.
+  Generally, the larger the blur radius and the more transparent the color, the more raised the element will look.
+  Experiment with different values to see what looks best for your design.
+- [`border-radius`](https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius) for rounded corners
+- [`backdrop-filter`](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter) to blur what’s underneath (frosted glass effect).
+  This is only relevant if you have a semi-transparent background color.
+
+You would also probably want to add some spacing between its content and the edges of the tooltip, i.e. `padding`.
+
+<figure markdown="1">
+
+![](images/tooltip-styling.gif)
+
+<figcaption>
+Example before and after.
+</figcaption>
+</figure>
+
+### Step 3.3: Making only appear when we are hovering over a dot
+
+Currently, our tooltip appears even when it has no content, which is quite jarring.
+It also appears when we are not hovering over any dot, and just shows the previous content.
+That’s not too bad when it's fixed at the top left of the viewport, but can you picture how annoying this would be if it was an actual tooltip that just won’t take a hint and go away?
+
+We _could_ wrap the whole tooltip with an `{#if hoveredIndex > -1 }...{/if}` block and it would work.
+However, that’s not very flexible.
+It makes it hard to use transition effects when the tooltip disappears (because it’s gone immediately),
+make it disappear with a delay to allow users to interact with it,
+or not disappear at all if users are actively interacting with it (hovering it or focusing elements within it).
+
+Instead, we will use the HTML [`hidden`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden) attribute:
+
+```jsx
+<dl class="info" hidden={hoveredIndex === -1}>
+```
+
+and add some CSS to hide the element by fading it out:
+
+```scss
+dl.info {
+  /* ... other styles ... */
+  transition-duration: 500ms;
+  transition-property: opacity, visibility;
+
+  &[hidden]:not(:hover, :focus-within) {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+```
+
+It should now behave like this:
+
+<video src="videos/tooltip-showhide.mp4" loop autoplay muted></video>
+
+### Step 3.4: Positioning the tooltip near the mouse cursor
+
+Now, the final piece of the puzzle to make this element into an actual tooltip!
+
+Our tooltip is currently positioned at the top left corner of the viewport (actually `1em` from the top and `1em` from the left) in a hardcoded way, via the `top` and `left` properties.
+To position it near the mouse cursor instead, we need to set these properties _dynamically_ based on the mouse position.
+
+Thankfully, the event object on mouse events has several properties that give us the mouse position relative to different things.
+To get the mouse position relative to the viewport, we can use the `x` and `y` properties of the event object.
+
+We will declare a new variable in our JS and use it to store the last recorded mouse position:
 
 ```js
-let sliceGenerator = d3
-  .pie()
-  .value((d) => d.value)
-  .sort(null);
+let cursor = { x: 0, y: 0 };
 ```
 
-and then we will sort `pieData` itself:
+Then, we will update it in our `mouseenter` event listener:
+
+```jsx
+<!-- Other attributes/directives not shown for brevity/clarity -->
+<circle
+	on:mouseenter={evt => {
+		hoveredIndex = index;
+		cursor = {x: evt.x, y: evt.y};
+	}}
+/>
+```
+
+Print it out in your HTML via `{JSON.stringify(cursor, null, "\t")}` and move the mouse around to make sure it works!
+
+<img src="images/cursor-object.gif" class="outline" alt="">
+
+As with all these debug statements, don’t forget to remove it once you verify it works.
+
+Now let’s use these to set `top` and `left` on the tooltip:
+
+```jsx
+<dl class="info" hidden={hoveredIndex === -1} style="top: {cursor.y}px; left: {cursor.x}px">
+```
+
+This is the result:
+<video src="videos/tooltip-cursor.mp4" loop autoplay muted></video>
+
+{: .note }
+While we directly set `top` and `left` for simplicity,
+we usually want to avoid setting CSS properties directly.
+It’s more flexible to set custom properties that we then use in our CSS.
+For example, assume you wanted to subtly move the shadow as the mouse pointer moves to create more sense of depth ([parallax](https://en.wikipedia.org/wiki/Parallax)).
+If we had custom properties with the mouse coordinates, we could just use them in other properties too,
+whereas here we’d have to set the `box-shadow` with inline styles too.
+
+### Step 3.5: Bulletproof positioning (optional)
+
+Our naïve approach to positioning the tooltip near the mouse cursor by setting the `top` and `left` CSS properties
+works well if the tooltip is small and the mouse is near the center of the viewport.
+However, if the tooltip is near the edges of the viewport, it falls apart.
+
+Try it yourself: dock the dev tools at the bottom of the window and make them tall enough that you can scroll the page.
+Now hover over a dot near the bottom of the page. Can you see the tooltip?
+
+<img src="images/positioning-problem.png" alt="" class="outline">
+
+Solving this on our own is actually an incredibly complicated problem in the general case.
+Thankfully, there are many wonderful packages that solve it for us.
+We will use [Floating UI](https://floating-ui.com/) here.
+
+First, we install it via npm:
+
+```bash
+npm install @floating-ui/dom
+```
+
+Then, we import the three functions we will need from it:
+
+```js
+import { computePosition, autoPlacement, offset } from '@floating-ui/dom';
+```
+
+Just like D3, Floating UI is not Svelte-specific and works with DOM elements.
+Therefore, just like we did for the axes in Step 4.2, we will use `bind:this` to bind a variable to the tooltip element:
+
+```js
+let commitTooltip;
+```
+
+```html
+<!-- Other attributes omitted for brevity -->
+<dl class="info" bind:this="{commitTooltip}"></dl>
+```
+
+Then, we will use [`computePosition()`](https://floating-ui.com/docs/computePosition) to compute the position of the tooltip based on the mouse position and the size of the tooltip.
+This function returns a Promise that resolves to an object with properties like `x` and `y` that we can use in our CSS instead of `cursor`.
+Therefore, let’s create a new variable to hold the position of the tooltip
+that we will update in our `mouseenter` event listener.:
+
+```js
+let tooltipPosition = { x: 0, y: 0 };
+```
+
+Since the code of this event listener is growing way beyond a single line expression,
+it’s time to move it to a function.
+This is also a good chance to address those accessibility warnings we ignored earlier.
+
+Create a new `dotInteraction()` function in your JS that takes the index of the dot and the event object as arguments:
+
+```js
+function dotInteraction(index, evt) {
+  // code will go here
+}
+```
+
+We’ll try something different this time:
+instead of creating separate functions for each event,
+we will invoke the same function for all events, and read `evt.type` to determine what to do.
+Instead of only handling mouse events, we will also handle `focus` and `blur` events, to make our tooltip accessible to keyboard users.
+
+```js
+if (evt.type === 'mouseenter' || evt.type === 'focus') {
+  // dot hovered
+} else if (evt.type === 'mouseleave' || evt.type === 'blur') {
+  // dot unhovered
+}
+```
+
+Move your existing event listener code (modifying `hoveredIndex`) within the `dotInteraction()` function,
+and then update your event listeners to call that instead:
+
+```html
+<!-- Other attributes/directives not shown for brevity -->
+<circle on:mouseenter={evt => dotInteraction(index, evt)} on:mouseleave={evt =>
+dotInteraction(index, evt)} />
+```
+
+To fix the accessibility issues, we should also add:
+
+- `tabindex="0"` to the dots to make them focusable
+- `aria-describedby="commit-tooltip"` to the dots to link them to the tooltip for assistive technology
+- `role="tooltip"` to the tooltip to indicate its purpose to assistive technology
+- `aria-haspopup="true"` to the dots to indicate that they have a tooltip
+- `on:focus` and `on:blur` event listeners (that also call `dotInteraction()`)
+
+Back to the `dotInvoked()` function,
+we can use [`evt.target`](https://developer.mozilla.org/en-US/docs/Web/API/Event/target) to get the dot that was hovered over:
+
+```js
+let hoveredDot = evt.target;
+```
+
+Now, in the block that handles the `mouseenter`/`focus` events, let’s use [`computePosition()`](https://floating-ui.com/docs/computePosition)
+to compute the position of the tooltip based on the position of the dot.
+
+Another advantage of moving our code to a separate function is that
+we can mark this function as [`async`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function), which will allow us to use `await` inside it.
+This is helpful because [`computePosition()`](https://floating-ui.com/docs/computePosition) returns a `Promise` that resolves to the position of the tooltip.
+
+This is what it looks like:
+
+```js
+tooltipPosition = await computePosition(hoveredDot, commitTooltip, {
+  strategy: 'fixed', // because we use position: fixed
+  middleware: [
+    offset(5), // spacing from tooltip to dot
+    autoPlacement(), // see https://floating-ui.com/docs/autoplacement
+  ],
+});
+```
+
+Your function should now look like:
+
+```js
+async function dotInteraction(index, evt) {
+  // your code
+}
+```
+
+{: .note }
+We won’t go into much detail on the API of Floating UI, so it’s ok to just copy the code above.
+However, if you want to learn more, their [docs](https://floating-ui.com/docs/getting-started) are excellent.
+
+Lastly, replace `cursor` with `tooltipPosition` in the `style` attribute of the tooltip to actually use this new object.
+
+If you preview now, you should see that the tooltip is always visible and positioned near the hovered dot,
+regardless of where it is relative to the viewport.
+
+<video src="videos/tooltip-final.mp4" loop autoplay muted class="browser" data-url="http://localhost:5173/meta"></video>
+
+At this point you can also remove the `cursor` variable and the code setting it,
+since we don’t need it anymore, unless there are other things you want to do
+where knowing the mouse position is useful.
+
+## Step 4: Communicating lines edited via the size of the dots (optional)
+
+Note that the tiniest of edits are currently represented by the same size of dot as the largest of edits.
+It is common to use the size of the dots to communicate a third variable,
+in this case the number of lines each commit edited.
+
+### Step 4.1: Calculating our scale
+
+We will need to define a new scale to map the number of lines edited to the radius of the dots.
+This means we need to first…
+
+1. Decide on the minimum and maximum radii we want to allow.
+   Edit the circle `r` attribute and play around with different radii to decide.
+   I settled on `2` and `30`.
+2. Calculate the range of values for number of lines edited by a single commit.
+   As with [Step 4.1](#step-41-drawing-the-dots), we can use [`d3.extent()`](https://d3js.org/d3-array#extent) to find the minimum and maximum value in one go.
+
+Then define a new linear scale (I called it `rScale`) using [`d3.scaleLinear()`](https://d3js.org/d3-scale/linear)
+mapping the domain of the number of lines edited to the range of radii we decided on.
+
+Then, in our HTML, instead of a hardcoded `5`, set the circle radius to `rScale(commit.totalLines)`.
+
+If everything went well, you should now see that the dots are now different sizes
+depending on the number of lines of each!
+
+As one last tweak, apply `fill-opacity` to the dots to make them more transparent,
+since the larger they are, the more likely to overlap.
+You can only apply it when the dots are _not_ hovered, as an extra cue.
+
+![Screenshot](images/r-var-linear.png)
+
+### Step 4.2: Area, not radius
+
+Hover over a few circles and pay attention to the number of lines they correspond to.
+What do you notice?
+The size of the dots is not very good at communicating the number of lines edited.
+This is because the area of a circle is proportional to the square of its radius (A = πr²),
+so **a commit with double the edits appears four times as large**!
+
+To fix this, we will use a different type of scale: a [square root scale](https://d3js.org/d3-scale/pow#scaleSqrt).
+A square root scale is a type of power scale that uses the square root of the input domain value to calculate the output range value.
+Thankfully, the API is very similar to the linear scale we used before,
+so all we need to do to fix the issue is to just change the function name.
+
+<figure markdown="1">
+
+![Screenshot](images/r-var-linear.png)
+![Screenshot](images/r-var.png)
+
+<figcaption>
+Before and after
+</figcaption>
+</figure>
+
+### Step 4.3: Paint smaller dots over larger ones
+
+You may notice that when dots are overlapping,
+it’s sometimes harder to hover over the smaller ones, if they happen to be painted underneath the larger one.
+
+One way to fix this is to sort commits in descending order of `totalLines`,
+which will ensure the smaller dots are painted last.
+To do that, we can use the [`d3.sort()`](https://d3js.org/d3-array/sort#sort) method.
+This would go in your `onMount()` callback:
+
+```js
+commits = d3.sort(commits, (d) => -d.totalLines);
+```
+
+Why the minus?
+Because `d3.sort()` sorts in ascending order by default, and we want descending order,
+and that’s shorter than writing a custom comparator function.
+
+## Step 5: Brushing
+
+In the [previous lab](../6/), we selected single pie segments by clicking.
+As discussed in the [A Tour through the Interaction Zoo](../../lectures/interaction-zoo.html) lecture,
+brushing can be an effective interaction technique for selecting _multiple_ data points in a visualization.
+
+Once points are selected, we can further explore the dataset by displaying more data.
+
+### Step 5.1: Setting up the brush
+
+Exactly because brushing is so fundamental to interactive charts,
+D3 provides a module called [`d3-brush`](https://d3js.org/d3-brush) to facilitate just that.
+
+To use it, we need a reference to our `<svg>` element, so we use `bind:this` as we’ve done several in this lab.
+Let’s call the variable `svg`.
+
+We then create the brush via:
+
+```js
+$: d3.select(svg).call(d3.brush());
+```
+
+Try it!
+You should already be able to drag a rectangle around the chart, even though it doesn’t _do_ anything yet.
+
+<img src="images/brush-noop.gif" alt="" class="outline">
+
+Exciting!
+
+### Step 5.2: Getting our tooltips back
+
+Did you notice that now that we can brush, our tooltips disappeared? 😱
+What happened?!
+
+If you inspect the chart, you will find the culprit:
+
+<img src="images/brush-overlay.png" alt="" class="browser">
+
+So what is happening here?
+To make the brush work, **D3 adds a rectangle overlay over the entire chart that catches all mouse events**.
+Because of this, our circles never get hovered, and thus our tooltips never show.
+
+Since SVG elements are painted in source order,
+to fix this we need the overlay to come before the dots in the DOM tree.
+D3 provides a [`selection.raise()`](https://d3js.org/d3-selection/modifying#selection_raise) method that moves one or more elements to the end of their parent, maintaining their relative order.
+
+Therefore, to move the overlay to be before the dots, we will "raise" the dots and everything that comes _after_ the overlay.
+
+First, let’s convert the single-line reactive statement to a reactive block:
 
 ```js
 $: {
-  pieData = d3.sort(data, (d) => d.label);
-  // ... calculate arcData and arcs as before ...
-  pieData = pieData.map((d, i) => ({ ...d, ...arcData[i], arc: arcs[i] }));
+  d3.select(svg).call(d3.brush());
 }
 ```
 
-{: .caveat }
-It is important to sort the data _before_ we calculate `arcData` and `arcs`, otherwise they will be out of sync!
+Then, inside the reactive block, after the brush is created, we raise the dots and everything after the overlay:
 
-If you try it now, the order should already be correct, though the transition is still suboptimal:
-
-<video src="videos/sorted.mp4" loading=lazy muted autoplay loop></video>
-
-### Step 3.2: Eliminate flashing by using a keyed `each` block
-
-Our technologies are now sorted, but this made the transition involve a lot of flashing.
-Why is that?
-The pie wedges are always in the same order, so nothing should be changing color!
-
-This is because Svelte doesn't know which data items correspond to which previous data items,
-so it does not necessarily reuse the same `<path>` element for the same data item in the new data.
-To tell Svelte which data items correspond to which previous data items, we can use [a _keyed `each` block_](https://svelte.dev/docs/logic-blocks#each), with a value that uniquely identifies the data item.
-A good candidate for that would be the label:
-
-```html
-{#each pieData as d, index (d.label)}
+```js
+d3.select(svg).selectAll('.dots, .overlay ~ *').raise();
 ```
-
-Just this small addition fixes the issue completely!
-
-<video src="videos/keyed.mp4" loop muted autoplay></video>
-
-### Step 3.3: Fixing the shape transition using `d3.transition()`
-
-We may have fixed the issues discussed above but the transition is, how should we put it, …suboptimal.
-Our shape transitions are still rather weird, especially when transitioning between pies that have different technologies.
-Change the transition duration to something longer (e.g. `3s`) so you can more clearly see what is happening:
-
-<video src="videos/arc-wrong.mp4" loop muted autoplay></video>
-
-This is because paths are interpolated naïvely,
-by just matching up path segments and interpolating their parameters as numbers.
-Especially when it comes to arcs, that is almost _never_ what we want!
-
-<figure>
-<iframe loading="lazy" style="width: 100%; height: 1000px; max-height: 80vh; border: 0;" src="https://svelte.dev/repl/4258ae76ca5641138402d267686e1e7e?version=4.2.12"></iframe>
-<figcaption>Play with this demo to better understand how the browser’s naïve interpolation works (or rather, doesn’t work) for arcs. <a href="https://svelte.dev/repl/4258ae76ca5641138402d267686e1e7e?version=4.2.12" target="_blank">Open in new window ↗️</a>
-</figcaption>
-</figure>
 
 {: .fyi }
-This is actually a bug in how native CSS interpolation works,
-and there is an [open issue](https://github.com/w3c/csswg-drafts/issues/10195) to fix it
-(opened by yours truly while authoring this very lab).
+That’s a funny looking selector, isn’t it?
+The `~` is the CSS [_subsequent sibling combinator_](https://developer.mozilla.org/en-US/docs/Web/CSS/Subsequent-sibling_combinator)
+and it selects elements that come _after_ the selector that precedes it (and share the same parent).
 
-Unfortunately, there is no way to fix this with CSS transitions,
-and fixing it with CSS animations would require so many keyframes that it would be impractical.
-Instead, we will use the [`d3-transition`](https://d3js.org/d3-transition) module,
-which trades simplicity for control, by allowing us to compute the intermediate states ourselves, with JS.
+Try it: you should now see that the tooltips are back, and the brush still works!
 
-The first step is to _disable_ CSS transitions for `d`, so that they don’t interfere with our JS transitions.
-We can do this by restricting which properties the browser can auto-transition:
+### Step 5.3: Styling the selection rectangle (optional)
+
+The overlay is not the only element added by `d3.brush()`.
+For example, there is a `<rect class="selection>` element that is used to depict the brush selection.
+This means you can use CSS to style it!
+
+Just make sure to use the [Svelte-specific `:global()` pseudo-class](https://svelte.dev/docs/svelte-components#style) around `.selection` otherwise Svelte will drop the whole rule, as it thinks it’s unused CSS.
+
+Here’s what I did, but feel free to experiment with your own styles:
 
 ```css
-transition: 300ms;
-transition-property: transform, opacity, fill;
-```
-
-When using [`d3-transition`](https://d3js.org/d3-transition),
-together with a reactive framework like Svelte, there are several questions to answer:
-
-- **How** do we get a reference to the DOM nodes for each element we are transitioning?
-- **When** do we call `d3.transition()` on them?
-- **How** do we read the previous state so we can transition between the old and new states?
-
-Let’s take them one by one.
-
-#### How to get a reference to the DOM elements we are transitioning?
-
-Because [`d3-transition`](https://d3js.org/d3-transition) works with DOM elements,
-we will need to obtain a reference to the DOM element for each path.
-As we know from previous labs, this is done with `bind:this`.
-The only thing that is different here is that we are binding elements inside an `{#each}` block,
-so instead of a single variable, we will need to use a data structure to store the references (array or object).
-The main consideration here is that we need to be able to go from `pieData` to the element reference and vice versa easily.
-Since both are uniquely identified by the data label,
-let’s use an object with the data label as the key and the element reference as the value:
-
-```js
-let wedges = {};
-```
-
-Then, on the `<path>` element, add `bind:this={ wedges[d.label] }`.
-
-{: .tip }
-You can check that this is populated correctly by using a `$: console.log(wedges)` reactive statement.
-
-#### When to call `d3.transition()`?
-
-Now that we have the element references, how and when do we call `d3.transition()` on them?
-Because [`d3-transition`](https://d3js.org/d3-transition) is based on function calls,
-we need to pick the right time to call it ourselves.
-
-Let’s create a new function, `transitionArcs()` that will take care of the transition for us:
-
-```js
-function transitionArcs() {
-  // TODO Transition all arcs
-}
-```
-
-Then, in the reactive block that sets `pieData`,
-add a call to `transitionArcs()` at the very end,
-so that it runs whenever the data changes.
-
-#### How to read the previous state?
-
-Finally, how do we read the previous state so we can transition between the old and new states?
-We will create a new variable to keep track of the _old_ data, and we will update it every time the data changes.
-
-First, we create a new root level variable:
-
-```js
-let oldData = [];
-```
-
-Then, in the same reactive block that we are setting `pieData`, we set `oldData = pieData` right _before_ we update `pieData` (so that it stores the previous value).
-
----
-
-Great! We now have all the pieces we need to transition the arcs.
-
-The main idea is that instead of interpolating the arcs directly,
-we will interpolate the _angles_ and generate new arcs from them.
-This is a variant of _dataspace interpolation_ where data is interpolated rather than attribute or CSS property values.
-
-It is recommended to prefer CSS properties for transitions when possible,
-so will use the [`d` CSS property](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d#using_d_as_a_css_property) to output the arc as a string.
-It may look a little weird because its name is only one letter long, but it works the same way as any other CSS property (except it only works on `<path>` elements).
-Unlike the attribute, its value is not just a series of path commands, but a `path()` function that a string argument with the path syntax,
-e.g. the CSS declaration `d: path("M 0 0 L 100 0 L 100 100 L 0 100 Z")` is the same as the attribute `d="M 0 0 L 100 0 L 100 100 L 0 100 Z"`.
-
-You should also create a new top-level variable, `transitionDuration`, to control the duration of the transition.
-JS-based transition & animation APIs typically expect durations in milliseconds.
-Set it to something large for now like e.g. `3000` (3 seconds), to make it easier to debug the transitions.
-You can also `export` it as a prop, so that users of the component can optionally override it.
-
-{: .tip }
-Adding an `<input type=number bind:value={transitionDuration}>` to your HTML can be very useful for debugging.
-It allows you to override the transition at runtime (e.g. to make certain problematic transitions very slow so you can inspect what is happening without slowing everything down.
-
-The general structure of our function will be:
-
-```js
-function transitionArcs() {
-  let wedgeElements = Object.values(wedges);
-
-  d3.selectAll(wedgeElements)
-    .transition('arc')
-    .duration(transitionDuration)
-    .styleTween('d', function (_, index) {
-      let wedge = this;
-      // Calculations that will only be done once per element go here
-      return (t) => {
-        // t is a number between 0 and 1 that represents the transition progress
-        // TODO Interpolate the angles and return the path string that corresponds to t
-      };
-    });
-}
-```
-
-To calculate the arc, we need the angles.
-To calculate the angles, we need the data (old and new).
-To find the data, we need the wedge label.
-All we have is the index, but that’s all we need:
-
-```js
-let label = Object.keys(wedges)[index];
-```
-
-Now that we have the label, we can we can find the corresponding data items in `oldData` and `pieData`:
-
-```js
-let d = pieData.find(d => d.label === label);
-let d_old = // ...
-```
-
-Note that we may not have both.
-For now, let’s just not proceed in that case:
-
-```js
-if (!d || !d_old) {
-  return;
-}
-```
-
-We now have all four angles (start and end, old and new), and we can interpolate them.
-Rather than interpolating them separately, D3 actually allows us to interpolate the whole object:
-
-```js
-// Always clone objects first, see note in https://d3js.org/d3-interpolate/value#interpolateObject
-let from = { ...d_old };
-let to = { ...d };
-let angleInterpolator = d3.interpolate(from, to);
-```
-
-`d3.interpolate()` will return a function that takes a number between 0 and 1 and returns an object with the same properties as `from` and `to`, but with all properties interpolated (we only care about `startAngle` and `endAngle` but we can just ignore the rest).
-We can feed that object into a function that generates the path string:
-
-```js
-let interpolator = (t) => `path("${arcGenerator(angleInterpolator(t))}")`;
-```
-
-Finally, we can now replace the `return t => {...}` line with the interpolator:
-
-```js
-return interpolator;
-```
-
-If we try it out, you’ll see that it works, at least when transitioning between pies with the same technologies:
-
-<video src="videos/d3-transition.mp4" loading=lazy muted autoplay loop></video>
-
-### Step 3.4: Transitioning between pies with different technologies
-
-If you try transitioning between pies with _different_ technologies however, you will notice that it all breaks down:
-
-<video src="videos/d3-transition-inout.mp4" loading=lazy muted autoplay loop></video>
-
-How can we fix this?
-
-Right now, we simply exit the function if we can't find both old and new data items for a wedge.
-What if we generated dummy objects with the right `startAngle` and `endAngle` that we want these wedges to transition from or to?
-We basically want an object where `obj.startAngle` and `obj.endAngle` are both equal to whatever wedge is drawn immediately before the place our wedge is appearing or disappearing from.
-The exact logic is a little tricky, so we’ll just provide the code:
-
-```js
-function getEmptyArc(label, data = pieData) {
-  // Union of old and new labels in the order they appear
-  let labels = d3.sort(new Set([...oldData, ...pieData].map((d) => d.label)));
-  let labelIndex = labels.indexOf(label);
-  let sibling;
-  for (let i = labelIndex - 1; i >= 0; i--) {
-    sibling = data.find((d) => d.label === labels[i]);
-    if (sibling) {
-      break;
-    }
+@keyframes marching-ants {
+  to {
+    stroke-dashoffset: -8; /* 5 + 3 */
   }
+}
 
-  let angle = sibling?.endAngle ?? 0;
-  return { startAngle: angle, endAngle: angle };
+svg :global(.selection) {
+  fill-opacity: 10%;
+  stroke: black;
+  stroke-opacity: 70%;
+  stroke-dasharray: 5 3;
+  animation: marching-ants 2s linear infinite;
 }
 ```
 
-Now, back in our tweening function, we can use `getEmptyArc()` as a fallback if we can't find the old or new data:
+<video src="videos/marching-ants.mp4" loop autoplay muted></video>
+
+### Step 5.4: Making the brush actually select dots
+
+So far we can draw a selection, but it neither does anything, nor does it look like it does anything.
+
+The first step is to actually figure out what the user has selected,
+both in terms of visual shapes (dots) so we can style them as selected,
+as well as in terms of data (commits) so we can do something with it.
+
+[`d3.brush()`](https://d3js.org/d3-brush#brush) returns a brush object, which actually fires [events](https://d3js.org/d3-brush#brush-events) when the brush is moved.
+We can use [`.on()`](https://d3js.org/d3-dispatch#dispatch_on) to listen to these events and do something when they happen.
+
+Let’s start by simply logging them to the console.
+Let’s define a function called `brushed()` that takes an event object as an argument and logs it to the console:
 
 ```js
-let from = d_old ? {...d_old} : getEmptyArc(label, oldData);
-let to = // ...
-```
-
-{: .fyi }
-The `test ? iftrue : iffalse` syntax is the [conditional operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator) which helps us get one value or another based on a test, much more compactly than an `if() {...}` block.
-
-We should now get a perfect transition regardless of the technologies present in the old and new pies, right?
-Except …we don’t.
-If we preview, we see that all our effort did not make an iota of difference.
-Why is that?
-
-The reason is that when we transition between pies with different technologies,
-the wedges are added to the DOM or removed from the DOM after our code has run.
-
-Thankfully, Svelte provides a feature dedicated to transitioning element addition or removal from the DOM:
-[Svelte transitions](https://svelte.dev/docs/element-directives#transition-fn)!
-You can either use the same code for both states, via the `transition:fn` directive,
-or separate functions for entering and leaving, via the `in:fn` and `out:fn` directives.
-Svelte provides a bunch of [predefined functions for common effects](https://svelte.dev/docs/svelte-transition) that you can just import, but in this case we’ll define our own function.
-
-The general structure is quite similar to what we did for `d3-transition`,
-just with a different syntax:
-
-```js
-function arc(wedge) {
-  // Calculations that will only be done once per element go here
-  // TODO use transitionArc() to get the data you need
-  return {
-    duration: transitionDuration,
-    css: (t, u) => {
-      // t is a number between 0 and 1 that represents the transition progress; u is 1 - t
-      // TODO return CSS to be applied for the current t as a string, e.g. `fill: red`
-    },
-  };
+function brushed(evt) {
+  console.log(evt);
 }
 ```
 
-and then use it, by adding `transition:arc` to our wedge `<path>` (we can also pass parameters, but we won’t do that this time).
-
-There is a lot of the code we wrote in `styleTween` that we can reuse in `animateArc`.
-Let’s abstract it out into a new function, `transitionArc()` that accepts
-a wedge element and optionally its label (as a performance optimization):
+Then, we use `.on()` to call this function when the brush is moved:
 
 ```js
-function transitionArc(wedge, label) {
-  label ??= Object.entries(wedges).find(([label, w]) => w === wedge)[0];
+d3.select(svg).call(d3.brush().on('start brush end', brushed));
+```
+
+This line can replace your existing `d3.select(svg).call(d3.brush())` code.
+
+Open your browser console (if it’s not already open) and try brushing again.
+You should see a flurry of events logged to the console, a bit like this:
+
+<video src="videos/brush-events.mp4" loop muted autoplay class="browser" data-url="http://localhost:5173/meta"></video>
+
+Try exploring these objects by clicking on the ▸ next to them.
+
+You may notice that the `selection` property of the event object is an array of two points.
+These points represent the top-left and bottom-right corners of the brush rectangle.
+This array is the key to understanding what the user has selected.
+
+Let’s create a new reactive variable that stores this selection array.
+I called it `brushSelection`.
+Then, inside the `brushed()` function, we set `brushSelection` to `evt.selection`.
+
+If we can implement a function that tells us if a commit is selected:
+
+```js
+function isCommitSelected(commit) {
+  if (!brushSelection) {
+    return false;
+  }
+  // TODO return true if commit is within brushSelection
+  // and false if not
 }
 ```
 
-We can now move all our code from `styleTween` that calculates `d`, `d_old`, `from`, `to`, `interpolator` etc into `transitionArc`, which will just return an object like:
+We can then use this function to apply a `selected` class to the dots that are selected
+via a [`class:selected` directive](https://svelte.dev/docs/element-directives#class-name).
 
-```js
-return { d, d_old, from, to, interpolator };
-```
-
-After `d` and `d_old` are calculated, we also want to exit early if they are not different:
-
-```js
-if (sameArc(d_old, d)) {
-  return null;
-}
-```
-
-You should implement the `sameArc()` function.
-It should return `true` if either both arcs are falsy (e.g. one is `undefined`, the other `null`),
-or if both arcs have the same `startAngle` and `endAngle`.
-
-Last, it’s useful to also add a `type` property to the object returned so we know what type of transition we are dealing with:
-
-```js
-let type = d ? (d_old ? 'update' : 'in') : 'out';
-```
-
-We can now replace the code in `styleTween()` to use our new `transitionArc()` function:
-
-```js
-let wedge = this;
-let label = Object.keys(wedges)[index];
-let transition = transitionArc(wedge, label);
-return transition?.interpolator;
-```
-
-We can now use the same logic in our Svelte transition!
-Can you fill the `arc()` function so that it calls `transitionArc()` to compute the overall transition details and then use the returned `interpolator` to produce a CSS declaration for each frame?
-Remember that the `interpolator` that `transitionArc()` is returning gives us a CSS `"path(...)"` value, so
-all we need to do to turn this into what Svelte expects is to prepend `"d: "` to it.
-
-{: .caveat }
-In "out" transitions, i.e. where an existing element disappears,
-**Svelte inverts the progression**.
-Therefore, to get the right CSS string, you need to do do something like `transition.type === "out" ? u : t` instead of just `t` as the argument to the interpolator (i.e. `transition.interpolator(transition.type === "out" ? u : t)`).
-
-{: .caveat }
-The `css` function needs to return **a CSS _string_**, not an object!
-If you get an error like "Cannot read properties of `undefined` (reading 'split')" it’s likely because you are returning the wrong type.
-
-If everything goes well, this is what you should see:
-
-<video src="videos/svelte-transition-cubic.mp4" loading=lazy muted autoplay loop></video>
-
-### Step 3.5: Harmonizing easing across the D3 and Svelte transitions
-
-We’re getting there, but there are some weird gaps.
-This is because we are trying to _synchronize_ Svelte transitions with D3 transitions that have different parameters.
-While we did take care of applying the same duration across both, they use different easings!
-Svelte uses linear easing by default, whereas D3 uses [`easeCubic`](https://d3js.org/d3-ease#easeCubic) by default.
-
-We can fix this in one of two ways:
-
-- By making the D3 transition linear as well, by adding `.ease(d3.easeLinear)` to the chain of function calls that make up the transition.
-- By making the Svelte transition cubic as well, by adding `easing: d3.easeCubic` to the object returned by `arc()`.
-
-Try them both and see what you prefer!
+The core idea for the logic is to use our existing `xScale` and `yScale` scales to map the commit data to X and Y coordinates,
+and then check if these coordinates are within the brush selection bounds.
 
 {: .tip }
-An easing function is just a function that takes a number between 0 and 1 and returns a number between 0 and 1.
-Therefore, you can use Svelte easing functions in D3 and vice versa.
+Another way to do it is to use the D3 [`scale.invert()`](https://d3js.org/d3-scale/linear#linear_invert)
+to map the selection bounds to data,
+and then compare data values,
+which can be faster if you have a lot of data, since you only need to convert the bounds once.
 
-<figure class="multiple">
-<video src="videos/svelte-transition-linear.mp4" loading=lazy muted autoplay loop></video>
-<video src="videos/svelte-transition-cubic.mp4" loading=lazy muted autoplay loop></video>
+Can you figure out how to do it?
 
-<figcaption>
-Left: Linear.
-Right: Cubic.
-</figcaption>
-</figure>
+<details markdown="1">
+<summary>Show solution</summary>
 
-## Step 4: Scrollytelling Part 1 (commits over time)
-
-So far, we have been progressing through these visualizations by moving a slider.
-However, these visualizations both tell a story,
-the story of how our repo evolved.
-Wouldn’t it be cool if we could _actually_ tell that story in our own words, and have the viewer progress through the visualizations as they progress through the narrative?
-
-Let’s do that!
-
-### Step 4.0: Making our page a bit wider, if there is space
-
-Because our scrolly will involve a story next to a visualization, we want to be able to use up more space, at least in large viewports.
-
-We can do this only for the Meta page, by adding a CSS rule where the selector is `:global(body)`.
-`:global()` Tells Svelte not to rewrite that part of the selector, and that we will handle any scoping conflicts ourselves.
-
-Then, within the rule, we want to set the `max-width` to `120ch` (instead of `100ch`), but only as long as that doesn’t exceed 80% of the viewport width.
-We can do that like this:
-
-```css
-max-width: min(120ch, 80vw);
-```
-
-### Step 4.1: Using a scrolly
-
-I prepared a [`<Scrolly>`](https://www.npmjs.com/package/svelte-scrolly) component for you to use in this step, you will find the documentation here: [svelte-scrolly](https://www.npmjs.com/package/svelte-scrolly).
-If you find any bugs, please [file bug reports](https://github.com/LeaVerou/svelte-scrolly/issues/new) directly at [its bug tracker](https://github.com/LeaVerou/svelte-scrolly/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc).
-
-{: .note }
-There is an official Svelte package for this purpose: [`@sveltejs/svelte-scroller`](https://www.npmjs.com/package/@sveltejs/svelte-scroller) but it seems to only cater to scrollytelling cases where the narrative is overlaid on top of the visualization, which is not what we want here.
-
-To use [`<Scrolly>`](https://www.npmjs.com/package/svelte-scrolly), you first need to install it (via `npm install svelte-scrolly`), then import it at the top of your component:
+There are many ways to implement this logic, but here’s one:
 
 ```js
-import Scrolly from 'svelte-scrolly';
+let min = { x: brushSelection[0][0], y: brushSelection[0][1] };
+let max = { x: brushSelection[1][0], y: brushSelection[1][1] };
+let x = xScale(commit.date);
+let y = yScale(commit.hourFrac);
+return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
 ```
 
-Then you can use it like this:
+</details>
 
-```html
-<Scrolly bind:progress="{" myProgressVariable }>
-  <!-- Story here -->
-  <svelte:fragment slot="viz">
-    <!-- Visualizations here -->
-  </svelte:fragment>
-</Scrolly>
+The last piece of the puzzle is to add some stylng in your CSS to make the selected dots stand out.
+I gave them a different fill color, but the sky is the limit!
+
+<video src="videos/selection.mp4" loop autoplay muted></video>
+
+### Step 5.4: Showing count of selected commits
+
+So far, we have only been visually highlighting the selected commits, but not actually doing anything with it.
+Brushing is useful because it helps us interactively explore the dataset by isolating selecting different subsets.
+
+As a first step, let’s display the number of selected commits.
+
+```js
+$: selectedCommits = brushSelection ? commits.filter(isCommitSelected) : [];
+$: hasSelection = brushSelection && selectedCommits.length > 0;
 ```
 
-{: .fyi }
-[`<svelte:fragment>`](https://svelte.dev/docs/special-elements#svelte-fragment) is a special element that we can use when no suitable element exists,
-to avoid bloating our DOM with pointless wrapper elements.
-If there is an actual element that makes sense to use, you should use that instead!
-
-### Step 4.2: Creating a dummy narrative
-
-**Before you finish the lab, you should have something meaningful for the narrative.**
-Don’t spend long on it; you can even generate it with ChatGPT as long as you check that the result is coherent, relevant, and tells a story that complements to the visualization next to it without simply repeating information in a less digestible format.
-
-For now, let’s just create some dummy text that we can use to test our scrollytelling
-so that writing the narrative is not a blocker:
+Now let’s display the number of selected commits in the HTML, under the chart:
 
 ```html
-{#each commits as commit, index }
-<p>
-  On {commit.datetime.toLocaleString("en", {dateStyle: "full", timeStyle:
-  "short"})}, I made
-  <a href="{commit.url}" target="_blank"
-    >{ index > 0 ? 'another glorious commit' : 'my first commit, and it was
-    glorious' }</a
-  >. I edited {commit.totalLines} lines across { d3.rollups(commit.lines, D =>
-  D.length, d => d.file).length } files. Then I looked over all I had made, and
-  I saw that it was very good.
-</p>
+<p>{hasSelection ? selectedCommits.length : "No"} commits selected</p>
+```
+
+If it works, it should look a bit like this:
+
+<video src="videos/selected-commit-count.mp4" muted loop autoplay></video>
+
+### Step 5.5: Showing breakdown of languages across all lines edited in selected commits
+
+Brushing is particularly useful when dealing with connected data,
+such as our commits and lines of code.
+
+Let’s display stats about the proportion of languages in the lines edited in the selected commits.
+
+We will need to define a new reactive variable (I called it `selectedLines`) that holds the lines edited in the selected commits (or all commits if no/empty selection):
+
+```js
+$: selectedLines = (hasSelection ? selectedCommits : commits).flatMap(
+  (d) => d.lines,
+);
+```
+
+Then, we can use it to calculate the number of edited lines per language using [`d3.rollup()`](https://d3js.org/d3-array/group#rollup)
+(or [`d3.rollups()`](https://d3js.org/d3-array/group#rollups)),
+which [we discussed earlier](#grouped-aggregates).
+Assign the result to a new reactive variable called `languageBreakdown`.
+
+Then, we can display the result in the HTML by iterating over `languageBreakdown`
+via an `{#each}` block and displaying the language and the proportion of lines edited in it.
+
+```
+{#each languageBreakdown as [language, lines] }
+	<!-- Display stats here -->
 {/each}
 ```
 
-### Step 4.3: Creating a scroller for our commits over time
+Some pointers:
 
-Move the story you just generated into the [`<Scrolly>`](https://www.npmjs.com/package/svelte-scrolly) component,
-and the scatterplot and pie chart into the `<svelte:fragment slot="viz">`.
+- Use `lines / selectedLines.length` to calculate the proportion of lines edited in each language.
+- [`d3-format`](https://d3js.org/d3-format) can be quite helpful for formatting numbers nicely.
+  I used a `".1~%"` [format specifier](https://d3js.org/d3-format#locale_format) to display the proportion as a percentage with one decimal place.
 
-Then, bind the existing `commitProgress` variable to the `progress` variable of the [`<Scrolly>`](https://www.npmjs.com/package/svelte-scrolly) component (`<Scrolly bind:progress={commitProgress}>`).
+<!-- ```html
+<dl class="stats subtle">
+	{#each languageBreakdown as [language, lines] }
+		<dt>{ language }</dt>
+		<dd>{lines} lines ({ d3.format(".1~%")(lines / selectedLines.length) })</dd>
+	{/each}
+</dl>
+``` -->
 
-If you try it now, you should already see that the scroller is advancing the slider as you scroll!
+If everything went well, you should see something like this:
 
-<video src="videos/scrolly-commits.mp4" loading=lazy muted autoplay loop class="tbd"></video>
+<video src="videos/lang-breakdown.mp4" autoplay loop muted></video>
 
-Now that everything works, you should remove the slider
-as it conflicts with the scrolly,
-and it's largely repeating information that the scrollbar already provides.
+### Step 5.6: Drawing a pie chart of the language breakdown
 
-{: .further }
-One thing you could do is show a date next to the actual browser scrollbar thumb,
-so that users have a sense of where they are in the timeline.
+The language breakdown is useful, but it’s not very visual.
+Reading numbers doesn’t make it easy to gauge the relative proportions of the different languages.
 
-<!-- {: .tip }
-It helps to apply `position: sticky; top: 1em` to the filtering slider so that
-it's still visible as you scroll.
-You should also apply a background color to it otherwise it will be hard to read. -->
+A pie chart is much better at this, but at this point we are probably way too tired to draw another chart.
+Thankfully, we already have a pie chart from the previous lab that we can reuse!
 
-## Step 5: Scrollytelling Part 2 (file sizes)
+All we need to do is to import it in our JS:
 
-### Step 5.1: Adding another scrolly
-
-Create another [`<Scrolly>`](https://www.npmjs.com/package/svelte-scrolly) instance for the file sizes visualization,
-after the commit visualization.
-You can copy and paste the same narrative as a temporary placeholder,
-but as with the one about commits, you should replace it with something meaningful before you finish the lab.
-
-The progress of this component is independent, so you will want to use a different variable for it (and similarly the corresponding `maxTime` variable and filtered data).
-Aside from that, the rest is very similar to Step 4.
-
-To make it more visually interesting, we can place that story on the right,
-and the unit visualization on the left. To do that, you add `--scrolly-layout="viz-first"` to the component,
-which passes that CSS variable to it:
-
-```html
-<Scrolly bind:progress="{raceProgress}" --scrolly-layout="viz-first"></Scrolly>
+```js
+import Pie from '$lib/Pie.svelte';
 ```
 
-You can also specify `--scrolly-viz-width="1.5fr"` to change the proportion of viz to story to 3:2 give it more space.
+and then we can use it in our HTML to display the language breakdown as a pie chart.
+All we need to do is transform our data into an array of `{label, value}` objects,
+which we can do using the expression `Array.from(languageBreakdown).map(([language, lines]) => ({label: language, value: lines}))`
+and pass this array to its `data` prop:
 
-### Step 5.2: Limit number of updates
+```jsx
+<Pie data={/* array of {label, value} objects */} />
+```
 
-Our scrolly currently looks smooth if we scroll relatively slowly, but breaks down if we scroll fast:
+{: .further }
+While we’re at it, we could also write JS to convert `language` to a more readable label.
 
-<video src="videos/scrolly-broken.mp4" loading=lazy muted autoplay loop class="browser"></video>
+The final result looks like this:
 
-This is where [throttling and debouncing](https://css-tricks.com/debouncing-throttling-explained-examples/) come in.
-They are both methods of achieving the same goal: limiting the number of times a function is called.
+<video src="videos/final.mp4" loop autoplay muted class="browser" data-url="http://localhost:5173/meta"></video>
 
-- **Throttling** enforces a minimum interval between subsequent calls to the same action.
-- **Debouncing** defers an action until a certain period of time has passed since the last user action.
-
-The [`<Scrolly>`](https://www.npmjs.com/package/svelte-scrolly) component we are using supports both, via `throttle` and `debounce` props.
-Experiment with different values for these props (you don't need to use both) to see what works best for your scrolly.
+{: .further }
+If you want to go further, you can think about how to make the scatterplot we made in this lab similarly reusable as a separate `<Scatterplot>` component.
 
 ---
-
-The final result looks similar to this:
-
-<video src="videos/final.mp4" loading=lazy muted autoplay loop class="browser"></video>
-
-## Resources
-
-### Transitions & Animations
-
-Tech:
-
-- [Cheatsheet on animation-related technologies](./slides/#technologies)
-- [An interactive guide to CSS transitions](https://www.joshwcomeau.com/animation/css-transitions/)
-
-### Scrollytelling
-
-Cool examples:
-
-- [This is a teenager](https://pudding.cool/2024/03/teenagers/)
-- [A visual introduction to Machine Learning Part 1](http://www.r2d3.us/visual-intro-to-machine-learning-part-1/)
-- [A visual introduction to Machine Learning Part 2](http://www.r2d3.us/visual-intro-to-machine-learning-part-2/)
-- [Ben & Jerry’s](https://benjerry.heshlindsdataviz.com/)
-
-{% endraw %}

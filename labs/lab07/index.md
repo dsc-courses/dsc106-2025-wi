@@ -1,22 +1,23 @@
 ---
 layout: assignment
-title: 'Lab 7: Visualizing quantitative data with D3'
-lab: 7
+title: 'Lab 8: Geospatial Visualizations'
+lab: 8
 parent: '👩‍🔬 Programming Labs'
 released: false
 ---
 
-# Lab 7: Visualizing quantitative data with D3
+# Lab {{ page.lab }}: Geospatial visualizations
 
 {: .no_toc}
 
 {: .summary}
 
-> In this lab, we will learn:
+> In this lab, we will:
 >
-> - How do we draw visualizations for quantitative data, such as bar charts and scatter plots, using D3
-> - How to show tooltips on hover as a way to provide more information about the data
-> - How to compute summary statistics about our data in a structured a way
+> - Learn how to embed a Mapbox map into a webpage
+> - Learn to add data-driven layers within a Mapbox canvas.
+> - Learn to add custom SVG overlays on Mapbox maps and adapt to the map's panning and zooming
+> - Practice creating visualizations with large datasets of real-world data, by importing, parsing, filtering and binding to elements on the page.
 
 <details open markdown="block">
   <summary>
@@ -29,1463 +30,1352 @@ released: false
 
 ---
 
-## Check-off
+## Submission 
 
 To get checked off for the lab, please record a 2 minute video with the following components:
 
-1. Present your quantitative D3 visualizations
-2. Show you interacting with your D3 visualizations.
+1. Present your Mapbox visualization
+2. Show you interacting with your map visualizations.
 3. Share the most interesting thing you learned from this lab.
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
 make sure your video is 2 minutes or less.**
 
-## Slides (or lack thereof)
+## What will we make?
 
-Just like the previous lab, there are no slides for this lab!
-Since the topic was covered in last Monday’s lecture,
-it can be helpful for you to review the [material from it](../../lectures/intro-svelte-d3.html).
+In this lab, we will be building an immersive, interactive map visualization of bike traffic in the Boston area during different times of the day, shown in the screencast below:
 
-{: .note }
-This lab is a little more involved than most of the previous labs,
-because it’s introducing the core technical material around data visualization.
-A robust understanding of these concepts will be invaluable
-as you work on your final projects, so spending time practicing them for the lab
-will be time will spent.
+<video src="videos/final.mp4" loop muted autoplay class="browser"></video>
 
-## Step 0: Setting up
+- The underlying map shows Boston area roads and labels of neighborhoods. You can pan and zoom around as you would with services like Google Maps.
+- The green lines show bike lanes. We will be importing two datasets from the city governments of Boston and Cambridge for this.
+- The circles represent individual BlueBike stations. The size of each circle represents the amount of traffic at each station, while the color represents whether most traffic is entering or leaving the station. We will be using two datasets from BlueBikes to analyze bike traffic from about 260,000 individual rides from March 2024.
+- There is a slider at the top right that allows the user to filter the data for traffic at specific times of the day, and the circles will change size and color accordingly.
 
-This step takes you through several prepratory steps before we can work on the main part of the lab.
+There is a lot of room for styling and customization in this lab, and you are free to choose colors and themes that you prefer. So the screenshots and videos here are for reference only and your version can differ in appearance (but should be functionally the same!).
 
-### Step 0.1: Adding a new page with meta-analysis of the code in our project
+## Step 0: Start a new Project
 
-In this lab, we will be computing and visualizing different stats about our codebase.
-We will display these in a new page on our website.
-Create a `routes/meta/+page.svelte` file and add some content in it (e.g. a heading, a description).
+### Step 0.1: Create a new repository and push it to GitHub
 
-Add it to your navigation menu.
+In this lab, we will be working on a new project and thus a new repository (that we will subsequently list on our projects page).
+Follow [part 2 step 1-2 of lab 1](../lab01/) again to set up a new Website with a new repo name this time. I called mine `bikewatching`, but you may want to get more creative with bike-related puns. You don't have to worry about the content of your index.html here, we will update that soon! 😉
 
-<img src="images/meta-page.png" alt="" class="browser" data-url="http://localhost:5173/meta">
+### Step 0.2: Publish your new project to GitHub Pages
 
-### Step 0.2: Adding code analysis script
+Also follow [part 2 step 3 from the same lab](../lab01/) to set up GitHub Pages for your new project.
 
-In this step you will install [our code analysis script](https://www.npmjs.com/package/elocuent) which will analyze the code of our app and display some statistics about it.
+<!-- ### Step 0.3: Start local server
 
-{: .fyi }
-If you’re interested in the details of how this script works, you can [examine its code in its repo](https://github.com/LeaVerou/elocuent/tree/main/src).
-It’s just some JS code that runs in Node.js :) (and it’s not that long either!)
+Run `npm run dev --open` to start the local server and open the project in your browser.
 
-First, open the terminal and run this, to install [the package](https://www.npmjs.com/package/elocuent) that will do the analysis:
+### Step 0.4: Edit `routes/+page.svelte`
 
-```bash
-npm install elocuent -D
+Replace the content of `routes/+page.svelte` with a heading of your project name and a brief description of what it does.
+Commit and push the change, and make sure the website updates accordingly.
+
+### Step 0.5: Add basic styling
+
+Create a CSS file for global styles in `src/lib` called `global.css` and add the following content:
+
+```css
+body {
+  font: 100%/1.5 system-ui, sans-serif;
+  display: flex;
+  flex-flow: column;
+  max-width: 80em;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin: auto;
+  padding: 1em;
+}
 ```
 
-Now in your terminal, run this command:
+Then, in your `src/routes/+page.svelte` file, import the CSS file by adding this in a `<style>` element:
 
-```bash
-npx elocuent -d static,src -o static/loc.csv
-```
+```css
+@import url('$lib/global.css');
+``` -->
 
-Or this, if you’ve used spaces for indentation (replace `2` with the number of spaces):
+### Step 0.3: Edit `index.html`
 
-```bash
-npx elocuent -d static,src -o static/loc.csv --spaces 2
-```
+Open the `index.html` file located in your project root directory. Replace the content inside the `<body>` tag with a heading of your project name and a brief description of what it does.
 
-Make sure your indentation is consistent across your code!
-
-{: .tip }
-Two very popular tools to ensure a consistent code style are [ESLint](https://eslint.org/) (JS only)
-and [Prettier](https://prettier.io/) (JS, CSS, HTML)
-They have different philosophies: ESLint is a _linting tool_: you define what rules you want to follow, and it warns you when you don’t follow them (often it can fix them too, but you need to explicitly ask it to).
-Prettier is a _code formatter_: when you hit Save it auto-formats your code based on its predefined rules.
-Linters give you more control, whereas code formatters are more hands-off but also less flexible.
-
-If everything went well, you should now have a file called `loc.csv` in the `static` directory.
-Its content should look like this (showing first 30 lines):
-
-<details markdown="1">
-<summary>First 30 lines of <code>loc.csv</code></summary>
-
-```csv
-file,line,type,commit,author,date,time,timezone,datetime,depth,length
-src/app.html,1,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,0,15
-src/app.html,2,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,0,16
-src/app.html,3,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,5
-src/app.html,4,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,2,22
-src/app.html,5,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,2,26
-src/app.html,6,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,2,55
-src/app.html,7,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,2,68
-src/app.html,8,html,3c2ea132,Lea Verou,2024-03-02,15:26:34,-05:00,2024-03-02T15:26:34-05:00,2,59
-src/app.html,9,html,04217ac3,Lea Verou,2024-02-27,14:46:20,-05:00,2024-02-27T14:46:20-05:00,2,64
-src/app.html,10,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,2,14
-src/app.html,11,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,6
-src/app.html,12,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,41
-src/app.html,13,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,2,51
-src/app.html,14,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,6
-src/app.html,15,html,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,0,7
-src/routes/+page.svelte,1,svelte,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,0,21
-src/routes/+page.svelte,2,svelte,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,0,43
-src/routes/+page.svelte,3,svelte,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,0,40
-src/routes/+page.svelte,4,svelte,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,102
-src/routes/+page.svelte,5,svelte,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,76
-src/routes/+page.svelte,6,svelte,7d3b906,Lea Verou,2024-02-26,01:33:51,-05:00,2024-02-26T01:33:51-05:00,1,39
-src/routes/+page.svelte,7,svelte,bdb6236e,Lea Verou,2024-02-26,03:26:16,-05:00,2024-02-26T03:26:16-05:00,0,4
-src/routes/+page.svelte,8,svelte,bdb6236e,Lea Verou,2024-02-26,03:26:16,-05:00,2024-02-26T03:26:16-05:00,0,0
-src/routes/+page.svelte,9,svelte,bdb6236e,Lea Verou,2024-02-26,03:26:16,-05:00,2024-02-26T03:26:16-05:00,0,8
-src/routes/+page.svelte,10,js,04217ac3,Lea Verou,2024-02-27,14:46:20,-05:00,2024-02-27T14:46:20-05:00,0,42
-src/routes/+page.svelte,11,js,5c703cf0,Lea Verou,2024-02-27,19:56:10,-05:00,2024-02-27T19:56:10-05:00,0,44
-src/routes/+page.svelte,12,js,50612a03,Lea Verou,2024-03-05,11:11:52,-05:00,2024-03-05T11:11:52-05:00,0,68
-src/routes/+page.svelte,13,js,50612a03,Lea Verou,2024-03-05,11:11:52,-05:00,2024-03-05T11:11:52-05:00,0,19
-src/routes/+page.svelte,14,js,50612a03,Lea Verou,2024-03-05,11:11:52,-05:00,2024-03-05T11:11:52-05:00,1,8
-```
-
-</details>
-
-You can find a description of the metadata stored [here](https://www.npmjs.com/package/elocuent).
-
-{: .fyi }
-Why are we using CSV instead of e.g. JSON?
-CSV is more efficient for data that has many rows, since we don’t need to repeat the names of the properties for every row.
-
-Do periodically re-run the script as you work through the lab to see the data update!
-
-### Step 0.3: Setting it up so that the CSV file is generated on every build
-
-We want the CSV file to be generated every time we build our app, so that it’s always up-to-date.
-We can do that by adding a `prebuild` script to our `package.json` that runs `npx elocuent`.
-Right above this line in `package.json`:
-
-```json
-"build": "vite build",
-```
-
-add:
-
-```json
-"prebuild": "npx elocuent -d static,src -o static/loc.csv",
-```
-
-We also need make sure that our build environment (which we specify in `deploy.yml`) has access to all of our Git history.
-To do this, open `.github/workflows/deploy.yml` and modify the `Checkout` step so that it looks like this:
-
-```yaml
-- name: Checkout
-  uses: actions/checkout@v4
-  with:
-    fetch-depth: '0'
-```
-
-{: .fyi}
-`fetch-depth: '0'` tells GitHub actions to [fetch _all_ history for all branches and tags](https://github.com/actions/checkout?tab=readme-ov-file#fetch-all-history-for-all-tags-and-branches).
-By default, the action will only fetch the latest commit, so your deployed scatterplot will only have one dot!
-
-Now, every time we run `npm run build`, `elocuent` will be run first.
-
-### Step 0.4: Exclude CSV from committed files.
-
-Since we are now generating the script on the server as well, there is no reason to include it in our commits.
-Add `static/loc.csv` to your `.gitignore` file.
-
-If you have already committed it, you will need to first delete the file,
-commit & push the deletion and the addition to `.gitignore`,
-and only after that re-run the script to re-generate it.
-
-## Step 1: Displaying summary stats
-
-### Step 1.1: Reading the CSV file in D3
-
-In our `routes/meta/+page.svelte` file, we will now read the CSV file.
-Thankfully, we don’t have to reinvent the wheel and parse CSV files ourselves, D3 has a built-in function for that.
-
-Add a `<script>` element to the Meta page, and import D3, like you did in the previous lab:
-
-```javascript
-import * as d3 from 'd3';
-```
-
-We will be using the `d3.csv()` function from the [`d3-fetch`](https://d3js.org/d3-fetch) module, which provides helper functions for fetching data.
-
-Now let’s read the CSV file:
-
-```javascript
-import { onMount } from 'svelte';
-
-let data = [];
-
-onMount(async () => {
-  data = await d3.csv('loc.csv');
-});
-```
-
-and let’s print out the total lines of code in our repo in the HTML to make sure it worked:
+Example:
 
 ```html
-<p>Total lines of code: {data.length}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bikewatching</title>
+  <link rel="stylesheet" href="src/lib/global.css">
+</head>
+<body>
+  <h1>🚴🏼‍♀️ Bikewatching</h1>
+</body>
+</html>
 ```
 
-If everything went well, you’ll be seeing something like this:
+Commit and push the change:
 
-<img src="images/total-loc.png" alt="" class="browser" data-url="http://localhost:5173/meta">
-
-To see the structure of these objects, add a `console.log(data)` right after the statement that sets the variable,
-then check your console.
-
-You should be seeing something like this(I’ve expanded the first row):
-
-<img src="images/data-console-string.png" alt="Screenshot of the output" class="outline">
-
-Note that everything is a string, including the numbers and dates.
-That can be quite a footgun when handling data \*(as an anecdote, I spent about an hour debugging an issue caused by using `+` to add two numbers together, which instead concatenated them as strings **while developing this very lab!\***).
-To fix it, we add a [row conversion function](<https://d3js.org/d3-dsv#dsv_parse):
-
-```javascript
-data = await d3.csv('loc.csv', (row) => ({
-  ...row,
-  line: Number(row.line), // or just +row.line
-  depth: Number(row.depth),
-  length: Number(row.length),
-  date: new Date(row.date + 'T00:00' + row.timezone),
-  datetime: new Date(row.datetime),
-}));
+```bash
+git add index.html
+git commit -m "Add project name and description"
+git push
 ```
 
-It should now look like this:
-<img src="images/data-console.png" alt="Screenshot of the output" class="outline">
+Ensure the website updates accordingly on GitHub Pages.
 
-Don’t forget to delete this line now that we’re done — we don’t want to clutter our page with debug info!
+### Step 0.4: Add basic styling
 
-### Step 1.2: Computing commit data
+Create a CSS file for global styles called `global.css` and add the following content:
 
-Notice that while this data includes information about each commit[^eachcommit] (that still has an effect on the codebase),
-it's not in a format we can easily access, but mixed in with the data about each line (this is called _denormalized_ data).
-
-[^eachcommit]: Actually, it will only include commits that still have an effect on the codebase, since it’s based on lines of code that are currently present in the codebase. Therefore if all a commit did was change lines that have since been edited by other commits, that commit will not show up here. If we wanted to include _all_ commits, we'd need to process the output of [`git log`](https://git-scm.com/docs/git-log) instead, but that is outside the scope of this lab.
-
-Let’s extract this data about commits in a separate object for easy access.
-We will compute this inside `onMount` after reading the CSV file.
-
-First, define a `commits` variable outside `onMount`:
-
-```js
-let commits = [];
+```css
+body {
+  font: 100%/1.5 system-ui, sans-serif;
+  display: flex;
+  flex-flow: column;
+  max-width: 80em;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin: auto;
+  padding: 1em;
+}
 ```
 
-Then, inside `onMount`, we will use the [`d3.groups()`](https://d3js.org/d3-array/group#groups) method to group the data by the `commit` property.
-
-```javascript
-commits = d3.groups(data, (d) => d.commit);
-```
-
-This will give us an array where each element is an array with two values:
-
-- The first value is the unique commit identifier
-- The second value is an array of objects for lines that have been modified by that commit.
-
-{: .tip }
-Print it out with `{JSON.stringify(commits, null, "\t")}` to see what it looks like!
-
-To transform this into an array of objects about each commit,
-with a `lines` property that contains the number of lines that were modified by that commit:
-
-```js
-commits = d3
-  .groups(data, (d) => d.commit)
-  .map(([commit, lines]) => {
-    let first = lines[0];
-    let { author, date, time, timezone, datetime } = first;
-    let ret = {
-      id: commit,
-      url: 'https://github.com/vis-society/lab-7/commit/' + commit,
-      author,
-      date,
-      time,
-      timezone,
-      datetime,
-      hourFrac: datetime.getHours() + datetime.getMinutes() / 60,
-      totalLines: lines.length,
-    };
-
-    // Like ret.lines = lines
-    // but non-enumerable so it doesn’t show up in JSON.stringify
-    Object.defineProperty(ret, 'lines', {
-      value: lines,
-      configurable: true,
-      writable: true,
-      enumerable: false,
-    });
-
-    return ret;
-  });
-```
-
-Check it out by adding `console.log(commits)` **after** setting it.
-In my case it looks like this:
-
-![](images/commits-log.png)
-
-### Step 1.3: Displaying the stats
-
-Let’s get our feet wet with this data by displaying a few more stats.
-Use a `<dl>` list that reuses the same formatting as in [the stats on your homepage](../5/#step-23-displaying-the-data-in-a-more-useful-way).
-
-{: .note }
-Avoid copy-pasting the CSS. You can either create a class and define the styling for `dl.stats` and its children in your `style.css` file,
-or create a `<Stats>` Svelte component that wraps it (I went with the former for simplicity, but the "proper" way is the latter).
-
-Delete the paragraph we added in the previous step and display that as the first stat:
+Make sure the CSS file is linked in your `index.html` file (as shown in **Step 0.4**) via:
 
 ```html
-<dl class="stats">
-  <dt>Total <abbr title="Lines of code">LOC</abbr></dt>
-  <dd>{data.length}</dd>
-</dl>
+<link rel="stylesheet" href="global.css">
 ```
+### Step 0.5: Add a Bike Favicon
 
-You can display the total number of commits as the second statistic.
+To make your project tabs stand out in the browser, you can customize the _[favicon](https://en.wikipedia.org/wiki/Favicon)_.
 
-What other aggregate stats can you calculate about the whole codebase?
-Here are a few ideas (pick 3-4 from the list below, or come up with your own):
+1. **Add the Favicon File**:
 
-- Number of files in the codebase
-- Maximum file length (in lines)
-- Longest file
-- Average file length (in lines)
-- Average line length (in characters)
-- Longest line length
-- Longest line
-- Maximum depth
-- Deepest line
-- Average depth
-- Average file depth
-- Time of day (morning, afternoon, evening, night) that most work is done
-- Day of the week that most work is done
+   In your project directory, create a folder called `assets`, and inside it, add a file named `favicon.svg` with the following content:
 
-<figure markdown="1">
+   ```xml
+   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+     <text y=".9em" font-size="90">🚴🏼‍♀️</text>
+   </svg>
+   ```
 
-![](images/summary.png)
+   Feel free to replace the emoji with any other of your choice.
 
-<figcaption>
-Example of a summary stats section
-</figcaption>
-</figure>
+2. **Edit `index.html` to Link the Favicon**:
 
-You will find the [`d3-array`](https://d3js.org/d3-array) module very helpful for these kinds of computations,
-and especially:
+   Open your `index.html` file and add (or update) the following line inside the `<head>` section to point to your new favicon:
 
-- [Summarizing data](https://d3js.org/d3-array/summarize)
-- [Grouping data](https://d3js.org/d3-array/group)
+   ```html
+   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+   ```
 
-Following is some advice on how to calculate these stats depending on their category.
+At this point, you should be seeing something like this:
 
-#### Aggregates over the whole dataset
+<img src="images/step-0.png" class="browser" alt="">
 
-These compute an aggregate (e.g. sum, mean, min, max) over a property across the whole dataset.
+and your browser tab should have the bike icon as well (assuming that's the emoji you selected!)
+<!-- ### Step 0.6: Add a bike favicon _(optional)_
 
-Examples:
+To distinguish open tabs from your project, you can customize its _[favicon](https://en.wikipedia.org/wiki/Favicon)_.
 
-- Average line length
-- Longest line
-- Maximum depth
-- Average depth
+In your `static` directory, add a `favicon.svg` file with the following content:
 
-These involve using one of the [data summarization methods](https://d3js.org/d3-array/summarize) over the whole dataset,
-mapping to the property you want to summarize, and then applying the method.
-For example, to calculate the maximum depth, you’d use `d3.max(data, d => d.depth)`.
-To calculate the average depth, you’d use `d3.mean(data, d => d.depth)`.
-
-#### Number of distinct values
-
-These compute the number of distinct values of a property across the whole dataset.
-
-Examples:
-
-- Number of files
-- Number of authors
-- Number of days worked on site
-
-To calculate these, you’d use [`d3.group()`](https://d3js.org/d3-array/group#group) / [`d3.groups()`](https://d3js.org/d3-array/group#groups) to group the data by the property you want to count the distinct values of,
-and then use `result.size` / `result.length` respectively to get the number of groups.
-
-For example, the number of files would be `d3.group(data, d => d.file).size`,
-(or `d3.groups(data, d => d.file).length`).
-
-#### Grouped aggregates
-
-These are very interesting stats, but also the most involved of the bunch.
-These compute an aggregate within a group, and then a _different_ aggregate across all groups.
-
-Examples:
-
-- Average file length (in lines)
-- Average file depth (average of max depth per file)
-
-First, we use `d3.rollup()` / `d3.rollups()` to compute the aggregate within each group.
-If it seems familiar, it’s because [we used it in the previous lab to calculate projects per year](../6/#step-32-passing-project-data-via-the-data-prop).
-For example, to calculate the average file length, we’d use `d3.rollups()` to callculate lengths for all files via
-
-```js
-$: fileLengths = d3.rollups(
-  data,
-  (v) => d3.max(v, (v) => v.line),
-  (d) => d.file,
-);
-```
-
-Then, to find the average of those, we’d use `d3.mean()` on the result:
-
-```js
-$: averageFileLength = d3.mean(fileLengths, (d) => d[1]);
-```
-
-#### Min/max value
-
-These involve finding not the min/max of a property itself,
-but another property of the row with the min/max value.
-This can apply both to the whole dataset and to groups.
-
-Examples:
-
-- Longest file
-- Longest line
-- Deepest line
-- Time of day (morning, afternoon, evening, night) that most work is done
-- Day of the week that most work is done
-
-For example, let’s try to calculate the time of day that the most work is done.
-We’d use [`date.toLocaleString()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) to get the time of day and use that as the grouping value:
-
-```js
-$: workByPeriod = d3.rollups(
-  data,
-  (v) => v.length,
-  (d) => d.datetime.toLocaleString('en', { dayPeriod: 'short' }),
-);
-```
-
-Then, to find the period with the most work, we’d use [`d3.greatest()`](https://d3js.org/d3-array/summarize#greatest) instead of `d3.max()` to get the entire element, then access the name of the period with `.[0]`:
-
-```js
-$: maxPeriod = d3.greatest(workByPeriod, (d) => d[1])?.[0];
-```
-
-## Step 2: Visualizing time and day of commits in a scatterplot
-
-Now let’s visualize our edits in a scatterplot
-with the time of day as the Y axis and the date as the X axis.
-
-### Step 2.1: Drawing the dots
-
-First, let’s define a width and height for our coordinate space in our `<script>` block:
-
-```js
-let width = 1000,
-  height = 600;
-```
-
-Then, in the HTML we add an `<svg>` element to hold our chart, and a suitable heading (e.g. "Commits by time of day"):
-
-```html
-<svg viewBox="0 0 {width} {height}">
-  <!-- scatterplot will go here -->
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+	<text y=".9em" font-size="90">🚴🏼‍♀️</text>
 </svg>
 ```
 
-And a `<style>` element to hold styles:
+Feel free to use any emoji you want.
+Then edit `src/app.html` to change `favicon.png` to `favicon.svg` here:
 
 ```html
-<style>
-  svg {
-    overflow: visible;
-  }
-</style>
+<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 ```
 
-Now, as shown in the [Web-based visualization lecture](https://vis-society.github.io/lectures/intro-svelte-d3.html),
-we create scales to map our data to the coordinate space using the [d3-scale](https://d3js.org/d3-scale/linear) module.
+You may also want to add a `<title>` with your project title, as a fallback for pages that don't specify one.
 
-We will need two scales: a Y scale for the times of day, and an X scale for the dates.
+It should look like this:
+![](images/favicon.png)
 
-The Y scale (`yScale` variable) is a standard [linear scale](https://d3js.org/d3-scale/linear#scaleLinear) that maps the hour of day (`0` to `24`) to the Y axis (0 to `height`).
+{: .tip }
+You can now delete `static/favicon.png` if you want to keep things tidy, since we’re not using it anymore. -->
 
-<!--
-```js
-$: xScale = d3.scaleTime()
-              .domain(d3.extent(commits.map(d => d.date)))
-              .range([0, width])
-              .nice();
+## Step 1: My first map
 
-$: yScale = d3.scaleLinear()
-              .domain([0, 24])
-              .range([height, 0]);
-```
--->
+### Step 1.0: Create a Mapbox account
 
-But for the X scale (`xScale` variable), there’s a few things to unpack:
+Go to [Mapbox](https://www.mapbox.com/) and create an account [using your UCSD email](https://www.mapbox.com/community/education). Once you do this, you will have to enter your address for "billing" but we will be using the free service tier which carries no charge.
 
-- Instead of a linear scale, which is meant for any type of quantitative data, We use a [_time scale_](https://d3js.org/d3-scale/time) which handles dates and times automagically.
-  It works with JS [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) objects, which we already have in the `datetime` property of each commit.
-- We can use [`d3.extent()`](https://d3js.org/d3-array#extent) to find the minimum and maximum date in our data in one fell swoop instead of computing it separately via `d3.min()` and `d3.max()`.
-- We can use [`scale.nice()`](https://d3js.org/d3-scale#continuous_nice) to extend the domain to the nearest “nice” values (e.g. multiples of 5, 10, 15, etc. for numbers, or round dates to the nearest day, month, year, etc. for dates).
+<!-- , but you still need to provide credit card information during the signup process (please reach out to the course staff if that may be a problem). Otherwise, the process of signing up should be straightforward. -->
 
-Once we have both scales,
-we can draw the scatter plot by drawing circles with the appropriate coordinates inside our `<svg>` element:
+After you sign up, make sure to verify your email.
 
-```html
-<g class="dots">
-  {#each commits as commit, index }
-  <circle
-    cx="{"
-    xScale(commit.datetime)
+### Step 1.1: Add Mapbox GL JS to Your Project
+
+We'll use **CDN links** to include Mapbox GL JS directly in our HTML.
+
+1. **Add the following to the `<head>` of your `index.html`:**
+
+   ```html
+   <!-- Mapbox GL JS CSS -->
+   <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+   ```
+
+2. **Include the Mapbox GL JS script before the closing `</body>` tag:**
+
+   ```html
+   <!-- Mapbox GL JS JavaScript -->
+   <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+   ```
+
+### Step 1.2: Add an Element to Hold the Map
+
+1. **In your `index.html`, add a `div` to contain the map:**
+
+   ```html
+   <div id="map"></div>
+   ```
+
+2. **Add basic CSS to ensure the map fills the screen:**
+
+   Create a `map.css` file and link it to your html file with the following content (you can add more style to it if you like ):
+
+   ```css
+    html, body {
+      margin: 0;
+      padding: 5;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center; /* Center horizontally */
+      align-items: center;     /* Center vertically */
     }
-    cy="{"
-    yScale(commit.hourFrac)
+    
+    #map {
+      width: 100%;    /* Adjust width to your desired size */
+      height: 100%;   /* Adjust height to your desired size */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for effect */
+      border-radius: 8px; /* Optional: rounded corners */
     }
-    r="5"
-    fill="steelblue"
-  />
-  {/each}
-</g>
-```
+   ```
 
-{: .note }
-The group (`<g>`) element is not necessary, but it helps keep the SVG structure
-a bit more organized once we start adding other visual elements.
+### **Step 1.3: Initialize Mapbox and Connect Your Account Using an External JavaScript File**
 
-If we preview at this point, we’ll get something like this:
+### **1. Move the JavaScript Code to a Separate File**
 
-![](images/dots.png)
+1. **Create a new file named `map.js`** inside your project directory
 
-That was a bit anti-climactic!
-We did all this work and all we got was a bunch of dots?
+2. **Add the following code to `map.js`:**
 
-Indeed, without axes, a scatterplot does not even look like a chart.
-Let’s add them!
+   ```javascript
+   // Set your Mapbox access token here
+   mapboxgl.accessToken = 'YOUR_ACCESS_TOKEN_HERE';
 
-### Step 2.2: Adding axes
+   // Initialize the map
+   const map = new mapboxgl.Map({
+     container: 'map', // ID of the div where the map will render
+     style: 'mapbox://styles/mapbox/streets-v12', // Map style
+     center: [-71.092761, 42.357575], // [longitude, latitude]
+     zoom: 12, // Initial zoom level
+     minZoom: 5, // Minimum allowed zoom
+     maxZoom: 18 // Maximum allowed zoom
+   });
+   ```
 
-As shown in lecture, the first step to add axes is to create space for them.
-We define margins in our JS:
+### **2. Link `map.js` in Your `index.html`**
 
-```js
-let margin = { top: 10, right: 10, bottom: 30, left: 20 };
-```
-
-Then we adjust our scales to account for these margins by changing:
-
-- The range of the X scale from `[0, width]` to `[margin.left, width - margin.right]`
-- The range of the Y scale from `[height, 0]` to `[height - margin.bottom, margin.top]`
-
-For readability and convenience,
-you can also define a `usableArea` variable to hold these bounds,
-since we’ll later need them for other things too:
+In your `index.html`, link the `map.js` file after the **Mapbox GL JS** script to ensure the Mapbox library is loaded before your custom code runs, like this:
 
 ```js
-let usableArea = {
-  top: margin.top,
-  right: width - margin.right,
-  bottom: height - margin.bottom,
-  left: margin.left,
-};
-usableArea.width = usableArea.right - usableArea.left;
-usableArea.height = usableArea.bottom - usableArea.top;
+  <!-- Load Mapbox GL JS -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+
+  <!-- Load your custom map initialization script -->
+  <script src="map.js"></script>
 ```
 
-Now the ranges become much more readable:
+### **3. Find Your Access Token**
 
-- `[usableArea.left, usableArea.right]` for the X scale
-- `[usableArea.bottom, usableArea.top]` for the Y scale
+1. Go to your [Mapbox Account Dashboard](https://account.mapbox.com/).
+2. Copy your **default public access token** (it starts with `pk.`).
+3. Replace `'YOUR_ACCESS_TOKEN_HERE'` in `map.js` with your actual token:
 
-Then we create `xAxis` and `yAxis` variables in our JS to hold our axes:
+   ```javascript
+   mapboxgl.accessToken = 'pk.your_actual_mapbox_access_token_here';
+   ```
 
-```js
-let xAxis, yAxis;
-```
+<!-- ### Step 1.1: Install Mapbox.js
 
-and `<g>` elements that we bind to them:
-
-```jsx
-<g transform="translate(0, {usableArea.bottom})" bind:this={xAxis} />
-<g transform="translate({usableArea.left}, 0)" bind:this={yAxis} />
-```
-
-{: .caveat }
-Make sure these elements come _before_ your dots, since SVG paints elements in the order they appear in the document,
-and you want your dots to be painted over anything else.
-
-Then we use `d3.select()` to select these elements and apply the axes to them via [`d3-axis`](https://d3js.org/d3-axis) functions:
-
-```js
-let xAxis, yAxis;
-
-$: {
-  d3.select(xAxis).call(d3.axisBottom(xScale));
-  d3.select(yAxis).call(d3.axisLeft(yScale));
-}
-```
-
-If we view our scatterplot now, we’ll see something like this:
-
-![](images/axes-basic.png)
-
-Much better, right?
-
-But how does it work?
-Right click one of the points in the axes and select "Inspect Element".
-You will notice that the ticks are actually `<g>` elements with `<text>` elements inside them.
-
-<img src="images/ticks.png" alt="Dev tools screenshot" class="browser" data-url="http://localhost:5173/meta">
-
-Only thing that remains is to actually format the Y axis to look like actual times.
-We can do that using the [`axis.tickFormat()`](https://d3js.org/d3-axis#axis_tickFormat) method:
-
-```js
-d3.select(yAxis).call(
-  d3
-    .axisLeft(yScale)
-    .tickFormat((d) => String(d % 24).padStart(2, '0') + ':00'),
-);
-```
-
-{: .fyi }
-
-> What is this function actually doing? Let’s break it down:
->
-> - `d % 24` uses the remainder operator ([`%`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)) to get `0` instead of `24` for midnight (we could have done `d === 24? 0 : d` instead)
-> - `String(d % 24)` converts the number to a string
-> - [`string.padStart()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart) formats it as a two digit number
->   Finally, we append `":00"` to it to make it look like a time.
-
-{: .note }
-D3 provides a host of date/time formatting helpers in the [`d3-time-format`](https://d3js.org/d3-time-format) module,
-however for this case, simple string manipulation is actually easier.
-
-The result looks like this:
-
-![Screenshot of the scatter plot with formatted Y axis](images/y-axis-formatted.png)
-
-### Step 2.3: Adding horizontal grid lines
-
-Axes already improved our plot tenfold (it now looks like an actual scatterplot for one!)
-but it’s still hard to see what X and Y values each dot corresponds to.
-
-Let’s add grid lines to make it easier to read the plot at a glance.
-
-{: .caveat }
-When adding grid lines, there are a few tradeoffs to consider.
-You want to make them prominent enough to assist in reading the chart,
-but not so prominent that they add clutter and distract from the data itself.
-Err on the side of fewer, fainter grid lines rather than dense and darker ones.
-
-We will only create horizontal grid lines for simplicity, but you can easily add vertical ones too
-if you want (but be extra mindful of visual clutter).
-
-Conceptually, there is no D3 primitive specifically for grid lines.
-Grid lines are basically just axes with no labels and _freakishly_ long ticks. 😁
-
-So we add grid lines in a very similar way to how we added axes,
-but we use the `tickSize` method to make the lines extend across the whole chart.
-
-Just like with the axes, we create a JS variable to hold the axis (I called it `yAxisGridlines`),
-and use a reactive statement that starts off identical to the one for our `yScale`.
-However, instead of a proper `tickFormat()` that actually formats axis labels, we use `tickFormat("")` to _remove_ the labels.
-Thenm we use the [`axis.tickSize()`](https://d3js.org/d3-axis#axis_tickSize) method
-with a tick size of `-usableArea.width` to make the lines extend across the whole chart
-(the `-` is to flip them).
-
-<!--
-```js
-let yAxisGridlines;
-
-$: {
-	d3.select(yAxisGridlines).call(d3.axisLeft(yScale));
-}
-```
--->
-
-We also need to create a `<g>` element to hold the grid lines.
-Let’s give it a class of `gridlines` so we can style it later:
-
-```html
-<g
-  class="gridlines"
-  transform="translate({usableArea.left}, 0)"
-  bind:this="{yAxisGridlines}"
-/>
-```
-
-{: .caveat }
-Make sure that your `<g>` element for the grid lines comes _before_ the `<g>` element for the Y axis,
-as you want the grid lines to be painted _under_ the axis, not _over_ it.
-
-So far, we’ve only recreated our Y axis but without the formatting.
-How do we turn that into grid lines?
-First, we will use [`axis.tickFormat()`](https://d3js.org/d3-axis#axis_tickFormat) again, but this time to _remove_ the text:
-
-```js
-$: {
-  d3.select(yAxisGridlines).call(d3.axisLeft(yScale).tickFormat(''));
-}
-```
-
-Then, we use the [`axis.tickSize()`](https://d3js.org/d3-axis#axis_tickSize) method to make the lines extend across the whole chart:
-
-```js
-$: {
-  d3.select(yAxisGridlines).call(
-    d3.axisLeft(yScale).tickFormat('').tickSize(-usableArea.width),
-  );
-}
-```
-
-<!-- We can also add `.tickValues(d3.ticks(0, 24, 25))` to have gridlines every hour, rather than every two hours. -->
-
-If we look now, we already have grid lines, but they look a bit too prominent.
-
-Let’s add some CSS to fix this:
-
-```css
-.gridlines {
-  stroke-opacity: 0.2;
-}
-```
-
-Much better now!
-
-<figure markdown="1">
-
-![](images/gridlines-black.png)
-![](images/gridlines.png)
-
-<figcaption>
-The grid lines before and after `stroke-opacity`.
-</figcaption>
-</figure>
-
-{: .caveat }
-Do not use `.gridlines line`, `.gridlines .tick line` or any other descendant selector to style the lines:
-Svelte [thinks it’s unused CSS and removes it](https://github.com/sveltejs/svelte/issues/10844)!
-
-{: .further }
-Coloring each line based on the time of day, with bluer colors for night times and orangish ones for daytime? 😁
-
-## Step 3: Adding a tooltip
-
-Even with the gridlines, it’s still hard to see what each dot corresponds to.
-Let’s add a tooltip that shows information about the commit when you hover over a dot.
-
-### Step 3.1: Static element
-
-First, we’ll render the data in an HTML element, and once we’re sure eveyrthing works well, we’ll make it look like a tooltip.
-
-Similarly to [Step 5.2](../6/#step-52-highlighting-selected-wedge) of the previous lab, when we were selecting a pie wedge, we will now use with a `hoveredIndex` variable to hold the index of the hovered commit,
-and a `hoveredCommit` variable that is reactively updated every time a commit is hovered
-and holds the data we want to display in the tooltip:
-
-```js
-let hoveredIndex = -1;
-$: hoveredCommit = commits[hoveredIndex] ?? hoveredCommit ?? {};
-```
-
-Then, in our SVG, we add `mouseenter` and `mouseleave` event listeners on each circle:
-
-```html
-<!-- Other attributes/directives not shown for brevity -->
-<circle on:mouseenter={evt => hoveredIndex = index} on:mouseleave={evt =>
-hoveredIndex = -1} />
-```
-
-{: .note }
-Ignore the accessibility warnings for now, we will get to them once we get the base functionality working.
-
-Now add an element to display data about the hovered commit:
-
-```html
-<dl id="commit-tooltip" class="info tooltip">
-  <dt>Commit</dt>
-  <dd>
-    <a href="{ hoveredCommit.url }" target="_blank">{ hoveredCommit.id }</a>
-  </dd>
-
-  <dt>Date</dt>
-  <dd>{ hoveredCommit.datetime?.toLocaleString("en", {dateStyle: "full"}) }</dd>
-
-  <!-- Add: Time, author, lines edited -->
-</dl>
-```
-
-In the CSS, we add two rules:
-
-- `dl.info` with grid layout so that the `<dt>`s are on the 1st column and the `<dd>`s on the 2nd, remove their default margins, and apply some styling to make the labels less prominent than the values.
-- `.tooltip` with `position: fixed` to it and `top: 1em;` and `left: 1em;` to place it at the top left of the viewport so we can see it regardless of scroll status.
-
-{: .note }
-Why not just add everything on a single CSS rule? Because this way we can reuse the `.info` class for other `<dl>`s that are not tooltips and the `.tooltip` class for other tooltips that are not `<dl>`s.
-
-{: .fyi }
-What’s the difference between `fixed` and `absolute` [positioning](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Positioning)?
-`position: fixed` positions the element relative to the [_viewport_](https://developer.mozilla.org/en-US/docs/Glossary/Viewport), while `position: absolute` positions it relative to the nearest positioned ancestor (or the root element if there is none).
-The position offsets are specified via [`top`](https://developer.mozilla.org/en-US/docs/Web/CSS/top), [`right`](https://developer.mozilla.org/en-US/docs/Web/CSS/right), [`bottom`](https://developer.mozilla.org/en-US/docs/Web/CSS/bottom), and [`left`](https://developer.mozilla.org/en-US/docs/Web/CSS/left) properties (or their shorthand, [`inset`](https://developer.mozilla.org/en-US/docs/Web/CSS/inset))
-In practice, it means that `position: fixed` elements stay in the same place even when you scroll, while `position: absolute` elements scroll with the rest of the page.
-
-We should also apply some hover styles on the dots, e.g to smoothly make them bigger when hovered we can do something like this:
-
-```scss
-circle {
-  transition: 200ms;
-
-  &:hover {
-    transform: scale(1.5);
-  }
-}
-```
-
-If you preview now, you will see some weirdness (slowed down by 10x):
-
-![](images/hover-weirdness.gif)
-
-This is because in SVG by default the origin of transforms is the top left corner of the coordinate system.
-To fix that and set the origin to the center of the dot itself, we need two properties:
-
-```css
-transform-origin: center;
-transform-box: fill-box;
-```
-
-The hover effect now looks far more reasonable:
-
-![](images/hover-fixed.gif)
-
-Overall, at the end of this step, we should have something like this:
-
-<video src="videos/hover-info.mp4" muted loop autoplay class="browser" data-url="http://localhost:5173/meta"></video>
-
-### Step 3.2: Making it look like a tooltip
-
-Seeing this info is already useful, but it’s not really a tooltip yet.
-There are three components to making our `<dl>` an actual tooltip:
-
-1. Styling it like a tooltip (e.g. giving it a shadow that makes it look raised from the page)
-2. Making it only appear when we are hovering over a dot (Step 3.3)
-3. Positioning it near the mouse cursor (Step 3.4)
-
-I will do them in that order, but these are largely independent tasks that can be done in either order.
-If anything, doing 3 before 1 and 2 might help motivate them better.
-
-In terms of styling,
-you should definitely give it a [`background-color`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-color)
-as otherwise the text will be hard to read.
-You can either go for a solid color (e.g. `white`) or a semi-transparent color (e.g. `oklch(100% 0% 0 / 80%)`) that will show some of the chart behind it.
-
-A few other useful CSS properties are:
-
-- [`box-shadow`](https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow) for shadows.
-  **Avoid overly prominent shadows**: you are trying to make it look elevated, not to decorate it.
-  The shadow should not be distracting, but just enough to make it look like it’s floating above the page.
-  Generally, the larger the blur radius and the more transparent the color, the more raised the element will look.
-  Experiment with different values to see what looks best for your design.
-- [`border-radius`](https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius) for rounded corners
-- [`backdrop-filter`](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter) to blur what’s underneath (frosted glass effect).
-  This is only relevant if you have a semi-transparent background color.
-
-You would also probably want to add some spacing between its content and the edges of the tooltip, i.e. `padding`.
-
-<figure markdown="1">
-
-![](images/tooltip-styling.gif)
-
-<figcaption>
-Example before and after.
-</figcaption>
-</figure>
-
-### Step 3.3: Making only appear when we are hovering over a dot
-
-Currently, our tooltip appears even when it has no content, which is quite jarring.
-It also appears when we are not hovering over any dot, and just shows the previous content.
-That’s not too bad when it's fixed at the top left of the viewport, but can you picture how annoying this would be if it was an actual tooltip that just won’t take a hint and go away?
-
-We _could_ wrap the whole tooltip with an `{#if hoveredIndex > -1 }...{/if}` block and it would work.
-However, that’s not very flexible.
-It makes it hard to use transition effects when the tooltip disappears (because it’s gone immediately),
-make it disappear with a delay to allow users to interact with it,
-or not disappear at all if users are actively interacting with it (hovering it or focusing elements within it).
-
-Instead, we will use the HTML [`hidden`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden) attribute:
-
-```jsx
-<dl class="info" hidden={hoveredIndex === -1}>
-```
-
-and add some CSS to hide the element by fading it out:
-
-```scss
-dl.info {
-  /* ... other styles ... */
-  transition-duration: 500ms;
-  transition-property: opacity, visibility;
-
-  &[hidden]:not(:hover, :focus-within) {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-```
-
-It should now behave like this:
-
-<video src="videos/tooltip-showhide.mp4" loop autoplay muted></video>
-
-### Step 3.4: Positioning the tooltip near the mouse cursor
-
-Now, the final piece of the puzzle to make this element into an actual tooltip!
-
-Our tooltip is currently positioned at the top left corner of the viewport (actually `1em` from the top and `1em` from the left) in a hardcoded way, via the `top` and `left` properties.
-To position it near the mouse cursor instead, we need to set these properties _dynamically_ based on the mouse position.
-
-Thankfully, the event object on mouse events has several properties that give us the mouse position relative to different things.
-To get the mouse position relative to the viewport, we can use the `x` and `y` properties of the event object.
-
-We will declare a new variable in our JS and use it to store the last recorded mouse position:
-
-```js
-let cursor = { x: 0, y: 0 };
-```
-
-Then, we will update it in our `mouseenter` event listener:
-
-```jsx
-<!-- Other attributes/directives not shown for brevity/clarity -->
-<circle
-	on:mouseenter={evt => {
-		hoveredIndex = index;
-		cursor = {x: evt.x, y: evt.y};
-	}}
-/>
-```
-
-Print it out in your HTML via `{JSON.stringify(cursor, null, "\t")}` and move the mouse around to make sure it works!
-
-<img src="images/cursor-object.gif" class="outline" alt="">
-
-As with all these debug statements, don’t forget to remove it once you verify it works.
-
-Now let’s use these to set `top` and `left` on the tooltip:
-
-```jsx
-<dl class="info" hidden={hoveredIndex === -1} style="top: {cursor.y}px; left: {cursor.x}px">
-```
-
-This is the result:
-<video src="videos/tooltip-cursor.mp4" loop autoplay muted></video>
-
-{: .note }
-While we directly set `top` and `left` for simplicity,
-we usually want to avoid setting CSS properties directly.
-It’s more flexible to set custom properties that we then use in our CSS.
-For example, assume you wanted to subtly move the shadow as the mouse pointer moves to create more sense of depth ([parallax](https://en.wikipedia.org/wiki/Parallax)).
-If we had custom properties with the mouse coordinates, we could just use them in other properties too,
-whereas here we’d have to set the `box-shadow` with inline styles too.
-
-### Step 3.5: Bulletproof positioning (optional)
-
-Our naïve approach to positioning the tooltip near the mouse cursor by setting the `top` and `left` CSS properties
-works well if the tooltip is small and the mouse is near the center of the viewport.
-However, if the tooltip is near the edges of the viewport, it falls apart.
-
-Try it yourself: dock the dev tools at the bottom of the window and make them tall enough that you can scroll the page.
-Now hover over a dot near the bottom of the page. Can you see the tooltip?
-
-<img src="images/positioning-problem.png" alt="" class="outline">
-
-Solving this on our own is actually an incredibly complicated problem in the general case.
-Thankfully, there are many wonderful packages that solve it for us.
-We will use [Floating UI](https://floating-ui.com/) here.
-
-First, we install it via npm:
+In your project directory, run the following command to install the Mapbox.js library:
 
 ```bash
-npm install @floating-ui/dom
+npm install mapbox-gl
 ```
 
-Then, we import the three functions we will need from it:
+### Step 1.2: Add an element to hold the map
 
-```js
-import { computePosition, autoPlacement, offset } from '@floating-ui/dom';
-```
+We will largely follow the steps outlined in [Mapbox’s official docs about Svelte integration](https://docs.mapbox.com/help/tutorials/use-mapbox-gl-js-with-svelte/).
 
-Just like D3, Floating UI is not Svelte-specific and works with DOM elements.
-Therefore, just like we did for the axes in Step 4.2, we will use `bind:this` to bind a variable to the tooltip element:
-
-```js
-let commitTooltip;
-```
+Let’s create an element to receive our map and bind it to a variable (we’ll need to reference that when we tell Mapbox to create a map there):
 
 ```html
-<!-- Other attributes omitted for brevity -->
-<dl class="info" bind:this="{commitTooltip}"></dl>
+<div id="map" />
 ```
 
-Then, we will use [`computePosition()`](https://floating-ui.com/docs/computePosition) to compute the position of the tooltip based on the mouse position and the size of the tooltip.
-This function returns a Promise that resolves to an object with properties like `x` and `y` that we can use in our CSS instead of `cursor`.
-Therefore, let’s create a new variable to hold the position of the tooltip
-that we will update in our `mouseenter` event listener.:
+We also want to add some CSS to ensure the map will have sufficient height:
 
-```js
-let tooltipPosition = { x: 0, y: 0 };
-```
-
-Since the code of this event listener is growing way beyond a single line expression,
-it’s time to move it to a function.
-This is also a good chance to address those accessibility warnings we ignored earlier.
-
-Create a new `dotInteraction()` function in your JS that takes the index of the dot and the event object as arguments:
-
-```js
-function dotInteraction(index, evt) {
-  // code will go here
+```css
+#map {
+  flex: 1;
 }
 ```
 
-We’ll try something different this time:
-instead of creating separate functions for each event,
-we will invoke the same function for all events, and read `evt.type` to determine what to do.
-Instead of only handling mouse events, we will also handle `focus` and `blur` events, to make our tooltip accessible to keyboard users.
+Try giving the map a background color to make sure it’s taking up the space you expect:
 
-```js
-if (evt.type === 'mouseenter' || evt.type === 'focus') {
-  // dot hovered
-} else if (evt.type === 'mouseleave' || evt.type === 'blur') {
-  // dot unhovered
-}
+<img src="images/map-empty.png" class="browser" alt="">
+
+### Step 1.3: Import Mapbox and connect it to our account
+
+In order to use Mapbox, we first need to import its JS and CSS.
+In your `src/routes/+page.svelte` file, inside your `<script>` tag, add this:
+
+```javascript
+import mapboxgl from 'mapbox-gl';
+import '../../node_modules/mapbox-gl/dist/mapbox-gl.css';
 ```
 
-Move your existing event listener code (modifying `hoveredIndex`) within the `dotInteraction()` function,
-and then update your event listeners to call that instead:
 
-```html
-<!-- Other attributes/directives not shown for brevity -->
-<circle on:mouseenter={evt => dotInteraction(index, evt)} on:mouseleave={evt =>
-dotInteraction(index, evt)} />
-```
+{: .tbd }
+There is actually a named export `mapbox-gl/style` but I could not get it to work at all.
 
-To fix the accessibility issues, we should also add:
 
-- `tabindex="0"` to the dots to make them focusable
-- `aria-describedby="commit-tooltip"` to the dots to link them to the tooltip for assistive technology
-- `role="tooltip"` to the tooltip to indicate its purpose to assistive technology
-- `aria-haspopup="true"` to the dots to indicate that they have a tooltip
-- `on:focus` and `on:blur` event listeners (that also call `dotInteraction()`)
-
-Back to the `dotInvoked()` function,
-we can use [`evt.target`](https://developer.mozilla.org/en-US/docs/Web/API/Event/target) to get the dot that was hovered over:
+Then, we need to connect our account to it, by setting up our access token:
 
 ```js
-let hoveredDot = evt.target;
+mapboxgl.accessToken = 'your access token here';
 ```
 
-Now, in the block that handles the `mouseenter`/`focus` events, let’s use [`computePosition()`](https://floating-ui.com/docs/computePosition)
-to compute the position of the tooltip based on the position of the dot.
+To find your access token, you go to your account page on Mapbox:
 
-Another advantage of moving our code to a separate function is that
-we can mark this function as [`async`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function), which will allow us to use `await` inside it.
-This is helpful because [`computePosition()`](https://floating-ui.com/docs/computePosition) returns a `Promise` that resolves to the position of the tooltip.
+<img src="images/access-token.png" class="browser">
 
-This is what it looks like:
+{: .warning }
+Make sure your repo is private before you push your access token to GitHub! -->
+
+### Step 1.4: Create the map
+
+To create the map, we create a new `mapboxgl.Map` object with [settings](https://docs.mapbox.com/mapbox-gl-js/api/map/) that specify things like:
+
+- which HTML element will hold the map? (`container`) This can be either an element reference, or a string with the element’s ID (which is what we will use)
+- What will the _basemap_ look like? (`style`)
+- _Map extent_:
+  - What latitude and longitude will the map be centered on? (`center: [longitude, latitude]`)
+  - How zoomed in will the map start off and what will be the min & max zoom allowed? (`zoom`, `minZoom`, `maxZoom`)
+
+Here is some sample code on how to instantiate a `mapboxgl.Map` object:
+
+   ```js
+   // Set your Mapbox access token here
+   mapboxgl.accessToken = 'YOUR_ACCESS_TOKEN_HERE';
+
+   // Initialize the map
+   const map = new mapboxgl.Map({
+     container: 'map', // ID of the div where the map will render
+     style: 'mapbox://styles/mapbox/streets-v12', // Map style
+     center: [-71.09415, 42.36027], // [longitude, latitude]
+     zoom: 12, // Initial zoom level
+     minZoom: 5, // Minimum allowed zoom
+     maxZoom: 18 // Maximum allowed zoom
+   });
+   ```
+
+In terms of what values to apply to options:
+
+- For the container, we want to specify an id so we don't have to worry about element references.
+- For the style, I used `"mapbox://styles/mapbox/streets-v12"` but you are welcome to choose any [other style](https://docs.mapbox.com/api/maps/styles/#classic-mapbox-styles) you like. Keep in mind that the busier the style, the harder it will be to see your data drawn on top of it.
+- Map extent:
+  - I used `12` for the zoom level (`zoom`)
+  - You can use any centerpoint you like, but it should be within the Cambridge & Boston area. See below for how to find the latitude and longitude of any location.
+
+To find the coordinates of a location, you can enter it on Google Maps, and then right click and select the first option:
+
+![](images/gps-copy.png)
+
+Another way is via the URL, it's the part after the `@`:
+![](images/gmaps-latlng.png)
+
+Note that you will need to specify them in the reverse order, as [Mapbox expects longitude first](https://docs.mapbox.com/api/overview/#coordinate-format).
+
+If everything went well, you should have a map of Boston already! 
+
+<img src="images/step-1.png" class="browser" alt="">
+
+Try panning and zooming around to see the map in action.
+
+### Step 1.5: Customizing the map _(optional)_
+
+The map style in its current form is quite functional as it shows a lot of useful waypoints and detail.
+However, sometimes we'd like to create a more stylized map to create a cohesive design language across our website, or simply to draw readers in with a unique design.
+
+Luckily, Mapbox provides a way to fully customize your map style using [**Mapbox Studio**](https://docs.mapbox.com/studio-manual/guides/).
+To access Mapbox Studio, go back to your Mapbox account page and click "Create a map in Studio".
+
+<img src="images/mapbox-studio-red-box.png" class="browser">
+
+Next, create a new style.
+
+<img src="images/new-style.png" class="inline">
+
+From here, you are free to create a style however you'd like! As a starting point, many high quality map visualizations end up using a monochrome style, which you can find by clicking on "Classic template", then "Monochrome". Once you've selected a variant from the list of styles, click on the "Customize" buttom to add further customization, which will open up the actual studio, shown below.
+
+<img src="images/mapbox-studio.png" class="browser">
+
+Mapbox styles are made up of [layers](https://docs.mapbox.com/studio-manual/reference/styles/#layers) and [components](https://docs.mapbox.com/studio-manual/reference/styles/#components) (e.g. natural features, streets, points of interest, transit nodes, etc.). These items have properties which can be edited, such as the color or font, and can even be removed for a cleaner look.
+For example, if you wanted to make the color of the bodies of water a more natural blue color in this monochrome example, you could click on the "Land & water _water_" layer in the left panel and simply adjust the color in the color picker.
+
+<img src="images/mapbox-edit-property.png" class="browser">
+
+Once you are done playing around with the style, you can [**publish it**](https://docs.mapbox.com/studio-manual/guides/publish-your-style/) so that it can be referenced in your code where you define the map, as you did in [Step 1.4](#step-14-create-the-map). To do so, click "Publish" in the top right corner of the studio interface.
+
+Then, click on the three dots next to your style name to find the style URL (it will look something like this: `mapbox://styles/casillasenrique/clukyyerk007v01pb6r107k1o`).
+
+<img src="images/copy-style.png">
+
+Copy it and paste this URL in your `style` property when defining the `mapboxgl.Map` object. You should now see that your map uses your custom style!
+
+<img src="images/studio-final-in-code.png" class="browser">
+
+Now, each time you edit your map style in Mapbox Studio and re-publish it, the updated style will automatically be applied in your website (note that sometimes the style takes a couple of minutes to update after publishing).
+
+## Step 2: Adding bike lanes
+
+### Step 2.0: Getting familiar with the data
+
+The City of Boston provides an [open dataset with bike lanes in the city](https://bostonopendata-boston.opendata.arcgis.com/datasets/boston::existing-bike-network-2022.geojson?outSR=%7B%22latestWkid%22%3A3857%2C%22wkid%22%3A102100%7D).
+The dataset is in [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) format, which is just JSON that follows a specific structure, designed to represent geographical data.
+
+Download the dataset, open it in VS Code, and examine its structure. This is your for you to look through the dataset yourself, but we can import the data through the link (demonstrated in step 2.1).
+
+{: .tip }
+Try pressing <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> to open the command palette, and then select “Format document” to make the JSON more readable.
+
+### **Step 2.1: Modify `map.js` to Wait for the Map to Load Before Adding Data**
+
+1. **Import the data**
+
+Mapbox provides an `addSource` function to connect the map with an external data [source](https://docs.mapbox.com/mapbox-gl-js/api/sources/).
+However, to use any of that, we first need to wait for the `"load"` event to fire on `map`.
+To avoid nesting all our code in an event listener, we can use an `async` function, and then add this after the map creation:
 
 ```js
-tooltipPosition = await computePosition(hoveredDot, commitTooltip, {
-  strategy: 'fixed', // because we use position: fixed
-  middleware: [
-    offset(5), // spacing from tooltip to dot
-    autoPlacement(), // see https://floating-ui.com/docs/autoplacement
-  ],
+await new Promise((resolve) => map.on('load', resolve));
+```
+
+2. **Adding the Data Source with `addSource`:**  
+   ```javascript
+   map.addSource('boston_route', {
+     type: 'geojson',
+     data: 'https://bostonopendata-boston.opendata.arcgis.com/datasets/boston::existing-bike-network-2022.geojson?...'
+   });
+   ```
+   - **`boston_route`** is a unique ID for this data source.
+   - The **data** is a link to Boston's open data in **GeoJSON** format, describing existing bike lanes.
+
+{: .fyi }
+What is `boston_route`?
+It’s just a name we made up to refer to this data source.
+You can name it anything you want, but it should be unique to this source.
+
+This won’t produce much of a visible result.
+To actually _see_ something, we need to actually _use_ the data to draw something.
+
+3. **Visualizing Data with `addLayer`:**  
+   ```javascript
+   map.addLayer({
+     id: 'bike-lanes',
+     type: 'line',
+     source: 'boston_route',
+     paint: {
+       'line-color': 'green',
+       'line-width': 3,
+       'line-opacity': 0.4
+     }
+   });
+   ```
+   - **`id: 'bike-lanes'`** is a unique identifier for the layer.
+   - **`type: 'line'`** tells Mapbox we're drawing lines (perfect for bike lanes).
+   - **`paint`** controls the visual styling:
+     - `'line-color'`: The color of the lines (`green` in this case).
+     - `'line-width'`: The thickness of the lines (set to `3`).
+     - `'line-opacity'`: How transparent the lines are (`0.4` means 40% opacity).
+
+### **Step 2.3: Styling and Customization**
+
+1. **Experiment with Layer Styles:**
+
+   You can tweak the appearance by adjusting the `paint` properties. Here's an example with different styles:
+
+   ```javascript
+   paint: {
+     'line-color': '#32D400',  // A bright green using hex code
+     'line-width': 5,          // Thicker lines
+     'line-opacity': 0.6       // Slightly less transparent
+   }
+   ```
+
+  {: .caveat }
+  Mapbox does not yet understand newer color formats like `oklch()`.
+  You can see the [docs](https://docs.mapbox.com/style-spec/reference/types/#color) on what it accepts, but at the time of writing it's basically named colors (e.g. `green`), hex codes (e.g. `#32D400`), `hsl()` and `rgb()`.
+  You can convert any valid CSS color to the closest `rgb()` or `hsl()` equivalent using [this tool](https://colorjs.io/apps/convert).
+  If it shows two versions, you want the one marked "gamut mapped".
+
+2. **Try Different Layer Types:**
+
+   You can experiment with other **layer types** like `'fill'`, `'circle'`, or `'symbol'` depending on your data and goals. For bike routes, `'line'` works best.
+
+
+### **Expected Result**
+
+If everything is set up correctly:
+
+1. Your map will center on **Boston**, and you'll see the **existing bike network** visualized as **green translucent lines**.
+2. You can **zoom in** to see more detail or **pan** around the city to explore the bike lanes.
+3. Inspecting the map in **DevTools** will show the dynamically added layers and sources in the DOM.
+
+<!-- ### Step 2.1: Import the data
+
+Mapbox provides an `addSource` function to connect the map with an external data [source](https://docs.mapbox.com/mapbox-gl-js/api/sources/).
+However, to use any of that, we first need to wait for the `"load"` event to fire on `map`.
+To avoid nesting all our code in an event listener, we can instead convert our `onMount` function to an `async` function, and then add this after the map creation:
+
+```js
+await new Promise((resolve) => map.on('load', resolve));
+```
+
+After that we can add the source:
+
+```js
+map.addSource('boston_route', {
+  type: 'geojson',
+  data: 'https://bostonopendata-boston.opendata.arcgis.com/datasets/boston::existing-bike-network-2022.geojson?outSR=%7B%22latestWkid%22%3A3857%2C%22wkid%22%3A102100%7D',
 });
 ```
 
-Your function should now look like:
-
-```js
-async function dotInteraction(index, evt) {
-  // your code
-}
-```
-
-{: .note }
-We won’t go into much detail on the API of Floating UI, so it’s ok to just copy the code above.
-However, if you want to learn more, their [docs](https://floating-ui.com/docs/getting-started) are excellent.
-
-Lastly, replace `cursor` with `tooltipPosition` in the `style` attribute of the tooltip to actually use this new object.
-
-If you preview now, you should see that the tooltip is always visible and positioned near the hovered dot,
-regardless of where it is relative to the viewport.
-
-<video src="videos/tooltip-final.mp4" loop autoplay muted class="browser" data-url="http://localhost:5173/meta"></video>
-
-At this point you can also remove the `cursor` variable and the code setting it,
-since we don’t need it anymore, unless there are other things you want to do
-where knowing the mouse position is useful.
-
-## Step 4: Communicating lines edited via the size of the dots (optional)
-
-Note that the tiniest of edits are currently represented by the same size of dot as the largest of edits.
-It is common to use the size of the dots to communicate a third variable,
-in this case the number of lines each commit edited.
-
-### Step 4.1: Calculating our scale
-
-We will need to define a new scale to map the number of lines edited to the radius of the dots.
-This means we need to first…
-
-1. Decide on the minimum and maximum radii we want to allow.
-   Edit the circle `r` attribute and play around with different radii to decide.
-   I settled on `2` and `30`.
-2. Calculate the range of values for number of lines edited by a single commit.
-   As with [Step 4.1](#step-41-drawing-the-dots), we can use [`d3.extent()`](https://d3js.org/d3-array#extent) to find the minimum and maximum value in one go.
-
-Then define a new linear scale (I called it `rScale`) using [`d3.scaleLinear()`](https://d3js.org/d3-scale/linear)
-mapping the domain of the number of lines edited to the range of radii we decided on.
-
-Then, in our HTML, instead of a hardcoded `5`, set the circle radius to `rScale(commit.totalLines)`.
-
-If everything went well, you should now see that the dots are now different sizes
-depending on the number of lines of each!
-
-As one last tweak, apply `fill-opacity` to the dots to make them more transparent,
-since the larger they are, the more likely to overlap.
-You can only apply it when the dots are _not_ hovered, as an extra cue.
-
-![Screenshot](images/r-var-linear.png)
-
-### Step 4.2: Area, not radius
-
-Hover over a few circles and pay attention to the number of lines they correspond to.
-What do you notice?
-The size of the dots is not very good at communicating the number of lines edited.
-This is because the area of a circle is proportional to the square of its radius (A = πr²),
-so **a commit with double the edits appears four times as large**!
-
-To fix this, we will use a different type of scale: a [square root scale](https://d3js.org/d3-scale/pow#scaleSqrt).
-A square root scale is a type of power scale that uses the square root of the input domain value to calculate the output range value.
-Thankfully, the API is very similar to the linear scale we used before,
-so all we need to do to fix the issue is to just change the function name.
-
-<figure markdown="1">
-
-![Screenshot](images/r-var-linear.png)
-![Screenshot](images/r-var.png)
-
-<figcaption>
-Before and after
-</figcaption>
-</figure>
-
-### Step 4.3: Paint smaller dots over larger ones
-
-You may notice that when dots are overlapping,
-it’s sometimes harder to hover over the smaller ones, if they happen to be painted underneath the larger one.
-
-One way to fix this is to sort commits in descending order of `totalLines`,
-which will ensure the smaller dots are painted last.
-To do that, we can use the [`d3.sort()`](https://d3js.org/d3-array/sort#sort) method.
-This would go in your `onMount()` callback:
-
-```js
-commits = d3.sort(commits, (d) => -d.totalLines);
-```
-
-Why the minus?
-Because `d3.sort()` sorts in ascending order by default, and we want descending order,
-and that’s shorter than writing a custom comparator function.
-
-## Step 5: Brushing
-
-In the [previous lab](../6/), we selected single pie segments by clicking.
-As discussed in the [A Tour through the Interaction Zoo](../../lectures/interaction-zoo.html) lecture,
-brushing can be an effective interaction technique for selecting _multiple_ data points in a visualization.
-
-Once points are selected, we can further explore the dataset by displaying more data.
-
-### Step 5.1: Setting up the brush
-
-Exactly because brushing is so fundamental to interactive charts,
-D3 provides a module called [`d3-brush`](https://d3js.org/d3-brush) to facilitate just that.
-
-To use it, we need a reference to our `<svg>` element, so we use `bind:this` as we’ve done several in this lab.
-Let’s call the variable `svg`.
-
-We then create the brush via:
-
-```js
-$: d3.select(svg).call(d3.brush());
-```
-
-Try it!
-You should already be able to drag a rectangle around the chart, even though it doesn’t _do_ anything yet.
-
-<img src="images/brush-noop.gif" alt="" class="outline">
-
-Exciting!
-
-### Step 5.2: Getting our tooltips back
-
-Did you notice that now that we can brush, our tooltips disappeared? 😱
-What happened?!
-
-If you inspect the chart, you will find the culprit:
-
-<img src="images/brush-overlay.png" alt="" class="browser">
-
-So what is happening here?
-To make the brush work, **D3 adds a rectangle overlay over the entire chart that catches all mouse events**.
-Because of this, our circles never get hovered, and thus our tooltips never show.
-
-Since SVG elements are painted in source order,
-to fix this we need the overlay to come before the dots in the DOM tree.
-D3 provides a [`selection.raise()`](https://d3js.org/d3-selection/modifying#selection_raise) method that moves one or more elements to the end of their parent, maintaining their relative order.
-
-Therefore, to move the overlay to be before the dots, we will "raise" the dots and everything that comes _after_ the overlay.
-
-First, let’s convert the single-line reactive statement to a reactive block:
-
-```js
-$: {
-  d3.select(svg).call(d3.brush());
-}
-```
-
-Then, inside the reactive block, after the brush is created, we raise the dots and everything after the overlay:
-
-```js
-d3.select(svg).selectAll('.dots, .overlay ~ *').raise();
-```
-
 {: .fyi }
-That’s a funny looking selector, isn’t it?
-The `~` is the CSS [_subsequent sibling combinator_](https://developer.mozilla.org/en-US/docs/Web/CSS/Subsequent-sibling_combinator)
-and it selects elements that come _after_ the selector that precedes it (and share the same parent).
+What is `boston_route`?
+It’s just a name we made up to refer to this data source.
+You can name it anything you want, but it should be unique to this source.
 
-Try it: you should now see that the tooltips are back, and the brush still works!
+This won’t produce much of a visible result.
+To actually _see_ something, we need to actually _use_ the data to draw something.
 
-### Step 5.3: Styling the selection rectangle (optional)
+### Step 2.2: Drawing bike lanes on the map
 
-The overlay is not the only element added by `d3.brush()`.
-For example, there is a `<rect class="selection>` element that is used to depict the brush selection.
-This means you can use CSS to style it!
+One way to do that is to use the [`map.addLayer()`](https://docs.mapbox.com/mapbox-gl-js/api/map/#map#addlayer) method to add a [_layer_](https://docs.mapbox.com/style-spec/reference/layers/) to our map that visualizes the data source.
 
-Just make sure to use the [Svelte-specific `:global()` pseudo-class](https://svelte.dev/docs/svelte-components#style) around `.selection` otherwise Svelte will drop the whole rule, as it thinks it’s unused CSS.
-
-Here’s what I did, but feel free to experiment with your own styles:
-
-```css
-@keyframes marching-ants {
-  to {
-    stroke-dashoffset: -8; /* 5 + 3 */
-  }
-}
-
-svg :global(.selection) {
-  fill-opacity: 10%;
-  stroke: black;
-  stroke-opacity: 70%;
-  stroke-dasharray: 5 3;
-  animation: marching-ants 2s linear infinite;
-}
-```
-
-<video src="videos/marching-ants.mp4" loop autoplay muted></video>
-
-### Step 5.4: Making the brush actually select dots
-
-So far we can draw a selection, but it neither does anything, nor does it look like it does anything.
-
-The first step is to actually figure out what the user has selected,
-both in terms of visual shapes (dots) so we can style them as selected,
-as well as in terms of data (commits) so we can do something with it.
-
-[`d3.brush()`](https://d3js.org/d3-brush#brush) returns a brush object, which actually fires [events](https://d3js.org/d3-brush#brush-events) when the brush is moved.
-We can use [`.on()`](https://d3js.org/d3-dispatch#dispatch_on) to listen to these events and do something when they happen.
-
-Let’s start by simply logging them to the console.
-Let’s define a function called `brushed()` that takes an event object as an argument and logs it to the console:
+The this will look like this:
 
 ```js
-function brushed(evt) {
-  console.log(evt);
-}
+map.addLayer({
+  id, // A name for our layer (up to you)
+  type, // one of the supported layer types, e.g. line, circle, etc.
+  source: 'boston_route', // The id we specified in `addSource()`
+  paint: {
+    // paint params, e.g. colors, thickness, etc.
+  },
+});
 ```
 
-Then, we use `.on()` to call this function when the brush is moved:
+You should experiment with the different types of layers and paint properties to see what you can come up with, but chances are you’ll settle on `"line"`,
+to draw a network of bike routes as lines.
 
-```js
-d3.select(svg).call(d3.brush().on('start brush end', brushed));
+Without any painting properties (i.e. an empty `paint` object),
+your map will look like this:
+![](images/routes-unstyled.png).
+
+### Step 2.3: Styling the bike lanes
+
+You should look at the [reference](https://docs.mapbox.com/style-spec/reference/layers/#layer-sub-properties) to see what you can do with the `paint` property, but chances are you will need at least the following:
+
+- `line-color` to set the color of the lines (see caveat below)
+- `line-width` to make the lines thicker (default is `1`)
+- `line-opacity` to make the lines translucent (0 is fully transparent, 1 is fully opaque). This is recommended so that the lines blend in to the rest of the map smoothly instead of obscuring it.
+
+{: .caveat }
+Mapbox does not yet understand newer color formats like `oklch()`.
+You can see the [docs](https://docs.mapbox.com/style-spec/reference/types/#color) on what it accepts, but at the time of writing it's basically named colors (e.g. `green`), hex codes (e.g. `#32D400`), `hsl()` and `rgb()`.
+You can convert any valid CSS color to the closest `rgb()` or `hsl()` equivalent using [this tool](https://colorjs.io/apps/convert).
+If it shows two versions, you want the one marked "gamut mapped".
+
+{: .caveat }
+Since these are properties in a JS object, and they contain hyphens, we need to wrap them in quotes, e.g. `"line-color": "green"`, not `line-color: "green"`.
+
+The exact styling is up to you. I went with a translucent `green` (40% opacity), and a line width of `3`, which looked like this:
+
+<img src="images/bike-lanes-green.png" class="browser" alt=""> -->
+
+### Step 2.4: Adding Cambridge bike lanes
+
+Notice that our map right now only shows bike lanes from Boston.
+What about the numerous Cambridge ones?!
+
+Fortunately, the City of Cambridge also provides [bike lane data as a GeoJSON file](https://raw.githubusercontent.com/cambridgegis/cambridgegis_data/main/Recreation/Bike_Facilities/RECREATION_BikeFacilities.geojson).
+
+Follow a similar process as steps 2.0 - 2.3 to visualize Cambridge bike lanes as well.
+It should look like this:
+
+<img src="images/cambridge-routes.png" class="browser" alt="">
+
+{: .further }
+At this point, you have likely ended up specifying your line styles twice:
+one in the Boston layer, and one in the Cambridge layer.
+This means that if we want to tweak them, we need to do it as many times as our layers.
+A good idea at this point (but entirely optional) is to specify the styling as a separate object that you reference in both places.
+
+## Step 3: Adding bike stations
+
+As you probably know, [Bluebikes](https://bluebikes.com/) is a bicycle sharing program in the Boston area.
+They make many [datasets](https://bluebikes.com/system-data) publicly available, including real-time and historical data.
+The first Bluebikes dataset we will use in this lab is station information, which is a JSON file with names, IDs and coordinates (among other info) for each station.
+
+## We have made a copy of this data in <a href="data/bluebikes-stations.csv" download markdown="1">`https://dsc106.github.io/labs/{{ page.lab }}/data/bluebikes-stations.csv`</a>. 
+This is a CSV file where every row has the following properties:
+
+- `Number`: a code like "L32001"
+- `NAME`: the station’s name, like "Railroad Lot and Minuteman Bikeway"
+- `Lat`: the station’s latitude, e.g. 42.41606457
+- `Long`: the station’s longitude, e.g. -71.15336637
+- `Seasonal Status`: whether the station is seasonal or not with statuses like "Year Round", "Winter storage" etc.
+- `Municipality`: e.g. "Cambridge", "Arligton", etc.
+- `Total Docks`: the number of docks at the station as a number, e.g. 11
+
+We will be using the latitude and longitude data to add markers to our map for each station.
+
+While we _could_ use Mapbox’s `addSource()` and [`addLayer()`](https://docs.mapbox.com/mapbox-gl-js/api/map/#map#addlayer) functions to plot the stations as another layer on the map canvas (like we just did with bike lanes), we will try a different approach here so we can learn how to combine the two visualization methods we have already learned: Mapbox and D3.
+We will be adding an SVG layer on top of our map to hold the station markers, and use D3 to fetch and parse the data, and to draw the markers.
+
+### Step 3.1: Fetching and parsing the CSV
+
+Install `d3` as we have done before:
+
+```bash
+npm install d3
 ```
 
-This line can replace your existing `d3.select(svg).call(d3.brush())` code.
-
-Open your browser console (if it’s not already open) and try brushing again.
-You should see a flurry of events logged to the console, a bit like this:
-
-<video src="videos/brush-events.mp4" loop muted autoplay class="browser" data-url="http://localhost:5173/meta"></video>
-
-Try exploring these objects by clicking on the ▸ next to them.
-
-You may notice that the `selection` property of the event object is an array of two points.
-These points represent the top-left and bottom-right corners of the brush rectangle.
-This array is the key to understanding what the user has selected.
-
-Let’s create a new reactive variable that stores this selection array.
-I called it `brushSelection`.
-Then, inside the `brushed()` function, we set `brushSelection` to `evt.selection`.
-
-If we can implement a function that tells us if a commit is selected:
-
-```js
-function isCommitSelected(commit) {
-  if (!brushSelection) {
-    return false;
-  }
-  // TODO return true if commit is within brushSelection
-  // and false if not
-}
-```
-
-We can then use this function to apply a `selected` class to the dots that are selected
-via a [`class:selected` directive](https://svelte.dev/docs/element-directives#class-name).
-
-The core idea for the logic is to use our existing `xScale` and `yScale` scales to map the commit data to X and Y coordinates,
-and then check if these coordinates are within the brush selection bounds.
-
-{: .tip }
-Another way to do it is to use the D3 [`scale.invert()`](https://d3js.org/d3-scale/linear#linear_invert)
-to map the selection bounds to data,
-and then compare data values,
-which can be faster if you have a lot of data, since you only need to convert the bounds once.
-
-Can you figure out how to do it?
-
-<details markdown="1">
-<summary>Show solution</summary>
-
-There are many ways to implement this logic, but here’s one:
-
-```js
-let min = { x: brushSelection[0][0], y: brushSelection[0][1] };
-let max = { x: brushSelection[1][0], y: brushSelection[1][1] };
-let x = xScale(commit.date);
-let y = yScale(commit.hourFrac);
-return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
-```
-
-</details>
-
-The last piece of the puzzle is to add some stylng in your CSS to make the selected dots stand out.
-I gave them a different fill color, but the sky is the limit!
-
-<video src="videos/selection.mp4" loop autoplay muted></video>
-
-### Step 5.4: Showing count of selected commits
-
-So far, we have only been visually highlighting the selected commits, but not actually doing anything with it.
-Brushing is useful because it helps us interactively explore the dataset by isolating selecting different subsets.
-
-As a first step, let’s display the number of selected commits.
-
-```js
-$: selectedCommits = brushSelection ? commits.filter(isCommitSelected) : [];
-$: hasSelection = brushSelection && selectedCommits.length > 0;
-```
-
-Now let’s display the number of selected commits in the HTML, under the chart:
+**In your `index.html`:**
 
 ```html
-<p>{hasSelection ? selectedCommits.length : "No"} commits selected</p>
+<!-- Load D3.js from CDN -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
 ```
 
-If it works, it should look a bit like this:
+**Where to Place the Script Tag?**  
+  - Place this **before** your custom script (`map.js`) in `index.html` to ensure **D3** is available when your JavaScript runs.
 
-<video src="videos/selected-commit-count.mp4" muted loop autoplay></video>
 
-### Step 5.5: Showing breakdown of languages across all lines edited in selected commits
+### **Load JSON Data After the Map is Ready**
 
-Brushing is particularly useful when dealing with connected data,
-such as our commits and lines of code.
+We need to ensure the map is fully loaded before fetching and displaying the station data. We'll use the **`map.on('load', ...)`** event listener to achieve this.
 
-Let’s display stats about the proportion of languages in the lines edited in the selected commits.
-
-We will need to define a new reactive variable (I called it `selectedLines`) that holds the lines edited in the selected commits (or all commits if no/empty selection):
-
-```js
-$: selectedLines = (hasSelection ? selectedCommits : commits).flatMap(
-  (d) => d.lines,
-);
+```javascript
+map.on('load', () => {
+  // Load the nested JSON file
+  d3.json('./bluebikes-stations.json').then(jsonData => {
+    console.log('Loaded JSON Data:', jsonData);  // Log to verify structure
+  }).catch(error => {
+    console.error('Error loading JSON:', error);  // Handle errors if JSON loading fails
+  });
+});
 ```
 
-Then, we can use it to calculate the number of edited lines per language using [`d3.rollup()`](https://d3js.org/d3-array/group#rollup)
-(or [`d3.rollups()`](https://d3js.org/d3-array/group#rollups)),
-which [we discussed earlier](#grouped-aggregates).
-Assign the result to a new reactive variable called `languageBreakdown`.
+1. **`map.on('load', ...)`** ensures the JSON data is only fetched **after the map** is ready.
+2. **`d3.json('./bluebikes-stations.json')`** uses **D3.js** to load the JSON file from your project directory.
+3. **`then(jsonData => { ... })`** processes the loaded data.
+4. **`catch(error => { ... })`** handles any errors that occur if the file isn't loaded properly (e.g., incorrect file path or CORS issues).
 
-Then, we can display the result in the HTML by iterating over `languageBreakdown`
-via an `{#each}` block and displaying the language and the proportion of lines edited in it.
 
+### **Access the Nested Stations Array**
+
+Once the JSON file is loaded, we access the **nested stations array**. Based on your JSON structure, the station data is stored under `data.stations`.
+
+```javascript
+const stations = jsonData.data.stations;
+console.log('Stations Array:', stations);
 ```
-{#each languageBreakdown as [language, lines] }
-	<!-- Display stats here -->
-{/each}
+
+1. **`jsonData.data.stations`** navigates through the JSON object to retrieve the **stations array**.
+2. **`console.log('Stations Array:', stations);`** helps you verify that the data is correctly accessed.
+
+**Check the Browser Console:**
+  - Open **Developer Tools** in your browser (F12 or right-click → **Inspect** → **Console**).
+  - You should see:
+    - **Loaded JSON Data:** Displays the entire JSON structure.
+    - **Stations Array:** Displays the array of station objects.
+
+
+### Step 3.2: Overlaying SVG on the map
+
+We will start by appending an `<svg>` element on our map container in our `index.html` file:
+
+```html
+<div id="map">
+  <svg></svg>
+</div>
 ```
 
-Some pointers:
+If you preview your app right now, you won’t see anything different.
+However, if you right click on the map, you should be able to see the `<svg>` element we just inserted in the dev tools:
 
-- Use `lines / selectedLines.length` to calculate the proportion of lines edited in each language.
-- [`d3-format`](https://d3js.org/d3-format) can be quite helpful for formatting numbers nicely.
-  I used a `".1~%"` [format specifier](https://d3js.org/d3-format#locale_format) to display the proportion as a percentage with one decimal place.
+<img src="images/svg.png" alt="">
 
-<!-- ```html
-<dl class="stats subtle">
-	{#each languageBreakdown as [language, lines] }
-		<dt>{ language }</dt>
-		<dd>{lines} lines ({ d3.format(".1~%")(lines / selectedLines.length) })</dd>
-	{/each}
-</dl>
-``` -->
+However, it doesn’t have the right size: it’s just a small rectangle in the top left corner.
+Worse yet, it’s actually rendered _under_ the map, which becomes obvious if we give it a background color:
+
+```css
+#map svg {
+  background: yellow;
+  opacity: 50%;
+}
+```
+
+Let’s fix all of that, by applying the following declarations:
+
+- `position: absolute` and `z-index: 1` so we can position it on top of the map (`z-index` does not work without positioning)
+- `width: 100%` and `height: 100%` to make it fill the map container
+- `pointer-events: none` so that we can still pan and move the map
+
+Make sure you’re now seeing something like this:
+
+![](images/svg-yellow.png)
+
+And then remove the `background` and `opacity` declarations — they were only there as debugging aids, we don’t need them for the actual visualization.
+
+### Step 3.3: Adding station markers
+
+This step is similar to making the scatterplot in the previous lab:
+we just need to append a bunch of circles to the SVG element, each representing a station.
+
+The only tricky part here is positioning them so that they line up with the map.
+Fortunately, Mapbox has a great built-in function [`map.project()`](https://docs.mapbox.com/android/maps/api/10.0.0-beta.12/-mapbox%20-maps%20-android/com.mapbox.maps/-mapbox-map/project.html), which takes longitude and latitude values and returns the relative map coordinates in pixels.
+
+{: .fyi }
+Why not just use D3 scales for this?
+`map.project()` takes into account many things: panning, zooming, even rotation.
+It’s certainly _possible_ to calculate this manually, but it’s nontrivial.
+
+
+### **1. Initialize an Empty `stations` Array**
+
+Before fetching data, we'll select the svg element inside the map container and initialize an empty array to prevent errors.
+
+```javascript
+const svg = d3.select('#map').select('svg');
+let stations = [];
+```
+
+### **2. Define a Helper Function to Convert Coordinates**
+
+We’ll create a helper function, `getCoords()`, that takes in a station object and converts its **longitude (`lon`)** and **latitude (`lat`)** into **pixel coordinates** using `map.project()`.
+
+```javascript
+function getCoords(station) {
+  const point = new mapboxgl.LngLat(+station.lon, +station.lat);  // Convert lon/lat to Mapbox LngLat
+  const { x, y } = map.project(point);  // Project to pixel coordinates
+  return { cx: x, cy: y };  // Return as object for use in SVG attributes
+}
+```
+
+- **`map.project()`** handles all complexities like **panning**, **zooming**, and **rotating**, ensuring accurate positioning.
+
+### **3. Load the JSON File and Append Circles**
+
+After the map is fully loaded, we'll append **SVG circles** for each station directly after loading the json data as we implemented in step 3.1.
+
+```javascript
+// Append circles to the SVG for each station
+const circles = svg.selectAll('circle')
+  .data(stations)
+  .enter()
+  .append('circle')
+  .attr('r', 5)               // Radius of the circle
+  .attr('fill', 'steelblue')  // Circle fill color
+  .attr('stroke', 'white')    // Circle border color
+  .attr('stroke-width', 1)    // Circle border thickness
+  .attr('opacity', 0.8);      // Circle opacity
+```
+
+- The **`enter()`** selection binds the data and appends a **`<circle>`** for each station.
+- You can adjust the **radius (`r`)**, **fill color**, and **opacity** as needed.
+
+### **4. Update Circle Positions When the Map Moves**
+
+We need to ensure the station markers stay aligned when the map **pans**, **zooms**, or **resizes**. We'll define an **`updatePositions()`** function to reposition the circles whenever the map changes.
+
+```javascript
+    // Function to update circle positions when the map moves/zooms
+    function updatePositions() {
+      circles
+        .attr('cx', d => getCoords(d).cx)  // Set the x-position using projected coordinates
+        .attr('cy', d => getCoords(d).cy); // Set the y-position using projected coordinates
+    }
+
+    // Initial position update when map loads
+    updatePositions();
+```
+
+- **`cx`** and **`cy`** attributes determine the position of the circles on the SVG.
+- The **`getCoords()`** function ensures positions are recalculated based on the map's current viewport.
+
+
+### **5. Add Event Listeners to Adjust Markers Dynamically**
+
+We'll listen to Mapbox events like **`move`**, **`zoom`**, and **`moveend`** to call the **`updatePositions()`** function whenever the map changes.
+
+```javascript
+  // Reposition markers on map interactions
+  map.on('move', updatePositions);     // Update during map movement
+  map.on('zoom', updatePositions);     // Update during zooming
+  map.on('resize', updatePositions);   // Update on window resize
+  map.on('moveend', updatePositions);  // Final adjustment after movement ends
+```
 
 If everything went well, you should see something like this:
 
-<video src="videos/lang-breakdown.mp4" autoplay loop muted></video>
+![](images/stations-static.png)
 
-### Step 5.6: Drawing a pie chart of the language breakdown
 
-The language breakdown is useful, but it’s not very visual.
-Reading numbers doesn’t make it easy to gauge the relative proportions of the different languages.
+## Step 4: Visualizing bike traffic
 
-A pie chart is much better at this, but at this point we are probably way too tired to draw another chart.
-Thankfully, we already have a pie chart from the previous lab that we can reuse!
+Marking the station position is nice, but doesn’t tell a very interesting story.
+What patterns could we uncover if we set the size of the circles according to the amount of traffic at each station?
 
-All we need to do is to import it in our JS:
+A copy of the Bluebikes traffic data from March 2024 is at <a href="data/bluebikes-traffic-2024-03.csv" download markdown="1">`https://vis-society.github.io/labs/08/data/bluebikes-traffic-2024-03.csv`</a>.
+This is quite a large file (21 MB) containing more than 260,000 entries with the following fields:
+
+- `ride_id`: A unique id of the ride
+- `bike_type`: `electric` or `classic`
+- `started_at`: the date and time the trip started in ISO 8601 format (e.g. `"2019-12-13 13:28:04.2860"`)
+- `ended_at`: the date and time the trip ended in ISO 8601 format (e.g. `"2019-12-13 13:33:57.4370"`)
+- `start_station_id`: the ID of the station where the trip started (e.g. `A32000`)
+- `end_station_id`: the ID of the station where the trip ended (e.g. `A32000`)
+- `is_member`: whether the rider is a member or not (`1` or `0`)
+
+This is a cut down / simplified version of the dataset that Bluebikes provides to reduce filesize.
+
+### Step 4.1: Importing and parsing the traffic data
+
+Just like the previous step for the json, we will use `d3.csv()` to fetch the traffic data.
+You can fetch it directly from the URL, without hosting it yourself.
+Let’s call the variable that will hold the traffic data `trips`.
+
+### Step 4.2: Calculating traffic at each station
+
+Now that we have read the data into a JS object, we can use it to calculate station traffic volumes (arrivals, departures, and total traffic per station).
+
+As we have in the previous labs, we will use [`d3.rollup()`](https://d3js.org/d3-array/group#rollup) (or `d3.rollups()`) to calculate arrivals and departures.
+
+First, we calculate them separately, like this:
 
 ```js
-import Pie from '$lib/Pie.svelte';
+departures = d3.rollup(
+  trips,
+  (v) => v.length,
+  (d) => d.start_station_id,
+);
 ```
 
-and then we can use it in our HTML to display the language breakdown as a pie chart.
-All we need to do is transform our data into an array of `{label, value}` objects,
-which we can do using the expression `Array.from(languageBreakdown).map(([language, lines]) => ({label: language, value: lines}))`
-and pass this array to its `data` prop:
+{: .note }
+We are calculating `departures` and `arrivals` inside `map.on('load', () => {` since we only need to calculate them once.
+However, you should make sure to declare the `arrivals` and `departures` variables _outside_ it so you can access them in your reactive code later!
 
-```jsx
-<Pie data={/* array of {label, value} objects */} />
+Now, we want to add `arrivals`, `departures`, `totalTraffic` properties to each station, which we can do like this after both `stations` and `trips` have loaded:
+
+```js
+stations = stations.map((station) => {
+  let id = station.short_name;
+  station.arrivals = arrivals.get(id) ?? 0;
+  // TODO departures
+  // TODO totalTraffic
+  return station;
+});
 ```
 
+{: .tip }
+You can log `stations` in the console after to make sure the properties have been added correctly.
+
+### Step 4.3: Size markers according to traffic
+
+Now, we can use this data structure to size the markers on the map according to the traffic at each station.
+Currently, all our circle radii are hardcoded.
+We should decide what the minimum and maximum radius should be (I went with `0` and `25`),
+and then create a D3 scale to map our data domain `[0, d3.max(stations, d => d.totalTraffic)]` to this range of circle radii.
+
+However, there is a catch: if we just use a linear scale to calculate the circle’s radius,
+we will end up misrepresenting the data: for example, stations that have double the traffic would appear 4 times larger since the area of a circle is proportional to the square of its radius (A = πr²).
+We want to use the circle _area_ to visualize the variable, not the circle _radius_.
+
+To fix this, we will use a different type of scale: a [square root scale](https://d3js.org/d3-scale/pow#scaleSqrt).
+A square root scale is a type of power scale that uses the square root of the input domain value to calculate the output range value.
+
+Thankfully, the API is very similar to the linear scale we used before,
+the only thing that changes is that we use a different function name:
+
+```js
+const radiusScale = d3
+  .scaleSqrt()
+  .domain([0, d3.max(stations, (d) => d.totalTraffic)])
+  .range([0, 25]);
+```
+
+Then, we can use this scale to calculate the radius of each circle in the SVG by passing the station traffic as a parameter to `radiusScale()`.
+
+We can then set the r (radius) attribute of an SVG <circle> using `d => radiusScale(d.totalTraffic)` which is an arrow function that takes the data object d (representing a single station) and passes its totalTraffic value into the radiusScale function.
+
+If we look at our map right now, it looks like this:
+
+![](images/station-traffic-1.png)
+
+Because our dots are opaque and overlapping, it’s hard to see the actual traffic patterns.
+Add a CSS rule for `circle` inside your `svg` rule, and experiment with different `fill-opacity` values and strokes to improve this.
+I used a `steelblue` fill, a `fill-opacity` of 60%, and a `stroke` of `white`, and this was the result:
+![alt text](images/stations-stroke.png)
+
+### Step 4.4: Adding a tooltip with exact traffic numbers
+
+In addition to providing additional info, it helps us debug as well to be able to see the number of trips that each circle represents.
+The quick and dirty way and use the default browser tooltips.
+To create those, all it takes is adding a `<title>` element inside each `<circle>` element with the number of trips:
+
+```html
+<circle>
+  <!-- (omitting attributes for brevity) -->
+  <title>
+    {station.totalTraffic} trips ({station.departures} departures, {
+    station.arrivals} arrivals)
+  </title>
+</circle>
+```
+
+Another way to do this is implementing tooltips with D3. When creating circles using **D3**, we'll append a **`<title>`** element inside each circle to display the total trips, arrivals, and departures.
+
+
+```javascript
+const circles = svg.selectAll('circle')
+
+  .each(function(d) {
+    // Add <title> for browser tooltips
+    d3.select(this)
+      .append('title')
+      .text(`${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`);
+  });
+```
+
+- **`.each(function(d) { ... })`**: Iterates over each circle and appends a **`<title>`** element.
+- **`.text(`${d.totalTraffic} trips ...`)`**: Sets the tooltip text to show total trips, departures, and arrivals.
+
+We have applied `pointer-events: none` to the whole `<svg>`, so to be able to see our tooltips we need to override that on circles, by adding `pointer-events: auto` to our CSS rule for `circle`.
+
+![](images/title-tooltip.png)
+
 {: .further }
-While we’re at it, we could also write JS to convert `language` to a more readable label.
+If you want to go even further, you could explore adding a nicer tooltip, with more advanced information.
 
-The final result looks like this:
+{: .caveat }
+Note that _both_ SVG and HTML have a `<title>` element, but they are false friends, as they do different things!
 
-<video src="videos/final.mp4" loop autoplay muted class="browser" data-url="http://localhost:5173/meta"></video>
+## Step 5: Interactive data filtering
 
-{: .further }
-If you want to go further, you can think about how to make the scatterplot we made in this lab similarly reusable as a separate `<Scatterplot>` component.
+Even with the styling improvements, it’s hard to make sense of all this data as currently displayed all at once.
+Let’s add some interactive filtering with a slider for arrival/departure time.
 
----
+### Step 5.1: Adding the HTML and CSS for the slider
+
+The first step is to add the HTML for our time filter, which includes the following elements:
+
+- A slider (`<input type=range>`) with a min of -1 (no filtering)
+  and a max of 1440 (the number of minutes in the day).
+- A `<time>` element to display the selected time.
+- An `<em>(any time)</em>` element that will be shown when the slider is at -1.
+- A `<label>` _around_ the slider and `<time>` element with some explanatory text (e.g. "Filter by time:").
+
+Where you put it on the page is up to you.
+I added it under the `<h1>` and wrapped both with a `<header>`, to which I applied a `display: flex`, `gap: 1em`, and `align-items: baseline` to align them horizontally,
+then gave the label a `margin-left: auto` to push it all the way to the right.
+
+Make sure to place the `<time>` and `<em>` on their own line (e.g. via `display: block`) otherwise the contents of the `<time>` updating will move the slider and it will look very jarring.
+
+You would also want to style the `<em>` differently, e.g. with a lighter color and/or italic, to make it clear that it’s a different state.
+
+Here is a sample rendering of what you should have at this point:
+
+<img src="images/slider-static.png" alt="" class="browser">
+
+### Step 5.2: Reactivity
+
+Now that we've added our static HTML and CSS, let’s connect it with our code
+by having the slider update a variable that we can use to filter the data
+and outputting the currently selected time in the `<time>` element.
+
+First, let’s create a variable to hold the slider value, called `timeFilter`,
+that we initialize to `-1` so that no filtering is done by default.
+
+```js
+let timeFilter = -1;
+```
+
+We’ll use JavaScript to listen for **slider input events** and update `timeFilter` in real time.
+
+#### **Select the slider and display elements:**
+```javascript
+const timeSlider = document.getElementById('time-slider');
+const selectedTime = document.getElementById('selected-time');
+const anyTimeLabel = document.getElementById('any-time');
+```
+
+Since the slider value represents **minutes since midnight**, we need to convert it to a **formatted time (HH:MM AM/PM)**.
+
+#### **Helper function to format time:**
+```javascript
+function formatTime(minutes) {
+  const date = new Date(0, 0, 0, 0, minutes);  // Set hours & minutes
+  return date.toLocaleString('en-US', { timeStyle: 'short' }); // Format as HH:MM AM/PM
+}
+```
+
+We'll write a function that:
+- Updates **`timeFilter`** based on the slider's value.
+- Shows the **formatted time** in the `<time>` element.
+- Displays **"(any time)"** when no filter is applied (`timeFilter === -1`).
+
+#### **Function to update the UI when the slider moves:**
+```javascript
+function updateTimeDisplay() {
+  timeFilter = Number(timeSlider.value);  // Get slider value
+
+  if (timeFilter === -1) {
+    selectedTime.textContent = '';  // Clear time display
+    anyTimeLabel.style.display = 'block';  // Show "(any time)"
+  } else {
+    selectedTime.textContent = formatTime(timeFilter);  // Display formatted time
+    anyTimeLabel.style.display = 'none';  // Hide "(any time)"
+  }
+
+  // Trigger filtering logic
+  filterTripsByTime();
+}
+```
+
+Now, we need to **bind the slider’s `input` event** to our function so that it updates the time in real-time.
+
+```javascript
+timeSlider.addEventListener('input', updateTimeDisplay);
+```
+
+
+Since the slider starts at `-1` (no filtering), we should **set the initial display state**.
+
+```javascript
+updateTimeDisplay();
+```
+
+It looks like this now:
+
+![](images/slider.gif)
+
+### Step 5.3: Filtering the data
+
+Our slider now _looks_ like a filter, but doesn’t actually _do_ anything.
+To make it work there are a few more things we need to do:
+
+1. Writing out the logic to filter the data, by creating `filteredXXX` versions of each of our root variables:
+   1. A `filteredTrips` data structure that contains the trips that correspond to the filter.
+   2. `filteredArrivals` and `filteredDepartures` data structures that contain the `arrivals` and `departures` data after filtering.
+   3. A `filteredStations` data structure with stations that contain data that corresponds to the filter (i.e. filtered arrivals, departures, and total traffic).
+2. Updating our HTML template to use these new data structures instead of the original ones.
+
+The trip data includes dates and times as strings, which are not directly comparable to the number of minutes since midnight that we have from the slider.
+To compare the two, we need to convert the date and time strings to a number of minutes since midnight.
+
+We will do this in two steps.
+First, we will replace the start and end date strings of each trip with [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) objects.
+
+We only need to do this once, so we can do this in `map.on('load', () => {}`, right after `trips` has been fetched (which we've already implemented).
+Since `trips` is such a large dataset, we want to avoid setting it twice, so we will instead use the [`then()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) method of the `Promise` returned by `d3.csv()` to do this:
+
+```js
+d3.csv(TRIP_DATA_URL).then(trips => {
+	for (let trip of trips) {
+		trip.started_at = /* ...
+		... */
+	}
+	return trips;
+});
+```
+
+To convert each time and date string, we just do `new Date(dateTimeString)` (assuming `dateTimeString` is the date & time string we are trying to convert).
+
+Now, we can define a function that takes a `Date` object and returns the number of minutes since midnight:
+
+```js
+function minutesSinceMidnight(date) {
+  return date.getHours() * 60 + date.getMinutes();
+}
+```
+
+Then, we can use this function to filter the data to trips that started or ended within 1 hour before or after the selected time:
+
+```js
+filteredTrips =
+  timeFilter === -1
+    ? trips
+    : trips.filter((trip) => {
+        let startedMinutes = minutesSinceMidnight(trip.started_at);
+        let endedMinutes = minutesSinceMidnight(trip.ended_at);
+        return (
+          Math.abs(startedMinutes - timeFilter) <= 60 ||
+          Math.abs(endedMinutes - timeFilter) <= 60
+        );
+      });
+```
+
+Now, we need to create new data structures that correspond to `arrivals`, `departures`, and `stations` but _only_ for the filtered trips.
+We can call them `filteredArrivals`, `filteredDepartures`, and `filteredStations`.
+
+For `filteredArrivals` and `filteredDepartures`, all we need to do is copy the statements that set the original variables (`arrivals` and `departures`), convert them to reactive statements, and replace `trips` with `filteredTrips`.
+
+For `filteredStations`, we don’t actually need to do any filtering of the `stations` array (since it’s unlikely that there are stations with zero arrivals and departures for a given time), but we do need an array that contains updated data for `station.arrivals`, `station.departures` and `station.totalTraffic` that correspond to the filtered trips.
+
+{: .caution }
+
+> This is where we need to be careful: if we simply do `$: filteredStations = stations.map(station => {...})` and set properties on `station`, we will have modified our original station objects since [in JS, objects are passed around by reference](https://dev.to/bbarbour/passed-by-reference-vs-value-in-javascript-2fna)!
+> To avoid this, before we set any property on these objects, we need to _clone_ them.
+> We can do that by doing this before we modify `station`:
+>
+> ```js
+> station = { ...station };
+> ```
+
+Last, we want to have bigger circles, since there's fewer data.
+We can do that by changing the scale when a filter is applied,
+by making the scale conditional, i.e. instead of using a static `[0, 25]` as the range,
+we use `[0, 25]` when `timeFilter` is `-1` and e.g. `[3, 50]` otherwise.
+You will find the [conditional operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator) useful for this.
+
+The result right now should look like this:
+
+<video src="videos/filtering.mp4" class="browser" loop autoplay muted></video>
+
+### Step 5.4: Performance optimizations _(optional if you don't have this problem)_
+
+Notice that moving the slider now does not feel as smooth as it did before we implemented the filtering.
+This is because every time we move the slider, we filter the trips, which is a relatively expensive operation given that we have over a quarter of a million of them!
+Worse, every time we do this filtering, _nothing else can happen_ until the filtering ends, including things like the browser updating the slider position!
+This is commonly referred to as _"blocking the main thread"_.
+
+There are many ways to improve this.
+[_Throttling_ and _debouncing_](https://css-tricks.com/debouncing-throttling-explained-examples/) are two common techniques to limit the rate at which a certain (expensive) piece of code is called in response to user action.
+
+These are "brute force" in the sense that they work regardless of what the expensive operation or the user action is, but they can adversely affect the user experience, since they make the UI update less frequently.
+However, depending on the case, there are often ways to optimize the operation itself (e.g. by caching repetitive work), without any negative impact on the user experience.
+
+In this case, we can make the filtering a lot less expensive by presorting the trips into 1440 "buckets", one for each minute of the day.
+Then, instead of going over 260 K trips every time the slider moves, we only need to go over the trips in the 120 buckets corresponding to the selected time.
+
+We start by defining two top-level variables to hold the departure and arrival "buckets",
+which will be arrays with 1440 elements initially filled with empty arrays:
+
+```js
+let departuresByMinute = Array.from({ length: 1440 }, () => []);
+let arrivalsByMinute = Array.from({ length: 1440 }, () => []);
+```
+
+Then, in `map.on('load', () => {}`, in the same callback where we converted `trip.started_at` and `trip.ended_at` to `Date` objects, we add:
+
+```js
+let startedMinutes = minutesSinceMidnight(trip.started_at);
+departuresByMinute[startedMinutes].push(trip);
+
+// TODO: Same for arrivals
+```
+
+{: .note }
+Why not use `d3.group()` or `d3.groups()`?
+These return different data structures and as you will see below,
+using an array of arrays simplifies our code a lot as we can use [`array.slice()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) to get a whole time range.
+
+Now let’s use our awesome new data structures to make our code faster!
+
+First, we can get rid of `filteredTrips`, as we will be calculating `filteredDepartures` and `filteredArrivals` directly from `departuresByMinute` and `arrivalsByMinute` respectively.
+
+Let’s discuss calculating `filteredDepartures` and you can apply the same logic to `filteredArrivals`.
+For a first approximation, we can replace `filteredTrips`, with `departuresByMinute.slice(timeFilter - 60, timeFilter + 60).flat()`.
+
+There are two methods in this you may not have seen before:
+
+- [`array.slice(start, end)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) returns a new array with the elements from `start` (inclusive) to `end` (exclusive).
+- [`array.flat()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat) "flattens" an array of arrays, so that the result is a single array with all the elements of the subarrays.
+
+Let’s now enjoy the fruits of our labor by moving the slider _really fast_ — it should now be smooth as butter! (or at least, much smoother than before)
+
+But …there is one bug. Can you spot it?
+Our code works great for times between 1 AM and 11 PM.
+However for times where the 2 hour window spans midnight, it doesn’t work so well:
+`minMinute` will be negative, or `maxMinute` will be greater than 1440.
+While `array.slice()` actually does accept negative numbers and numbers greater than the array length, it doesn’t do what we want in this case.
+
+In these cases, we basically want _two_ separate `array.slice()` operations:
+one for the times before midnight and one for those after,
+that we then combine.
+
+Let’s create a helper function to do just that:
+
+```js
+function filterByMinute(tripsByMinute, minute) {
+  // Normalize both to the [0, 1439] range
+  // % is the remainder operator: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder
+  let minMinute = (minute - 60 + 1440) % 1440;
+  let maxMinute = (minute + 60) % 1440;
+
+  if (minMinute > maxMinute) {
+    let beforeMidnight = tripsByMinute.slice(minMinute);
+    let afterMidnight = tripsByMinute.slice(0, maxMinute);
+    return beforeMidnight.concat(afterMidnight).flat();
+  } else {
+    return tripsByMinute.slice(minMinute, maxMinute).flat();
+  }
+}
+```
+
+Then, in the calculation for `filteredDepartures`, we use `filterByMinute(departuresByMinute, timeFilter)` instead of our previous `filteredDepartures.slice().flat()` operation.
+Don't forget to do the same for `filteredArrivals`!
+
+If everything goes well, it should now look like this:
+
+<video src="videos/optimized.mp4" class="browser" loop autoplay muted></video>
+
+Here they are side by side:
+
+<figure markdown="1">
+<video src="videos/filtering.mp4" loop autoplay muted></video>
+<video src="videos/optimized.mp4" loop autoplay muted></video>
+<figcaption>
+Left: original, Right: optimized
+</figcaption>
+</figure>
+
+## Step 6: Visualizing traffic _flow_
+
+Currently, we are visualizing traffic volume at different times of the day, but traffic direction also changes!
+In the morning, stations in downtown and near MIT campus tend to have a lot of arrivals, while in the evening they tend to see a lot of departures.
+
+In this step, we will use circle color to visualize traffic flow at different times of the day.
+
+### Step 6.1: Make circle color depend on traffic flow
+
+While it may seem that using a continuous color scale gives us more information,
+humans are very poor at associating continuous color scales with quantitative data
+(as we will see in the upcoming Color lecture),
+so using only three colors will actually make the traffic flow trends more salient.
+
+To do this, we will use a [_quantize scale_](https://d3js.org/d3-scale/quantize), which is like a linear scale but with a discrete output range.
+We will use this scale to map a continuous number from 0 to 1 to a discrete number in the array `[0, 0.5, 1]`.
+It looks like this:
+
+```js
+let stationFlow = d3.scaleQuantize().domain([0, 1]).range([0, 0.5, 1]);
+```
+
+Notice that this is not a reactive statement, since it does not depend on any variables.
+
+Then, on our circles, we calculate the ratio of departures to total traffic,
+map it to our discrete scale, and assign the result to a CSS variable:
+
+```html
+<!-- Other attributes ommitted for brevity -->
+<circle
+  style="--departure-ratio: { stationFlow(station.departures / station.totalTraffic) }"
+></circle>
+```
+
+Then, in our CSS rule for `circle` we can use this variable to set the fill color:
+
+```css
+--color-departures: steelblue;
+--color-arrivals: darkorange;
+--color: color-mix(
+  in oklch,
+  var(--color-departures) calc(100% * var(--departure-ratio)),
+  var(--color-arrivals)
+);
+fill: var(--color);
+```
+
+If everything went well, our current map looks like this:
+
+<video src="videos/traffic-flow.mp4" loop muted autoplay></video>
+
+### Step 6.2: Adding a legend
+
+Our visualization looks pretty cool, but it’s very hard to understand what the three colors mean.
+We can fix this by adding a legend to the map.
+
+Let’s first add some HTML for the legend _after_ our map container:
+
+```html
+<div class="legend">
+  <div style="--departure-ratio: 1">More departures</div>
+  <div style="--departure-ratio: 0.5">Balanced</div>
+  <div style="--departure-ratio: 0">More arrivals</div>
+</div>
+```
+
+There are many ways to style this as a legend, but the following apply to most of them:
+
+- Move the `--color-departures`, `--color-arrivals`, and `--color` variables to a new rule so that it applies to both `#map circle` and `.legend > div`.
+- Apply flexbox to the legend container to align the items horizontally.
+- Apply `margin-block` to the legend container to give it some space from the map.
+
+Here are some example styles and a few pointers on how to implement them, but you’re welcome to experiment and come up with your own design:
+
+#### Design 1: Blocks
+
+![](images/legend-blocks.png)
+
+One advantage of this is that it generalizes more nicely to more than 3 colors,
+and it’s fairly simple.
+
+- Here each child `<div>` has `flex: 1` to make them take up equal space.
+- The gap is only `1px`; just enough to prevent the colors from touching.
+- Note that `text-align` is different for each swatch.
+- Specify significantly more horizontal padding than vertical, otherwise they will not look even
+- If you have used different colors, make sure to pick the text color accordingly to ensure sufficient contrast.
+
+#### Design 2: Separate swatches & labels
+
+![](images/legend-swatches.png)
+
+This is a little more advanced but looks much more like an actual legend.
+One downside of it is that it’s harder to generalize to more than 3 colors,
+as it looks like a legend for a categorical variable.
+
+- Uses a [`::before`](https://developer.mozilla.org/en-US/docs/Web/CSS/::before) pseudo-element with `content: ""` to create the swatches.
+- Uses an additional element for the "Legend:" label
+- Each child `<div>` _also_ uses flexbox
+- Make sure the gap on child `<div>` is _significantly_ smaller than the gap on the parent `.legend` to create the effect of the swatches being connected to the labels ([design principle of _proximity_](https://www.nngroup.com/articles/gestalt-proximity/)).
+
+Here is the final result:
+
+<video src="videos/final.mp4" loop muted autoplay class="browser"></video>
+
+## Step 7: Add your new project to your list of projects!
+
+Now that you have made this cool app to visualize bike traffic in the Boston area, time to claim credit for your work!
+Go back to your portfolio website, and add a new entry for this project, with a nice screenshot.
+
+You should also add a `url` field to each project, and add a link to it in the template (for projects that have a `url` field).
