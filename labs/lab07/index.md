@@ -1,7 +1,7 @@
 ---
 layout: assignment
-title: 'Lab 8: Geospatial Visualizations'
-lab: 8
+title: 'Lab 7: Geospatial Visualizations'
+lab: 7
 parent: '👩‍🔬 Programming Labs'
 released: false
 ---
