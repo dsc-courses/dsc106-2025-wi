@@ -11,7 +11,8 @@ days:
     events:
       - name: LEC 11
         type: lecture
-        title: Project 3 Feedback
+        title: Maps
+        url: lectures/10-DSC106-Maps.pdf
   - date: '2025-02-14'
     events:
       - name: LAB 6
