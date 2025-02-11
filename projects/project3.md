@@ -115,7 +115,7 @@ In addition, **you must submit the URL on Gradescope**. **One submission per tea
 
 Submissions will be reviewed as part of a subsequent peer review assignment, so try to avoid a late submission; assignments submitted late may not be included as part of the peer review and thus not receive peer feedback.
 
-## Suggested Data Sources
+## Data Sources
 
 We’ve provided four datasets for you to use. **You must only pick a dataset from the list below**. Note that these datasets are the same as the ones from Project 2. Feel free to reuse the dataset you used in Project 2 to speed up your development process.
 
