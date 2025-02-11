@@ -8,7 +8,7 @@ nav_order: 5
 
 # Project 3: Interactive Visualization - Peer Grading
 
-You will review two Project 3 submissions from your classmates and share constructive feedback. This assignment is an opportunity to both (a) develop skills to effectively evaluate and critically analyze visualization designs, and (b) help guide subsequent efforts by your peers to improve project quality and visualization design across the class.
+You will review 3 Project 3 submissions from your classmates and share constructive feedback. This assignment is an opportunity to both (a) develop skills to effectively evaluate and critically analyze visualization designs, and (b) help guide subsequent efforts by your peers to improve project quality and visualization design across the class.
 
 ## Assignment
 
@@ -28,4 +28,4 @@ For each of the concerns listed above – visual encodings, interaction techniqu
 
 This is an individual assignment. You may not work in groups.
 
-Your peer reviews are due **Tue 02/25, 11:59pm**. The links to the submissions that you are required to evaluate will be emailed to you. You must submit peer reviews for two Project 3 submissions. To submit your review, you must use gradescope. Please carefully respond to each of the questions raised.
+Your peer reviews are due **Fri 02/28, 11:59pm**. The links to the submissions that you are required to evaluate will be emailed to you. You must submit peer reviews for 3 Project 3 submissions. To submit your review, you must use gradescope. Please carefully respond to each of the questions raised.

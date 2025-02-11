@@ -35,7 +35,7 @@ You will submit your interactive prototype as a webpage hosted on [GitHub Pages]
 
 ## Deliverables
 
-Design an interactive graphic aimed at enabling understanding of a compelling question for a dataset of your choosing or you may choose any of the suggested datasets. To determine what subset of the data and which interactive options are most promising, you may want to perform additional exploratory analysis. What aspects of the data reveal the most interesting discoveries or stories? **Do not feel obligated to try to convey everything about the data: focus on a compelling subset.**
+Design an interactive graphic aimed at enabling understanding of a compelling question. You must use one of the health datasets listed below. To determine what subset of the data and which interactive options are most promising, you may want to perform additional exploratory analysis. What aspects of the data reveal the most interesting discoveries or stories? **Do not feel obligated to try to convey everything about the data: focus on a compelling subset.**
 
 Your graphic must include interactions that enable exploration. Possible techniques include panning, zooming, brushing, details-on-demand (e.g., tooltips), dynamic query filters, and selecting different measures to display. You are free to also consider highlights, annotations, or other narrative features intended to draw attention to particular items of interest and provide additional context.
 
