@@ -1,7 +1,7 @@
 ---
 layout: assignment
-title: 'Lab 9: Animation & Scrollytelling'
-lab: 9
+title: 'Lab 8: Animation & Scrollytelling'
+lab: 8
 parent: '👩‍🔬 Programming Labs'
 released: false
 ---
