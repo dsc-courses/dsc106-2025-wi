@@ -8,7 +8,7 @@ nav_order: 4
 
 # Project 3: Interactive Visualization
 
-For this assignment, you will explore the issues involved in implementing interactive visualizations. You will build a visualization that enables interactive exploration of a health dataset of your choosing (we do have some suggestions as well which you can find below) and deploy it on the web.
+For this assignment, you will explore the issues involved in implementing interactive visualizations. You will build a visualization that enables interactive exploration of a health dataset and deploy it on the web.
 
 One goal of this assignment is to gain familiarity with implementing interaction techniques for visualizations. For example, the [zipdecode][link] and [NameGrapher][link1] applications apply the interactive technique of dynamic queries – as explored in the earlier [HomeFinder][link2] application – to the problem of uncovering patterns in zip codes and baby names.
 
