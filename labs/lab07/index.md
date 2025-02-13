@@ -644,7 +644,7 @@ As you probably know, [Bluebikes](https://bluebikes.com/) is a bicycle sharing p
 They make many [datasets](https://bluebikes.com/system-data) publicly available, including real-time and historical data.
 The first Bluebikes dataset we will use in this lab is station information, which is a JSON file with names, IDs and coordinates (among other info) for each station.
 
-## We have made a copy of this data in <a href="data/bluebikes-stations.csv" download markdown="1">`https://dsc106.github.io/labs/{{ page.lab }}/data/bluebikes-stations.csv`</a>. 
+## We have made a copy of this data in <a href="data/bluebikes-stations.json" download markdown="1">`https://dsc106.com/labs/lab07/data/bluebikes-stations.json`</a>. 
 This is a CSV file where every row has the following properties:
 
 - `Number`: a code like "L32001"
@@ -686,7 +686,8 @@ We need to ensure the map is fully loaded before fetching and displaying the sta
 ```javascript
 map.on('load', () => {
   // Load the nested JSON file
-  d3.json('./bluebikes-stations.json').then(jsonData => {
+  jsonurl = INPUT_BLUEBIKES_CSV_URL
+  d3.json(jsonurl).then(jsonData => {
     console.log('Loaded JSON Data:', jsonData);  // Log to verify structure
   }).catch(error => {
     console.error('Error loading JSON:', error);  // Handle errors if JSON loading fails
@@ -855,7 +856,7 @@ If everything went well, you should see something like this:
 Marking the station position is nice, but doesn’t tell a very interesting story.
 What patterns could we uncover if we set the size of the circles according to the amount of traffic at each station?
 
-A copy of the Bluebikes traffic data from March 2024 is at <a href="data/bluebikes-traffic-2024-03.csv" download markdown="1">`https://vis-society.github.io/labs/08/data/bluebikes-traffic-2024-03.csv`</a>.
+A copy of the Bluebikes traffic data from March 2024 is at <a href="data/bluebikes-traffic-2024-03.csv" download markdown="1">`https://dsc106.com/labs/lab07/data/bluebikes-traffic-2024-03.csv`</a>.
 This is quite a large file (21 MB) containing more than 260,000 entries with the following fields:
 
 - `ride_id`: A unique id of the ride
