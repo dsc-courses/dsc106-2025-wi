@@ -7,6 +7,7 @@ days:
   - name: PROJ 3
     type: proj
     title: 'Project 3: Interactive Visualization'
+    url: projects/project3.md
 - date: '2025-02-19'
   events:
   - name: LEC 13
