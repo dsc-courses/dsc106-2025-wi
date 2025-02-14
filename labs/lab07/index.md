@@ -35,7 +35,7 @@ released: false
 To get checked off for the lab, please record a 2 minute video with the following components:
 
 1. Present your Mapbox visualization
-2. Show you interacting with your map visualizations.
+2. Show yourself interacting with your map visualizations.
 3. Share the most interesting thing you learned from this lab.
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
@@ -43,7 +43,7 @@ make sure your video is 2 minutes or less.**
 
 ## What will we make?
 
-In this lab, we will be building an immersive, interactive map visualization of bike traffic in the Boston area during different times of the day, shown in the screencast below:
+In this lab, we will be building an immersive, interactive map visualization of bike traffic in the Boston area during different times of the day, shown in the video below:
 
 <video src="videos/final.mp4" loop muted autoplay class="browser"></video>
 
@@ -110,7 +110,6 @@ Example:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bikewatching</title>
-  <link rel="stylesheet" href="src/lib/global.css">
 </head>
 <body>
   <h1>🚴🏼‍♀️ Bikewatching</h1>
@@ -265,51 +264,6 @@ We'll use **CDN links** to include Mapbox GL JS directly in our HTML.
     }
    ```
 
-### **Step 1.3: Initialize Mapbox and Connect Your Account Using an External JavaScript File**
-
-### **1. Move the JavaScript Code to a Separate File**
-
-1. **Create a new file named `map.js`** inside your project directory
-
-2. **Add the following code to `map.js`:**
-
-   ```javascript
-   // Set your Mapbox access token here
-   mapboxgl.accessToken = 'YOUR_ACCESS_TOKEN_HERE';
-
-   // Initialize the map
-   const map = new mapboxgl.Map({
-     container: 'map', // ID of the div where the map will render
-     style: 'mapbox://styles/mapbox/streets-v12', // Map style
-     center: [-71.092761, 42.357575], // [longitude, latitude]
-     zoom: 12, // Initial zoom level
-     minZoom: 5, // Minimum allowed zoom
-     maxZoom: 18 // Maximum allowed zoom
-   });
-   ```
-
-### **2. Link `map.js` in Your `index.html`**
-
-In your `index.html`, link the `map.js` file after the **Mapbox GL JS** script to ensure the Mapbox library is loaded before your custom code runs, like this:
-
-```js
-  <!-- Load Mapbox GL JS -->
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-
-  <!-- Load your custom map initialization script -->
-  <script src="map.js"></script>
-```
-
-### **3. Find Your Access Token**
-
-1. Go to your [Mapbox Account Dashboard](https://account.mapbox.com/).
-2. Copy your **default public access token** (it starts with `pk.`).
-3. Replace `'YOUR_ACCESS_TOKEN_HERE'` in `map.js` with your actual token:
-
-   ```javascript
-   mapboxgl.accessToken = 'pk.your_actual_mapbox_access_token_here';
-   ```
-
 <!-- ### Step 1.1: Install Mapbox.js
 
 In your project directory, run the following command to install the Mapbox.js library:
@@ -368,8 +322,19 @@ To find your access token, you go to your account page on Mapbox:
 {: .warning }
 Make sure your repo is private before you push your access token to GitHub! -->
 
-### Step 1.4: Create the map
+### Step 1.3: Create the map
 
+**Create and Link `map.js` in Your `index.html`**
+
+Create a file called `map.js` in your repo. In `index.html`, link the `map.js` file after the **Mapbox GL JS** script to ensure the Mapbox library is loaded before your custom code runs, like this:
+
+```js
+  <!-- Load Mapbox GL JS -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+
+  <!-- Load your custom map initialization script -->
+  <script src="map.js"></script>
+```
 To create the map, we create a new `mapboxgl.Map` object with [settings](https://docs.mapbox.com/mapbox-gl-js/api/map/) that specify things like:
 
 - which HTML element will hold the map? (`container`) This can be either an element reference, or a string with the element’s ID (which is what we will use)
@@ -394,7 +359,15 @@ Here is some sample code on how to instantiate a `mapboxgl.Map` object:
      maxZoom: 18 // Maximum allowed zoom
    });
    ```
+**Find Your Access Token**
 
+  1. Go to your [Mapbox Account Dashboard](https://account.mapbox.com/).
+  2. Copy your **default public access token** (it starts with `pk.`).
+  3. Replace `'YOUR_ACCESS_TOKEN_HERE'` in `map.js` with your actual token:
+
+    ```javascript
+    mapboxgl.accessToken = 'pk.your_actual_mapbox_access_token_here';
+    ```
 In terms of what values to apply to options:
 
 - For the container, we want to specify an id so we don't have to worry about element references.
@@ -470,11 +443,12 @@ Try pressing <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> to open the comman
 1. **Import the data**
 
 Mapbox provides an `addSource` function to connect the map with an external data [source](https://docs.mapbox.com/mapbox-gl-js/api/sources/).
-However, to use any of that, we first need to wait for the `"load"` event to fire on `map`.
-To avoid nesting all our code in an event listener, we can use an `async` function, and then add this after the map creation:
+However, to use any of that, we first need to wait for the `"load"` event to fire on `map` to make sure the map is fully loaded before fetching and displaying the data:
 
 ```js
-await new Promise((resolve) => map.on('load', resolve));
+map.on('load', () => { 
+  //code 
+});
 ```
 
 2. **Adding the Data Source with `addSource`:**  
@@ -645,7 +619,7 @@ They make many [datasets](https://bluebikes.com/system-data) publicly available,
 The first Bluebikes dataset we will use in this lab is station information, which is a JSON file with names, IDs and coordinates (among other info) for each station.
 
 ## We have made a copy of this data in <a href="data/bluebikes-stations.json" download markdown="1">`https://dsc106.com/labs/lab07/data/bluebikes-stations.json`</a>. 
-This is a CSV file where every row has the following properties:
+This is a JSON file with the following properties:
 
 - `Number`: a code like "L32001"
 - `NAME`: the station’s name, like "Railroad Lot and Minuteman Bikeway"
@@ -681,7 +655,7 @@ npm install d3
 
 ### **Load JSON Data After the Map is Ready**
 
-We need to ensure the map is fully loaded before fetching and displaying the station data. We'll use the **`map.on('load', ...)`** event listener to achieve this.
+We need to ensure the map is fully loaded before fetching and displaying the station data. Again, we'll use the **`map.on('load', ...)`** event listener to achieve this.
 
 ```javascript
 map.on('load', () => {
@@ -696,7 +670,7 @@ map.on('load', () => {
 ```
 
 1. **`map.on('load', ...)`** ensures the JSON data is only fetched **after the map** is ready.
-2. **`d3.json('./bluebikes-stations.json')`** uses **D3.js** to load the JSON file from your project directory.
+2. **`d3.json(link)`** uses **D3.js** to load the JSON file from your project directory.
 3. **`then(jsonData => { ... })`** processes the loaded data.
 4. **`catch(error => { ... })`** handles any errors that occur if the file isn't loaded properly (e.g., incorrect file path or CORS issues).
 
@@ -755,7 +729,7 @@ Make sure you’re now seeing something like this:
 
 ![](images/svg-yellow.png)
 
-And then remove the `background` and `opacity` declarations — they were only there as debugging aids, we don’t need them for the actual visualization.
+And then you can remove the `background` and `opacity` declarations — they were only there as debugging aids, we don’t need them for the actual visualization.
 
 ### Step 3.3: Adding station markers
 
@@ -871,7 +845,7 @@ This is a cut down / simplified version of the dataset that Bluebikes provides t
 
 ### Step 4.1: Importing and parsing the traffic data
 
-Just like the previous step for the json, we will use `d3.csv()` to fetch the traffic data.
+Similar to the previous step for the json url, we will use `d3.csv()` to fetch the traffic data.
 You can fetch it directly from the URL, without hosting it yourself.
 Let’s call the variable that will hold the traffic data `trips`.
 
@@ -893,7 +867,6 @@ departures = d3.rollup(
 
 {: .note }
 We are calculating `departures` and `arrivals` inside `map.on('load', () => {` since we only need to calculate them once.
-However, you should make sure to declare the `arrivals` and `departures` variables _outside_ it so you can access them in your reactive code later!
 
 Now, we want to add `arrivals`, `departures`, `totalTraffic` properties to each station, which we can do like this after both `stations` and `trips` have loaded:
 
@@ -950,6 +923,7 @@ I used a `steelblue` fill, a `fill-opacity` of 60%, and a `stroke` of `white`, a
 ### Step 4.4: Adding a tooltip with exact traffic numbers
 
 In addition to providing additional info, it helps us debug as well to be able to see the number of trips that each circle represents.
+_Please note here that tooltips take a a few minutes to render so be patient this one!_
 The quick and dirty way and use the default browser tooltips.
 To create those, all it takes is adding a `<title>` element inside each `<circle>` element with the number of trips:
 
@@ -963,7 +937,7 @@ To create those, all it takes is adding a `<title>` element inside each `<circle
 </circle>
 ```
 
-Another way to do this is implementing tooltips with D3. When creating circles using **D3**, we'll append a **`<title>`** element inside each circle to display the total trips, arrivals, and departures.
+Another way to do this is implementing tooltips with D3 (the recommended way). When creating circles using **D3**, we'll append a **`<title>`** element inside each circle to display the total trips, arrivals, and departures.
 
 
 ```javascript
@@ -1067,8 +1041,7 @@ function updateTimeDisplay() {
     anyTimeLabel.style.display = 'none';  // Hide "(any time)"
   }
 
-  // Trigger filtering logic
-  filterTripsByTime();
+  // Trigger filtering logic which will be implemented in the next step
 }
 ```
 
@@ -1110,16 +1083,21 @@ We only need to do this once, so we can do this in `map.on('load', () => {}`, ri
 Since `trips` is such a large dataset, we want to avoid setting it twice, so we will instead use the [`then()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) method of the `Promise` returned by `d3.csv()` to do this:
 
 ```js
+//previously done
 d3.csv(TRIP_DATA_URL).then(trips => {
+  //previous code
+
+  //add THIS code
 	for (let trip of trips) {
-		trip.started_at = /* ...
-		... */
-	}
-	return trips;
-});
+
+		trip.started_at = new Date(trip.start_time);
+    // do the same for end
+  }
+  // we will call filterTripsByTime here defined in the next couple of steps
+	});
 ```
 
-To convert each time and date string, we just do `new Date(dateTimeString)` (assuming `dateTimeString` is the date & time string we are trying to convert).
+Next, to convert each time and date string, we just do `new Date(dateTimeString)` (assuming `dateTimeString` is the date & time string we are trying to convert).
 
 Now, we can define a function that takes a `Date` object and returns the number of minutes since midnight:
 
@@ -1132,17 +1110,20 @@ function minutesSinceMidnight(date) {
 Then, we can use this function to filter the data to trips that started or ended within 1 hour before or after the selected time:
 
 ```js
-filteredTrips =
-  timeFilter === -1
-    ? trips
-    : trips.filter((trip) => {
-        let startedMinutes = minutesSinceMidnight(trip.started_at);
-        let endedMinutes = minutesSinceMidnight(trip.ended_at);
-        return (
-          Math.abs(startedMinutes - timeFilter) <= 60 ||
-          Math.abs(endedMinutes - timeFilter) <= 60
-        );
-      });
+function filterTripsbyTime() {
+  filteredTrips = timeFilter === -1
+      ? trips
+      : trips.filter((trip) => {
+          let startedMinutes = minutesSinceMidnight(trip.started_at);
+          let endedMinutes = minutesSinceMidnight(trip.ended_at);
+          return (
+            Math.abs(startedMinutes - timeFilter) <= 60 ||
+            Math.abs(endedMinutes - timeFilter) <= 60
+          );
+        });
+
+      // we need to update the station data here explained in the next couple paragraphs
+}
 ```
 
 Now, we need to create new data structures that correspond to `arrivals`, `departures`, and `stations` but _only_ for the filtered trips.
@@ -1163,16 +1144,16 @@ For `filteredStations`, we don’t actually need to do any filtering of the `sta
 > ```
 
 Last, we want to have bigger circles, since there's fewer data.
-We can do that by changing the scale when a filter is applied,
+We can do that by changing the scale when a filter is applied in our previous radiusScale variable,
 by making the scale conditional, i.e. instead of using a static `[0, 25]` as the range,
-we use `[0, 25]` when `timeFilter` is `-1` and e.g. `[3, 50]` otherwise.
+we use `[0, 25]` when `timeFilter` is `-1` and e.g. `[3, 50]` otherwise in `.range()`
 You will find the [conditional operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator) useful for this.
 
 The result right now should look like this:
 
 <video src="videos/filtering.mp4" class="browser" loop autoplay muted></video>
 
-### Step 5.4: Performance optimizations _(optional if you don't have this problem)_
+### Step 5.4: Performance optimizations _(optional ONLY if you don't have this problem)_
 
 Notice that moving the slider now does not feel as smooth as it did before we implemented the filtering.
 This is because every time we move the slider, we filter the trips, which is a relatively expensive operation given that we have over a quarter of a million of them!
@@ -1295,13 +1276,21 @@ let stationFlow = d3.scaleQuantize().domain([0, 1]).range([0, 0.5, 1]);
 Notice that this is not a reactive statement, since it does not depend on any variables.
 
 Then, on our circles, we calculate the ratio of departures to total traffic,
-map it to our discrete scale, and assign the result to a CSS variable:
+map it to our discrete scale, and assign the result to a CSS variable. Based on which option you decided to implement for your tooltips 
+(either html or d3), you can implement this style in the following two ways:
 
 ```html
 <!-- Other attributes ommitted for brevity -->
 <circle
   style="--departure-ratio: { stationFlow(station.departures / station.totalTraffic) }"
 ></circle>
+```
+or
+
+```js
+const circles = svg.selectAll('circle')
+  // previous stuff
+    .style("--departure-ratio", d => stationFlow(d.departures / d.totalTraffic)) 
 ```
 
 Then, in our CSS rule for `circle` we can use this variable to set the fill color:
