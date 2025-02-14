@@ -18,6 +18,7 @@ days:
       - name: LAB 6
         type: lab
         title: Lab 6
+        url: labs/lab06
       - name: LEC 12
         type: lecture
         title: Narrative Visualization
@@ -25,4 +26,5 @@ days:
       - name: DISC 6
         type: disc
         title: Disc 6
+        url: https://giorgianicolaou.github.io/discussion6/examples/classic-slides/index.html#/welcome
 ---
