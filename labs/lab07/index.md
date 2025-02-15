@@ -365,9 +365,9 @@ Here is some sample code on how to instantiate a `mapboxgl.Map` object:
   2. Copy your **default public access token** (it starts with `pk.`).
   3. Replace `'YOUR_ACCESS_TOKEN_HERE'` in `map.js` with your actual token:
 
-    ```javascript
-    mapboxgl.accessToken = 'pk.your_actual_mapbox_access_token_here';
-    ```
+```js
+mapboxgl.accessToken = 'pk.your_actual_mapbox_access_token_here';
+```
 In terms of what values to apply to options:
 
 - For the container, we want to specify an id so we don't have to worry about element references.
@@ -660,7 +660,7 @@ We need to ensure the map is fully loaded before fetching and displaying the sta
 ```javascript
 map.on('load', () => {
   // Load the nested JSON file
-  jsonurl = INPUT_BLUEBIKES_CSV_URL
+  const jsonurl = INPUT_BLUEBIKES_CSV_URL
   d3.json(jsonurl).then(jsonData => {
     console.log('Loaded JSON Data:', jsonData);  // Log to verify structure
   }).catch(error => {
@@ -1073,6 +1073,15 @@ To make it work there are a few more things we need to do:
    3. A `filteredStations` data structure with stations that contain data that corresponds to the filter (i.e. filtered arrivals, departures, and total traffic).
 2. Updating our HTML template to use these new data structures instead of the original ones.
 
+This will look something like:
+
+```js
+let filteredTrips = [];
+let filteredArrivals = new Map();
+let filteredDepartures = new Map();
+let filteredStations = [];
+```
+
 The trip data includes dates and times as strings, which are not directly comparable to the number of minutes since midnight that we have from the slider.
 To compare the two, we need to convert the date and time strings to a number of minutes since midnight.
 
@@ -1083,7 +1092,7 @@ We only need to do this once, so we can do this in `map.on('load', () => {}`, ri
 Since `trips` is such a large dataset, we want to avoid setting it twice, so we will instead use the [`then()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) method of the `Promise` returned by `d3.csv()` to do this:
 
 ```js
-//previously done
+//within the map.on('load') which has been previously done
 d3.csv(TRIP_DATA_URL).then(trips => {
   //previous code
 
@@ -1093,8 +1102,7 @@ d3.csv(TRIP_DATA_URL).then(trips => {
 		trip.started_at = new Date(trip.start_time);
     // do the same for end
   }
-  // we will call filterTripsByTime here defined in the next couple of steps
-	});
+});
 ```
 
 Next, to convert each time and date string, we just do `new Date(dateTimeString)` (assuming `dateTimeString` is the date & time string we are trying to convert).
@@ -1114,8 +1122,8 @@ function filterTripsbyTime() {
   filteredTrips = timeFilter === -1
       ? trips
       : trips.filter((trip) => {
-          let startedMinutes = minutesSinceMidnight(trip.started_at);
-          let endedMinutes = minutesSinceMidnight(trip.ended_at);
+          const startedMinutes = minutesSinceMidnight(trip.started_at);
+          const endedMinutes = minutesSinceMidnight(trip.ended_at);
           return (
             Math.abs(startedMinutes - timeFilter) <= 60 ||
             Math.abs(endedMinutes - timeFilter) <= 60
@@ -1126,8 +1134,8 @@ function filterTripsbyTime() {
 }
 ```
 
-Now, we need to create new data structures that correspond to `arrivals`, `departures`, and `stations` but _only_ for the filtered trips.
-We can call them `filteredArrivals`, `filteredDepartures`, and `filteredStations`.
+Now, we need to create new data structures that correspond to `arrivals`, `departures`, and `stations` as we created in step 4.2 but _only_ for the filtered trips.
+We can call them `filteredArrivals`, `filteredDepartures`, and `filteredStations`. This means we can move what we did in step 4.2
 
 For `filteredArrivals` and `filteredDepartures`, all we need to do is copy the statements that set the original variables (`arrivals` and `departures`), convert them to reactive statements, and replace `trips` with `filteredTrips`.
 
