@@ -438,7 +438,7 @@ Download the dataset, open it in VS Code, and examine its structure. This is you
 {: .tip }
 Try pressing <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> to open the command palette, and then select “Format document” to make the JSON more readable.
 
-### **Step 2.1: Modify `map.js` to Wait for the Map to Load Before Adding Data**
+### Step 2.1: Modify `map.js` to Wait for the Map to Load Before Adding Data
 
 1. **Import the data**
 
@@ -489,9 +489,9 @@ To actually _see_ something, we need to actually _use_ the data to draw somethin
      - `'line-width'`: The thickness of the lines (set to `3`).
      - `'line-opacity'`: How transparent the lines are (`0.4` means 40% opacity).
 
-### **Step 2.3: Styling and Customization**
+### Step 2.2: Styling and Customization
 
-1. **Experiment with Layer Styles:**
+1. Experiment with Layer Styles:
 
    You can tweak the appearance by adjusting the `paint` properties. Here's an example with different styles:
 
@@ -512,9 +512,6 @@ To actually _see_ something, we need to actually _use_ the data to draw somethin
 2. **Try Different Layer Types:**
 
    You can experiment with other **layer types** like `'fill'`, `'circle'`, or `'symbol'` depending on your data and goals. For bike routes, `'line'` works best.
-
-
-### **Expected Result**
 
 If everything is set up correctly:
 
@@ -594,7 +591,7 @@ The exact styling is up to you. I went with a translucent `green` (40% opacity),
 
 <img src="images/bike-lanes-green.png" class="browser" alt=""> -->
 
-### Step 2.4: Adding Cambridge bike lanes
+### Step 2.3: Adding Cambridge bike lanes
 
 Notice that our map right now only shows bike lanes from Boston.
 What about the numerous Cambridge ones?!
@@ -653,8 +650,6 @@ npm install d3
   - Place this **before** your custom script (`map.js`) in `index.html` to ensure **D3** is available when your JavaScript runs.
 
 
-### **Load JSON Data After the Map is Ready**
-
 We need to ensure the map is fully loaded before fetching and displaying the station data. Again, we'll use the **`map.on('load', ...)`** event listener to achieve this.
 
 ```javascript
@@ -673,9 +668,6 @@ map.on('load', () => {
 2. **`d3.json(link)`** uses **D3.js** to load the JSON file from your project directory.
 3. **`then(jsonData => { ... })`** processes the loaded data.
 4. **`catch(error => { ... })`** handles any errors that occur if the file isn't loaded properly (e.g., incorrect file path or CORS issues).
-
-
-### **Access the Nested Stations Array**
 
 Once the JSON file is loaded, we access the **nested stations array**. Based on your JSON structure, the station data is stored under `data.stations`.
 
@@ -745,7 +737,7 @@ Why not just use D3 scales for this?
 It’s certainly _possible_ to calculate this manually, but it’s nontrivial.
 
 
-### **1. Initialize an Empty `stations` Array**
+1. Initialize an Empty `stations` Array
 
 Before fetching data, we'll select the svg element inside the map container and initialize an empty array to prevent errors.
 
@@ -754,7 +746,7 @@ const svg = d3.select('#map').select('svg');
 let stations = [];
 ```
 
-### **2. Define a Helper Function to Convert Coordinates**
+2. Define a Helper Function to Convert Coordinates
 
 We’ll create a helper function, `getCoords()`, that takes in a station object and converts its **longitude (`lon`)** and **latitude (`lat`)** into **pixel coordinates** using `map.project()`.
 
@@ -768,7 +760,7 @@ function getCoords(station) {
 
 - **`map.project()`** handles all complexities like **panning**, **zooming**, and **rotating**, ensuring accurate positioning.
 
-### **3. Load the JSON File and Append Circles**
+3. Load the JSON File and Append Circles
 
 After the map is fully loaded, we'll append **SVG circles** for each station directly after loading the json data as we implemented in step 3.1.
 
@@ -788,7 +780,7 @@ const circles = svg.selectAll('circle')
 - The **`enter()`** selection binds the data and appends a **`<circle>`** for each station.
 - You can adjust the **radius (`r`)**, **fill color**, and **opacity** as needed.
 
-### **4. Update Circle Positions When the Map Moves**
+4. Update Circle Positions When the Map Moves
 
 We need to ensure the station markers stay aligned when the map **pans**, **zooms**, or **resizes**. We'll define an **`updatePositions()`** function to reposition the circles whenever the map changes.
 
@@ -808,7 +800,7 @@ We need to ensure the station markers stay aligned when the map **pans**, **zoom
 - The **`getCoords()`** function ensures positions are recalculated based on the map's current viewport.
 
 
-### **5. Add Event Listeners to Adjust Markers Dynamically**
+5. Add Event Listeners to Adjust Markers Dynamically
 
 We'll listen to Mapbox events like **`move`**, **`zoom`**, and **`moveend`** to call the **`updatePositions()`** function whenever the map changes.
 
@@ -1006,7 +998,8 @@ let timeFilter = -1;
 
 We’ll use JavaScript to listen for **slider input events** and update `timeFilter` in real time.
 
-#### **Select the slider and display elements:**
+We will elect the slider and display elements:
+
 ```javascript
 const timeSlider = document.getElementById('time-slider');
 const selectedTime = document.getElementById('selected-time');
@@ -1015,7 +1008,7 @@ const anyTimeLabel = document.getElementById('any-time');
 
 Since the slider value represents **minutes since midnight**, we need to convert it to a **formatted time (HH:MM AM/PM)**.
 
-#### **Helper function to format time:**
+Now we cam create a jelper function to format time:
 ```javascript
 function formatTime(minutes) {
   const date = new Date(0, 0, 0, 0, minutes);  // Set hours & minutes
@@ -1028,7 +1021,8 @@ We'll write a function that:
 - Shows the **formatted time** in the `<time>` element.
 - Displays **"(any time)"** when no filter is applied (`timeFilter === -1`).
 
-#### **Function to update the UI when the slider moves:**
+Then we can create a function to update the UI when the slider moves:
+
 ```javascript
 function updateTimeDisplay() {
   timeFilter = Number(timeSlider.value);  // Get slider value
