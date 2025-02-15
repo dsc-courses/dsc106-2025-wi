@@ -615,7 +615,7 @@ As you probably know, [Bluebikes](https://bluebikes.com/) is a bicycle sharing p
 They make many [datasets](https://bluebikes.com/system-data) publicly available, including real-time and historical data.
 The first Bluebikes dataset we will use in this lab is station information, which is a JSON file with names, IDs and coordinates (among other info) for each station.
 
-## We have made a copy of this data in <a href="data/bluebikes-stations.json" download markdown="1">`https://dsc106.com/labs/lab07/data/bluebikes-stations.json`</a>. 
+We have made a copy of this data in <a href="data/bluebikes-stations.json" download markdown="1">`https://dsc106.com/labs/lab07/data/bluebikes-stations.json`</a>. 
 This is a JSON file with the following properties:
 
 - `Number`: a code like "L32001"
@@ -676,14 +676,14 @@ const stations = jsonData.data.stations;
 console.log('Stations Array:', stations);
 ```
 
-1. **`jsonData.data.stations`** navigates through the JSON object to retrieve the **stations array**.
-2. **`console.log('Stations Array:', stations);`** helps you verify that the data is correctly accessed.
+1. `jsonData.data.stations` navigates through the JSON object to retrieve the stations array.
+2. `console.log('Stations Array:', stations);` helps you verify that the data is correctly accessed.
 
-**Check the Browser Console:**
-  - Open **Developer Tools** in your browser (F12 or right-click → **Inspect** → **Console**).
+Check the Browser Console:
+  - Open Developer Tools in your browser (F12 or right-click → Inspect → Console).
   - You should see:
-    - **Loaded JSON Data:** Displays the entire JSON structure.
-    - **Stations Array:** Displays the array of station objects.
+    - Loaded JSON Data: Displays the entire JSON structure.
+    - Stations Array: Displays the array of station objects.
 
 
 ### Step 3.2: Overlaying SVG on the map
@@ -748,7 +748,7 @@ let stations = [];
 
 2. Define a Helper Function to Convert Coordinates
 
-We’ll create a helper function, `getCoords()`, that takes in a station object and converts its **longitude (`lon`)** and **latitude (`lat`)** into **pixel coordinates** using `map.project()`.
+We’ll create a helper function, `getCoords()`, that takes in a station object and converts its longitude (`lon`) and latitude (`lat`) into pixel coordinates using `map.project()`.
 
 ```javascript
 function getCoords(station) {
@@ -758,11 +758,11 @@ function getCoords(station) {
 }
 ```
 
-- **`map.project()`** handles all complexities like **panning**, **zooming**, and **rotating**, ensuring accurate positioning.
+- `map.project()` handles all complexities like panning, zooming, and rotating, ensuring accurate positioning.
 
 3. Load the JSON File and Append Circles
 
-After the map is fully loaded, we'll append **SVG circles** for each station directly after loading the json data as we implemented in step 3.1.
+After the map is fully loaded, we'll append SVG circles for each station directly after loading the json data as we implemented in step 3.1.
 
 ```javascript
 // Append circles to the SVG for each station
@@ -777,12 +777,12 @@ const circles = svg.selectAll('circle')
   .attr('opacity', 0.8);      // Circle opacity
 ```
 
-- The **`enter()`** selection binds the data and appends a **`<circle>`** for each station.
-- You can adjust the **radius (`r`)**, **fill color**, and **opacity** as needed.
+- The `enter()` selection binds the data and appends a `<circle>` for each station.
+- You can adjust the radius (`r`), fill color, and opacity as needed.
 
 4. Update Circle Positions When the Map Moves
 
-We need to ensure the station markers stay aligned when the map **pans**, **zooms**, or **resizes**. We'll define an **`updatePositions()`** function to reposition the circles whenever the map changes.
+We need to ensure the station markers stay aligned when the map pans, zooms, or resizes. We'll define an `updatePositions()` function to reposition the circles whenever the map changes.
 
 ```javascript
     // Function to update circle positions when the map moves/zooms
@@ -796,13 +796,13 @@ We need to ensure the station markers stay aligned when the map **pans**, **zoom
     updatePositions();
 ```
 
-- **`cx`** and **`cy`** attributes determine the position of the circles on the SVG.
-- The **`getCoords()`** function ensures positions are recalculated based on the map's current viewport.
+- `cx` and `cy` attributes determine the position of the circles on the SVG.
+- The `getCoords()` function ensures positions are recalculated based on the map's current viewport.
 
 
 5. Add Event Listeners to Adjust Markers Dynamically
 
-We'll listen to Mapbox events like **`move`**, **`zoom`**, and **`moveend`** to call the **`updatePositions()`** function whenever the map changes.
+We'll listen to Mapbox events like `move`, `zoom`, and `moveend` to call the `updatePositions()` function whenever the map changes.
 
 ```javascript
   // Reposition markers on map interactions
@@ -929,7 +929,7 @@ To create those, all it takes is adding a `<title>` element inside each `<circle
 </circle>
 ```
 
-Another way to do this is implementing tooltips with D3 (the recommended way). When creating circles using **D3**, we'll append a **`<title>`** element inside each circle to display the total trips, arrivals, and departures.
+Another way to do this is implementing tooltips with D3 (the recommended way). When creating circles using D3, we'll append a `<title>` element inside each circle to display the total trips, arrivals, and departures.
 
 
 ```javascript
@@ -943,8 +943,8 @@ const circles = svg.selectAll('circle')
   });
 ```
 
-- **`.each(function(d) { ... })`**: Iterates over each circle and appends a **`<title>`** element.
-- **`.text(`${d.totalTraffic} trips ...`)`**: Sets the tooltip text to show total trips, departures, and arrivals.
+- `.each(function(d) { ... })`: Iterates over each circle and appends a `<title>` element.
+- `.text(`${d.totalTraffic} trips ...`)`: Sets the tooltip text to show total trips, departures, and arrivals.
 
 We have applied `pointer-events: none` to the whole `<svg>`, so to be able to see our tooltips we need to override that on circles, by adding `pointer-events: auto` to our CSS rule for `circle`.
 
@@ -996,7 +996,7 @@ that we initialize to `-1` so that no filtering is done by default.
 let timeFilter = -1;
 ```
 
-We’ll use JavaScript to listen for **slider input events** and update `timeFilter` in real time.
+We’ll use JavaScript to listen for slider input events and update `timeFilter` in real time.
 
 We will elect the slider and display elements:
 
@@ -1006,7 +1006,7 @@ const selectedTime = document.getElementById('selected-time');
 const anyTimeLabel = document.getElementById('any-time');
 ```
 
-Since the slider value represents **minutes since midnight**, we need to convert it to a **formatted time (HH:MM AM/PM)**.
+Since the slider value represents minutes since midnight, we need to convert it to a formatted time (HH:MM AM/PM).
 
 Now we cam create a jelper function to format time:
 ```javascript
@@ -1017,9 +1017,9 @@ function formatTime(minutes) {
 ```
 
 We'll write a function that:
-- Updates **`timeFilter`** based on the slider's value.
-- Shows the **formatted time** in the `<time>` element.
-- Displays **"(any time)"** when no filter is applied (`timeFilter === -1`).
+- Updates `timeFilter` based on the slider's value.
+- Shows the formatted time in the `<time>` element.
+- Displays "(any time)" when no filter is applied (`timeFilter === -1`).
 
 Then we can create a function to update the UI when the slider moves:
 
@@ -1039,14 +1039,14 @@ function updateTimeDisplay() {
 }
 ```
 
-Now, we need to **bind the slider’s `input` event** to our function so that it updates the time in real-time.
+Now, we need to bind the slider’s `input` event to our function so that it updates the time in real-time.
 
 ```javascript
 timeSlider.addEventListener('input', updateTimeDisplay);
 ```
 
 
-Since the slider starts at `-1` (no filtering), we should **set the initial display state**.
+Since the slider starts at `-1` (no filtering), we should set the initial display state.
 
 ```javascript
 updateTimeDisplay();
