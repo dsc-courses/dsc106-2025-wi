@@ -32,10 +32,10 @@ released: true
 
 ## Submission 
 
-To get checked off for the lab, please record a 2 minute video with the following components:
+To get checked off for the lab, please record a 2 minute video in mp4 format with the following components:
 
-1. Present your Mapbox visualization
-2. Show yourself interacting with your map visualizations.
+1. Present your Mapbox visualization.
+2. Show yourself interacting with your map visualizations with ALL features and functionalities this lab delineates.
 3. Share the most interesting thing you learned from this lab.
 
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
