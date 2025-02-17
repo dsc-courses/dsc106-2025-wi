@@ -178,32 +178,6 @@ At this point, you should be seeing something like this:
 <img src="images/step-0.png" class="browser" alt="">
 
 and your browser tab should have the bike icon as well (assuming that's the emoji you selected!)
-<!-- ### Step 0.6: Add a bike favicon _(optional)_
-
-To distinguish open tabs from your project, you can customize its _[favicon](https://en.wikipedia.org/wiki/Favicon)_.
-
-In your `static` directory, add a `favicon.svg` file with the following content:
-
-```xml
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-	<text y=".9em" font-size="90">🚴🏼‍♀️</text>
-</svg>
-```
-
-Feel free to use any emoji you want.
-Then edit `src/app.html` to change `favicon.png` to `favicon.svg` here:
-
-```html
-<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-```
-
-You may also want to add a `<title>` with your project title, as a fallback for pages that don't specify one.
-
-It should look like this:
-![](images/favicon.png)
-
-{: .tip }
-You can now delete `static/favicon.png` if you want to keep things tidy, since we’re not using it anymore. -->
 
 ## Step 1: My first map
 
