@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Bar Chart</title>
+    <style>
+      * {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+          sans-serif;
+      }
+    </style>
+
+    <script src="main.js" type="module"></script>
+  </head>
+  <body>
+    <h1>Simple Bar Animation</h1>
+    <p>
+      This is a simple bar animation. The bar is animated from 200px to 500px
+      width.
+    </p>
+
+    <button id="replayButton">Replay Animation</button>
+    <br />
+    <br />
+    <svg width="500px" height="30px">
+      <rect
+        id="rect"
+        width="200"
+        height="30"
+        stroke="black"
+        fill="#69b3a2"
+        stroke-width="1"
+      />
+    </svg>
+  </body>
+</html>
