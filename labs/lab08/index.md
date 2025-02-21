@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 8: Animation & Scrollytelling'
 lab: 8
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: true
 ---
 
 # Lab {{ page.lab }}: Animation
@@ -28,7 +28,7 @@ released: false
 
 ---
 
-## Check-off
+## Submission
 
 To get checked off for the lab, please record a 2 minute video with the following components:
 
@@ -52,14 +52,12 @@ and convert it to an interactive narrative visualization that shows the progress
 
 <video src="videos/final.mp4" loading=lazy muted autoplay loop class="browser"></video>
 
-## Step 0: Preparation
+## Step 0: Clean Up
 
-To make this lab a little easier, we will follow a few prepratory steps in this section.
-
-### Step 0.1: Making commits clickable
+To make your code structure a little nicer, we will first complete the following refactoring steps.
 
 {: .files }
-`src/meta/+page.svelte`
+`src/meta/main.js`
 
 Currently, the only way to select commits is by brushing the pie chart.
 While this is great for selecting multiple commits and seeing stats about the whole group,
@@ -125,102 +123,17 @@ function isCommitSelected(commit) {
 }
 ```
 
-And `selectedCommits` no longer needs to be reactive, it can become a plain variable:
+And `selectedCommits` no longer needs to be reactive, it can become a plain variable that you may declare at the top level of your code:
 
 ```js
 let selectedCommits = [];
 ```
 
-We can also remove the reference to `brushSelection` in the `hasSelection` function, as `selectedCommits` is updated in `brushed`.
-
-{: .tip}
-You can now remove the top-level `brushSelection` variable, as it's not used anywhere.
-
-Now, let’s add some event listeners to allow for clicking on commits.
-If you have not done the optional [Step 3.5 of Lab 7](https://vis-society.github.io/labs/7/#step-35-bulletproof-positioning-optional), do the part about creating a `dotInteraction()` function now.
-
-Then, we just add two more listeners that call `dotInteraction()` on the dots: `on:click` and `on:keyup`,
-and pass the same parameters as the other listeners (`evt` and `index`).
-
-Then, in the `dotInteraction()` function, add a new `else if` branch case that checks if either `evt.type` is `"click"` OR `evt.type` is `keyup` AND `evt.key` is `"Enter"`.
-All this branch should do is overwrite `selectedCommits` with an array containing only the commit at `index` (`commits[index]`).
-
-If you try it out now, clicking should work!
-
-<video src="videos/clickable.mp4" loading=lazy muted autoplay loop></video>
-
-### Step 0.2: Iterating over data, not arcs
-
-{: .files }
-`lib/Pie.svelte`
-
-Play a little bit with selecting different colors in the pie chart.
-What do you notice?
-**The same technologies are drawn with different colors across selections!**
-You can see this in the video above as well.
-
-This is because the technologies can appear in any order in the data we are passing,
-and we are using the index of the data to get the color (`color(index)`).
-However, ordinal scales are much more useful when we pass in the actual data value (in this case, the technology name) instead of an index, as they give us a consistent color.
-
-However, if we look at our current code in `lib/Pie.svelte`, we are currently iterating over `arcs` to draw the pie wedges:
-
-```html
-{#each arcs as arc, index}
-<!-- Other attributes omitted for brevity -->
-<path d="{arc}" fill="{" colors(index) }> {/each}</path>
-```
-
-This makes it awkward to get any data associated with the pie wedge, such as the label.
-We _could_ use `data[index]`, but it’s better to just iterate over the data itself:
-
-```html
-{#each data as d, index}
-<path d="{arcs[index]}" fill="{" colors(index) }> {/each}</path>
-```
-
-We can now pass `d.label` to the color scale instead of just the index:
-
-```html
-{#each data as d, index}
-<path d="{arcs[index]}" fill="{" colors(d.label) }> {/each}</path>
-```
-
-Try it again: now the colors should be consistent across selections!
-
-### Step 0.3: Moving all info to the same data structure
-
-{: .files }
-`lib/Pie.svelte`
-
-It _is_ a little awkward that we need to read several different variables to get all the information we need about a pie chart wedge.
-However, as a design principle, we don't want to be adding internal data like `startAngle` on a data structure we were passed as input, it’s not good form.
-Let’s create a copy of the data and add everything we need to it.
-We will use a reactive block instead of a reactive statement, since we want to run multiple lines of code.
-First, to copy the data:
+Also, we can now make the colors of individual commits on mouse events consistent with brush selections. We can add this line of code to event handling of `mouseenter` and `mouseleave`:
 
 ```js
-let pieData;
-$: {
-  pieData = data.map((d) => ({ ...d }));
-}
+d3.select(event.currentTarget).classed('selected', ...); // give it a corresponding boolean value
 ```
-
-{: .fyi }
-The `{...d}` syntax is a shorthand for creating a new object with all the properties of `d`.
-
-You can now replace all other mentions of `data` in the component with `pieData` (except for the `data` prop itself).
-
-Then, move the `arcData` and `arcs` definitions into local variables within the reactive block,
-and combine them with `pieData` like this:
-
-```js
-pieData = pieData.map((d, i) => ({ ...d, ...arcData[i], arc: arcs[i] }));
-```
-
-This will give us objects with `startAngle`, `endAngle`, and `arc` properties,
-in addition to `value` and `label`.
-Replace all references to `arcData` and `arcs` to just read from `pieData` (e.g. `arcs[index]` would become `d.arc`).
 
 ## Step 1: Evolution visualization
 
