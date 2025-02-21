@@ -34,5 +34,9 @@ body {
     height: 100%;
     z-index: 1;
     pointer-events: none;
+
+    circle {
+      pointer-events: auto;
+    }
   }
 }
