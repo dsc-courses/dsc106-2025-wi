@@ -20,6 +20,26 @@ body {
   align-items: center; /* Center vertically */
 }
 
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+#any-time {
+  display: block;
+  text-align: right;
+  font-size: 0.8em;
+  color: #666;
+}
+
+#selected-time {
+  display: block;
+  text-align: right;
+  font-size: 0.8em;
+}
+
 #map {
   width: 100%; /* Adjust width to your desired size */
   height: 100%; /* Adjust height to your desired size */

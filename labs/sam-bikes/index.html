@@ -16,7 +16,15 @@
     <script src="map.js" type="module"></script>
   </head>
   <body>
-    <h1>🚴🏼‍♀️ Bikewatching</h1>
+    <header class="header">
+      <h1>🚴🏼‍♀️ Bikewatching</h1>
+      <label id="time-filter" for="time-filter"
+        >Filter by time
+        <input id="time-slider" type="range" min="-1" max="1440" value="-1" />
+        <em id="any-time">(any time)</em>
+        <time id="selected-time" datetime="11:59 PM">11:59 PM</time>
+      </label>
+    </header>
     <div id="map"><svg></svg></div>
   </body>
 </html>
