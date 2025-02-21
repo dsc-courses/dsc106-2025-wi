@@ -15,6 +15,9 @@ const map = new mapboxgl.Map({
   maxZoom: 18, // Maximum allowed zoom
 });
 
+let departuresByMinute = Array.from({ length: 1440 }, () => []);
+let arrivalsByMinute = Array.from({ length: 1440 }, () => []);
+
 map.on('load', async () => {
   map.addSource('boston_route', {
     type: 'geojson',
@@ -62,11 +65,18 @@ map.on('load', async () => {
     (trip) => {
       trip.started_at = new Date(trip.started_at);
       trip.ended_at = new Date(trip.ended_at);
+
+      // Cache the trips by minute for faster filtering later
+      let startedMinutes = minutesSinceMidnight(trip.started_at);
+      departuresByMinute[startedMinutes].push(trip);
+      let endedMinutes = minutesSinceMidnight(trip.ended_at);
+      arrivalsByMinute[endedMinutes].push(trip);
+
       return trip;
     },
   );
 
-  const stations = computeStationTraffic(jsonData.data.stations, trips);
+  const stations = computeStationTraffic(jsonData.data.stations);
 
   const radiusScale = d3
     .scaleSqrt()
@@ -126,8 +136,7 @@ map.on('load', async () => {
   }
 
   function updateScatterPlot(timeFilter) {
-    const filteredTrips = filterTripsbyTime(trips, timeFilter);
-    const filteredStations = computeStationTraffic(stations, filteredTrips);
+    const filteredStations = computeStationTraffic(stations, timeFilter);
 
     timeFilter === -1 ? radiusScale.range([0, 25]) : radiusScale.range([3, 50]);
     circles
@@ -144,28 +153,33 @@ function minutesSinceMidnight(date) {
   return date.getHours() * 60 + date.getMinutes();
 }
 
-function filterTripsbyTime(trips, timeFilter) {
-  return timeFilter === -1
-    ? trips
-    : trips.filter((trip) => {
-        const startedMinutes = minutesSinceMidnight(trip.started_at);
-        const endedMinutes = minutesSinceMidnight(trip.ended_at);
-        return (
-          Math.abs(startedMinutes - timeFilter) <= 60 ||
-          Math.abs(endedMinutes - timeFilter) <= 60
-        );
-      });
+function filterByMinute(tripsByMinute, minute) {
+  if (minute === -1) {
+    return tripsByMinute.flat();
+  }
+  // Normalize both to the [0, 1439] range
+  // % is the remainder operator: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder
+  let minMinute = (minute - 60 + 1440) % 1440;
+  let maxMinute = (minute + 60) % 1440;
+
+  if (minMinute > maxMinute) {
+    let beforeMidnight = tripsByMinute.slice(minMinute);
+    let afterMidnight = tripsByMinute.slice(0, maxMinute);
+    return beforeMidnight.concat(afterMidnight).flat();
+  } else {
+    return tripsByMinute.slice(minMinute, maxMinute).flat();
+  }
 }
 
-function computeStationTraffic(stations, trips) {
+function computeStationTraffic(stations, timeFilter = -1) {
   const departures = d3.rollup(
-    trips,
+    filterByMinute(departuresByMinute, timeFilter),
     (v) => v.length,
     (d) => d.start_station_id,
   );
 
   const arrivals = d3.rollup(
-    trips,
+    filterByMinute(arrivalsByMinute, timeFilter),
     (v) => v.length,
     (d) => d.end_station_id,
   );
