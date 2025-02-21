@@ -110,7 +110,9 @@ function updateHistogram(nBins) {
     .data(bins)
     .join(
       // When a bar is created, we'll set its x-position and width, but set the
-      // height to 0 since we'll animate the height to the correct value.
+      // height to 0 since we'll animate the height to the correct value. If we
+      // didn't do this, the new bars would appear instantly without any
+      // animation.
       (enter) =>
         enter
           .append('rect')
@@ -119,12 +121,13 @@ function updateHistogram(nBins) {
           .attr('y', height - marginBottom) // Start from bottom
           .attr('height', 0) // Start with height 0
           .attr('fill', 'steelblue'),
-      // Leave the update selection empty, since we don't need to do anything.
-      // If we updated the height of the bar here, only the existing bars would
-      // get animated and the new bars would appear abruptly.
+      // Don't do anything these since this only applies to bars that currently
+      // exist, not the newly created ones. If we updated the height of the bar
+      // here, only the existing bars would get animated.
       (update) => update,
       // For the exit selection, we'll animate the height of the bar to 0, then
-      // remove the element.
+      // remove the element. If we didn't do this, the bars would disappear
+      // abruptly without any animation.
       (exit) =>
         exit
           .transition()
@@ -133,7 +136,7 @@ function updateHistogram(nBins) {
           .attr('height', 0)
           .remove(),
     )
-    // Now, we'll update the height of all the bars.
+    // Now, we'll update the attributes of all the bars.
     .transition()
     .duration(750)
     .attr('x', (d) => x(d.x0) + 1)
