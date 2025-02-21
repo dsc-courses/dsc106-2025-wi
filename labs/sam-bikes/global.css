@@ -57,15 +57,34 @@ body {
 
     circle {
       pointer-events: auto;
-
-      --color-departures: steelblue;
-      --color-arrivals: darkorange;
-      --color: color-mix(
-        in oklch,
-        var(--color-departures) calc(100% * var(--departure-ratio)),
-        var(--color-arrivals)
-      );
-      fill: var(--color);
     }
   }
+}
+
+.legend {
+  display: flex;
+  width: 100%;
+  margin-block: 1em;
+
+  div {
+    flex: 1;
+    padding: 0.5em;
+
+    font-weight: bold;
+    text-align: center;
+    color: white;
+  }
+}
+
+#map circle,
+.legend > div {
+  --color-departures: steelblue;
+  --color-arrivals: darkorange;
+  --color: color-mix(
+    in oklch,
+    var(--color-departures) calc(100% * var(--departure-ratio)),
+    var(--color-arrivals)
+  );
+  fill: var(--color);
+  background-color: var(--color);
 }
