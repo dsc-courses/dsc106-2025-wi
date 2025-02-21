@@ -1067,7 +1067,7 @@ d3.csv(TRIP_DATA_URL).then(trips => {
   //add THIS code
 	for (let trip of trips) {
 
-		trip.started_at = new Date(trip.start_time);
+		trip.started_at = new Date(trip.started_at);
     // do the same for end
   }
 });
