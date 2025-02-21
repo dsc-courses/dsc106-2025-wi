@@ -136,29 +136,40 @@ function renderScatterPlot(data, commits) {
     .attr('cx', (d) => xScale(d.datetime))
     .attr('cy', (d) => yScale(d.hourFrac))
     .attr('r', 5)
-    .attr('fill', 'steelblue');
-
-  dots
+    .attr('fill', 'steelblue')
     .on('mouseenter', (event, commit) => {
-      debugger;
-      updateTooltipContent(commit);
+      renderTooltipContent(commit);
     })
     .on('mouseleave', () => {
-      updateTooltipContent({}); // Clear tooltip content
+      renderTooltipContent({}); // Clear tooltip content
     });
 }
 
-function updateTooltipContent(commit) {
+function renderTooltipContent(commit) {
   const link = document.getElementById('commit-link');
   const date = document.getElementById('commit-date');
+  const time = document.getElementById('commit-time');
+  const author = document.getElementById('commit-author');
+  const lines = document.getElementById('commit-lines-edited');
 
-  if (Object.keys(commit).length === 0) return;
+  if (Object.keys(commit).length === 0) {
+    link.href = '';
+    link.textContent = '';
+    date.textContent = '';
+    time.textContent = '';
+    author.textContent = '';
+    lines.textContent = '';
+  }
 
   link.href = commit.url;
   link.textContent = commit.id;
   date.textContent = commit.datetime?.toLocaleString('en', {
     dateStyle: 'full',
   });
+
+  time.textContent = commit.time;
+  author.textContent = commit.author;
+  lines.textContent = commit.totalLines;
 }
 
 let data = await loadData();
