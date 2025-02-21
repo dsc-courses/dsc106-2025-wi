@@ -23,4 +23,5 @@ days:
       - name: DISC 7
         type: disc
         title: Disc 7
+        url: https://giorgianicolaou.github.io/discussion7/
 ---
