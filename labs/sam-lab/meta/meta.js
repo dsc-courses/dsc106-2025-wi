@@ -141,7 +141,7 @@ function renderScatterPlot(data, commits) {
       renderTooltipContent(commit);
     })
     .on('mouseleave', () => {
-      renderTooltipContent({}); // Clear tooltip content
+      // TODO: Hide the tooltip
     });
 }
 
@@ -152,14 +152,7 @@ function renderTooltipContent(commit) {
   const author = document.getElementById('commit-author');
   const lines = document.getElementById('commit-lines-edited');
 
-  if (Object.keys(commit).length === 0) {
-    link.href = '';
-    link.textContent = '';
-    date.textContent = '';
-    time.textContent = '';
-    author.textContent = '';
-    lines.textContent = '';
-  }
+  if (Object.keys(commit).length === 0) return;
 
   link.href = commit.url;
   link.textContent = commit.id;
