@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 8: Animation & Scrollytelling'
 lab: 8
 parent: '👩‍🔬 Programming Labs'
-released: true
+released: false
 ---
 
 # Lab {{ page.lab }}: Animation
@@ -138,14 +138,14 @@ d3.select(event.currentTarget).classed('selected', ...); // give it a correspond
 ## Step 1: Evolution visualization
 
 {: .files }
-`src/meta/+page.svelte`
+`src/meta/main.js` and `src/meta/index.html`
 
 In this step, we will create an interactive timeline visualization that shows the evolution of our repo by allowing us to move a slider to change the date range of the commits we are looking at.
 
 ### Step 1.1: Creating the filtering UI
 
 In this step we will create a slider, bind its value to a variable, and display the date and time it corresponds to.
-It’s very familiar to what we did in [the previous lab](../8/), except we don’t need to worry about a "no filter" state.
+It’s very familiar to what we did in [the previous lab](../lab07/).
 
 First, let’s create a new variable, `commitProgress`, that will represent the maximum time we want to show
 as a percentage of the total time:
@@ -154,33 +154,42 @@ as a percentage of the total time:
 let commitProgress = 100;
 ```
 
-To map this percentage to a date, we will need a new [time scale](https://d3js.org/d3-scale/time),
-just like we did in [Lab 7](../7/#step-21-drawing-the-dots) that will map `commit.datetime` values to the `[0, 100]` range.
-
-Once we have our scale, we can easily get from the 0-100 number to a date:
+To map this percentage to a date, we will need a new [time scale](https://d3js.org/d3-scale/time). Once we have our scale, we can easily get from the 0-100 number to a date:
 
 ```js
-$: commitMaxTime = timeScale.invert(commitProgress);
+let timeScale = d3.scaleTime([d3.min(commits, d => d.datetime), d3.max(commits, d => d.datetime)], [0, 100]);
+let commitMaxTime = timeScale.invert(commitProgress);
 ```
 
-We are now ready to add our filtering UI.
+We are now ready to add our filtering UI in `index.html`. This is largely a repeat of what we did in [Lab 7](../lab07/):
 
-1. Create a new `<label>` element with a slider input and a `<time>` element that will display the date and time corresponding to the slider value.
-2. Add some CSS to make the slider maximum width (`flex: 1` in Flexbox, `1fr` column width in Grid) and to place the time element underneath the slider (otherwise differences in output value length will move the slider, which is very jarring).
-3. Bind the slider value to `commitProgress`
-4. Output the selected time in the `<time>` element using `commitMaxTime.toLocaleString()` similarly to how we did in [Lab 7](../7/) and [Lab 8](../8/). This time we need to display _both_ the date and the time.
+- A slider (`<input type=range>`) with a min of 0 and max of 100 and bind the slider value to `commitProgress`.
+- A `<time>` element to display the commit time using `commitMaxTime.toLocaleString()`.
+- A `<label>` _around_ the slider and `<time>` element with some explanatory text (e.g. "Show commits until:").
+
+Where you put it on the page is up to you. I placed it on top of my scatter plot (the `<div>` element with id `chart`). I wrapped the `<label>` inside of `<div>`, to which I applied a `flex: 1` and `align-items: baseline` to align them horizontally. Then I gave `<time>` a `margin-left: auto` to push it all the way to the right. **Note you should apply these style rules as specifically as possible (use ID selectors)!**
 
 {: .tip }
 Feel free to use any settings you like.
-In the screencasts below, I use `dateStyle: "long"` and `timeStyle: "short"`.
+In the screencasts below, I used `dateStyle: "long"` and `timeStyle: "short"`. You may pass these options into `toLocaleString()` method as an object.
 
 If everything went well, your slider should now be working!
 
 ![](videos/slider.gif)
 
+{: .note }
+> To make the time string present, you should have the following lines:
+>
+> ```js
+> const selectedTime = d3.select('#selectedTime');
+> selectedTime.textContent = timeScale.invert(commitProgress).toLocaleString();
+> ```
+>
+> Figure out where's the most appropriate position to place these.
+
 ### Step 1.2: Filtering by `commitMaxTime`
 
-Let’s now ceate a new `filteredCommits` variable that will reactively [filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) `commits` by comparing `commit.datetime` with `commitMaxTime`.
+Let’s now ceate a new `filteredCommits` variable that will reactively [filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) `commits` by comparing `commit.datetime` with `commitMaxTime` and only keep those that are **less than** `commitMaxTime`.
 
 Similarly, create a `filteredLines` variable that filters `data` in the same way.
 
@@ -188,40 +197,13 @@ We can now replace `commits` with `filteredCommits` and `data` with `filteredLin
 
 - The `xScale` domain
 - The `brushed()` function that updates the `selectedCommits` variable
-- The `{#each}` block that draws the circles
-- The `hoveredCommit` variable
 - Your summary stats
 
 Try moving the slider and see what happens!
 
 <video src="videos/filtering-unstable.mp4" loading=lazy muted autoplay loop class="outline"></video>
 
-### Step 1.3: Making the circles stable
-
-CSS transitions are already applied to our circles since Lab 7.
-However, notice that when we move the slider, the circles are jumping around a lot.
-
-<!-- This is because Svelte is generating new circles, even for the commits that are already there. -->
-
-This is because Svelte doesn't know which data items correspond to which previous data items,
-so it does not necessarily reuse the right `<circle>` element for the same commit.
-To tell Svelte which data items correspond to which previous data items, we can use [a _keyed `each` block_](https://svelte.dev/docs/logic-blocks#each), with a value that uniquely identifies the data item.
-A good candidate for that in this case would be the commit id:
-
-```html
-{#each commits as commit, index (commit.id) }
-```
-
-Just this small addition fixes the issue completely!
-
-<!-- Just like Step 1.2, the solution is to use a keyed `{#each}` block.
-The key can be `commit.id`, since that is a primitive value that uniquely identifies each commit. -->
-
-<!-- The result should already look *a lot* better: -->
-
-<video src="videos/filtering-stable.mp4" loading=lazy muted autoplay loop class="browser"></video>
-
-### Step 1.4: Entry transitions with CSS
+### Step 1.3: Entry transitions with CSS
 
 Notice that even though we are now getting a nice transition when an existing commit changes radius,
 there is no transition when a new commit appears.
@@ -232,13 +214,10 @@ there is no transition when a new commit appears.
 since this is something that we can do _better_ with CSS transitions alone. -->
 
 This is because CSS transitions fire for state changes where both the start and end changes are described by CSS.
-A new element being added does not have a start state, so it doesn’t transition.
-We _could_ use [Svelte transitions](https://svelte.dev/docs/element-directives#transition-fn) for this, but we don’t need to.
-We can actually use CSS transitions,
-we just need to explicitly tell the browser what the start state should be.
+A new element being added does not have a start state, so it doesn’t transition. We can use CSS transitions to help resolve this, by explicitly telling the browser what the start state should be.
 That’s what the [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) rule is for!
 
-Inside the `circle` CSS rule, add a [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) rule (and ignore Svelte’s "Unknown at rule" warning):
+Inside the `circle` CSS rule, add a [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) rule:
 
 ```css
 @starting-style {
@@ -260,46 +239,6 @@ If you preview again, you should notice that that’s all it took, new circles a
 > ```css
 > transition: all 200ms, r calc(var(--r) * 100ms);
 > ```
-
-### Step 1.5: Moving the scatterplot into a separate component _(optional, but recommended)_
-
-{: .files }
-`src/routes/meta/+page.svelte`,
-`src/routes/meta/Scatterplot.svelte`
-
-`src/routes/meta/+page.svelte` has begun to grow quite a lot, and it’s only about to get bigger.
-It will really help make your code more manageable to start moving reusable functionality to components.
-One good candidate is the commit scatterplot.
-
-Create a new file, `src/routes/meta/Scatterplot.svelte`, and move the scatterplot code there.
-This includes:
-
-- The `<svg>` element
-- The commit tooltip
-- Any CSS styling elements in those
-- The JS dealing with dimensions, margins, scales, axes, brushing, user interaction with dots, commit selection, etc.
-
-It should have two props:
-
-- `commits` (an array of commits)
-- `selectedCommits` (mostly used as output, but could be used as input as well)
-
-We name the variable `commits` in order to make the scatterplot a bit more generalizable.
-As such, make sure to change any mentions of `filteredCommits` in your new file back to `commits`.
-VS Code allows you to do that safely in one go, by placing the text caret on the variable name, then pressing F2 (or right clicking and selecting "Rename Symbol")
-
-The final result should allow us to replace our entire `<svg>` and commit tooltip in `src/routes/meta/+page.svelte` with just:
-
-```jsx
-<CommitScatterplot
-  commits={filteredCommits}
-  bind:selectedCommits={selectedCommits}
-/>
-```
-
-{: .caveat }
-Don’t forget to also move the necessary imports!
-I find it helpful to just copy all of them, then remove the ones VS Code highlights as unused.
 
 ## Step 2: The race for the biggest file!
 
