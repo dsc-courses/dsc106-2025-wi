@@ -10,6 +10,10 @@ days:
       - name: FINAL PROJ
         type: proj
         title: Final Project Proposal
+      - name: LAB 7
+        type: lab
+        title: Lab 7
+        url: labs/lab07
   - date: '2025-02-26'
     events:
       - name: CANCELED
