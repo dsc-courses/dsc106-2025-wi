@@ -935,9 +935,6 @@ We have applied `pointer-events: none` to the whole `<svg>`, so to be able to se
 {: .further }
 If you want to go even further, you could explore adding a nicer tooltip, with more advanced information.
 
-{: .caveat }
-Note that _both_ SVG and HTML have a `<title>` element, but they are false friends, as they do different things!
-
 ## Step 5: Interactive data filtering
 
 Even with the styling improvements, it’s hard to make sense of all this data as currently displayed all at once.
