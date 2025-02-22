@@ -34,3 +34,4 @@ Your peer reviews are due **Fri 02/28, 11:59pm**. The links to the submissions t
 
 1. Ensure that you only submit the sumbission ID in the submission ID field (e.g. 123456). **Do not** enter any text such as "Submission ID: 123456".
 2. It would be helpful if you could write the 4 comments per section in separate paragraphs or bullet points.
+3. Submit your reviews in the same order as emailed to you.
