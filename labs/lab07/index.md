@@ -1053,10 +1053,10 @@ function computeStationTraffic(stations, trips) {
   });
 }
 ```
-**What Does the Function Do?**  
-1. Take `stations` and `trips` as arguments** (so it works with any dataset).  
+What Does the Function Do?
+1. Take `stations` and `trips` as arguments (so it works with any dataset).  
 2. Compute arrivals and departures** using `d3.rollup()`.  
-3. Update each station with the calculated values** (arrivals, departures, and total traffic).  
+3. Update each station with the calculated values (arrivals, departures, and total traffic).  
 4. Return the updated station data** so it can be used elsewhere.  
 
 Inside `map.on('load', ...)`, instead of computing everything inline, we **call** the new function like this:  
