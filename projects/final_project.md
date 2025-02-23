@@ -62,6 +62,8 @@ The final project consists of the following milestones:
   - Brief writeup of what you intend to do (5-10 lines)
   - 5-6 static visualizations on your dataset
 
+Apart from the team registration form, please also submit the gradescope assignmemt for the proposal.
+
 - **Initial Prototype (Tue 03/04, 11:59pm, Can Use Slip Days)**. Develop an initial prototype of your project and, similar to Project 3, publish it using GitHub pages. This prototype will be used by the course staff to provide feedback on your designs. It is expected that your project will not yet be in a "complete" state; however, by this point you should have the structure of your project laid out, rough prototypes of your main visualization(s) and interactions, and at least basic descriptive text. Each team should submit the URL for their project on Gradescope.
 
 - **Demo Video (Tue 03/11, 11:59pm, Can Use Slip Days)**. You must produce a demo video (not to exceed 2 minutes in length) that introduces and explains your project. Your video can take the form of a narrated demo of your project, and may include additional content as you see fit. More information about preparing the video is available in the project deliverables section.
