@@ -8,6 +8,10 @@ days:
         type: proj
         title: Project 3 Peer Review
         url: projects/project3peer.md
+      - name: LAB 7
+        type: lab
+        title: Lab 7
+        url: labs/lab07
       - name: FINAL PROJ
         type: proj
         title: Final Project Proposal
