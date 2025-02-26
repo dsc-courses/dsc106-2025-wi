@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 8: Animation & Scrollytelling'
 lab: 8
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: true
 ---
 
 # Lab {{ page.lab }}: Animation
@@ -244,70 +244,57 @@ If you preview again, you should notice that that’s all it took, new circles a
 
 In this step we will create a unit visualization that shows the relative size of each file in the codebase in lines of code, as well as the type and age of each line.
 
-### Step 2.1: Creating a component for the unit visualization
+### Step 2.1: Adding unit visualization for files
 
 {: .files }
-`src/routes/meta/FileLines.svelte`,
-`src/routes/meta/+page.svelte`
+`src/meta/main.js` and `src/style.css`
 
-To avoid bloating `src/routes/meta/+page.svelte` even more, let’s create a new component,
-`src/routes/meta/FileLines.svelte`, that will contain the unit visualization.
+We want to display the file details for the commits we filtered. We want this section to go after the scatter plot, but for now let's add it right after our filtering slider as that makes development faster.
 
-The component should take a `lines` prop, and will group lines of code into files internally.
-This means that from the outside, we’d just use it like this:
-
-```jsx
-<FileLines lines={filteredLines} />
-```
-
-Eventually we want this to go after the scatterplot & pie chart,
-but for now let’s add it right after our filtering UI as that makes development faster.
-
-Then, within the component we will group the lines by file and convert the groups to an array of `{name, lines}` objects like this:
+First, let's obtain the file names and lines associated with each file.
 
 ```js
 let files = [];
-$: {
-  files = d3
-    .groups(lines, (d) => d.file)
-    .map(([name, lines]) => {
-      return { name, lines };
-    });
-}
+files = d3
+  .groups(lines, (d) => d.file)
+  .map(([name, lines]) => {
+    return { name, lines };
+  });
 ```
 
-Now that we have our files, let’s output them.
-While we _can_ use D3 and generate an SVG for this,
-unit visualizations are one of the few cases where it can actually be easier to just use HTML and CSS,
-as we need to do a lot less work to manage the position of each element.
-
-We will use a `<dl>` element (but feel free to make different choices, there are many structures that would be appropriate here)
-Let’s start simple, by just outputting filenames and number of lines:
+Now that we have our files, let's output them (filenames and number of lines). We will use a `<dl>` element (but feel free to make different choices, there are many structures that would be appropriate here) to give it a simple structure.
 
 ```html
 <dl class="files">
-  {#each files as file (file.name) }
+  <!-- we want the following structure for each file-->
   <div>
     <dt>
       <code>{file.name}</code>
     </dt>
     <dd>{file.lines.length} lines</dd>
   </div>
-  {/each}
+  <div>
+    ...
+  </div>
 </dl>
 ```
 
-Note that we used a _keyed `each` block_ from the get go here.
-It’s generally a good practice to do this by default,
-especially when iterating over data that we expect to change,
-as it avoids a lot of the issues we saw earlier.
+It should be clear by now what we need from D3 to achieve this:
+
+```js
+d3.select('.files').selectAll('div').remove(); // don't forget to clear everything first so we can re-render
+let filesContainer = d3.select('.files').selectAll('div').data(files).enter().append('div');
+
+filesContainer.append('dt').append('code').text(d => ...); // TODO
+filesContainer.append('dd').text(d => ...); // TODO
+```
 
 We should style the `<dl>` as a grid so that the filenames and line counts are aligned.
 The only thing that is a bit different now is that we have a `<div>` around each `<dt>` and `<dd>`.
 To prevent that from interfering with the grid we should use [Subgrid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid):
 
 ```css
-& > div {
+.files > div {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: subgrid;
@@ -321,20 +308,34 @@ but if you move the slider, you should already see the number of lines changing!
 
 <video src="videos/file-lines-basic.mp4" loading=lazy muted autoplay loop class="outline"></video>
 
+{: .note }
+You may see different summary stat changes depending on which you implemented from [Lab 6](../lab06). And if you are having trouble aligning things, revisit [Lab 2 Step 4.3](../lab02/#step-43-horizontal-alignment-with-subgrid), where we first used sub-grids to align your contact form.
+
 ### Step 2.2: Making it look like an actual unit visualization
 
-For a unit visualization, we want to draw an element per data point (in this case, per line), so let’s do that.
-All we need to do is replace the contents of the `<dd>` element with another `{#each}` block that outputs a `<div>` for each line:
+For a unit visualization, we want to draw an element per data point (in this case, per line committed), so let's do that.
+All we need to do is replace the contents of the `<dd>` element with more `<div>`, each corresponding to one line:
 
 ```html
-{#each file.lines as line (line.line) }
-<div class="line"></div>
-{/each}
+<!-- we want to achieve this -->
+<dd>
+  <div class="line"></div>
+</dd>
+```
+
+To do so, simply add to where we were appending `<dd>` using D3 selections previous:
+
+```js
+// TODO, append divs and set each's class attribute
+filesContainer.append('dd')
+              .selectAll('div')
+              .data(d => d.lines)
+              ...
 ```
 
 {: .tip }
 Seeing the total number of lines per file is still useful, so you may want to add it in the `<dt>`.
-I used a `<small>` element, gave it `display: block` so that it's on its own line, and styled it smaller and less opaque.
+I used a `<small>` element, gave it `display: block` so that it's on its own line, and styled it smaller and less opaque. You can set both `<code>` and `<small>` tags' contents using `.html()` method. You can revisit it in [Lab 5 Step 2.2](../lab05/#step-22-adding-a-legend)
 
 And then add some CSS to make it look like a unit visualization:
 
@@ -381,19 +382,26 @@ files = d3.sort(files, (d) => -d.lines.length);
 
 ### Step 2.4: Varying the color of the dots by technology
 
+{: .caveat}
+Let's first remove the CSS rule on `.line`'s background in order for us to render different lines of code with distinctive colors.
+
 Our visualization shows us the size of the files, but not all files are created equal.
 We can use color to differentiate the lines withn each file by technology.
 
 Let’s create an ordinal scale that maps technology ids to colors:
 
 ```js
-let colors = d3.scaleOrdinal(d3.schemeTableau10);
+let fileTypeColors = d3.scaleOrdinal(d3.schemeTableau10);
 ```
 
 Then, we can use this scale to color the dots:
 
-```html
-<div class="line" style="--color: { colors(line.type) }"></div>
+```js
+filesContainer.append('dd')
+              .selectAll('div')
+              .data(d => d.lines)
+              ... // same as before
+              .style('background', ...); // TODO, apply the color scale based on line type
 ```
 
 <!--
@@ -414,7 +422,7 @@ Much better now!
 
 <video src="videos/file-lines-colored.mp4" loading=lazy muted autoplay loop class="outline"></video>
 
-### Step 2.5: Dot transitions
+<!-- ### Step 2.5: Dot transitions
 
 Notice that it's a little hard to compare which lines of each file have been added as we move the slider.
 If we make new elements appear with a transition, it will be much easier to see what is happening.
@@ -423,9 +431,9 @@ I picked `scale` as that makes dots appear to grow from a single point.
 
 If you don’t need to customize the duration etc, all it takes is adding `in:scale` to the `<div>` element!
 
-<video src="videos/file-lines-dottransitions.mp4" loading=lazy muted autoplay loop class="outline"></video>
+<video src="videos/file-lines-dottransitions.mp4" loading=lazy muted autoplay loop class="outline"></video> -->
 
-### Step 2.6: Consistent colors across visualizations
+<!-- ### Step 2.6: Consistent colors across visualizations
 
 Notice that we have two visualizations that use colors to represent technologies,
 but they use different colors for the same technologies!
@@ -446,15 +454,15 @@ We can make sure the data we pass to `<Pie>` include an `id` property with the r
 To make the component more flexible, we could even use both:
 
 ```jsx
-<!-- Rest of attributes omitted -->
-<path fill={ colors(d.id ?? d.label) }>
+<!-- Rest of attributes omitted
+<!-- <path fill={ colors(d.id ?? d.label) }>
 ```
 
 Our visualization is now _way_ more informative!
 
-<img src="images/consistent-colors-pie-unit.png" class="outline" alt="" />
+<!-- <img src="images/consistent-colors-pie-unit.png" class="outline" alt="" /> -->
 
-### Step 2.7: Animated race
+<!-- ### Step 2.7: Animated race
 
 We can now use the [`animate:fn` directive](https://svelte.dev/docs/element-directives#animate-fn) to animate the files when they move to a new position.
 Svelte provides a built-in animation called `flip`, which sounds perfect for this use case.
@@ -519,7 +527,7 @@ For the final result, you’d likely want to either specify a duration as a func
 >   background: hsl(0 0% 100% / 90%);
 >   box-shadow: 0 0 0.2em 0.2em hsl(0 0% 100% / 90%);
 > }
-> ```
+> ``` -->
 
 ## Step 3: Pie chart transition
 
