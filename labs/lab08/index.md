@@ -532,30 +532,21 @@ For the final result, you’d likely want to either specify a duration as a func
 ## Step 3: Pie chart transition
 
 {: .files }
-`lib/Pie.svelte`
+`src/projects/projects.js`
 
-In lab 6, we created a pie chart that shows the distribution of edited lines per technology,
-and responds to filtering.
-We even [added a `transition: 300ms`](https://vis-society.github.io/labs/6/#step-51-highlighting-hovered-wedge) to our pie chart wedges,
+In lab 5, we created a pie chart that shows the distribution of years in wich we completed our projects.
+We even [added a `transition: 300ms`](../lab05/#step-51-highlighting-hovered-wedge) to our pie chart wedges,
 which interpolates any property the browser can interpolate.
 This is useful when we select a wedge, but produces rather strange results when the pie data changes
 as you have no doubt noticed by now.
 
-Let’s fix it!
-
-{: .tip }
-It will help debugging to apply `fill-opacity` to the pie wedges, so you can see when they overlap.
-Ideally, we don't want to have gaps or overlapping wedges during the transition.
-In the screenshots/screencasts below, I have applied `fill-opacity: 75%;` to the `<path>` elements.
-You may also want to use a more distinctive color palette at this point, like `schemeCategory10` or `schemeTableau10`.
-The screenshots in this lab will use `schemeTableau10`.
+Let's fix it!
 
 ### Step 3.1: Use consistent ordering
 
 The first step is to make sure that the pie chart uses a consistent ordering of technologies, which also makes it easier to compare results across different sets of commits.
 By default, `d3.pie()` sorts the wedges by descending value, which in dynamic pie charts, is almost always undesirable.
-Instead, let’s sort by the data labels.
-This way, as long as the data labels remain consistent, the order of the pie wedges will also remain consistent.
+Instead, let's sort by the data labels (in this case `year` of the project). This way, as long as the data labels remain consistent, the order of the pie wedges will also remain consistent.
 
 You may notice that there is a [`pie.sort()`](https://d3js.org/d3-shape/pie#pie_sort) function.
 Can’t we just use that to sort by labels?
@@ -563,30 +554,38 @@ No! If we do that, the arcs would be out of sync with our data!
 Instead, we will _disable_ sorting in the pie by adding `.sort(null)` after the call to `d3.pie()`:
 
 ```js
-let sliceGenerator = d3
+let newSliceGenerator = d3
   .pie()
   .value((d) => d.value)
   .sort(null);
 ```
 
-and then we will sort `pieData` itself:
+and then we will sort `data / newData` itself (wherever you retrieve data or update data):
 
 ```js
-$: {
-  pieData = d3.sort(data, (d) => d.label);
-  // ... calculate arcData and arcs as before ...
-  pieData = pieData.map((d, i) => ({ ...d, ...arcData[i], arc: arcs[i] }));
-}
+newData = d3.sort(newData, (d) => d.label);
+// ... calculate arcData and arcs as before ...
+newData = newData.map((d, i) => ({ ...d, ...newArcData[i], arc: newArcs[i] }));
 ```
 
 {: .caveat }
-It is important to sort the data _before_ we calculate `arcData` and `arcs`, otherwise they will be out of sync!
+It is important to sort the data _before_ we calculate `newArcData` and `newArcs`, otherwise they will be out of sync!
 
-If you try it now, the order should already be correct, though the transition is still suboptimal:
+If you try it now, the order should already be correct:
 
-<video src="videos/sorted.mp4" loading=lazy muted autoplay loop></video>
+<!-- <video src="videos/sorted.mp4" loading=lazy muted autoplay loop></video> -->
 
-### Step 3.2: Eliminate flashing by using a keyed `each` block
+<figure class="multiple">
+<img src='./images/unordered.png' alt='unordered'>
+<img src='./images/ordered.png' alt='ordered'>
+
+<figcaption>
+Top: Unordered.
+Bottom: Ordered by Year (Both Legend and Pies).
+</figcaption>
+</figure>
+
+<!-- ### Step 3.2: Eliminate flashing by using a keyed `each` block
 
 Our technologies are now sorted, but this made the transition involve a lot of flashing.
 Why is that?
@@ -603,15 +602,14 @@ A good candidate for that would be the label:
 
 Just this small addition fixes the issue completely!
 
-<video src="videos/keyed.mp4" loop muted autoplay></video>
+<video src="videos/keyed.mp4" loop muted autoplay></video> -->
 
-### Step 3.3: Fixing the shape transition using `d3.transition()`
+### Step 3.2: Fixing the shape transition using `d3.transition()`
 
-We may have fixed the issues discussed above but the transition is, how should we put it, …suboptimal.
-Our shape transitions are still rather weird, especially when transitioning between pies that have different technologies.
-Change the transition duration to something longer (e.g. `3s`) so you can more clearly see what is happening:
+You may notice that when the pie chart updates, the transitions are some what abrupt.
+<!-- Change the transition duration to something longer (e.g. `3s`) so you can more clearly see what is happening: -->
 
-<video src="videos/arc-wrong.mp4" loop muted autoplay></video>
+<!-- <video src="videos/arc-wrong.mp4" loop muted autoplay></video> -->
 
 This is because paths are interpolated naïvely,
 by just matching up path segments and interpolating their parameters as numbers.
@@ -633,7 +631,7 @@ and fixing it with CSS animations would require so many keyframes that it would 
 Instead, we will use the [`d3-transition`](https://d3js.org/d3-transition) module,
 which trades simplicity for control, by allowing us to compute the intermediate states ourselves, with JS.
 
-The first step is to _disable_ CSS transitions for `d`, so that they don’t interfere with our JS transitions.
+The first step is to _disable_ CSS transitions for paths, so that they don't interfere with our JS transitions.
 We can do this by restricting which properties the browser can auto-transition:
 
 ```css
@@ -641,34 +639,42 @@ transition: 300ms;
 transition-property: transform, opacity, fill;
 ```
 
-When using [`d3-transition`](https://d3js.org/d3-transition),
-together with a reactive framework like Svelte, there are several questions to answer:
+When using [`d3-transition`](https://d3js.org/d3-transition), there are several questions to answer:
 
 - **How** do we get a reference to the DOM nodes for each element we are transitioning?
 - **When** do we call `d3.transition()` on them?
 - **How** do we read the previous state so we can transition between the old and new states?
 
-Let’s take them one by one.
+Let's take them one by one.
 
 #### How to get a reference to the DOM elements we are transitioning?
 
 Because [`d3-transition`](https://d3js.org/d3-transition) works with DOM elements,
-we will need to obtain a reference to the DOM element for each path.
-As we know from previous labs, this is done with `bind:this`.
-The only thing that is different here is that we are binding elements inside an `{#each}` block,
-so instead of a single variable, we will need to use a data structure to store the references (array or object).
-The main consideration here is that we need to be able to go from `pieData` to the element reference and vice versa easily.
-Since both are uniquely identified by the data label,
-let’s use an object with the data label as the key and the element reference as the value:
+we will need to obtain a reference to the DOM element for each path and use a data structure (array or object) to store these references.
+
+Let's first add an ID field to the `arc` since previously it is simply mapped from `arcData` (you probably had something like `let newArcs = newArcData.map((d) => arcGenerator(d));`).
+
+```js
+newData = newData.map((d, i) => ({...d, ...newArcData[i], ...newArcs[i]}));
+// after you map your sorted data
+newArcs = newArcs.map((val, idx) => {
+  return {
+    arc: val,
+    id: newData[idx].label
+  }
+})
+```
+
+The main consideration of doing so is that we need to be able to go from `data` or `newData` to the path element reference and vice versa easily.
+Since both are uniquely identified by the data label, let's use an object with the data label as the key and the element reference as the value:
 
 ```js
 let wedges = {};
+let allPathsRefs = newSVG.selectAll('path').nodes();
+let allPathIDs = allPathsRefs.map(ref => ref.id);
+// TODO: populate wedges where the keys are IDs and values are path references
+...
 ```
-
-Then, on the `<path>` element, add `bind:this={ wedges[d.label] }`.
-
-{: .tip }
-You can check that this is populated correctly by using a `$: console.log(wedges)` reactive statement.
 
 #### When to call `d3.transition()`?
 
@@ -684,7 +690,7 @@ function transitionArcs() {
 }
 ```
 
-Then, in the reactive block that sets `pieData`,
+Then, in the reactive block that sets/updates `data`,
 add a call to `transitionArcs()` at the very end,
 so that it runs whenever the data changes.
 
@@ -699,7 +705,7 @@ First, we create a new root level variable:
 let oldData = [];
 ```
 
-Then, in the same reactive block that we are setting `pieData`, we set `oldData = pieData` right _before_ we update `pieData` (so that it stores the previous value).
+Then, in the same reactive block that we are setting `data`/`newData`, we set `oldData = data` right _before_ we update `data` (so that it stores the previous value).
 
 ---
 
@@ -710,19 +716,18 @@ we will interpolate the _angles_ and generate new arcs from them.
 This is a variant of _dataspace interpolation_ where data is interpolated rather than attribute or CSS property values.
 
 It is recommended to prefer CSS properties for transitions when possible,
-so will use the [`d` CSS property](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d#using_d_as_a_css_property) to output the arc as a string.
+so we will use the [`d` CSS property](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d#using_d_as_a_css_property) to output the arc as a string.
 It may look a little weird because its name is only one letter long, but it works the same way as any other CSS property (except it only works on `<path>` elements).
-Unlike the attribute, its value is not just a series of path commands, but a `path()` function that a string argument with the path syntax,
+Unlike the attribute, its value is not just a series of path commands, but a `path()` function taking a string argument with the path syntax,
 e.g. the CSS declaration `d: path("M 0 0 L 100 0 L 100 100 L 0 100 Z")` is the same as the attribute `d="M 0 0 L 100 0 L 100 100 L 0 100 Z"`.
 
 You should also create a new top-level variable, `transitionDuration`, to control the duration of the transition.
 JS-based transition & animation APIs typically expect durations in milliseconds.
 Set it to something large for now like e.g. `3000` (3 seconds), to make it easier to debug the transitions.
-You can also `export` it as a prop, so that users of the component can optionally override it.
 
-{: .tip }
+<!-- {: .tip }
 Adding an `<input type=number bind:value={transitionDuration}>` to your HTML can be very useful for debugging.
-It allows you to override the transition at runtime (e.g. to make certain problematic transitions very slow so you can inspect what is happening without slowing everything down.
+It allows you to override the transition at runtime (e.g. to make certain problematic transitions very slow so you can inspect what is happening without slowing everything down. -->
 
 The general structure of our function will be:
 
@@ -753,10 +758,10 @@ All we have is the index, but that’s all we need:
 let label = Object.keys(wedges)[index];
 ```
 
-Now that we have the label, we can we can find the corresponding data items in `oldData` and `pieData`:
+Now that we have the label, we can we can find the corresponding data items in `oldData` and `newData`:
 
 ```js
-let d = pieData.find(d => d.label === label);
+let d = newData.find(d => d.label === label);
 let d_old = // ...
 ```
 
@@ -796,7 +801,7 @@ If we try it out, you’ll see that it works, at least when transitioning betwee
 
 <video src="videos/d3-transition.mp4" loading=lazy muted autoplay loop></video>
 
-### Step 3.4: Transitioning between pies with different technologies
+<!-- ### Step 3.4: Transitioning between pies with different technologies
 
 If you try transitioning between pies with _different_ technologies however, you will notice that it all breaks down:
 
@@ -929,9 +934,9 @@ If you get an error like "Cannot read properties of `undefined` (reading 'split'
 
 If everything goes well, this is what you should see:
 
-<video src="videos/svelte-transition-cubic.mp4" loading=lazy muted autoplay loop></video>
+<video src="videos/svelte-transition-cubic.mp4" loading=lazy muted autoplay loop></video> -->
 
-### Step 3.5: Harmonizing easing across the D3 and Svelte transitions
+<!-- ### Step 3.5: Harmonizing easing across the D3 and Svelte transitions
 
 We’re getting there, but there are some weird gaps.
 This is because we are trying to _synchronize_ Svelte transitions with D3 transitions that have different parameters.
@@ -957,7 +962,7 @@ Therefore, you can use Svelte easing functions in D3 and vice versa.
 Left: Linear.
 Right: Cubic.
 </figcaption>
-</figure>
+</figure> -->
 
 ## Step 4: Scrollytelling Part 1 (commits over time)
 
