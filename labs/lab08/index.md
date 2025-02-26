@@ -966,6 +966,9 @@ Right: Cubic.
 
 ## Step 4: Scrollytelling Part 1 (commits over time)
 
+{: .files }
+`src/meta/main.js`, `src/style.css`, and `src/meta/index.html`.
+
 So far, we have been progressing through these visualizations by moving a slider.
 However, these visualizations both tell a story,
 the story of how our repo evolved.
@@ -978,7 +981,6 @@ Let’s do that!
 Because our scrolly will involve a story next to a visualization, we want to be able to use up more space, at least in large viewports.
 
 We can do this only for the Meta page, by adding a CSS rule where the selector is `:global(body)`.
-`:global()` Tells Svelte not to rewrite that part of the selector, and that we will handle any scoping conflicts ourselves.
 
 Then, within the rule, we want to set the `max-width` to `120ch` (instead of `100ch`), but only as long as that doesn’t exceed 80% of the viewport width.
 We can do that like this:
@@ -987,73 +989,130 @@ We can do that like this:
 max-width: min(120ch, 80vw);
 ```
 
-### Step 4.1: Using a scrolly
+### Step 4.1: Implementing a Scrolly
 
-I prepared a [`<Scrolly>`](https://www.npmjs.com/package/svelte-scrolly) component for you to use in this step, you will find the documentation here: [svelte-scrolly](https://www.npmjs.com/package/svelte-scrolly).
-If you find any bugs, please [file bug reports](https://github.com/LeaVerou/svelte-scrolly/issues/new) directly at [its bug tracker](https://github.com/LeaVerou/svelte-scrolly/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc).
+Let's implement our own Scrolly. We will first start by adding a new `<div>`-level addition to our HTML file and introducing a few more top-level variables that will help us define the layout of our scrolling window.
 
-{: .note }
-There is an official Svelte package for this purpose: [`@sveltejs/svelte-scroller`](https://www.npmjs.com/package/@sveltejs/svelte-scroller) but it seems to only cater to scrollytelling cases where the narrative is overlaid on top of the visualization, which is not what we want here.
-
-To use [`<Scrolly>`](https://www.npmjs.com/package/svelte-scrolly), you first need to install it (via `npm install svelte-scrolly`), then import it at the top of your component:
-
-```js
-import Scrolly from 'svelte-scrolly';
-```
-
-Then you can use it like this:
+Add the following to your `src/meta/index.html`, beneath the slider but for now on top of the scatter plot:
 
 ```html
-<Scrolly bind:progress="{" myProgressVariable }>
-  <!-- Story here -->
-  <svelte:fragment slot="viz">
-    <!-- Visualizations here -->
-  </svelte:fragment>
-</Scrolly>
+<div id="scroll-container">
+    <div id="spacer"></div>
+    <div id="items-container"></div>
+</div>
 ```
 
-{: .fyi }
-[`<svelte:fragment>`](https://svelte.dev/docs/special-elements#svelte-fragment) is a special element that we can use when no suitable element exists,
-to avoid bloating our DOM with pointless wrapper elements.
-If there is an actual element that makes sense to use, you should use that instead!
+Let's add some styling to it too (you are free to improvise any of the following style rules):
+
+```css
+#scroll-container {
+  position: relative;
+  width: auto;
+  height: 350px;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  margin-bottom: 50px;
+}
+
+#spacer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: none; /* transparent */
+  pointer-events: none;
+}
+
+#items-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: auto;
+}
+
+.item {
+  height: 30px;
+  padding: 10px;
+  margin: 10px;
+  box-sizing: border-box;
+  border-bottom: 2px solid #eee;
+}
+```
+
+Then let's introduce the global variables:
+
+```js
+let NUM_ITEMS = 100; // Ideally, let this value be the length of your commit history
+let ITEM_HEIGHT = 30; // Feel free to change
+let VISIBLE_COUNT = 10; // Feel free to change as well
+let totalHeight = NUM_ITEMS * ITEM_HEIGHT;
+const scrollContainer = d3.select('#scroll-container');
+const spacer = d3.select('#spacer');
+spacer.style('height', `${totalHeight}px`);
+const itemsContainer = d3.select('#items-container');
+scrollContainer.on('scroll', () => {
+  const scrollTop = scrollContainer.property('scrollTop');
+  let startIndex = Math.floor(scrollTop / ITEM_HEIGHT);
+  startIndex = Math.max(0, Math.min(startIndex, commits.length - VISIBLE_COUNT));
+  renderItems(startIndex);
+});
+```
+
+Now as you may already see, it's time to implement the `renderItems()` method to adaptively show us commits info as we scroll through it. It's logic is actually fairly straightforward. Upon function call, first erase all previous scrolling results like we always do, then take a new slice of commits and bind it to the commit item container. Here is how it works:
+
+```js
+function renderItems(startIndex) {
+    // Clear things off
+    itemsContainer.selectAll('div').remove();
+    const endIndex = Math.min(startIndex + VISIBLE_COUNT, commits.length);
+    let newCommitSlice = commits.slice(startIndex, endIndex);
+    // Re-bind the commit data to the container and represent each using a div
+    itemsContainer.selectAll('div')
+                  .data(newCommitSlice)
+                  .enter()
+                  .append('div')
+                  ... // TODO: what should we include here?
+                  .style('position', 'absolute')
+                  .style('top', (_, idx) => `${idx * ITEM_HEIGHT}px`)
+}
+```
 
 ### Step 4.2: Creating a dummy narrative
 
-**Before you finish the lab, you should have something meaningful for the narrative.**
+**As you may have guessed, the whole point of implementing a scrolly is to represent something meaningful for the narrative.**
 Don’t spend long on it; you can even generate it with ChatGPT as long as you check that the result is coherent, relevant, and tells a story that complements to the visualization next to it without simply repeating information in a less digestible format.
 
 For now, let’s just create some dummy text that we can use to test our scrollytelling
 so that writing the narrative is not a blocker:
 
 ```html
-{#each commits as commit, index }
+// This is one example narrative you can create with each commit
 <p>
   On {commit.datetime.toLocaleString("en", {dateStyle: "full", timeStyle:
   "short"})}, I made
-  <a href="{commit.url}" target="_blank"
-    >{ index > 0 ? 'another glorious commit' : 'my first commit, and it was
-    glorious' }</a
-  >. I edited {commit.totalLines} lines across { d3.rollups(commit.lines, D =>
+  <a href="{commit.url}" target="_blank">
+    { index > 0 ? 'another glorious commit' : 'my first commit, and it was glorious' }
+  </a>. I edited {commit.totalLines} lines across { d3.rollups(commit.lines, D =>
   D.length, d => d.file).length } files. Then I looked over all I had made, and
   I saw that it was very good.
 </p>
-{/each}
 ```
+
+Think about how you can set it as an attribute or further append as a child to the elements in `itemsContainer`.
 
 ### Step 4.3: Creating a scroller for our commits over time
 
-Move the story you just generated into the [`<Scrolly>`](https://www.npmjs.com/package/svelte-scrolly) component,
-and the scatterplot and pie chart into the `<svelte:fragment slot="viz">`.
+Integrate the story you just generated into commit items slicing and rendering.
 
-Then, bind the existing `commitProgress` variable to the `progress` variable of the [`<Scrolly>`](https://www.npmjs.com/package/svelte-scrolly) component (`<Scrolly bind:progress={commitProgress}>`).
+Also, notice how we were able to create a variable `newCommitSlice` that stores the commits rendered visible from the current scrolling event. We can convenient have our scatter plot to also update based on the same set of commits so they can be consistent!
 
-If you try it now, you should already see that the scroller is advancing the slider as you scroll!
+Once you do that, you should already see that the scroller is advancing the slider as you scroll! (**You may ignore the pie chart below since we did not explicitly implement it for commits**).
 
 <video src="videos/scrolly-commits.mp4" loading=lazy muted autoplay loop class="tbd"></video>
 
 Now that everything works, you should remove the slider
 as it conflicts with the scrolly,
-and it's largely repeating information that the scrollbar already provides.
+and it's largely repeating information that the scrollbar already provides. Also notice that the demo above has the scrolly and the scatter plot displayed side by side, think about how you can achieve the same using `grid` and `subgrid` displays.
 
 {: .further }
 One thing you could do is show a date next to the actual browser scrollbar thumb,
@@ -1068,25 +1127,14 @@ You should also apply a background color to it otherwise it will be hard to read
 
 ### Step 5.1: Adding another scrolly
 
-Create another [`<Scrolly>`](https://www.npmjs.com/package/svelte-scrolly) instance for the file sizes visualization,
-after the commit visualization.
-You can copy and paste the same narrative as a temporary placeholder,
-but as with the one about commits, you should replace it with something meaningful before you finish the lab.
+Create another scrolly for the file sizes visualization (e.g. how many lines you edited, think back to [Step 2](#step-2-the-race-for-the-biggest-file). You may directly edit your `src/meta/index.html` for set-up), after the commit visualization.
+You can copy and paste the same narrative as a temporary placeholder, but as with the one about commits, you should replace it with something meaningful before you finish the lab.
 
-The progress of this component is independent, so you will want to use a different variable for it (and similarly the corresponding `maxTime` variable and filtered data).
-Aside from that, the rest is very similar to Step 4.
+You will want to use a different variable for it since the filtering condition is likely different. Aside from that, the rest is very similar to Step 4.
 
-To make it more visually interesting, we can place that story on the right,
-and the unit visualization on the left. To do that, you add `--scrolly-layout="viz-first"` to the component,
-which passes that CSS variable to it:
+To make it more visually interesting, you may try to place the scrolly on the right while the unit visualization on th left.
 
-```html
-<Scrolly bind:progress="{raceProgress}" --scrolly-layout="viz-first"></Scrolly>
-```
-
-You can also specify `--scrolly-viz-width="1.5fr"` to change the proportion of viz to story to 3:2 give it more space.
-
-### Step 5.2: Limit number of updates
+<!-- ### Step 5.2: Limit number of updates
 
 Our scrolly currently looks smooth if we scroll relatively slowly, but breaks down if we scroll fast:
 
@@ -1105,7 +1153,7 @@ Experiment with different values for these props (you don't need to use both) to
 
 The final result looks similar to this:
 
-<video src="videos/final.mp4" loading=lazy muted autoplay loop class="browser"></video>
+<video src="videos/final.mp4" loading=lazy muted autoplay loop class="browser"></video> -->
 
 ## Resources
 
