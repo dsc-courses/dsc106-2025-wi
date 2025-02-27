@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 8: Animation & Scrollytelling'
 lab: 8
 parent: '👩‍🔬 Programming Labs'
-released: true
+released: false
 ---
 
 # Lab {{ page.lab }}: Animation
