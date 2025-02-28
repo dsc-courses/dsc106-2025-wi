@@ -39,9 +39,9 @@ To get checked off for the lab, please record a 2 minute video with the followin
 **Videos longer than 2 minutes will be trimmed to 2 minutes before we grade, so
 make sure your video is 2 minutes or less.**
 
-## [Slides](./slides/)
+## [Slides]([./slides/](https://docs.google.com/presentation/d/1u3yjhpcHGN9J84xQpmqao7Q-5rxZE6Xy2jgOf6rzruo/edit?usp=sharing))
 
-- [Relevant technologies (summary slide)](./slides/#technologies)
+<!-- - [Relevant technologies (summary slide)](./slides/#technologies) -->
 
 {% raw %}
 
