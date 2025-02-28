@@ -3,7 +3,7 @@ layout: assignment
 title: 'Lab 8: Animation & Scrollytelling'
 lab: 8
 parent: '👩‍🔬 Programming Labs'
-released: false
+released: true
 ---
 
 # Lab {{ page.lab }}: Animation
@@ -755,7 +755,7 @@ Right: Cubic.
 </figcaption>
 </figure> -->
 
-## Step 4: Scrollytelling Part 1 (commits over time)
+## Step 3: Scrollytelling Part 1 (commits over time)
 
 {: .files }
 `src/meta/main.js`, `src/style.css`, and `src/meta/index.html`.
@@ -767,7 +767,7 @@ Wouldn’t it be cool if we could _actually_ tell that story in our own words, a
 
 Let’s do that!
 
-### Step 4.0: Making our page a bit wider, if there is space
+### Step 3.0: Making our page a bit wider, if there is space
 
 Because our scrolly will involve a story next to a visualization, we want to be able to use up more space, at least in large viewports.
 
@@ -780,29 +780,45 @@ We can do that like this:
 max-width: min(120ch, 80vw);
 ```
 
-### Step 4.1: Implementing a Scrolly
+### Step 3.1: Implementing a Scrolly
 
 Let's implement our own Scrolly. We will first start by adding a new `<div>`-level addition to our HTML file and introducing a few more top-level variables that will help us define the layout of our scrolling window.
 
-Add the following to your `src/meta/index.html`, beneath the slider but for now on top of the scatter plot:
+First, let's restructure how we want to display the scatterplot along with our scrollytelling window in `src/meta/index.html`. Put the following in place of where you originally had `<div id='chart'></div>`:
 
 ```html
-<div id="scroll-container">
-    <div id="spacer"></div>
-    <div id="items-container"></div>
+<div id="scrollytelling">
+    <div id="scroll-container">
+        <div id="spacer"></div>
+        <div id="items-container"></div>
+    </div>
+    <!-- our old scatterplot div -->
+    <div id="chart"></div>
 </div>
 ```
 
 Let's add some styling to it too (you are free to improvise any of the following style rules):
 
 ```css
+#scrollytelling {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
+/* feel free to play with this to make your scrolly more seemless with your plot */
 #scroll-container {
+  grid-column: 1;
   position: relative;
-  width: auto;
+  width: 95%;
   height: 350px;
   overflow-y: scroll;
   border: 1px solid #ccc;
   margin-bottom: 50px;
+}
+
+#chart {
+  grid-column: 2;
 }
 
 #spacer {
@@ -818,13 +834,12 @@ Let's add some styling to it too (you are free to improvise any of the following
   position: absolute;
   top: 0;
   left: 0;
-  width: auto;
+  width: 100%;
 }
 
 .item {
   height: 30px;
   padding: 10px;
-  margin: 10px;
   box-sizing: border-box;
   border-bottom: 2px solid #eee;
 }
@@ -836,7 +851,7 @@ Then let's introduce the global variables:
 let NUM_ITEMS = 100; // Ideally, let this value be the length of your commit history
 let ITEM_HEIGHT = 30; // Feel free to change
 let VISIBLE_COUNT = 10; // Feel free to change as well
-let totalHeight = NUM_ITEMS * ITEM_HEIGHT;
+let totalHeight = (NUM_ITEMS - 1) * ITEM_HEIGHT;
 const scrollContainer = d3.select('#scroll-container');
 const spacer = d3.select('#spacer');
 spacer.style('height', `${totalHeight}px`);
@@ -857,12 +872,14 @@ function renderItems(startIndex) {
     itemsContainer.selectAll('div').remove();
     const endIndex = Math.min(startIndex + VISIBLE_COUNT, commits.length);
     let newCommitSlice = commits.slice(startIndex, endIndex);
+    // TODO: how should we update the scatterplot (hint: it's just one function call)
+    ...
     // Re-bind the commit data to the container and represent each using a div
     itemsContainer.selectAll('div')
                   .data(newCommitSlice)
                   .enter()
                   .append('div')
-                  ... // TODO: what should we include here?
+                  ... // TODO: what should we include here? (read the next step)
                   .style('position', 'absolute')
                   .style('top', (_, idx) => `${idx * ITEM_HEIGHT}px`)
 }
@@ -889,7 +906,10 @@ so that writing the narrative is not a blocker:
 </p>
 ```
 
-Think about how you can set it as an attribute or further append as a child to the elements in `itemsContainer`.
+Now given this structure, hink about how you can set it as an attribute or further append as a child to the elements in `itemsContainer` using D3.
+
+{: .caveat}
+If your narrative overflows, it's because we pre-set a really small item height `height: 30px;`. Play around with bigger values until it gives enough space for each of your narratives. And make sure to update the height in both the CSS rule and the `ITEM_HEIGHT` variable.
 
 ### Step 4.3: Creating a scroller for our commits over time
 
@@ -897,13 +917,39 @@ Integrate the story you just generated into commit items slicing and rendering.
 
 Also, notice how we were able to create a variable `newCommitSlice` that stores the commits rendered visible from the current scrolling event. We can convenient have our scatter plot to also update based on the same set of commits so they can be consistent!
 
-Once you do that, you should already see that the scroller is advancing the slider as you scroll! (**You may ignore the pie chart below since we did not explicitly implement it for commits**).
+Once you do that, you should see the following:
 
-<video src="videos/scrolly-commits.mp4" loading=lazy muted autoplay loop class="tbd"></video>
+<video src="videos/complete.mp4" loading=lazy muted autoplay loop class="tbd"></video>
 
-Now that everything works, you should remove the slider
-as it conflicts with the scrolly,
-and it's largely repeating information that the scrollbar already provides. Also notice that the demo above has the scrolly and the scatter plot displayed side by side, think about how you can achieve the same using `grid` and `subgrid` displays.
+{: .note}
+Note that the summary stats stay unchanged in this case since they still capture the overall information about all your commits. You can make them also update with your scrollytelling. Just re-calculate the stats using `newCommitSlice`. But for simplicity just tie summary stats update to one of the scrollytellings (yes, we will make another one, keep reading [Step 4](#step-4-scrollytelling-part-2-file-sizes)).
+
+Now that everything works, you should remove the slider as it is irrelevant/redundant with the scrolly, and it's largely repeating information that the scrollbar already provides. However, you do want to save some useful functionalities we implemented before about file sizes. Let's do the following:
+
+```js
+function displayCommitFiles() {
+  const lines = filteredCommits.flatMap((d) => d.lines);
+  let fileTypeColors = d3.scaleOrdinal(d3.schemeTableau10);
+  let files = d3.groups(lines, (d) => d.file).map(([name, lines]) => {
+    return { name, lines };
+  });
+  files = d3.sort(files, (d) => -d.lines.length);
+  d3.select('.files').selectAll('div').remove();
+  let filesContainer = d3.select('.files').selectAll('div').data(files).enter().append('div');
+  filesContainer.append('dt').html(d => `<code>${d.name}</code><small>${d.lines.length} lines</small>`);
+  filesContainer.append('dd')
+                .selectAll('div')
+                .data(d => d.lines)
+                .enter()
+                .append('div')
+                .attr('class', 'line')
+                .style('background', d => fileTypeColors(d.type));
+}
+```
+
+Now you may still be able to update the commit files in display by calling `displayCommitFiles()`. And you now safely remove code that handles event handling on the slider, as well as the HTML code themselves.
+
+Also notice that the demo above has the scrolly and the scatter plot displayed side by side, think about how you can achieve the same using `grid` and `subgrid` displays.
 
 {: .further }
 One thing you could do is show a date next to the actual browser scrollbar thumb,
@@ -914,14 +960,14 @@ It helps to apply `position: sticky; top: 1em` to the filtering slider so that
 it's still visible as you scroll.
 You should also apply a background color to it otherwise it will be hard to read. -->
 
-## Step 5: Scrollytelling Part 2 (file sizes)
+## Step 4: Scrollytelling Part 2 (file sizes)
 
-### Step 5.1: Adding another scrolly
+### Step 4.1: Adding another scrolly
 
 Create another scrolly for the file sizes visualization (e.g. how many lines you edited, think back to [Step 2](#step-2-the-race-for-the-biggest-file). You may directly edit your `src/meta/index.html` for set-up), after the commit visualization.
 You can copy and paste the same narrative as a temporary placeholder, but as with the one about commits, you should replace it with something meaningful before you finish the lab.
 
-You will want to use a different variable for it since the filtering condition is likely different. Aside from that, the rest is very similar to Step 4.
+You will want to use a different variable for it since the filtering condition is likely different. Aside from that, the rest is very similar to Step 4. `displayCommitFiles()` should help make things easy for you.
 
 To make it more visually interesting, you may try to place the scrolly on the right while the unit visualization on th left.
 
