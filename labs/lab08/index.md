@@ -59,16 +59,7 @@ To make your code structure a little nicer, we will first complete the following
 {: .files }
 `src/meta/main.js`
 
-Currently, the only way to select commits is by brushing the pie chart.
-While this is great for selecting multiple commits and seeing stats about the whole group,
-it is not very user-friendly for selecting individual commits.
-
-Furthermore, you will need to alternate between selections a lot to debug your work in Step 1,
-so it pays off to make this easier.
-
-Before we can add the right event handling to make click selections possible,
-we need to make a few changes to our code.
-Our `selectedCommits` variable is currently reactive, and depends on `brushSelection`:
+Currently, our `selectedCommits` variable is meant to reactively update and depends on `brushSelection`:
 
 ```js
 $: selectedCommits = brushSelection ? commits.filter(isCommitSelected) : [];
@@ -123,13 +114,13 @@ function isCommitSelected(commit) {
 }
 ```
 
-And `selectedCommits` no longer needs to be reactive, it can become a plain variable that you may declare at the top level of your code:
+And `selectedCommits` becomes a variable that you may declare at the top level of your code:
 
 ```js
 let selectedCommits = [];
 ```
 
-Also, we can now make the colors of individual commits on mouse events consistent with brush selections. We can add this line of code to event handling of `mouseenter` and `mouseleave`:
+Also, we can now make the colors of individual commits on mouse events consistent with brush selections. We can add this line of code to event handling of `mouseenter` and `mouseleave` (you should have a section that handles these two events in your **scatter plot** code):
 
 ```js
 d3.select(event.currentTarget).classed('selected', ...); // give it a corresponding boolean value
@@ -191,17 +182,69 @@ If everything went well, your slider should now be working!
 
 Let’s now ceate a new `filteredCommits` variable that will reactively [filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) `commits` by comparing `commit.datetime` with `commitMaxTime` and only keep those that are **less than** `commitMaxTime`.
 
-Similarly, create a `filteredLines` variable that filters `data` in the same way.
+We can now replace `commits` with `filteredCommits` in several places (these varies depending on the exact implementation you did for Lab 6 so please be mindful):
 
-We can now replace `commits` with `filteredCommits` and `data` with `filteredLines` in several places:
-
-- The `xScale` domain
+- The `xScale` domain for commit time
+- The `rScale` domain for each scatter's radius
 - The `brushed()` function that updates the `selectedCommits` variable
 - Your summary stats
 
-Try moving the slider and see what happens!
+Just to demonstrate, let's take the `createScatterplot()` method that you may have created:
 
-<video src="videos/filtering-unstable.mp4" loading=lazy muted autoplay loop class="outline"></video>
+```js
+function createScatterplot() {
+    // you may have wrote the following lines
+    const width = 1000;
+    const height = 600;
+    const svg = d3.select('#chart').append('svg')...
+    xScale = d3.scaleTime()...
+    yScale = d3.scaleLinear()...
+}
+```
+
+You should update it to the following:
+
+```js
+function updateScatterplot(filteredCommits) {
+  // same as before
+
+  d3.select('svg').remove(); // first clear the svg
+  const svg = d3.select('#chart').append('svg')...
+
+  xScale = d3.scaleTime().domain(d3.extent(filteredCommits, (d) => d.datetime))...
+
+  /// same as before
+
+  svg.selectAll('g').remove(); // clear the scatters in order to re-draw the filtered ones
+  const dots = svg.append('g').attr('class', 'dots');
+
+  // same as before
+
+  const [minLines, maxLines] = d3.extent(filteredCommits, (d) => d.totalLines);
+  const rScale = d3.scaleSqrt().domain([minLines, maxLines])...;
+
+  // same as before
+
+  dots.selectAll('circle').remove(); 
+  dots.selectAll('circle').data(filteredCommits).join('circle')...
+
+  // same as before
+}
+```
+
+Then, you can replace your previous `createScatterplot()` function with `updateScatterplot(commits)` to retain the scattor plot of commits on page load up. Next you can update the scatter plot by calling `updateScatterplot(filteredCommits)` once you finish filtering `commits` by `commitMaxTime`.
+
+You may consider adding this function call to the `updateTimeDisplay()` method:
+
+```js
+function updateTimeDisplay() {
+  commitProgress = Number(timeSlider.value);
+  // what ever you have previously
+  ...
+  filterCommitsByTime(); // filters by time and assign to some top-level variable.
+  updateScatterplot(filteredCommits);
+}
+```
 
 ### Step 1.3: Entry transitions with CSS
 
@@ -254,6 +297,7 @@ We want to display the file details for the commits we filtered. We want this se
 First, let's obtain the file names and lines associated with each file.
 
 ```js
+let lines = filteredCommits.flatMap((d) => d.lines);
 let files = [];
 files = d3
   .groups(lines, (d) => d.file)
