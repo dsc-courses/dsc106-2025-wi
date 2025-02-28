@@ -48,7 +48,7 @@ make sure your video is 2 minutes or less.**
 ## What will we make?
 
 In this lab, we will go back to the Meta page of our portfolio,
-and convert it to an interactive narrative visualization that shows the progress of our codebase over time.
+and convert it to an interactive narrative visualization that shows the progress of our codebase over time (you may **ignore the pie chart part** in the demo since we did not explicitly implement it for our meta tab).
 
 <video src="videos/final.mp4" loading=lazy muted autoplay loop class="browser"></video>
 
@@ -62,7 +62,7 @@ To make your code structure a little nicer, we will first complete the following
 Currently, our `selectedCommits` variable is meant to reactively update and depends on `brushSelection`:
 
 ```js
-$: selectedCommits = brushSelection ? commits.filter(isCommitSelected) : [];
+selectedCommits = brushSelection ? commits.filter(isCommitSelected) : [];
 ```
 
 We also have an `isCommitSelected()` function, which checks of a commit is within the `brushSelection` and looks like this:
