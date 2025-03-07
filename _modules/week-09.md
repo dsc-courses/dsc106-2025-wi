@@ -18,6 +18,7 @@ days:
       - name: LEC 16
         type: lecture
         title: Final Project Feedback
+        url: lectures/15-DSC106-Peer-Feedback.pdf
       - name: LAB 9
         type: lab
         title: Lab 9
