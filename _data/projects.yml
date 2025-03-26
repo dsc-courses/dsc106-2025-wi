@@ -1,11 +1,5 @@
-- title: Dsc106 Finalproject
-  submission_id: '317980684'
-  url: https://andiigonzalez.github.io/dsc106_finalproject/
-  team:
-  - Andrea Gonzalez
-  - Rosey Gutierrez
-  - Andres Riera-Ortiz-Parraga
-- title: Finalproject Dsc106
+# Best project awards
+- title: The Effect of Parkinsons on Typing Ability
   submission_id: '318043150'
   url: https://matthewbudding.github.io/FinalProject-DSC106/
   team:
@@ -13,15 +7,9 @@
   - Eric Cheng
   - Jerric Jiang
   - Omid Alamdar
+  video: https://youtu.be/09WIynbXyEw
   award: Best Project Award (top 5%)
-- title: Dsc106 Final Project
-  submission_id: '317952352'
-  url: https://zhangkevin747.github.io/DSC106_Final_Project/
-  team:
-  - Kevin Zhang
-  - Sarah He
-  - Hao Zhang
-- title: Isyourheartracing
+- title: Is Your Heart Racing?
   submission_id: '318035355'
   url: https://r4tangucsd.github.io/isyourheartracing/
   team:
@@ -29,8 +17,9 @@
   - Ivan Chen
   - Karina Zambani
   - Ryan Tang
+  video: https://youtu.be/-vZDjNQHDOY
   award: Best Project Award (top 5%)
-- title: Stepsync
+- title: StepSync -- How Do You Walk?
   submission_id: '317600092'
   url: https://snigdhapodugu.github.io/stepsync/
   team:
@@ -38,8 +27,21 @@
   - Deepal Deleena
   - Arya Verma
   - Snigdha Podugu
+  video: https://www.youtube.com/watch?v=H5luroEubxs
   award: Best Project Award (top 5%)
-- title: Final Proj Dsc106
+- title: Who survives the operating room?
+  submission_id: '317706613'
+  url: https://clemhubble.github.io/jecc-surgeries/
+  team:
+  - Fong Vo
+  - Claire Wang
+  - Jason Tran
+  - Emily Yip
+  video: https://youtu.be/OgkSn7eB1-s
+  award: Best Project Award (top 5%)
+
+# Honorable mentions
+- title: "Gamify Unplugged: How Gamifying Surveys can Reduce Cognitive Load"
   submission_id: '318022621'
   url: https://nglyry.github.io/Final-Proj-Dsc106/
   team:
@@ -48,13 +50,7 @@
   - Nancy Shen
   - Katelyn Villamin
   award: Honorable Mention Award (top 10%)
-- title: Treadmill Interactive Viz
-  submission_id: '317976221'
-  url: https://chanyoungpark07.github.io/treadmill_interactive_viz/
-  team:
-  - Chanyoung Park
-  - Brandon Ng
-- title: Cognitive Waveform
+- title: Cognify
   submission_id: '317963208'
   url: https://devklim.github.io/cognitive-waveform
   team:
@@ -62,31 +58,17 @@
   - Haoyu Liu
   - Kliment Ho
   - Liyun Luo
-  award: Honorable Mention Award (top 10%)
-- title: Pdtyper
-  submission_id: '318021445'
-  url: https://chriss-mo.github.io/PDTyper/
-  team:
-  - Christopher Mo
-  - Adams Yang
-  - Zachary Thomason
-- title: Schrodinger S Mice
-  submission_id: '317923726'
-  url: https://jefferson8868.github.io/Schrodinger-s-Mice/
-  team:
-  - Ziyao Zhou
-  - Jessica Zhang
-  - Kate Zhou
-  - Jefferson Chen
-- title: Snack Spike
+  video: https://youtu.be/nGCGOnEQaEU
+  award: Honorable Mention Award (top 10%) and People's Choice Award
+- title: "Snack & Spike: Understanding Your Glucose Response"
   submission_id: '318050895'
   url: https://rxhxm.github.io/Snack-Spike/
   team:
   - Roham Mehrabi
   - Ethan Lau
   - Adam Cross
-  award: Honorable Mention Award (top 10%)
-- title: Sugarlens
+  award: Honorable Mention Award (top 10%) and People's Choice Award
+- title: SugarLens
   submission_id: '318020249'
   url: https://owenkyang.github.io/SugarLens/
   team:
@@ -94,16 +76,80 @@
   - Sohan Raval
   - Berlen Zhang
   - Christian Guerra
+  video: https://www.youtube.com/watch?v=UFx_BERL_MY
   award: Honorable Mention Award (top 10%)
-- title: Jecc Surgeries
-  submission_id: '317706613'
-  url: https://clemhubble.github.io/jecc-surgeries/
+
+# People's choice
+- title: Colombia Socioeconomic Vulnerability Index
+  submission_id: '318019923'
+  url: https://shaheeralamkhan.github.io/ColumbiaAnalysis/index.html
   team:
-  - Fong Vo
-  - Claire Wang
-  - Jason Tran
-  - Emily Yip
-  award: Best Project Award (top 5%)
+  - Shaheer Khan
+  - Samuel Mahjouri
+  - Zoya Hasan
+  - Shruti Yamala
+  video: https://www.youtube.com/watch?v=_iDN_lJq1to
+  award: People's Choice Award
+- title: Schrodinger's Mice
+  submission_id: '317923726'
+  url: https://jefferson8868.github.io/Schrodinger-s-Mice/
+  team:
+  - Ziyao Zhou
+  - Jessica Zhang
+  - Kate Zhou
+  - Jefferson Chen
+  award: People's Choice Award
+- title: Which Age Group is the Most Fit?
+  submission_id: '318054354'
+  url: https://seashello.github.io/dsc106-final-project
+  team:
+  - Michelle Hong
+  - Ada Mo
+  - Jenny Xu
+  - Claire Lee
+  video: https://youtu.be/uB1zuuM_sMI?feature=shared
+  award: People's Choice Award
+- title: "The Metabolic Mystery: Solving Your Body's Glucose Puzzle"
+  submission_id: '318057550'
+  url: https://khraghuvanshi.github.io/dsc106_final_project/
+  team:
+  - Derek Klopstein
+  - Phuc Tran
+  - Khushi Raghuvanshi
+  award: People's Choice Award
+
+# All projects
+- title: Unveiling Gender Health Disparities in Cancer-Related Surgical Data
+  submission_id: '317980684'
+  url: https://andiigonzalez.github.io/dsc106_finalproject/
+  team:
+  - Andrea Gonzalez
+  - Rosey Gutierrez
+  - Andres Riera-Ortiz-Parraga
+  video: https://youtu.be/84rOUEiS8kU
+- title: Vital Signs Dashboard
+  submission_id: '317952352'
+  url: https://zhangkevin747.github.io/DSC106_Final_Project/
+  team:
+  - Kevin Zhang
+  - Sarah He
+  - Hao Zhang
+  video: https://youtu.be/VQqgBSGUgWU
+- title: Running Efficiency Dashboard
+  submission_id: '317976221'
+  url: https://chanyoungpark07.github.io/treadmill_interactive_viz/
+  team:
+  - "Chanyoung Park"
+  - "Chanyoung Park"
+  - Brandon Ng
+- title: How does Parkinson's Medication Affect Typing Behavior?
+  submission_id: '318021445'
+  url: https://chriss-mo.github.io/PDTyper/
+  team:
+  - Christopher Mo
+  - Adams Yang
+  - Zachary Thomason
+  video: https://youtu.be/jcF4mJ28G9I
 - title: Hydrostats
   submission_id: '318003187'
   url: https://dhp003.github.io/hydrostats/
@@ -112,12 +158,17 @@
   - Jianyun Ye
   - Dhanvi Patel
   - Angela Shen
-- title: Secret Life Of Bloodglucose
+  video: https://www.youtube.com/watch?v=rbaWF4lXEeM
+- title: Secret Life Of Blood Glucose
   submission_id: '318061168'
   url: https://g7xu.github.io/Secret-Life-Of-BloodGlucose/
   team:
-  - Javier Ponce
-- title: Hipsdontlie
+  - Guoxuan Xu
+  - Ashley Chu
+  - Cecilia Lin
+  - Felix Najera
+  video: https://youtu.be/CJN3VjSvjv8?si=lUtju0S-uMI4xbpZ
+- title: Hips Don't Lie
   submission_id: '317973565'
   url: https://athervvidhate.github.io/hipsdontlie
   team:
@@ -125,14 +176,15 @@
   - Atherv Vidhate
   - Zubin Sannakkayala
   - Pranav Rajaram
-- title: Cgmacros
+  video: https://www.youtube.com/watch?v=5P3IasajRak
+- title: CG Macros
   submission_id: '318021570'
   url: https://yoonice100.github.io/CGMacros/
   team:
   - Derrick Nguyen
   - Amelia Lei
   - Eunice Cho
-- title: Final Project
+- title: Do Stress Patterns During Exams Reveal Hidden Insights into Student Performance?
   submission_id: '317708106'
   url: https://kiwwifruit.github.io/final_project/
   team:
@@ -140,44 +192,23 @@
   - Yolanda Feng
   - Yujie Kang
   - Sophie Wang
-- title: Dsc 106 Final Project
+  video: https://youtu.be/aL6lGO39TXE
+- title: "Visualizing Circadian Patterns: Interactive Analysis of Mouse Biological Rhythms"
   submission_id: '318059423'
   url: https://peter-shamoun.github.io/DSC-106-Final-Project/
   team:
   - Jeru Balares
   - Jeremy Chun
   - Peter Shamoun
-- title: Secret Life Of Blood Glucose
-  submission_id: '318059835'
-  url: https://g7xu.github.io/secret-life-of-blood-glucose/
-  team:
-  - Guoxuan Xu
-  - Ashley Chu
-  - Cecilia Lin
-  - Felix Najera
-- title: Dsc106 Final Project
-  submission_id: '318057550'
-  url: https://khraghuvanshi.github.io/dsc106_final_project/
-  team:
-  - Derek Klopstein
-  - Phuc Tran
-  - Khushi Raghuvanshi
-- title: Dsc106 Final Project
-  submission_id: '318054354'
-  url: https://seashello.github.io/dsc106-final-project
-  team:
-  - Michelle Hong
-  - Ada Mo
-  - Jenny Xu
-  - Claire Lee
-- title: Dsc106finalproject
+- title: Experience Your Body's Response
   submission_id: '317977155'
   url: https://kagastyaraju.github.io/DSC106FInalProject/
   team:
   - Kaushik Agastyaraju
   - Sam Ouyang
   - Alex Frederick
-- title: Miceexplorable
+  video: https://www.youtube.com/watch?v=gHGVtO3crK4
+- title: Of Mice and Medicine
   submission_id: '318032682'
   url: https://sebastianferragut.github.io/miceexplorable/
   team:
@@ -185,7 +216,8 @@
   - Sebastian Ferragut
   - Nuojinli Xu
   - Nathan Oliver
-- title: Imasb
+  video: https://www.youtube.com/watch?v=MgBp0TezlLY
+- title: "IMaSB: Influence of Music Affecting Swing of Body"
   submission_id: '318022912'
   url: https://mingrui-zhuang.github.io/IMASB/
   team:
@@ -193,19 +225,21 @@
   - Shiwei Yang
   - Zhenhan Hu
   - Mingrui Zhuang
-- title: Mouse Activity Explorable
+  video: https://youtu.be/TLgvESb4sZs
+- title: Mouse Activity & Temperature - Explorable Explanations
   submission_id: '317912275'
   url: https://pdhruv09.github.io/Mouse-Activity-Explorable/
   team:
   - Dhruv Patel
-- title: Nutrition Dashboard
+- title: How to Track Your Diet?
   submission_id: '317860332'
   url: https://the0eau.github.io/Nutrition-Dashboard/
   team:
-  - THEAU SOSTHENE JULES
+  - Theau Aguet
   - Justin Seo
   - Selina Wu
-- title: Survey.html
+  video: https://youtu.be/R3cO4qnAAyU
+- title: Pre-Exam Check-In
   submission_id: '317982927'
   url: https://boruilin.github.io/dsc106_finalproject/survey.html
   team:
@@ -213,7 +247,7 @@
   - Zeyu Qi
   - Junshu Xin
   - Jiaxin Yang
-- title: Copypasta Ii
+- title: "Biosignal Crisis Analysis: Empowering Doctors & Patients with Intuitive Insights"
   submission_id: '318024100'
   url: https://hgnzheng.github.io/CopyPasta_II/
   team:
@@ -221,21 +255,21 @@
   - Rihui Ling
   - Minghan Wu
   - Kaijie Zhang
-- title: Mouse Biological Rhythms
+- title: Mouse Circadian Rhythm Visualization
   submission_id: '318040737'
   url: https://lh-008.github.io/mouse_biological_rhythms/
   team:
   - Yaoxi Li
   - Longhao Lin
   - Matthew Wong
-- title: Interactivehealthdata
+- title: "Brain Strain: How Cognitive Tasks Impact Physical Reactions"
   submission_id: '318047268'
   url: https://ritvikmohindru.github.io/InteractiveHealthData/
   team:
   - Ritvik Mohindru
   - Brooklyn Pagaza
   - Sai Sri Lasya Yadlapati
-- title: Dsc106 Final Project
+- title: How Stressed Are You Right Now?
   submission_id: '318055891'
   url: https://rumelikyan.github.io/DSC106---Final-Project/
   team:
@@ -243,21 +277,24 @@
   - Scott Benninger
   - Ethan Fastovsky
   - Rahul Sengupta
-- title: Datasurg
+  video: https://youtu.be/_1wUizMjJGQ
+- title: "DataSurg: An Exploration of Korean Surgical Data"
   submission_id: '318036205'
   url: https://anshu-b.github.io/DataSurg/
   team:
   - Jeronimo Adames-Baena
   - Mehul Verma
   - Ansh Bhatnagar
-- title: Project 4
+  video: https://youtu.be/lae1DP-I_bE
+- title: The Organ Trail
   submission_id: '317974170'
   url: https://ancientabacus.github.io/Project-4/
   team:
   - Edward Lu
   - Gino Angelici
   - Tony Wang
-- title: Neuro Disease Effects On Gait Visualization
+  video: https://youtu.be/alZSdr4_kWg
+- title: "Neurological Diseases and Their Effects on Gait: The Hidden Language of Moving"
   submission_id: '317981388'
   url: https://excalibean.github.io/Neuro-Disease-Effects-on-Gait-Visualization/
   team:
@@ -265,7 +302,7 @@
   - Leah Seseri
   - Imangali Amangeldi
   - Michael Ren
-- title: Dsc106 Scrollytelling Project
+- title: StressScape
   submission_id: '318057889'
   url: https://y3pat.github.io/dsc106-scrollytelling-project/
   team:
@@ -273,7 +310,7 @@
   - Adrian Apsay
   - Marija Vukic
   - Ethan Flores
-- title: Final Proj
+- title: Mouse Temperature and Activity Visualization
   submission_id: '318036468'
   url: https://takafumim.github.io/final_proj/
   team:
@@ -281,7 +318,7 @@
   - Devesh Panda
   - Tim Mao
   - Takafumi Matsui
-- title: Vo2 In Motion
+- title: "How Does The Speed of Treadmill Affect Average Oxygen Consumption For Males and Females?"
   submission_id: '318051783'
   url: https://jaw039.github.io/VO2-in-Motion/
   team:
@@ -289,7 +326,7 @@
   - Reva Agrawal
   - Brian Docena
   - Jackie Wang
-- title: Index.html
+- title: "Running the Numbers: A Data-Driven Look at Treadmill Performance"
   submission_id: '317970088'
   url: https://jahnavi-naik.github.io/FinalProjectDSC106/index.html
   team:
@@ -297,7 +334,8 @@
   - Sharon Ni
   - Parna Praveen
   - Owen Shi
-- title: Dsc106 Final Project
+  video: https://youtu.be/gdIkU2g_KEk
+- title: Balance and Music
   submission_id: '318045905'
   url: https://norahkerendian.github.io/dsc106_final_project/
   team:
@@ -305,7 +343,8 @@
   - Kailey Wen
   - Marguerite Church
   - Matilda Gaddi
-- title: Dsc 106 Final Project 3d
+  video: https://youtu.be/GvbSV3z_zFE
+- title: The Hidden Stress Behind the 4.0
   submission_id: '317764922'
   url: https://nolancchu.github.io/DSC-106-Final-Project-3D/
   team:
@@ -313,28 +352,30 @@
   - Nolan Chu
   - Desmond Vu
   - Aditya Surapaneni
-- title: Dsc106 Final Project
+  video: https://www.youtube.com/watch?v=KdlpZlWwLno
+- title: A Breath Apart
   submission_id: '318051174'
   url: https://putt-t.github.io/dsc106_final_project/
   team:
   - Nathaphat Taleongpong
   - Gahn Wuwong
   - Jonathan Gu
-- title: Dsc106 Finalproj
+- title: The Surgical Journey
   submission_id: '318054326'
   url: https://ethanlam101.github.io/dsc106_finalproj/
   team:
   - Ethan Lam
   - Hana Tjendrawasi
   - Kyra Deng
-- title: Dsc106project4
+- title: How does a phone count your steps?
   submission_id: '318035405'
   url: https://rybplayer.github.io/DSC106Project4/
   team:
   - Ryan Batubara
   - Matt Tokunaga
   - Isaiah Fang
-- title: Colombia
+  video: https://www.youtube.com/watch?v=MK53sQ89e5M
+- title: Visualizing Dengue in Colombia
   submission_id: '318002057'
   url: https://mapping-colombia.github.io/colombia/
   team:
@@ -342,7 +383,7 @@
   - Banff Jiang
   - Manjot Samra
   - Dallas Plunkett
-- title: Health Problem In Different Age Group
+- title: The Surgical Journey Through Life
   submission_id: '317893429'
   url: https://linusdsnoif.github.io/Health-Problem-in-Different-Age-Group/
   team:
@@ -350,7 +391,8 @@
   - Samuel Cho
   - Ryan Cheung
   - Katelyn Zhao
-- title: Dsc106 Final Project
+  video: https://youtu.be/eVL-i4_q40g?si=LzeoLoWV-Y11DHdW
+- title: "Every Bite Counts: An Analysis of How Food Affects Blood Sugar Levels"
   submission_id: '318045479'
   url: https://aryan-kanuparti.github.io/dsc106_final_project/
   team:
@@ -358,7 +400,7 @@
   - Kevin Li
   - Shuchang Liu
   - Aryan Kanuparti
-- title: Dsc106 Final
+- title: Biometric Signals During Exam Stress
   submission_id: '317904889'
   url: https://riajuneja.github.io/dsc106_final/
   team:
@@ -366,7 +408,8 @@
   - Aahil Rupsi
   - Brandon Chiou
   - Abdulrahim Ham
-- title: Cgmacros Scrolly
+  video: https://youtu.be/LwvP0Tscrw4?si=7c0Akbsk7boLf7va
+- title: You Might Have Diabetes ... You Just Don't Know It Yet.
   submission_id: '317974879'
   url: https://neildandekar.me/cgmacros-scrolly/
   team:
@@ -374,19 +417,25 @@
   - Avi Mehta
   - Kevin Souder
   - Idhant Kumar
-- title: Index.html
+  video: https://youtu.be/dfYsr_1svv8?si=HqUi-Nal8RuH9ZmJ
+- title: Optimizing Training based on Personal Goals
   submission_id: '318042797'
   url: https://mkataki.github.io/finalproject_dsc106/index.html
   team:
   - Megha Kataki
   - Daniel Birman
   - Arshia Vadhani
-- title: Wearable Insight
+- title: Glucose Level and Monitored Data
   submission_id: '317733896'
   url: https://jadeschoi.github.io/Wearable-Insight/
   team:
   - Takeru Inoue
-- title: Dsc106 Final Project
+  - Taranvir Chima
+  - Ruhua Pan
+  - Jade Choi
+  - Ethan Cota
+  video: https://youtu.be/9x72sHDOHDw
+- title: How long will a patient stay in the hospital to recover from surgery?
   submission_id: '318049944'
   url: https://tanya301.github.io/dsc106_final_project/
   team:
@@ -394,15 +443,8 @@
   - Camille Sicat
   - Tatiana Samokhvalova
   - Wan-Rong Leung
-- title: Wearable Insight
-  submission_id: '318060074'
-  url: https://jadeschoi.github.io/Wearable-Insight/
-  team:
-  - Ethan Cota
-  - Taranvir Chima
-  - Ruhua Pan
-  - Jade Choi
-- title: Wearables
+  video: https://youtu.be/9x72sHDOHDw
+- title: "Reading the Body: Wearable Technology Unveils Our Hidden Responses to Stress and Exercise"
   submission_id: '318009470'
   url: https://ferdgitucsd.github.io/wearables/
   team:
@@ -410,28 +452,30 @@
   - Stephanie Yue
   - Anduo Wang
   - Yajing Fang
-- title: Gamificationvscognitiveload
+- title: Gamification vs Cognitive Load
   submission_id: '318057951'
   url: https://reemas03.github.io/GamificationVsCognitiveLoad/
   team:
   - Reema Alsaeed
   - Bhagya Ram
   - Zijin Qin
-- title: Healthduringtesting
+- title: Stress vs. Scores
   submission_id: '318043482'
   url: https://liandrw.github.io/healthduringtesting/
   team:
   - Andrew Li
   - Junhao Yang
   - Zifan Luo
-- title: Dsc106final
+  video: https://youtu.be/kUG4zwGCGDs
+- title: Health Prognosis Tool
   submission_id: '318018168'
   url: https://8kevin24.github.io/dsc106final/
   team:
   - Kevin Zhu
   - Yen-Hsiang Chiu
   - Jayden Huang
-- title: Glycemic Index
+  video: https://youtu.be/rxR0xzO4z_g
+- title: "Glucose Guide: Track, Visualize, Thrive"
   submission_id: '318058572'
   url: https://hailyv.github.io/glycemic-index/
   team:
@@ -439,11 +483,4 @@
   - Kevin Wu
   - Nathan Dang
   - Haily Vuong
-- title: Index.html
-  submission_id: '318019923'
-  url: https://shaheeralamkhan.github.io/ColumbiaAnalysis/index.html
-  team:
-  - Shaheer Khan
-  - Samuel Mahjouri
-  - Zoya Hasan
-  - Shruti Yamala
+  video: https://www.youtube.com/watch?v=zRDnrPOurEU

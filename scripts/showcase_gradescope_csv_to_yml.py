@@ -26,7 +26,7 @@ from docopt import docopt
 COL_PERMISSION = 'Question 4.1 Response'
 COL_VIDEO_PERMISSION = 'Question 4.2 Response'
 COL_PROJECT_URL = 'Question 2 Response'
-COL_VIDEO_URL = 'Video URL'
+COL_VIDEO_URL = 'Question 3 Response'
 COL_AWARD = 'Award?'
 COL_SUBMISSION_ID = 'Submission ID'
 COL_STUDENT_NAME = 'Name'
