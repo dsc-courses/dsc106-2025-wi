@@ -17,12 +17,9 @@ nav_order: 1
 
 <!-- [Recordings](https://podcast.ucsd.edu/){: .btn .btn-blue } -->
 
-<!-- {: .note }
-**Dec 6, 2023:** The Final Exam will take place on Mon., Dec 11,
-from 3-6pm in WLH 2005 (our usual lecture room). If 85% of the class fills out
-both the [Student Evaluations of Teaching][set] and the [End-of-Quarter
-Survey][survey] before 11:59pm Dec 8, the entire class will get +1% on their
-Final Exam grade. -->
+{: .note } **March 25, 2025:** The Winter 2025 offering of DSC 106 has
+concluded. Please visit our [Final Project Showcase](showcase) page to see our
+students' final projects, including our award winners!
 
 {% for module in site.modules %}
 {{ module }}

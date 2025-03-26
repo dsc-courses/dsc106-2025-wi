@@ -1,0 +1,42 @@
+<div class="project-card">
+  <div class="project-thumbnail">
+    {% if project.submission_id %}
+    <img
+      src="../assets/showcase-thumbnails/{{ project.submission_id }}/image.png"
+      alt="{{ project.title }} thumbnail"
+    />
+    {% else %}
+    <div class="placeholder-image">No Image</div>
+    {% endif %}
+  </div>
+
+  <div class="project-details">
+    <h3 class="project-title">
+      {% if project.url %}
+      <a href="{{ project.url }}" target="_blank">{{ project.title }}</a>
+      {% else %} {{ project.title }} {% endif %}
+    </h3>
+
+    <div class="project-team">
+      <strong>Team:</strong> {{ project.team | join: ", " }}
+    </div>
+
+    {% if project.award %}
+    <div class="project-award">
+      <span class="award-badge">{{ project.award }}</span>
+    </div>
+    {% endif %} {% if project.url %}
+    <div class="project-website">
+      <a href="{{ project.url }}" target="_blank" class="website-link">
+        Website
+      </a>
+    </div>
+    {% endif %} {% if project.video %}
+    <div class="project-video">
+      <a href="{{ project.video }}" target="_blank" class="video-link">
+        Video
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
